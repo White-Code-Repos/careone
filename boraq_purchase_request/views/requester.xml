@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--             button a create tree view-->
+        <record id="purchase_tree" model="ir.ui.view">
+            <field name="name">purchase.requester.tree.view</field>
+            <field name="model">purchase.requester</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name_seq" readonly="1"/>
+                    <field name="approver_id" options="{'no_create_edit': True}"  />
+                    <field name="description"/>
+                    <field name="date_order"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_form" model="ir.ui.view">
+            <field name="name">purchase.requester.form</field>
+            <field name="model">purchase.requester</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_purchase" string="To Approve" type="object" states="draft" class="oe_highlight" /> 
+                        <button name="button_approve" string="Convert To PRQ" attrs="{'invisible':['|',('purchase_order_id','!=',[]),('state','in',['draft','drft','con','rej','toapprove','app','reject',])]}" type="object" groups="purchase.group_purchase_manager"  class="oe_highlight" />
+                        <button name="button_cancel" string="Cancel" states="acc" type="object"  groups = "purchase.group_purchase_manager"  class="oe_highlight" />
+                        <button name="button_convert" string="Convert To Draft" attrs="{'invisible':['|', ('state', 'not in', ('rej'))]}" type="object"  groups = "purchase.group_purchase_manager"  class="oe_highlight" />
+                        <button name="button_create" string="Approve"  states="con" type="object"  groups = "purchase.group_purchase_manager"  class="oe_highlight" />
+                        <button name="action_reject"  string="Reject" states="con"  type="object"  groups="purchase.group_purchase_manager" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,con,acc,rej"/>
+                   </header>
+                    <sheet>
+                       <div class="oe_title">
+                            <span class="o_form_label" attrs="{'invisible': [('state','not in',('draft','sent'))]}">Purchase Request </span>
+                            <h1>
+                                <field name="name_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="date_order" class="oe_inline" />
+                            <field name="res_id" class="oe_inline" invisible="1"/>
+                            <field name="approver_id" class="oe_inline" options="{'no_create_edit': True}"/>
+                        </group>
+                        <notebook colspan="2">
+                         <page string="Description">
+                            <group>
+                                <field name="description"/>
+                            </group>
+
+                            <group>
+                                <field name="user_id" class="oe_inline" invisible="1"/>
+                                <field name="purchase_order_id" widget="many2many_tags"  invisible="1"/>
+                            </group>
+                         </page>
+                      </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups = "base.group_user" />
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+
+                </form>
+                
+            </field>
+        </record>   
+
+        <record id="inherit_purchase_request" model="ir.ui.view">
+		   <field name="name">purchase.request.form.view</field>
+		   <field name="model">purchase.order</field>
+		   <field name="inherit_id" ref="purchase.purchase_order_form"/>
+		   <field name="priority" eval="50" />  
+		   <field name="arch" type="xml">
+			   <xpath expr="//field[@name='date_approve']" position="after">
+				    <field name="purchase_inhrt_id" options="{'no_create_edit': True}" readonly="1"  />
+                    <field name="purchase_requester_id" options="{'no_create_edit': True}" readonly="1"  />
+			   </xpath>
+                 
+		   </field>
+	    </record>
+        <record  id="purchase_kanban_view" model="ir.ui.view">
+           <field name="name">purchase.requester.kanban</field>
+           <field name="model">purchase.requester</field>
+           <field name="arch" type="xml">
+               <kanban class="o_kanban_mobile">
+                   <field name="name_seq" readonly="1" />
+                   <field name="user_id"/>
+                   <field name="description"/>
+                   <field name="date_order" />
+                   <templates>
+                       <t t-name="kanban-box">
+                           <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                               <div class="o_kanban_record_top mb16">
+                                   <div class="o_kanban_record_headings mt4">
+                                       <strong class="o_kanban_record_title"><span><t t-esc="record.name_seq.value"/></span></strong>
+                                   </div>
+                                    <strong><field name="user_id" /></strong>
+                               </div>
+                               <div class="o_kanban_record_bottom">
+                                   <div class="oe_kanban_bottom_left">
+                                       <span><t t-esc="record.name_seq.value"/> <t t-esc="record.date_order.value and record.date_order.value.split(' ')[0] or False"/></span>
+                                   </div>
+                                   <div class="oe_kanban_bottom_right">
+                                       <field name="state" widget="label_selection" options="{'classes': {'draft': 'draft', 'con': 'confirmation', 'acc': 'acceptance', 'rej': 'rejection'}}"/>
+                                   </div>
+                               </div>
+                            </div>
+                        </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+         
+         
+<!-- new name adding pr0001 v-->
+        <record id="seq_purchase_requester" model="ir.sequence">
+            <field name="name">Purchase Request</field>
+            <field name="code">purchase.requester</field>
+            <field name="prefix">PR</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+            
+        </record>
+        
+       
+     <!-- button fields -->
+       <record id="purchase_form_action_inherit" model="ir.actions.act_window">
+            <field name="name">Purchase Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.requester</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a Purchase Request
+              </p>
+             
+            </field>
+        </record>
+    <menuitem action="purchase_form_action_inherit" id="menu_purchase_form_action" parent="purchase.menu_procurement_management" groups="boraq_purchase_request.purchase_request_group"/>
+
+        
+</odoo>

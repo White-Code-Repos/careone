@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_marketing">
+            <field name="name">Opening dialogue</field>
+            <field name="template_messege">Info the *{company}*
+For *Friend*:  {name}
+
+*Hi Dear*
+
+We have received your request through our website, that you would like to know about our product and services.
+
+*My name:* {sales_person}
+Please feel free to contact me through this channel if you have any questions.
+*Regards*
+{website}</field>
+            <field name="category">crm</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_default_invoice">
+            <field name="name">Payment request</field>
+            <field name="template_messege">Hi {name}, for my services I kindly request the following payment</field>
+            <field name="category">invoice</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_default_provider">
+            <field name="name">Supplier price list</field>
+            <field name="template_messege">We would be grateful if you would send us your price list / rates / fees.</field>
+            <field name="category">provider</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_default_sale">
+            <field name="name">Promotion, increase sales</field>
+            <field name="template_messege">Hi {name}, We would like to inform you of the following promotion</field>
+            <field name="category">sale</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_partner">
+            <field name="name">Contact</field>
+            <field name="template_messege">Hello {name}, I am writing to you about the *{company}*, if you like, I would love to tell you about ...</field>
+            <field name="category">partner</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_delivery">
+            <field name="name">Order delivery status, shipped</field>
+            <field name="template_messege">Hi {name}, your order has shipped. Click here to find out when it will arrive (link to postal service tracking page)</field>
+            <field name="category">delivery</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_offert">
+            <field name="name">Product sales</field>
+            <field name="template_messege">Hi {name}, Ready to save big? All clearance items are 50-70&#37; off until &#40;deadline date&#41;. Head over to the store before you miss out {website}</field>
+            <field name="category">sale</field>
+        </record>
+
+        <record model="whatsapp.template" id="gtica_whatsapp_template.data_whatsapp_sale_special">
+            <field name="name">Special occasion offers and sales announcements</field>
+            <field name="template_messege">Happy Birthday {name}! As an extra-special thank you for being a loyal customer, here&#39;s descount cupon &#40;code&#41; on us. Use it toward any of your favorite products. {website}</field>
+            <field name="category">sale</field>
+        </record>
+    </data>
+</odoo>

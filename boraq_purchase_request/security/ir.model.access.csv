@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_requester,purchase.requester,model_purchase_requester,boraq_purchase_request.purchase_request_group,1,1,1,1
+access_purchase_order,purchase.requester,model_purchase_order,purchase_request_group,1,1,1,0

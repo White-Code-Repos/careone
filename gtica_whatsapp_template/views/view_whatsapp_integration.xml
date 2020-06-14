@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" inherit_id="web.assets_backend" name="GTICA Whatsapp Script">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/gtica_whatsapp_template/static/src/js/whatsapp_script.js"/>
+              </xpath>
+        </template>
+        <record id="view_whatsapp_template_form" model="ir.ui.view">
+            <field name="name">whatsapp.template.form</field>
+            <field name="model">whatsapp.template</field>
+            <field name="arch" type="xml">
+                <form string="Whatsapp message template">
+                    <sheet string="Invoice">
+                         <separator string="Whatsapp message template" class="oe_text_center"
+                                           style="background-color: #eee; padding: 5px;"/>
+                        <group>
+                            <group>
+                                <field name="name"  string="Title Template" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="category" widget="selection" string="Category" class="oe_inline" />
+                            </group>
+                        </group>
+                        <hr/>
+                        <label for="template_messege" string="Message template"/>
+                        <field name="template_messege" />
+                        <hr/>
+                        <p>*Remember, you can place the shortcode {name}, {company}, {website}, {sales_person} to get information automatically in your template message.</p>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_whatsapp_template_tree" model="ir.ui.view">
+            <field name="name">whatsapp.template.tree</field>
+            <field name="model">whatsapp.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Title"/>
+                    <field name="template_messege" string="Message template"/>
+                    <field name="category" string="Category"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_whatsapp_template" model="ir.actions.act_window">
+            <field name="name">Whatsapp message template</field>
+            <field name="res_model">whatsapp.template</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="gtica_whatsapp_template_menu_root"
+            name="Whatsapp Templates"
+            web_icon="gtica_whatsapp_template,static/description/icon.png"
+            action="action_whatsapp_template"
+            groups="base.group_user"
+            sequence="9"
+         />
+
+        <menuitem id="whatsapp_template_config"
+            name="template Whatsapp"
+            parent="gtica_whatsapp_template_menu_root"
+            sequence="1"
+           />
+    </data>
+</odoo>

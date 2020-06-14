@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whatsapp_template_manager, Model admin access,model_whatsapp_template,gtica_whatsapp_template.group_whatsapp_template_manager,1,1,1,1
+access_whatsapp_template_user, Model user access,model_whatsapp_template,gtica_whatsapp_template.group_whatsapp_template_user,1,0,0,0
+access_whatsapp_template_bsde, Model base access,model_whatsapp_template,base.group_user,1,0,0,0

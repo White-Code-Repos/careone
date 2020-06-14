@@ -1,0 +1,367 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* whatsapp_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-07 22:40+0000\n"
+"PO-Revision-Date: 2019-10-07 22:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "&amp;nbsp;<span>on</span>"
+msgstr "&amp;nbsp;<span>en</span>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "*\n"
+"<br/>\n"
+"*Qty:*"
+msgstr "*\n"
+"<br/>\n"
+"*Cta:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "*Delivery Note:*\n"
+"<br/>"
+msgstr *Nota de envio:*\n"
+"<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "*Discount:*"
+msgstr "*Descuento:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "*Products:*\n"
+"<br/>-------------------<br/>"
+msgstr "*Productos:*\n"
+"<br/>-------------------<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.view_whatsapp_default_form
+msgid "*Remember, you can place the shortcode {name} to get the partner or contact name automatically in your template message."
+msgstr "*Recuerde, puede colocar el shortcode {nombre} para obtener el nombre del socio o contacto automáticamente en su mensaje de plantilla."
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "*Tax*"
+msgstr "*Impuestos*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "-----------------\n"
+"<br/>\n"
+"*Subtotal:*"
+msgstr ""
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "-------------------<br/>\n"
+"<span>*Date Delivery:*</span>"
+msgstr "-------------------<br/>\n"
+"<span>*Fecha envio:*</span>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"*Amount*"
+msgstr "<br/>\n"
+"*Cantidad*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<br/>\n"
+"*Date Ordered:*"
+msgstr "<br/>\n"
+"*Fecha del pedido:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+msgid "<br/>\n"
+"*Discount*"
+msgstr "<br/>\n"
+"*Descuento*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"*Due Date:*"
+msgstr "<br/>\n"
+"*Fecha de vencimiento:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "<br/>\n"
+"*Note:* Remember that this message is informative, request your formal invoice\n"
+"<br/>"
+msgstr "<br/>\n"
+"*Nota:* Recuerde que este mensaje es informativo, solicite su factura formal\n"
+"<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"*Price Unit:*"
+msgstr "<br/>\n"
+"*Precio Unitario:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "<br/>\n"
+"*Qty:*"
+msgstr <br/>\n"
+"*Cta:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<br/>\n"
+"*Quotation Date:*"
+msgstr "<br/>\n"
+"*Fecha de Cotización:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<br/>\n"
+"*Salesperson:*"
+msgstr "<br/>\n"
+"*Vendedor:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"*Tax:*"
+msgstr "<br/>\n"
+"*Impuesto:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+msgid "<br/>\n"
+"*Total Price:*"
+msgstr "<br/>\n"
+"*Precio Total:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+msgid "<br/>\n"
+"*Total*:"
+msgstr ""
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"*Total:*"
+msgstr ""
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+msgid "<br/>\n"
+"-----------------\n"
+"<br/><br/>\n"
+"*Invoice Date:*"
+msgstr "<br/>\n"
+"-----------------\n"
+"<br/><br/>\n"
+"*Fecha de Factura:*"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "<br/>\n"
+"<span>*Customer Address:*</span>"
+msgstr "<br/>\n"
+"<span>*Dirección Cliente:*</span>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<br/>\n"
+"Please feel free to contact me through this channel if you have any questions. *Regards*\n"
+"<br/>\n"
+"*Note:* Remember that this message is informative, request your formal document\n"
+"<br/>"
+msgstr "<br/>\n"
+"No dude en ponerse en contacto conmigo a través de este canal si tiene alguna pregunta. *Saludos*\n"
+"<br/>\n"
+"*Nota:* Recuerde que este mensaje es informativo, solicite su documento formal\n"
+"<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "<br/>\n"
+"Please feel free to contact me through this channel if you have any questions.*Regards*\n"
+"<br/>\n"
+"*Note:* Remember that this message is informative, request your formal document\n"
+"<br/>"
+msgstr "<br/>\n"
+"No dude en ponerse en contacto conmigo a través de este canal si tiene alguna pregunta. * Saludos *\n"
+"<br/>\n"
+"*Nota:* Recuerde que este mensaje es informativo, solicite su documento formal\n"
+"<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<br/><br/>\n"
+"<span>*Hi Dear*</span>\n"
+"<br/>"
+msgstr "<br/><br/>\n"
+"<span>*Hola*</span>\n"
+"<br/>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "<br/><br/>\n"
+"<span>*Hi Dear*</span>\n"
+"<br/>\n"
+"<span>In the following message, details of your Delivery products #</span>"
+msgstr "<br/><br/>\n"
+"<span>*Hola*</span>\n"
+"<br/>\n"
+"<span>En el siguiente mensaje, detalles de sus productos de entrega #</span>"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "<span>Next, details of your Pro-Forma Invoice # </span>"
+msgstr "<span>A continuación, detalles de su Factura Pro-Forma # </span>"
+
+
+
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "In the following link, details of your Order #"
+msgstr "En el siguiente enlace, detalles de su pedido #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+msgid "In the following link, details of your Quotation, #"
+msgstr "En el siguiente enlace, detalles de su presupuesto, #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote_link
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_stock_picking
+msgid "Info the *"
+msgstr "Info de*"
+
+#. module: whatsapp_integration
+#: model:ir.model,name:whatsapp_integration.model_account_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.view_whatsapp_default_form
+#: selection:whatsapp.default,category:0
+msgid "Invoice"
+msgstr "Factura"
+
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Cancelled Invoice #"
+msgstr "A continuación, detalles de su factura cancelada #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Credit Note #"
+msgstr "A continuación, detalles de su Nota de crédito #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Draft Invoice #"
+msgstr "A continuación, detalles de su factura en borrador #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Invoice #"
+msgstr "A continuación, detalles de su factura #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+msgid "Next, details of your Order #"
+msgstr "A continuación, detalles de su pedido #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_quote
+msgid "Next, details of your Quotation, #"
+msgstr "A continuación, detalles de su presupuesto, #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Vendor Bill #"
+msgstr "A continuación, detalles de su factura de proveedor #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Next, details of your Vendor Credit Note #"
+msgstr "A continuación, detalles de su Nota de crédito de proveedor #"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.view_picking_form_extend
+msgid "Notification Whatsapp"
+msgstr "Notificación Whatsapp"
+
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.template_invoice_link
+msgid "Please use the following communication for your payment :"
+msgstr "Utilice la siguiente comunicación para su pago"
+
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.send_whatsapp_view_form
+msgid "Quick replies"
+msgstr "Respuestas rápidas"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.send_whatsapp_view_form
+msgid "Quickly send  WhatsApp messages right from System."
+msgstr "Envíe rápidamente mensajes de WhatsApp directamente desde el sistema."
+
+#. module: whatsapp_integration
+#: selection:whatsapp.default,category:0
+msgid "Quoting"
+msgstr "Cotización"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.send_whatsapp_view_form
+msgid "Recipient"
+msgstr "Destinatario"
+
+#. module: whatsapp_integration
+#: selection:whatsapp.default,category:0
+msgid "Sale"
+msgstr "Venta"
+
+#. module: whatsapp_integration
+#: model:ir.model,name:whatsapp_integration.model_sale_order
+msgid "Sale Order"
+msgstr "Orden de Venta"
+
+#. module: whatsapp_integration
+#: model_terms:ir.ui.view,arch_db:whatsapp_integration.view_whatsapp_default_form
+msgid "Whatsapp message template"
+msgstr "Plantilla de mensaje de Whatsapp"
