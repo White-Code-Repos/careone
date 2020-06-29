@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_coupon_generate_view_inherited_form" model="ir.ui.view">
+        <field name="name">sale.coupon.generate.inherited.form</field>
+        <field name="model">sale.coupon.generate</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_generate_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='generation_type']" position="after">
+                <field name="vehicles_domain" attrs="{'invisible': [('generation_type', '!=', 'nbr_vehicles')]}"
+                       widget="domain" options="{'model': 'partner.vehicle'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_coupon_inherited_form" model="ir.ui.view">
+        <field name="name">sale.coupon.inherited.form</field>
+        <field name="model">sale.coupon</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vehicle_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

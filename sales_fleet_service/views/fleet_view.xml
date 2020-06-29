@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="act_res_partner_2_fleet" model="ir.actions.act_window">
+        <field name="name">Vehicles</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">tree,form,activity,graph</field>
+        <field name="domain">[('driver_id', '=', active_id)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new vehicle
+            </p>
+            <p>
+                Manage your fleet by keeping track of the contracts, services, odometers and fuel logs associated to
+                each vehicle.
+            </p>
+        </field>
+    </record>
+    <record id="fleet_vehicle_view_form_extend_care" model="ir.ui.view">
+        <field name="name">fleet.vehicle.view.buttons</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[@col='2']" position="inside">
+                <group string="Categories">
+                    <field name="category_ids" widget="many2many_tags"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

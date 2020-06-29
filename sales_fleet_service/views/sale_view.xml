@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_order_form_extend_sales_fleet_careone">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="vehicle_id" domain="[('driver_id', '=', partner_id)]"/>
+            </field>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="placeholder">Name, Email, Mobile, or Reference</attribute>
+                <attribute name="context">{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'custom_so_search': True}</attribute>
+            </xpath>
+            <field name="payment_term_id" position="after">
+                <field name="external_coupon"/>
+                <field name="category_ids" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('categ_id', 'child_of', parent.category_ids or [1]), ('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
