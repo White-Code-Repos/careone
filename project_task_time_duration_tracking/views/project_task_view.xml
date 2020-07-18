@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form_inherit_project_samart" model="ir.ui.view">
+        <field name="name">project.task.from.time</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='stage_id']" position="before">
+                <field name="stage_duration" widget="float_time"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name="tracking_stage" invisible="1"/>
+                <button name="time_start" string="Start" type="object"
+                        attrs="{'invisible': [('tracking_stage', 'in', ['start'])]}"/>
+                <button name="time_pause" string="Pause" type="object"
+                        attrs="{'invisible': [('tracking_stage', 'in', ['pause', 'stop', 'none'])]}"/>
+                <button name="time_stop" string="Stop" type="object"
+                        attrs="{'invisible': [('tracking_stage', 'in', ['stop', 'none'])]}"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="task_datetime_start"/>
+                <field name="task_datetime_stop"/>
+                <field name="quality_check"/>
+            </xpath>
+
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="time_tracking" string="Time Tracking">
+                    <field name="time_tracking_ids" readonly="1">
+                        <tree>
+                            <field name="start_date"/>
+                            <field name="stop_date"/>
+                            <field name="user_id"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="stage_id"/>
+                            <field name="project_id"/>
+                            <field name="quality_check"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

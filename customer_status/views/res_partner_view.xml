@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_partner_form_careone_customer_status">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="before">
+                <field name="another_address"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Visiting" name="Visiting">
+                    <group>
+                        <field name="first_visit_date"/>
+                        <field name="last_visit_date"/>
+                        <field name="customer_status"/>
+                    </group>
+                </page>
+                <page string="Warranty" name="warranty">
+                    <field name="warranty_product_ids" nolabel="1">
+                        <tree editable="bottom" create="0" delete="0" decoration-danger="state=='expire'">
+                            <field name="product_id" readonly="1"/>
+                            <field name="start_date" readonly="1"/>
+                            <field name="end_date" />
+                            <field name="state" readonly="1"/>
+                            <field name="picking_id" readonly="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
