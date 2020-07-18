@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <!--Passport Email template -->
+        <record id="email_template_passport_expire" model="mail.template">
+            <field name="name">Passport Expire Notification</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="email_from">${(user.email_formatted) |safe}</field>
+            <field name="subject">Passport Expire Notification To ${object.name or 'n/a'}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.name},
+                        <br /><br />
+                        Your Passport is going to expire on ${object.passport_expiry_date}. Please Renew it before expiry date.
+                    </p>
+                </div>
+            </field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

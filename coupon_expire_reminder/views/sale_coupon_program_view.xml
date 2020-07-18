@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="white_code_custom_sale_coupon_program_form_inherited" model="ir.ui.view">
+        <field name="name">white.code.custom.sale.coupon.program.view.form.inherited</field>
+        <field name="model">sale.coupon.program</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='validity_duration']" position="before">
+                <label for="number_of_days"/>
+                <div>
+                    <field name="number_of_days" class="oe_inline"/>
+                    <span class="o_form_label oe_inline"> Days</span>
+                </div>
+                <label for="notification_type"/>
+                <div>
+                    <field name="notification_type" class="oe_inline"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

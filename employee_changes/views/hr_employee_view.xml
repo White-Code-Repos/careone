@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="white_code_custom_hr_employee_view_form_inherited" model="ir.ui.view">
+        <field name="name">white.code.custom.hr.employee.view.form.inherited</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="sponsor_name"/>
+                <field name="sponsor_type" widget="radio"/>
+                <field name="employee_type" widget="selection"/>
+            </xpath>
+            <xpath expr="//field[@name='country_of_birth']" position="after">
+                <field name="residency_number"/>
+                <field name="passport_expiry_date"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="insurance_type" widget="radio"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
