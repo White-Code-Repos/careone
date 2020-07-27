@@ -30,6 +30,8 @@ class TaskTimeTrackingReport(models.Model):
                 ttt.project_id as project_id,
                 ttt.duration as duration,
                 ttt.stage_id as stage_id,
+                ttt.start_date as start_date,
+                ttt.stop_date as stop_date,
                 ttt.quality_check as quality_check,
                 pt.name as task,
                 ptt.name as stage, 

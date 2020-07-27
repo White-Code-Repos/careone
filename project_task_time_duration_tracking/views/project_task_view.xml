@@ -11,15 +11,18 @@
             <xpath expr="//header" position="inside">
                 <field name="tracking_stage" invisible="1"/>
                 <button name="time_start" string="Start" type="object"
-                        attrs="{'invisible': [('tracking_stage', 'in', ['start'])]}"/>
-                <button name="time_pause" string="Pause" type="object"
-                        attrs="{'invisible': [('tracking_stage', 'in', ['pause', 'stop', 'none'])]}"/>
+                    style="background-color:#00A09D; color:#FFFFFF;"
+                    attrs="{'invisible': [('tracking_stage', 'in', ['start'])]}"/>
                 <button name="time_stop" string="Stop" type="object"
-                        attrs="{'invisible': [('tracking_stage', 'in', ['stop', 'none'])]}"/>
+                    style="background-color:#e84444; color:#FFFFFF;"
+                    attrs="{'invisible': [('tracking_stage', 'in', ['pause', 'stop', 'none'])]}"/>
+                <button name="time_pause" string="Pause" type="object"
+                    style="background-color:#00A09D; color:#FFFFFF;"
+                    attrs="{'invisible': [('tracking_stage', 'in', ['pause', 'stop', 'none'])]}"/>
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="task_datetime_start"/>
-                <field name="task_datetime_stop"/>
+                <field name="task_datetime_start" readonly="1" force_save="1"/>
+                <field name="task_datetime_stop" readonly="1" force_save="1"/>
                 <field name="quality_check"/>
             </xpath>
 
