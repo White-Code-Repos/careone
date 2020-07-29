@@ -4,6 +4,7 @@ from datetime import datetime
 class TaskTimeTrack(models.Model):
     _name = 'task.time.track'
     _description = 'Description'
+    _order= 'start_date'
 
     start_date = fields.Datetime(string='Start Date')
     stop_date = fields.Datetime(string='Stop Date')
@@ -43,9 +44,8 @@ class TaskTimeTrack(models.Model):
         return super(TaskTimeTrack, self).write(values)
 
     def _calculate_duration(self):
+        duration = 0.0
         for record in self:
             if record.start_date and record.stop_date:
                 duration = self.get_duration(record.start_date, record.stop_date)
-                record.duration = duration
-            else:
-                record.duration = 0.0
+            record.duration = duration
