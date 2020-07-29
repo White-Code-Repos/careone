@@ -23,6 +23,13 @@ class SaleCoupon(models.Model):
 
     vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
 
+    def _check_coupon_code(self, order):
+        if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
+            return  {'error': _('Invalid Vehicle.')}
+
+        return super(SaleCoupon, self)._check_coupon_code(order)
+
+
 
 class SaleCouponProgram(models.Model):
     _inherit = 'sale.coupon.program'

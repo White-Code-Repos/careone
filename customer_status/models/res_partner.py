@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
+
 
 
 class ResPartner(models.Model):
@@ -21,6 +22,10 @@ class ResPartner(models.Model):
     warranty_product_ids = fields.One2many(
         'warranty.product', 'partner_id', string='Warranty')
     another_address = fields.Char('Address 2')
+
+    mail = fields.Boolean('Email')
+    wts = fields.Boolean("What's app")
+    sms = fields.Boolean("SMS")
 
     def _get_customer_status(self):
         sale_obj = self.env['sale.order']
@@ -52,6 +57,23 @@ class ResPartner(models.Model):
                     rec.customer_status = 'new'
             else:
                 rec.customer_status = 'new'
+
+    @api.model
+    def create(self, vals):
+        if vals.get('mail'):
+            if vals.get('email'):
+                mail_content = "  Hello, Mr. " + vals.get('name') + " Welcome to Care One"
+                main_content = {
+                    'subject': _('Care One'),
+                    'author_id': self.env.user.company_id.id,
+                    'body_html': mail_content,
+                    'email_to': vals.get('email'),
+                }
+                self.env['mail.mail'].sudo().create(main_content).send()
+            else:
+                raise UserError('Please Enter Email')
+        return super().create(vals)
+
 
 
 class WarranyProduct(models.Model):
