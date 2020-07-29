@@ -8,6 +8,12 @@
             <field name="vat" position="before">
                 <field name="another_address"/>
             </field>
+            <field name="category_id" position="after">
+                <field name="mail"/>
+                <field name="wts"/>
+                <field name="sms"/>
+
+            </field>
             <xpath expr="//notebook" position="inside">
                 <page string="Visiting" name="Visiting">
                     <group>
