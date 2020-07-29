@@ -29,14 +29,14 @@
             <xpath expr="//page[@name='extra_info']" position="after">
                 <page name="time_tracking" string="Time Tracking">
                     <field name="time_tracking_ids" readonly="1">
-                        <tree>
+                        <tree editable="bottom">
                             <field name="start_date"/>
                             <field name="stop_date"/>
                             <field name="user_id"/>
                             <field name="duration" widget="float_time"/>
                             <field name="stage_id"/>
-                            <field name="project_id"/>
                             <field name="quality_check"/>
+                            <field name="project_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>
