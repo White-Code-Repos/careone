@@ -12,7 +12,7 @@
         </field>
     </record>
 
-    <record id="sale_coupon_view_form" model="ir.ui.view">
+    <record id="sale_coupon.sale_coupon_view_form" model="ir.ui.view">
         <field name="name">sale.coupon.form</field>
         <field name="model">sale.coupon</field>
         <field name="arch" type="xml">
