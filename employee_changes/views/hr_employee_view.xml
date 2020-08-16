@@ -17,6 +17,19 @@
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="insurance_type" widget="radio"/>
             </xpath>
+
+            <xpath expr="//notebook/page[@name='hr_settings']" position="inside">
+                <group name="end_of_service" string="End Of Service">
+                    <group>
+                            <field name="employee_type2"/>
+                            <field name="end_service_date"/>
+                            <field name="calculate_balance" string="Calculate ?"/>
+                            <field name="balance"/>
+                    </group>
+
+
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
