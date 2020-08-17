@@ -1,8 +1,7 @@
 from odoo import models, fields ,api
 from dateutil import relativedelta
 from datetime import datetime
-
-
+from odoo.exceptions import UserError
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
