@@ -7,7 +7,8 @@
         'sale', 'fleet', 'partner_fleet_sale_enhancement', 'sale_coupon'
     ],
     'data': [
-        'views/sale_coupons_view.xml'
+        'views/sale_coupons_view.xml',
+        'wizard/sale_coupon_apply_code_view.xml',
     ],
     'installable': True,
     'auto_install': False,

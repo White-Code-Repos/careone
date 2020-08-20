@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_task_time_track,access.task.time.track,model_task_time_track,,1,1,1,1
 access_task_time_tracking_report,access.task.time.tracking.report,model_task_time_tracking_report,,1,1,1,1
+access_sale_task_bom,access.sale.task.bom,model_sale_task_bom,,1,1,1,1
+access_task_bom_tracking_report,access.task.bom.tracking.report,model_task_bom_tracking_report,,1,1,1,1
