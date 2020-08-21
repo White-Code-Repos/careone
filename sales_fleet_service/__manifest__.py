@@ -7,8 +7,10 @@
         'sale', 'fleet'
     ],
     'data': [
+        'security/ir.model.access.csv',
         'views/fleet_view.xml',
         'views/res_partner_view.xml',
+        'views/sale_vehicle_parts_view.xml',
         'views/sale_view.xml',
     ],
     'installable': True,

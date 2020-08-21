@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- Sale Vehicle Parts Kanban View -->
+	<record id="sale_vehicle_parts_kanban_view" model="ir.ui.view">
+        <field name="name">sale.vehicle.parts.kanban.view</field>
+        <field name="model">sale.vehicle.parts</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click" style="width: 100px;">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('sale.vehicle.parts', 'image', record.id.raw_value)" alt="Product" class="o_image_64_contain"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+	<!-- Sale Vehicle Parts Form View -->
+	<record id="sale_vehicle_parts_form_view" model="ir.ui.view">
+        <field name="name">sale.vehicle.parts.form.view</field>
+        <field name="model">sale.vehicle.parts</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle Parts">
+                <group>
+                	<group>
+                		<field name="image" widget="image" class="oe_avatar"/>
+                	</group>
+                	<group/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+	<!-- Sale Vehicle Parts Tree View -->
+    <record id="sale_vehicle_parts_tree_view" model="ir.ui.view">
+        <field name="name">sale.vehicle.parts.tree.view</field>
+        <field name="model">sale.vehicle.parts</field>
+        <field name="arch" type="xml">
+            <tree string="Vehicle Parts">
+                <field name="image"/>
+            </tree>
+        </field>
+    </record>
+
+	<!-- Sale Vehicle Parts Action View -->
+	<record id="action_sale_vehicle_parts" model="ir.actions.act_window">
+        <field name="name">Vehicle Parts</field>
+        <field name="res_model">sale.vehicle.parts</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+</odoo>
