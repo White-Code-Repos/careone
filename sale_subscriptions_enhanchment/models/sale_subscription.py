@@ -13,6 +13,7 @@ class SalesSubscription(models.Model):
     new_end_date = fields.Date()
     last_state = fields.Integer()
     un_freez_date = fields.Date()
+    is_freez = fields.Boolean()
 
     def action_freez(self):
         print('Freezing')
@@ -31,7 +32,9 @@ class SalesSubscription(models.Model):
             stage = search([('name', '=', 'Freezing')], limit=1)
             if not stage:
                 stage = search([('in_progress', '=', False)], limit=1)
-            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today,
+            sub.write({
+                        'is_freez': True,
+                        'stage_id': stage.id, 'to_renew': False, 'date': today,
                        'last_state': self.stage_id.id ,
                        'new_end_date': datetime.strptime(str(self.end_date), '%Y-%m-%d')+relativedelta(days =+ self.freez_duration)  ,
                        'un_freez_date': datetime.strptime(str(today), '%Y-%m-%d')+relativedelta(days =+ self.freez_duration+ 1) ,

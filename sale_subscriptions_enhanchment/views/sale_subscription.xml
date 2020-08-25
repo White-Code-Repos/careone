@@ -15,7 +15,8 @@
             </xpath>
 
             <xpath expr="//button[3]" position="after">
-                <button string="Freezing" name="action_freez" type="object"  class="btn-primary"/>
+                <field name="is_freez" invisible="1"/>
+                <button string="Freezing" name="action_freez" type="object"  class="btn-primary" attrs="{'invisible': [('is_freez', '=', True)]}"/>
             </xpath>
         </field>
     </record>

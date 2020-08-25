@@ -61,15 +61,16 @@ class HrEmployee(models.Model):
                 # self.calculate_balance = 0
                 # raise UserError("You need to put End Date First")
             contract = self.env['hr.contract'].search([('employee_id','=',self._origin.id),('state','=','open')],limit=1)
-            start = datetime.strptime(str(contract.date_start), '%Y-%m-%d')
-            end = datetime.strptime(str(self.end_service_date), '%Y-%m-%d')
-            r = relativedelta.relativedelta(end,start)
-            years = int(r.years)
-            if self.employee_type2 == 'worker':
-                if years >= 2:
+            if contract and contract.date_start :
+                start = datetime.strptime(str(contract.date_start), '%Y-%m-%d')
+                end = datetime.strptime(str(self.end_service_date), '%Y-%m-%d')
+                r = relativedelta.relativedelta(end,start)
+                years = int(r.years)
+                if self.employee_type2 == 'worker':
+                    if years >= 2:
+                        balance = contract.wage * years
+                    else :
+                        balance = contract.wage * 0.5 * years
+                if self.employee_type2 == 'employee':
                     balance = contract.wage * years
-                else :
-                    balance = contract.wage * 0.5 * years
-            if self.employee_type2 == 'employee':
-                balance = contract.wage * years
         self.balance = balance
