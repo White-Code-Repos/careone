@@ -10,7 +10,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/res_partner_custom_view.xml',
-        'views/sale_order_view.xml'
+        'views/sale_order_view.xml',
+        'views/vehicle_view.xml',
     ],
     'installable': True,
     'auto_install': False,

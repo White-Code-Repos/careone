@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="fleet_vehicle_model_form_view_inherit_whitecode">
+        <field name="name">fleet.vehicle.model.form.view.inherit.whitecode</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+        <field name="arch" type="xml">
+        	<field name="manager_id" position="after">
+        		<field name="size"/>
+        		<field name="doors"/>
+        		<field name="color"/>
+        	</field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="fleet_vehicle_form_view_inherit_whitecode">
+        <field name="name">fleet.vehicle.form.view.inherit.whitecode</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+        	<field name="seats" position="after">
+        		<field name="size"/>
+        	</field>
+        </field>
+    </record>
+
+</odoo>
