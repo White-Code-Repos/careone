@@ -54,10 +54,12 @@ class HrEmployee(models.Model):
     @api.depends('employee_type2','calculate_balance','end_service_date')
     def _get_end_service_balance(self):
         balance = 0
+        self.calculate_balance = 0
         if self.calculate_balance:
             if not self.end_service_date :
-                self.calculate_balance = 0
-                raise UserError("You need to put End Date First")
+                return True
+                # self.calculate_balance = 0
+                # raise UserError("You need to put End Date First")
             contract = self.env['hr.contract'].search([('employee_id','=',self._origin.id),('state','=','open')],limit=1)
             start = datetime.strptime(str(contract.date_start), '%Y-%m-%d')
             end = datetime.strptime(str(self.end_service_date), '%Y-%m-%d')
