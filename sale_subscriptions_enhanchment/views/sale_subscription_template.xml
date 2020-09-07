@@ -12,6 +12,7 @@
                         <b class="mr-1">Freeze For</b>
                         <field name="freeze_for"/>
                         <b>Days</b>
+                        <field name="new_freeze_for" invisible="1"/>
                     </div>
                 </group>
             </xpath>

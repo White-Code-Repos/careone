@@ -8,6 +8,7 @@
     ],
     'data': [
         'data/ir_cron.xml',
+        'security/ir.model.access.csv',
         'views/sale_subscription_template.xml',
         'views/sale_subscription.xml'
     ],
