@@ -8,6 +8,10 @@ from dateutil.relativedelta import relativedelta
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
+
+    coupon_program = fields.Many2one('sale.coupon.program','Coupon Program')
+    apper_generate_coupon = fields.Boolean(default=False)
+
     end_date = fields.Date('End Date',required = True)
     freez_duration = fields.Integer('Freezing Duration')
     new_end_date = fields.Date()
@@ -113,6 +117,13 @@ class SalesSubscription(models.Model):
                 'target': 'current',
                 'domain': [('id', 'in', list)],
             }
+
+    @api.onchange('coupon_program')
+    def _onchange_coupon_program(self):
+
+        self.apper_generate_coupon = False
+        if self.coupon_program:
+            self.apper_generate_coupon = True
 
 
 
