@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_coupon_program_coupon_program,coupon_program.coupon_program,model_coupon_program_coupon_program,base.group_user,1,1,1,1
