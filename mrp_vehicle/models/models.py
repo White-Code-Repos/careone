@@ -9,17 +9,16 @@ class MRP_inherit(models.Model):
     date_planned_start = fields.Datetime(
         'Planned Date', default=fields.Datetime.now,
         help="Date at which you plan to start the production.",
-        compute='get_value_from_sale',index=False, required=False, store=True)
-
+        compute='get_value_from_sale',index=False, required=False, store=False)
     def get_value_from_sale(self):
         for rec in self:
             sale_order = self.env['sale.order'].search([('name', '=', rec.origin)], order='id desc', limit=1)
             rec.vehicle_id_sale = sale_order.vehicle_id
             rec.is_have_vehicle = True
             if sale_order.validity_date:
-                rec.write({'date_planned_start': sale_order.validity_date})
+                rec.date_planned_start=sale_order.validity_date
             else:
-                rec.write({'date_planned_start': rec.create_date})
+                rec.date_planned_start=rec.create_date
 
 
 class SaleOrder(models.Model):
