@@ -13,11 +13,12 @@
                         <field name="freeze_for"/>
                         <b>Days</b>
                         <field name="new_freeze_for" invisible="1"/>
-                        <group>
-                            <field name="end_date" />
-                            <field name="freez_duration" />
-                        </group>
+
                     </div>
+                </group>
+                <group>
+                        <field name="end_date" />
+                        <field name="freez_duration" />
                 </group>
             </xpath>
         </field>

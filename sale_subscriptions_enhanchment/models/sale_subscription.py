@@ -48,7 +48,7 @@ class SalesSubscription(models.Model):
         delta = date_2 - date_1
         self.template_id.new_freeze_for = int(delta.days)
         self.is_freez = False
-        self.freez_duration = self.freez_duration +1
+        self.template_id.freez_duration = self.template_id.freez_duration +1
 
         search = self.env['sale.subscription.stage'].search
 
@@ -90,6 +90,8 @@ class SalesSubscription(models.Model):
                        'un_freez_date': datetime.strptime(str(today), '%Y-%m-%d')+relativedelta(days =+ freeze_for) ,
             })
             self.template_id.new_freeze_for =0
+            if self.template_id.freez_duration >0:
+                self.template_id.freez_duration = self.template_id.freez_duration - 1 
 
             freez_data = {
                 'start_date' : today,
