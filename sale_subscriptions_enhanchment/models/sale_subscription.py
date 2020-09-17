@@ -12,8 +12,9 @@ class SalesSubscription(models.Model):
     coupon_program = fields.Many2one('sale.coupon.program','Coupon Program')
     apper_generate_coupon = fields.Boolean(default=False)
 
-    end_date = fields.Date('End Date',required = True)
-    freez_duration = fields.Integer('Freezing Duration')
+    end_date = fields.Date('End Date',related='template_id.end_date')
+    freez_duration = fields.Integer('Freezing Duration' , related='template_id.freez_duration')
+    
     new_end_date = fields.Date()
     last_state = fields.Integer()
     un_freez_date = fields.Date()
@@ -22,6 +23,21 @@ class SalesSubscription(models.Model):
     freeze_times = fields.Integer(compute='_get_freeze_times')
     display_name = fields.Char(related='stage_id.display_name')
 
+    show_freez = fields.Boolean(compute="_get_show_freez")
+
+    def _get_show_freez(self):
+
+        if self.end_date :
+
+            today = fields.Date.from_string(fields.Date.today())
+            date1 = datetime.strptime(str(self.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d')
+            date2 = datetime.strptime(str(today), '%Y-%m-%d')
+            if date1 > date2:
+                self.show_freez = True
+            else:
+                self.show_freez = False
+        else :
+            self.show_freez = False
 
     def acrion_unfreeze(self):
         print ('unfreez')
@@ -36,7 +52,7 @@ class SalesSubscription(models.Model):
 
         search = self.env['sale.subscription.stage'].search
 
-        stage = search([('in_progress', '=', False)], limit=1)
+        stage = search([('in_progress', '=', True)], limit=1)
         self.stage_id = stage.id
 
 
@@ -64,7 +80,7 @@ class SalesSubscription(models.Model):
         for sub in self:
             stage = search([('name', '=', 'Freezing')], limit=1)
             if not stage:
-                stage = search([('in_progress', '=', False)], limit=1)
+                stage = search([('in_progress', '=', True)], limit=1)
             sub.write({
                         'freez_duration' : self.freez_duration -1,
                         'is_freez': True,
@@ -89,7 +105,7 @@ class SalesSubscription(models.Model):
         stage = search([('name', '=', 'Freezing')], limit=1)
         records = self.env['sale.subscription'].search([('stage_id','=',stage.id),('un_freez_date','=',fields.Date.from_string(fields.Date.today()))])
         for rec in records :
-            stage = search([('in_progress', '=', False)], limit=1)
+            stage = search([('in_progress', '=', True)], limit=1)
             rec.write({
                 # 'stage_id' : records.last_state,
                 'stage_id' : stage.id,
@@ -133,6 +149,8 @@ class SalesSubscriptionTemplate(models.Model):
     freeze_for = fields.Integer('Freeze For')
 
     new_freeze_for = fields.Integer()
+    end_date = fields.Date('End Date',required = True)
+    freez_duration = fields.Integer('Freezing Duration')
 
 
 
