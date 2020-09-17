@@ -21,7 +21,24 @@ class MRP_inherit(models.Model):
             else:
                 rec.write({'date_planned_start': rec.create_date})
 
+    def write(self, vals):
+        res = super(MrpProduction, self).write(vals)
+        if 'date_planned_start' in vals:
+            moves = (self.mapped('move_raw_ids') + self.mapped('move_finished_ids')).filtered(
+                lambda r: r.state not in ['done', 'cancel'])
+            moves.write({
+                'date_expected': fields.Datetime.to_datetime(vals['date_planned_start']),
+            })
+        for production in self:
+            if 'date_planned_start' in vals:
+                if production.state in ['done', 'cancel']:
+                    raise UserError(_('You cannot move a manufacturing order once it is cancelled or done.'))
+                # if production.workorder_ids and not self.env.context.get('force_date', False):
+                    # raise UserError(_('You cannot move a planned manufacturing order.'))
 
+            if 'move_raw_ids' in vals and production.state != 'draft':
+                production.move_raw_ids.filtered(lambda m: m.state == 'draft')._action_confirm()
+        return res
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
