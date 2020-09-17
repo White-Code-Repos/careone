@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="change_button_view_order_form" model="ir.ui.view">
+            <field name="name">First Grain form view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm'][1]" position="before">
+                    <field name="no_credit_has_ceo_access" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="attrs">{'invisible':[('no_credit_has_ceo_access','=',False)]}</attribute>
+                </xpath>
+<!--                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible':[('no_credit_has_ceo_access','=',False)]}</attribute>-->
+<!--                </xpath>-->
+
+            </field>
+        </record>
+</odoo>
