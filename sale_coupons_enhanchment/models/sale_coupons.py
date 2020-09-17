@@ -90,6 +90,9 @@ class SaleCouponGenerate(models.TransientModel):
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
                 coupon = self.env['sale.coupon'].create(vals)
+                date = coupon.expiration_date_2 if coupon.expiration_date_2 else coupon.expiration_date
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': subscription.id ,  'expiration_date_2' : datetime.strptime(str(date), '%Y-%m-%d')+relativedelta(days =+ 1)}
+
 
 
         if self.generation_type == 'nbr_customer' and self.partners_domain:
@@ -115,33 +118,3 @@ class SaleCouponGenerate(models.TransientModel):
                     vals['expiration_date_2'] = datetime.strptime(str(date), '%Y-%m-%d')+relativedelta(days =+ 1)
                 coupon = self.env['sale.coupon'].create(vals)
                 date = coupon.expiration_date_2
-
-
-
-                # Change date for expiration date 
-
-        # if self._context.get('active_model') == 'sale.subscription' :
-
-        #     subscription = self.env['sale.subscription'].browse(self.env.context.get('active_id'))
-        #     program = subscription.coupon_program
-
-        #     coupon2 = self.env['sale.coupon'].search([('program_id','=',program.id),('from_subscription','=',True),('sub_id','=',subscription.id)])
-
-        #     if coupon2 : 
-        #         program2 = coupon2[0]
-        #         program3 = None
-
-        #         for obj in coupon2:
-        #             if obj.id > program2.id:
-        #                 program3 = program2
-
-        #                 program2 = obj
-
-                    
-        #         if program3 and program3.expiration_date_2 :
-        #             coupon.write({
-        #                 'expiration_date_2' : datetime.strptime(str(program3.expiration_date_2), '%Y-%m-%d')+relativedelta(days =+ 1)
-
-        #                 })
-        #         # raise Warning(coupon.expiration_date)
-

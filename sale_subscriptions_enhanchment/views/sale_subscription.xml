@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="end_date"/>
-                <field name="freez_duration"/>
+                <field name="end_date" invisible="1"/>
+                <field name="freez_duration" invisible="1"/>
                 <field name="new_end_date" invisible="1"/>
                 <field name="last_state" invisible="1"/>
                 <field name="un_freez_date" invisible="1"/>
@@ -19,7 +19,8 @@
                 <field name="is_freez" invisible="1"/>
                 <field name="display_name" invisible="1"/>
                 <field name="apper_generate_coupon" invisible="1"/>
-                <button string="Freezing" name="action_freez" type="object"  class="btn-primary" attrs="{'invisible': ['|',('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
+                <field name="show_freez" invisible="1"/>
+                <button string="Freezing" name="action_freez" type="object"  class="btn-primary" attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
 
                 <button string="UN-Freezing" name="acrion_unfreeze" type="object"  class="btn-primary" attrs="{'invisible': [('is_freez', '!=', True)]}"/>
 
