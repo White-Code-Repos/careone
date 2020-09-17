@@ -22,7 +22,7 @@ class MRP_inherit(models.Model):
                 rec.write({'date_planned_start': rec.create_date})
 
     def write(self, vals):
-        res = super(MrpProduction, self).write(vals)
+        res = super(MRP_inherit, self).write(vals)
         if 'date_planned_start' in vals:
             moves = (self.mapped('move_raw_ids') + self.mapped('move_finished_ids')).filtered(
                 lambda r: r.state not in ['done', 'cancel'])
