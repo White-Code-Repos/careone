@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from datetime import datetime
 
 
 class SaleCouponApplyCode(models.TransientModel):
@@ -9,10 +10,20 @@ class SaleCouponApplyCode(models.TransientModel):
 
     coupon_code = fields.Many2one('sale.coupon', string="Code", required=True)
 
+    # hisham edition
     @api.onchange('coupon_code')
     def coupon_code_onchange(self):
+        today=datetime.today().date()
+        print(today.strftime("%Y-%m-%d"))
+        print(self.coupon_code.expiration_date)
+
         sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        return {'domain': {'coupon_code': [('partner_id', '=', sales_order.partner_id.id), ('state', '=', 'new')]}}
+        return {'domain': {'coupon_code': [('expiration_date', '>', today.strftime("%Y-%m-%d")),
+                                           ('program_id', '=', sales_order.coupon_id.id),
+                                           ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+                                           ('partner_id', '=', False),
+                                           '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
+                                           ('vehicle_id', '=', False)]}}
 
     def process_coupon(self):
         """
@@ -24,3 +35,7 @@ class SaleCouponApplyCode(models.TransientModel):
             raise UserError(error_status.get('error', False))
         if error_status.get('not_found', False):
             raise UserError(error_status.get('not_found', False))
+# hisham edition
+class SaleCouponInherit(models.Model):
+    _inherit = 'sale.coupon'
+    expiration_date = fields.Date('Expiration Date', compute='_compute_expiration_date',store=True)
