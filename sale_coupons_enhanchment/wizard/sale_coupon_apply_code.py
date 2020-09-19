@@ -35,7 +35,3 @@ class SaleCouponApplyCode(models.TransientModel):
             raise UserError(error_status.get('error', False))
         if error_status.get('not_found', False):
             raise UserError(error_status.get('not_found', False))
-# hisham edition
-# class SaleCouponInherit(models.Model):
-#     _inherit = 'sale.coupon'
-#     expiration_date = fields.Date('Expiration Date', compute='_compute_expiration_date',store=True)
