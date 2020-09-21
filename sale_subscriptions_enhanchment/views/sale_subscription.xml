@@ -24,7 +24,10 @@
 
                 <button string="UN-Freezing" name="acrion_unfreeze" type="object"  class="btn-primary" attrs="{'invisible': [('is_freez', '!=', True)]}"/>
 
-                <button string="Generate Coupon"  name="%(sale_coupon.sale_coupon_generate_action)d" type="action"  class="btn-primary" attrs="{'invisible': [('apper_generate_coupon', '!=', True)]}"/>
+               <!--  <button string="Generate Coupon"  name="%(sale_coupon.sale_coupon_generate_action)d" type="action"  class="btn-primary" attrs="{'invisible': [('apper_generate_coupon', '!=', True)]}"/> -->
+
+               <button string="Generate Coupon"  name="generate_coupon" type="object"  class="btn-primary" attrs="{'invisible': [('apper_generate_coupon', '!=', True)]}"/>
+
 
             </xpath>
             <xpath expr="//button[@name='open_website_url']" position='before'>
@@ -48,11 +51,11 @@
             </field>
     </record>
 
-    <record id="sale_coupon_generate_action" model="ir.actions.act_window">
+    <!-- <record id="sale_coupon_generate_action" model="ir.actions.act_window">
         <field name="name">Number of Coupons To Generate</field>
         <field name="res_model">sale.coupon.generate</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="view_id" ref="sale_coupon.sale_coupon_generate_view_form"/>
-    </record>
+    </record> -->
 </odoo>
