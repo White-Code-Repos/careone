@@ -20,7 +20,8 @@
                            widget="domain" options="{'model': 'res.partner'}"/>
                     <field name="vehicles_domain" attrs="{'invisible': [('generation_type', '!=', 'nbr_vehicles')]}"
                            widget="domain" options="{'model': 'partner.vehicle'}"/>
-                    <field name="nbr_coupons" attrs="{'invisible': [('generation_type', '!=', 'nbr_coupon')]}"/>
+                    <field name="nbr_coupons"/>
+<!--                    attrs="{'invisible': [('generation_type', '!=', 'nbr_coupon')]}"-->
                 </group>
             </xpath>
             <xpath expr="//field[@name='order_count']/.." position="before">
@@ -81,10 +82,11 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary" type="object"
-                        attrs="{'invisible': [('coupon_id', '=', False)]}"/>
+                        attrs="{'invisible': ['|',('coupon_id', '=', False),('is_generate_coupon', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='customer_vehicle_id']" position="after">
                 <field name="coupon_id"/>
+                <field name="is_generate_coupon" invisible="1"/>
             </xpath>
         </field>
     </record>

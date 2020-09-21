@@ -25,7 +25,7 @@ class SaleCoupon(models.Model):
     vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
     from_subscription = fields.Boolean()
     expiration_date_2 = fields.Date('Expiration Date')
-    
+
     sub_id = fields.Many2one('sale.subscription')
 
 
