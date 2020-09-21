@@ -4,6 +4,8 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.tools import safe_eval
+
 
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
@@ -144,6 +146,60 @@ class SalesSubscription(models.Model):
             self.apper_generate_coupon = True
 
 
+    def generate_coupon(self):
+
+        vals = {'program_id': self.id}
+
+        program = self.coupon_program
+
+        vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id}
+
+
+            # Change date for expiration date
+
+        coupon2 = self.env['sale.coupon'].search([('program_id','=',program.id),('from_subscription','=',True),('sub_id','=',self.id)])
+
+        if coupon2 : 
+            program2 = coupon2[0]
+
+            for obj in coupon2:
+                if obj.id > program2.id:
+                    program2 = obj
+
+            if program2 and program2.expiration_date_2 :
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id ,  'expiration_date_2' : datetime.strptime(str(program2.expiration_date_2), '%Y-%m-%d')+relativedelta(days =+ 1)}
+            else :
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id ,  'expiration_date_2' :program2.expiration_date_2}
+        
+        if self.coupon_program.generation_type == 'nbr_coupon' and self.coupon_program.nbr_coupons > 0:
+            for count in range(0, self.coupon_program.nbr_coupons):
+                coupon = self.env['sale.coupon'].create(vals)
+                date = coupon.expiration_date_2 if coupon.expiration_date_2 else coupon.expiration_date
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id ,  'expiration_date_2' : datetime.strptime(str(date), '%Y-%m-%d')+relativedelta(days =+ 1)}
+
+        if self.coupon_program.generation_type == 'nbr_customer' and self.coupon_program.partners_domain:
+            date = None
+            for partner in self.env['res.partner'].search(safe_eval(self.coupon_program.partners_domain)):
+                vals.update({'partner_id': partner.id})
+                coupon = self.env['sale.coupon'].create(vals)
+                date = date = coupon.expiration_date_2 if coupon.expiration_date_2 else coupon.expiration_date
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id ,  'expiration_date_2' : datetime.strptime(str(date), '%Y-%m-%d')+relativedelta(days =+ 1)}
+
+
+                subject = '%s, a coupon has been generated for you' % (partner.name)
+                template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
+                if template:
+                    template.send_mail(coupon.id,
+                                       email_values={'email_to': partner.email, 'email_from': self.env.user.email or '',
+                                                     'subject': subject, })
+
+        if self.coupon_program.generation_type == 'nbr_vehicles' and self.coupon_program.vehicles_domain:
+            date = None
+            for vehicle in self.env['partner.vehicle'].search(safe_eval(self.coupon_program.vehicles_domain)):
+                vals.update({'vehicle_id': vehicle.id})
+                coupon = self.env['sale.coupon'].create(vals)
+                date = date = coupon.expiration_date_2 if coupon.expiration_date_2 else coupon.expiration_date
+                vals = {'program_id': program.id ,'from_subscription' : True ,'sub_id': self.id ,  'expiration_date_2' : datetime.strptime(str(date), '%Y-%m-%d')+relativedelta(days =+ 1)}
 
 class SalesSubscriptionTemplate(models.Model):
     _inherit = "sale.subscription.template"
