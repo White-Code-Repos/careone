@@ -3,14 +3,16 @@
 
     <!-- Sale Coupon apply code form view inherit -->
     <record id="sale_coupon_apply_code_form_view_inherit" model="ir.ui.view">
-       <field name="name">sale.coupon.apply.code.form.view.inherit</field>
-       <field name="model">sale.coupon.apply.code</field>
-       <field name="inherit_id" ref="sale_coupon.sale_coupon_apply_code_view_form"/> 
-       <field name="arch" type="xml">
+        <field name="name">sale.coupon.apply.code.form.view.inherit</field>
+        <field name="model">sale.coupon.apply.code</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_apply_code_view_form"/>
+        <field name="arch" type="xml">
             <field name="coupon_code" position="replace">
                 <field name="coupon_code" options="{'no_create': True}"/>
+                <!--                hisham edition -->
+                <field name="is_free_order"/>
             </field>
-       </field>
+        </field>
     </record>
 
 </odoo>

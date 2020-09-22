@@ -24,14 +24,28 @@ class SaleCouponApplyCode(models.TransientModel):
                                            ('partner_id', '=', False),
                                            '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
                                            ('vehicle_id', '=', False)]}}
-
+    # hisham edition
+    is_free_order = fields.Boolean(string="Free Order",  )
     def process_coupon(self):
         """
         Apply the entered coupon code if valid, raise an UserError otherwise.
+
         """
-        sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        error_status = self.apply_coupon(sales_order, self.coupon_code.code)
-        if error_status.get('error', False):
-            raise UserError(error_status.get('error', False))
-        if error_status.get('not_found', False):
-            raise UserError(error_status.get('not_found', False))
+        if self.is_free_order == True:
+            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            base_records_ids=[]
+            for rec in sales_order.order_line:
+                base_records_ids.append(rec.id)
+            error_status = self.apply_coupon(sales_order, self.coupon_code.code)
+            self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
+            if error_status.get('error', False):
+                raise UserError(error_status.get('error', False))
+            if error_status.get('not_found', False):
+                raise UserError(error_status.get('not_found', False))
+        else:
+            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            error_status = self.apply_coupon(sales_order, self.coupon_code.code)
+            if error_status.get('error', False):
+                raise UserError(error_status.get('error', False))
+            if error_status.get('not_found', False):
+                raise UserError(error_status.get('not_found', False))

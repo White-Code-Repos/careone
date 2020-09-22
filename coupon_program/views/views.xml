@@ -1,4 +1,21 @@
 <odoo>
+    <record id="action_quotations_create_from_partner" model="ir.actions.server">
+        <field name="name">Quotations</field>
+        <field name="model_id" ref="sale_coupon.model_sale_coupon"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.apply_action()
+        </field>
+    </record>
+    <record id="action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">form</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="context">{'search_default_my_quotation': 1}</field>
+    </record>
     <record id="sale_coupon_program_view_form_inherit" model="ir.ui.view">
         <field name="name">sale.coupon.program.form.inherit</field>
         <field name="model">sale.coupon.program</field>
@@ -21,7 +38,7 @@
                     <field name="vehicles_domain" attrs="{'invisible': [('generation_type', '!=', 'nbr_vehicles')]}"
                            widget="domain" options="{'model': 'partner.vehicle'}"/>
                     <field name="nbr_coupons"/>
-<!--                    attrs="{'invisible': [('generation_type', '!=', 'nbr_coupon')]}"-->
+                    <!--                    attrs="{'invisible': [('generation_type', '!=', 'nbr_coupon')]}"-->
                 </group>
             </xpath>
             <xpath expr="//field[@name='order_count']/.." position="before">
@@ -81,13 +98,72 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary" type="object"
+                <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary"
+                        type="object"
                         attrs="{'invisible': ['|',('coupon_id', '=', False),('is_generate_coupon', '=', True)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='preview_sale_order']" position="after">
+                <button name="action_view_coupons" type="object" class="oe_stat_button" icon="fa-ticket"
+                        attrs="{'invisible': [('coupon_count', '=', 0)]}">
+                    <field name="coupon_count" string="Coupons" widget="statinfo"/>
+                </button>
             </xpath>
             <xpath expr="//field[@name='customer_vehicle_id']" position="after">
                 <field name="coupon_id"/>
+<!--                <field name="coupon_customer_id"/>-->
                 <field name="is_generate_coupon" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='customer_vehicle_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='vehicle_part_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vehicle_id']" position="attributes">
+                <attribute name="context">{'default_driver_id': partner_id}</attribute>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="coupons_tree_inherit" model="ir.ui.view">
+        <field name="name">coupons.tree.inherit</field>
+        <field name="model">sale.coupon</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="sale_order_id" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+    <!-- Inherit Form View to Modify it -->
+    <record id="partner_form_inherit" model="ir.ui.view">
+        <field name="name">partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <page name="valid_coupons" string="Valid Coupons">
+                    <field name="coupons_ids" readonly="1" context="{'group_by':'program_id'}">
+                        <tree>
+                            <field name="code"/>
+                            <field name="expiration_date"/>
+                            <field name="program_id"/>
+                            <field name="state"/>
+                            <field name="partner_id" invisible="1"/>
+                            <button name="%(coupon_program.action_quotations_create_from_partner)d"
+                                    string="Apply"
+                                    type="action"
+
+                            />
+
+
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>
+
 </odoo>
