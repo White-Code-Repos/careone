@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
     @api.onchange('partner_id')
     def partner_onchange(self):
         if self.partner_id:
-            fleet_vehicle_id = self.env['fleet.vehicle'].search([('driver_id', '=', self.partner_id.id)])
+            fleet_vehicle_id = self.env['fleet.vehicle'].search([('driver_id', '=', self.partner_id.id)],order='id desc', limit=1)
             if fleet_vehicle_id:
                 self.vehicle_id = fleet_vehicle_id.id
                 partner_vehicle_id = self.env['partner.vehicle'].search([('vehicle_in_partner', '=', self.partner_id.id), ('fleet_model', '=', fleet_vehicle_id.model_id.id)], order='id desc', limit=1)
