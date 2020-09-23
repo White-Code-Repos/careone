@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     # coupon_customer_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-    #                                      domain="['|',('generation_type','=', 'nbr_coupon'),('generation_type','=', 'nbr_customer'),('partners_domain','=', 'partner_id.id')]", )
+    #                                      domain="['|',('generation_type','=', 'nbr_coupon'),('generation_type','=', 'nbr_customer'),('partners_domain','=', partner_id.id)]", )
 
     def get_coupons_count(self):
         for quotation in self:
@@ -96,11 +96,11 @@ class CouponInherit(models.Model):
 
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
 
-    @api.model
     def apply_action(self):
         print(self.program_id)
-        print(self.code)
+        print(self.partner_id)
         print(self.id)
+
         return {
             'view_type': 'form',
             'view_mode': 'form',
@@ -108,7 +108,8 @@ class CouponInherit(models.Model):
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',
             'target': 'current',
-            'context': {'default_coupon_program': self.program_id.id,
+            'context': {'default_coupon_id': self.program_id.id,
+                        'default_partner_id': self.partner_id.id,
                         },
         }
 
