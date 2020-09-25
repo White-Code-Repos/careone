@@ -126,6 +126,11 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="apply_coupon_action" type="object" string="Apply Valid Coupons" class="oe_highlight"/>
+                </header>
+            </xpath>
             <xpath expr="//page[@name='sales_purchases']" position="after">
                 <page name="valid_coupons" string="Valid Coupons">
                     <field name="coupons_ids" readonly="1" context="{'group_by':'program_id'}">
@@ -138,17 +143,6 @@
                         </tree>
                     </field>
                 </page>
-            </xpath>
-        </field>
-    </record>
-    <!-- Inherit Form View to Modify it -->
-    <record id="coupon_form_view_inherit" model="ir.ui.view">
-        <field name="name">coupon_form_view_inherit</field>
-        <field name="model">sale.coupon</field>
-        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_coupon_sent']" position="before">
-                <button name="apply_action" type="object" string="Apply" class="oe_highlight"/>
             </xpath>
         </field>
     </record>

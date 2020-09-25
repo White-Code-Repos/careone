@@ -47,8 +47,6 @@ class SaleOrder(models.Model):
                                 domain="[('program_type','=', 'coupon_program')]")
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
-    # coupon_customer_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-    #                                      domain="['|',('generation_type','=', 'nbr_coupon'),('generation_type','=', 'nbr_customer'),('partners_domain','=', partner_id.id)]", )
 
     def get_coupons_count(self):
         for quotation in self:
@@ -96,42 +94,29 @@ class CouponInherit(models.Model):
 
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
 
-    def apply_action(self):
-        print(self.program_id)
-        print(self.partner_id)
-        print(self.id)
-
-        return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'sale.order',
-            'views': [(False, 'form')],
-            'type': 'ir.actions.act_window',
-            'target': 'current',
-            'context': {'default_coupon_id': self.program_id.id,
-                        'default_partner_id': self.partner_id.id,
-                        },
-        }
-
 
 class Partner_inherit(models.Model):
     _inherit = 'res.partner'
     coupons_ids = fields.One2many(comodel_name="sale.coupon", inverse_name="partner_id", string="", required=False,
                                   compute='get_coupons_lines')
-    coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
 
-    def get_coupons_count(self):
-        for rec in self:
-            rec.coupon_count = len(self.env['sale.coupon'].search(['|', ("partner_id", "=", False),
-                                                                   ("partner_id", "=", rec.id),
-                                                                   ("state", "=", 'new'),
-                                                                   ("program_id", "!=", False)]))
+    def apply_coupon_action(self):
+        return {
+            'name': 'Coupon Apply',
+            'view_mode': 'form',
+            'res_model': 'coupon.apply',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'context': {
+                'default_partner_id': self.id,
+            }}
+
     def get_coupons_lines(self):
         for rec in self:
             coupons = self.env["sale.coupon"].search(
-                ['|', ("partner_id", "=", False),
-                 ("partner_id", "=", rec.id),
-                 ("state", "=", 'new'),
-                 ("program_id", "!=", False),
+                ['|', ('partner_id', '=', False),
+                 ('partner_id', '=', rec.id),
+                 ('state', '=', 'new'),
+                 ('program_id', '!=', False),
                  ])
             rec.coupons_ids = coupons

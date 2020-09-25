@@ -7,5 +7,6 @@
     # always loaded
     'data': [
         'views/views.xml',
+        'wizard/coupon_apply.xml',
     ],
 }
