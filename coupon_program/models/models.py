@@ -119,4 +119,5 @@ class Partner_inherit(models.Model):
                  ('state', '=', 'new'),
                  ('program_id', '!=', False),
                  ])
+
             rec.coupons_ids = coupons

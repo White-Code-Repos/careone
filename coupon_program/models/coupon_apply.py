@@ -5,17 +5,16 @@ from odoo.exceptions import UserError
 
 class CouponApply(models.TransientModel):
     _name = 'coupon.apply'
-
-    @api.model
-    def _getCouponDomain(self):
-        return ['|', ('partner_id', '=', False),
-                ('partner_id', '=', self.partner_id.id),
-                ('state', '=', 'new'),
-                ('program_id', '!=', False),
-                ]
-
-    coupon_id = fields.Many2one(comodel_name="sale.coupon", string="Coupon", required=False, domain=_getCouponDomain)
     partner_id = fields.Many2one(comodel_name="res.partner", string="", required=False, )
+    coupon_id = fields.Many2one(comodel_name="sale.coupon", string="Coupon", required=False,)
+
+    @api.onchange('coupon_id')
+    def coupon_code_onchange(self):
+        return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                         ('partner_id', '=', self.partner_id.id),
+                                         ('state', '=', 'new'),
+                                         ('program_id', '!=', False),
+                                         ]}}
 
     def apply_action(self):
         fleet_vehicle_id = self.env['fleet.vehicle'].search([('driver_id', '=', self.partner_id.id)], order='id desc',
