@@ -1,0 +1,2 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_bi_import_product_image","bi_import_product_image all","model_bi_import_product_image",,1,1,1,1

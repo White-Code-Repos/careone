@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models, _, fields
 from odoo.tools import safe_eval
-
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 class SaleCouponReward(models.Model):
     _inherit = 'sale.coupon.reward'
@@ -22,6 +23,11 @@ class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
 
     vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
+    from_subscription = fields.Boolean()
+    expiration_date_2 = fields.Date('Expiration Date')
+
+    sub_id = fields.Many2one('sale.subscription')
+
 
     def _check_coupon_code(self, order):
         if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
@@ -29,6 +35,16 @@ class SaleCoupon(models.Model):
 
         return super(SaleCoupon, self)._check_coupon_code(order)
 
+
+    def _compute_expiration_date(self):
+        self.expiration_date = 0
+
+        for coupon in self.filtered(lambda x: x.program_id.validity_duration > 0):
+            if not coupon.from_subscription or not coupon.expiration_date_2  : 
+                coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+                coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+            else:
+                coupon.expiration_date = coupon.expiration_date_2
 
 
 class SaleCouponProgram(models.Model):
@@ -45,9 +61,11 @@ class SaleCouponGenerate(models.TransientModel):
     generation_type = fields.Selection(selection_add=[('nbr_vehicles', 'Number of selected vehicles')])
     vehicles_domain = fields.Char(string="Customer", default='[]')
 
-    def generate_coupon(self):
-        program = self.env['sale.coupon.program'].browse(self.env.context.get('active_id'))
 
+
+
+    def generate_coupon(self):
+        program = self
         vals = {'program_id': program.id}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
@@ -64,8 +82,10 @@ class SaleCouponGenerate(models.TransientModel):
                     template.send_mail(coupon.id,
                                        email_values={'email_to': partner.email, 'email_from': self.env.user.email or '',
                                                      'subject': subject, })
-
         if self.generation_type == 'nbr_vehicles' and self.vehicles_domain:
             for vehicle in self.env['partner.vehicle'].search(safe_eval(self.vehicles_domain)):
                 vals.update({'vehicle_id': vehicle.id})
                 self.env['sale.coupon'].create(vals)
+
+
+    

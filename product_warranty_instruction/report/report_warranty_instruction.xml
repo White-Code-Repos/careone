@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_warranty_instruction_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <center><h2>Warranty Instruction</h2></center>
+                    <field t-field="doc.warranty_instruction"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_warranty_instruction">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="product_warranty_instruction.report_warranty_instruction_document"/>
+                </t>
+            </t>
+        </template>
+
+        <report
+            id="warranty_instruction_report"
+            model="product.template"
+            string="Warranty Instruction"
+            report_type="qweb-pdf"
+            name="product_warranty_instruction.report_warranty_instruction"
+            file="product_warranty_instruction.report_warranty_instruction"
+            menu="False"/>
+    </data>
+</odoo>

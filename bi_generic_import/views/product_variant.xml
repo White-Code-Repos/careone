@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="gen_product_variant_wizard_view" model="ir.ui.view">
+			<field name="name">wizard for import product from csv and excel file </field>
+			<field name="model">gen.product.variant</field>
+			<field name="arch" type="xml">
+				<form string="Import Product Variant">
+					<group>
+						<field name="import_option" widget="radio"/>
+	                    <field name="product_option" widget="radio" />	                    
+	                </group>
+                    <group>
+                        <field name="product_search" widget="radio" attrs="{'invisible': [('product_option', '=', 'create')]}"/>
+                    </group>
+					<group>
+						<field name="file" filename="name" />
+					</group>
+					<footer>
+						<button name="import_product_variant" string="Import" type="object" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<record id="gen_product_variant_import_wizard" model="ir.actions.act_window">
+			<field name="name">Import Product Variant</field>
+			<field name="res_model">gen.product.variant</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem action="gen_product_variant_import_wizard" id="gen_product_variant_wizard_import"
+			parent="gen_import_data" groups="bi_generic_import.group_import"/>
+	</data>
+</odoo>

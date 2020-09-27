@@ -1,0 +1,5 @@
+PRICELIST NAME,CURRENCY,APPLY ON,CATEGORY / VARIANT / PRODUCT,MIN. QTY,START DATE,END DATE,COMPUTE PRICE,AMOUNT
+Agrolait,INR,Global,,5,2018-10-01,2018-10-05,Fix,100
+Camptocamp,INR,Product Category,Internal,3,2018-10-02,2018-10-06,Percentage,10
+China Export,INR,Product,Bolt,4,2018-10-03,2018-11-07,Percentage,50
+The Jackson Group,INR,Product Variant,Office Chair,7,2018-10-04,2018-11-08,Fix,200

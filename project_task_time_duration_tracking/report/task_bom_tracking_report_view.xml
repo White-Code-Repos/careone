@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Task BOM Tracking Report Pivot View -->
+        <record id="task_bom_tracking_report_pivot" model="ir.ui.view">
+            <field name="name">task.bom.tracking.report.pivot.view</field>
+            <field name="model">task.bom.tracking.report</field>
+            <field name="arch" type="xml">
+                <pivot string="Task BOM Tracking" disable_linking="True">
+                    <field name="task_id" type="row"/>
+                    <field name="planned_hours" widget="float_time" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Task BOM Tracking Report Graph View -->
+        <record id="task_bom_tracking_report_graph" model="ir.ui.view">
+            <field name="name">task.bom.tracking.report.graph.view</field>
+            <field name="model">task.bom.tracking.report</field>
+            <field name="arch" type="xml">
+                <graph string="Task BOM Tracking">
+                    <field name="task_id" type="row"/>
+                    <field name="planned_hours" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Task BOM Tracking Report Search View -->
+        <record id="task_bom_tracking_report_search" model="ir.ui.view">
+            <field name="name">task.bom.tracking.report.search.view</field>
+            <field name="model">task.bom.tracking.report</field>
+            <field name="arch" type="xml">
+                <search string="Task BOM Tracking">
+                    <field name="task_id"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="product_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Task" name="task_id" context="{'group_by':'task_id'}"/>
+                        <filter string="Customer" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="User" name="user_id" context="{'group_by':'user_id'}"/>
+                        <filter string="Product" name="product_id" context="{'group_by':'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Task BOM Tracking Report Action View -->
+        <record id="action_task_bom_tracking_report" model="ir.actions.act_window">
+            <field name="name">Task BOM Tracking Report</field>
+            <field name="res_model">task.bom.tracking.report</field>
+            <field name="view_mode">pivot,graph,search</field>
+        </record>
+
+        <!-- Task BOM Tracking Report Menu View -->
+        <menuitem name="Task BOM Tracking" action="action_task_bom_tracking_report" id="menu_task_bom_tracking_report" parent="project.menu_project_report" sequence="99"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,ACCOUNT,QUANTITY,UOM,DESCRIPTION ,PRICE,SALESPERSON,TAX,DATE,JOURNAL,AMOUNT,DISCOUNT
+invoice1,Agrolait,EUR,Basic Computer,101500,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,Cash,5000,10
+invoice1,Agrolait,EUR,Little Server,101500,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,Cash,25000,11
+invoice2,Agrolait,USD,Server,101500,3,Units,Server,100000,Mitchell Admin,,2017-02-06,Cash,75000,12
+invoice3,Axeloer,EUR,Basic Computer,101800,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,Cash,8000,13
+invoice5,Camptocamp,USD,Little Server,101800,2,Units,Little Server,50000,Mitchell Admin,,2017-11-23,Cash,35000,14

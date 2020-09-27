@@ -22,6 +22,7 @@ class Task(models.Model):
     quality_check = fields.Boolean('Quality Check', copy=False)
     stage_duration = fields.Float('Stage Duration',
                                   compute='_compute_stage_duration')
+    sale_task_bom_ids = fields.One2many('sale.task.bom', 'task_id', 'BOM')
 
     def _compute_stage_duration(self):
         for task in self:
@@ -37,10 +38,15 @@ class Task(models.Model):
 
     def time_start(self):
         self.ensure_one()
-        self.write({'task_datetime_start': datetime.now(), #datetime.now(),
-                    'task_datetime_stop': False,
-                    'tracking_stage': 'start',
-                    })
+        if not self.task_datetime_start:
+            self.write({'task_datetime_start': datetime.now(), #datetime.now(),
+                        'task_datetime_stop': False,
+                        'tracking_stage': 'start',
+                        })
+        else:
+            self.write({'task_datetime_stop': False,
+                        'tracking_stage': 'start',
+                        })
         self.env['task.time.track'].sudo().create({
             'start_date': datetime.now(),  #datetime.now(),
             'user_id': self.env.user.id or False,
@@ -99,3 +105,14 @@ class Task(models.Model):
                     self._cr.execute('''UPDATE task_time_track SET quality_check=%s
                     WHERE id in (%s) ''' %(values.get('quality_check'), ','.join(map(str, track_line_id.ids))))
         return super(Task, self).write(values)
+
+
+class SaleTaskBom(models.Model):
+    _name = 'sale.task.bom'
+    _description = 'Sale Task BOM'
+    _rec_name = 'product_id'
+
+    task_id = fields.Many2one('project.task', 'Task')
+    product_id = fields.Many2one('product.product', 'Product')
+    product_uom_qty = fields.Float('Qty')
+    partner_id = fields.Many2one('res.partner', 'Customer')

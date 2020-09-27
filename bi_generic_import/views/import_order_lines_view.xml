@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+
+		<record id="sale_order_wizard_view" model="ir.ui.view">
+			<field name="name">Import Order Lines</field>
+			<field name="model">order.line.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+					    <field name="import_option" widget="radio"/>
+						<field name="sale_order_file"/>
+					</group>
+					<group>
+					    <group>
+    					    <field name="import_prod_option" widget="radio"/>
+    					</group>
+    					<group>
+    					    <field name="product_details_option" widget="radio"/>
+    					</group>
+					</group>
+					<footer>
+						<button string="Import" name="import_sol" class="oe_highlight" type="object"/>
+						or
+                        <button name="cancel" string="Cancel" class="oe_link"/> 
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="import_order_line_action" model="ir.actions.act_window">
+			<field name="name">Import Order Lines</field>
+			<field name="res_model">order.line.wizard</field>
+			<field name="target">new</field>
+			
+			<field name="view_mode">form</field>
+		</record>
+
+		<record id="sale_order_inherit_view" model="ir.ui.view">
+			<field name="name">Sale Order</field>
+			<field name="model">sale.order</field>
+			 <field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<header>
+						<button name="%(import_order_line_action)d" 
+						string="Import Sale Order Lines"
+                        type="action" 
+                        class="btn-primary"/>
+				</header>
+			</field>
+		</record>
+
+	</data>
+</odoo>

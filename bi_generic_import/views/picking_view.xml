@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="bi_import_picking_wizard" model="ir.ui.view">
+			<field name="name">wizard for import picking </field>
+			<field name="model">import.picking</field>
+			<field name="arch" type="xml">
+				<form string="Import Picking">
+					<group>
+						<field name="import_option" widget='radio' />
+					</group>
+
+					<group>
+						<field name="file" filename="name" />
+					</group>
+					
+					<group>
+						<group>
+							<field name="picking_type_id" />
+						</group>
+						<group>
+							<field name="import_prod_option" widget='radio'/>
+						</group>
+						<group>
+							<field name="location_id" groups="stock.group_stock_multi_locations" />
+							<field name="location_dest_id" groups="stock.group_stock_multi_locations" />
+							<field name="picking_type_code" invisible="1" />
+						</group>
+					</group>
+					<footer>
+						<button name="import_picking" class="oe_highlight" string="Import"
+							type="object" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="bi_gen_picking_wizard_action" model="ir.actions.act_window">
+			<field name="name">Import Shipments And Delivery Orders</field>
+			<field name="res_model">import.picking</field>
+			
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem action="bi_gen_picking_wizard_action" id="bi_gen_picking_wizard_import"
+			parent="stock.menu_stock_warehouse_mgmt" />
+
+	</data>
+</odoo>
+ 

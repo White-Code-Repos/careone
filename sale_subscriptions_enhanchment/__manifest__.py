@@ -7,7 +7,10 @@
         'sale_subscription',
     ],
     'data': [
-        'views/sale_subscription_template.xml'
+        'data/ir_cron.xml',
+        'security/ir.model.access.csv',
+        'views/sale_subscription_template.xml',
+        'views/sale_subscription.xml'
     ],
     'installable': True,
     'auto_install': False,

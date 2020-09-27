@@ -1,0 +1,17 @@
+<odoo>
+    <record id="coupon_apply_wizard" model="ir.ui.view">
+        <field name="name">Coupon Apply</field>
+        <field name="model">coupon.apply</field>
+        <field name="arch" type="xml">
+            <form string="Coupon Apply">
+                <group>
+                    <field name="coupon_id"  options="{'no_create': True, 'no_create_edit':True}"/>
+                </group>
+                <footer>
+                    <button string="Apply" name="apply_action" type="object"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
