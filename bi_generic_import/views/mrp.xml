@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="gen_mrp_wizard_view_form" model="ir.ui.view">
+            <field name="name">wizard for import mrp file </field>
+            <field name="model">gen.mrp</field>
+            <field name="arch" type="xml">
+                <form string="Import BOM">
+                    <group>
+                        <group>
+                            <field name="import_option" widget='radio' />
+                        </group>
+                        <group>
+                            <group>
+                                <field name="bom_type" widget="radio"/>
+                            </group>
+                        </group>
+                    </group>
+					<group>
+						<group>
+                            <field name="import_prod_option" widget="radio"/>
+                        </group>
+                        <group>
+                        	<group>
+                            	<field name="import_material_prod_option" widget="radio"/>
+                            </group>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="file" filename="name"/>
+                    </group>
+                    <footer>
+                        <button name="import_csv" string="Import" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="bi_gen_bom_wizard_action" model="ir.actions.act_window">
+            <field name="name">Import BOM</field>
+            <field name="res_model">gen.mrp</field>
+           
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="bi_gen_bom_wizard_action"
+                  id="bi_gen_bom_wizard_import"
+                  parent="mrp.menu_mrp_bom" />
+
+    </data>
+</odoo>
+ 

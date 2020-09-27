@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+          <!--Import account Move lines-->
+        <record id="import_account_move_line_view" model="ir.ui.view">
+            <field name="name">Import Journal Entries</field>
+            <field name="model">gen.journal.entry</field>
+            <field name="arch" type="xml">
+                <form string="Import Journal Items">
+					<group>
+		                <field name="import_option" wedgit="selection"/>
+		                <field name="file_to_upload" />
+                    </group>
+                    <footer>
+                        <button string="Import" name="import_move_lines" type="object" />
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_import_account_move_line" model="ir.actions.act_window">
+            <field name="name">Import Journal Entries</field>
+            <field name="res_model">gen.journal.entry</field>
+           
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    <record id="button_for_import_move_line" model="ir.ui.view">
+        <field name="name">inherit.move.form.import.move.line</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <button  name="action_post" position="after">
+                <button  string= "Import Journal Items"  name="%(action_import_account_move_line)d" type="action" attrs= "{'invisible': [('state', '!=', 'draft')]}" class="oe_highlight"/>
+            </button>
+        </field>
+    </record>
+
+  </data>
+</odoo>
+ 

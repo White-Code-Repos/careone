@@ -1,0 +1,7 @@
+DATE,REFERENCES,PARTNER,MEMO,AMOUNT,CURRENCY
+10/09/17,Test,Agrolait,Memo 1,15000,EUR
+10/09/17,Demo,,Memo 2,20000,EUR
+10/09/17,Reference 1,Camptocamp,Memo 3,-87520,EUR
+10/09/17,Reference 2,Agrolait,Memo 4,100000,USD
+10/09/17,Reference 3,Agrolait,Memo 5,-15000,EUR
+10/09/17,Reference 4,Camptocamp,Memo 6,-5000,USD

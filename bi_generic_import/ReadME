@@ -1,0 +1,92 @@
+Version 13.0.0.1:-
+ 1.) invoice import time getting error , invoice_name , account_id 
+ 2.) in res.partner not have is_customer , is_supplier
+ 3.) account_id not in purchase.order modules
+ 4.) solve error in stock import
+ 5.) product_id not use in product.pricelist
+ 6.) price list items shows which product for this price , but product not update in items
+
+
+Version 13.0.0.2:-
+- fixed error on import product vendor
+
+Version 13.0.0.3:-
+- added options and removed csv option in import product and product variant according to bi_import_product_customer.
+- updated product and product_variant Sample Files.
+
+Version 13.0.0.4:-
+- fixed issue of picking_id not assigned to stock.move.line and qty reserved assigned which prevented validation of picking.
+
+Version 13.0.0.5:-
+- Removed import with attributes option for import product variant.
+- Improved Warnings in import product template and import product variant.
+- Updated product_variant xls.
+
+Version 13.0.0.6:-
+- Importing Product Name and Internal Referance updated.
+
+Version 13.0.0.7:-
+- Added customer tax, vendor tax and tracking columns in import product template.
+ 
+ 13.0.0.8
+ ==> add discount field in xls and csv for sale order, order line and invoice, invoice line.
+
+Version 13.0.0.9: (01/04/2020)
+		- Update product variant image from updated url.
+
+Version 13.0.1.0: 
+--> Import Partner, create/update partner contact without parent issue solved.
+
+Version 13.0.1.1: 
+--> Sale Order Line update lines instead of creating new line when same product is imported.
+--> Purchase Order Line update lines instead of creating new line when same product is imported.
+--> Solved Traceback in Import Jounral Items.
+--> Solved Tax import traceback when importing invoice lines.
+--> Import Vendor Pricelist, if product variant and template are different then warning is displayed.
+--> Added State Code Column in Import Partner and code improved.
+
+
+21st april 2020
+version 13.0.1.2
+issue solve :-
+	--> Import partner: all the individual are created.. please test with this attached file 
+	--> import Vendor Price list ,Select Product By : Code and file formate CSV Its through the traceback..
+
+
+21st april 2020
+version 13.0.1.3
+issue solve:-
+	-  Import Inventory "Allow to Import Location on inventory line from file" is not checked then through the traceback of "Location Id Is missing" for both formate csv , xls.
+	- in inventory not added product import time, update product in inventory.
+
+21st april 2020
+version 13.0.1.4
+	- partner individual create from csv issue solve.
+	- remove commented code
+	- vendor pricelist singleton error solve.
+
+23rd april 2020
+version 13.0.1.5
+	--> partner filter not working issue solve.
+
+Version 13.0.1.7 : (16/06/20)
+		- Solve product import issue
+
+13.0.1.8:solved issue of numeric barcode and code in csv and xls and solve issue of location in csv.
+
+
+Date 23rd june 2020
+version 13.0.1.9
+issue solve:-
+	- partner install generate error , same follower added.
+
+
+==>13.0.2.0:solved issue of traceback when barcode is not available.
+==>13.0.2.1:added proper warning in all fiels for import and improved code of files.
+==>13.0.2.2:ixed issue in invoice ,sale and payment file.
+==>13.0.2.3: Fixed the issue in Reference code it's take a float values.
+==>13.0.2.4: Fixed the issue when give same values with different attributes it will create now.
+==>13.0.2.5: Fixed the issue when updating internal refference it's taken float value.
+
+
+

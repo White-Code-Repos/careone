@@ -1,0 +1,8 @@
+version 13.0.0.1
+  remove installation trace back
+13.0.0.2 : fixed issue in tax.
+
+Date 11th aug 2020
+version 13.0.0.3
+issue solve:-
+	- xlrd installation error solve.

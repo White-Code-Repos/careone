@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+     <record id="import_multiple_bank_statement_wizard" model="ir.ui.view">
+        <field name="name">import.multiple.bank.statement.wizard</field>
+        <field name="model">account.multiple.bank.statement.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Multiple Bank Statement">
+                <group>
+                    <field name="file" filename="name"/>
+                    <field name="file_opt" widget="radio"/>
+                </group>
+                <footer>
+                    <button name="import_multiple_bank_statement" string="Import" type="object"/>
+                    or
+                    <button name="cancel" string="Cancel" class="oe_link" special="cancel"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="action_import_multiple_bank_statement" model="ir.actions.act_window">
+            <field name="name">Import Multiple Bank Statement</field>
+            <field name="res_model">account.multiple.bank.statement.wizard</field>
+            
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+     <menuitem action="action_import_multiple_bank_statement" id="menu_import_multiple_bank_statement" parent="account.menu_finance_receivables" />
+     
+
+  </data>
+</openerp>
+ 

@@ -1,0 +1,3 @@
+PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX,DISCOUNT
+Basic Computer,1,Units,Basic Computer,10000,,10
+Little Server,2,Units,Little Server,50000,,20

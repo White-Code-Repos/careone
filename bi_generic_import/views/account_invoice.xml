@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="gen_inv_wizard_view_form" model="ir.ui.view">
+            <field name="name">wizard for import invoice file </field>
+            <field name="model">gen.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Import Invoice">
+                    <group>
+                        <group>
+                            <field name="import_option" widget='radio' />
+                        </group>
+                        <group>
+                                <field name="type" widget="radio"/>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group>
+                            <field name="sequence_opt" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="account_opt" widget="radio"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="import_prod_option" widget='radio'/>
+                      </group>
+                    <group>
+                    <group>
+                        <field name="file" filename="name"/>
+                    </group>
+                        <group>
+                        <field name="stage" widget="radio"/>
+                    </group>
+                    </group>
+                    <footer>
+                        <button name="import_csv" string="Import" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="bi_gen_inv_wizard_action" model="ir.actions.act_window">
+            <field name="name">Import Invoice</field>
+            <field name="res_model">gen.invoice</field>
+            
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="bi_gen_inv_wizard_action"
+                  id="bi_gen_inv_wizard_import"
+                  parent="account.menu_finance_receivables" />
+
+    </data>
+</openerp>
+ 

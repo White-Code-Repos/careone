@@ -1,0 +1,10 @@
+Name,Date,Accounting Date,Journal,Line Date,Reference,Partner,Memo,Amount ,Currency
+Test 1,2020-10-11,2020-10-05,Bank,2020-10-30,Test,Azure Interior,Memo 1,15000,EUR
+Test 1,2020-11-11,,Bank,2020-11-22,Demo,,Memo 2,20000,EUR
+Test 1,2020-11-12,2020-10-06,Bank,2020-11-23,Reference 1,Deco Addict,Memo 3,-87520,EUR
+Test 2,2020-11-13,,Bank,2020-11-24,Reference 2,Azure Interior,Memo 4,100000,USD
+Test 2,2020-11-14,2020-10-07,Bank,2020-11-25,Reference 3,Azure Interior,Memo 5,-15000,EUR
+Test 5,2020-11-15,,Bank,2020-11-26,Reference 4,Deco Addict,Memo 6,-5000,USD
+Test 7,2020-11-19,,Bank,2020-11-01,Reference 4,Deco Addict,Memo 6,-5000,USD
+Test 7,2020-11-21,,Bank,2020-11-01,Reference 4,Deco Addict,Memo 6,-15000,USD
+Test 6,2020-11-16,2020-10-08,Cash,2020-11-27,Reference 5,,Memo 7,20000,USD

@@ -1,0 +1,20 @@
+date,Ref,Journal,name,partner,analytic_account_id,account,date_maturity,debit,credit,amount_currency,currency
+2019-02-15,BILL/2019/0002,Vendor Bills,/,ASUSTeK,,100101,2019-03-31,0,5749.99,,USD
+2019-02-15,BILL/2019/0002,Vendor Bills,Coffee Machine with huge 'employee's performances boosting perk',ASUSTeK,,100101,2019-02-15,4999.99,0,,USD
+2019-02-15,BILL/2019/0002,Vendor Bills,Tax 15.00%,ASUSTeK,,100101,2019-02-15,750,0,,USD
+2019-02-08,INV/2019/0002,Customer Invoices,/,Agrolait,,100101,2019-03-10,650,0,,USD
+2019-02-08,INV/2019/0002,Customer Invoices,[CONS_DEL03] Basic Computer,Agrolait,,100101,2019-02-08,0,150,,USD
+2019-02-08,INV/2019/0002,Customer Invoices,[CONS_DEL01] Server,Agrolait,,100101,2019-02-08,0,500,,USD
+2019-02-08,INV/2019/0003,Customer Invoices,/,Agrolait,,100101,2019-03-10,525,0,,USD
+2019-02-08,INV/2019/0003,Customer Invoices,[CONS_DEL01] Server,Agrolait,,100101,2019-02-08,0,450,,USD
+2019-02-08,INV/2019/0003,Customer Invoices,[CONS_DEL03] Basic Computer,Agrolait,,100101,2019-02-08,0,75,,USD
+2019-02-01,INV/2019/0001,Customer Invoices,/,Camptocamp,,100101,2019-03-31,4610,0,,USD
+2019-02-01,INV/2019/0001,Customer Invoices,[CONS_DEL02] Little server,Camptocamp,,100101,2019-02-01,0,3210,,USD
+2019-02-01,INV/2019/0001,Customer Invoices,[CONS_DEL03] Basic Computer,Camptocamp,,100101,2019-02-01,0,1400,,USD
+2019-02-01,BILL/2019/0001,Vendor Bills,/,Camptocamp,,100101,2019-03-31,0,10000,,USD
+2019-02-01,BILL/2019/0001,Vendor Bills,CEO wages,Camptocamp,,100101,2019-02-01,10000,0,,USD
+2019-01-17,INV/2019/0004,Customer Invoices,/,Agrolait,,100101,2019-01-17,4610,0,,USD
+2019-01-17,INV/2019/0004,Customer Invoices,[CONS_DEL02] Little server,Agrolait,,100101,2019-01-17,0,3210,,USD
+2019-01-17,INV/2019/0004,Customer Invoices,[CONS_DEL03] Basic Computer,Agrolait,,100101,2019-01-17,0,1400,,USD
+2019-01-01,BNK1/2019/0001,Bank,Last Year Interests,,,100101,2019-01-01,102.78,0,,USD
+2019-01-01,BNK1/2019/0001,Bank,Last Year Interests,,,100101,2019-01-01,0,102.78,,USD

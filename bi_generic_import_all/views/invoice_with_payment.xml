@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    	<record id="gen_inv_wizard_view_form_inherit" model="ir.ui.view">
+            <field name="name">wizard for import invoice with payment </field>
+            <field name="model">gen.invoice</field>
+            <field name="inherit_id" ref="bi_generic_import.gen_inv_wizard_view_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/group[3]" position="replace">
+            		<group>
+            			<group>
+            				<field name="import_prod_option" widget='radio'/>
+            			</group>
+            			<group>
+            				<field name="partial_payment" widget='radio' attrs="{'invisible': [('stage','not in','payment')],}"/>
+                            <field name="writeoff_account" attrs="{'invisible': [('partial_payment','not in','writeoff')],}"/>
+            			</group>
+            		</group>             
+            	</xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
