@@ -1,0 +1,8 @@
+PURCHASE ID,SUPPLIER,CURRENCY,PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX,Date
+PO000010,Agrolait,USD,Basic Computer,1,Unit(s),Basic Computer,10000,Tax 15.00%,2017-01-21
+PO000010,Agrolait,USD,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-01-21
+PO000010,Agrolait,USD,Computer Case,1,Unit(s),Computer Case,2000,,2017-01-21
+PO000012,ASUSTeK,EUR,Server,3,Unit(s),Server,100000,Tax 15.00%,2016-11-12
+PO000013,Axeloer,USD,Basic Computer,1,Unit(s),Basic Computer,10000,,2015-08-18
+PO000015,Camptocamp,EUR,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-06-07
+

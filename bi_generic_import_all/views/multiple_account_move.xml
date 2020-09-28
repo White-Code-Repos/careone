@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+          <!--Import account Move lines-->
+        <record id="import_multiple_account_move_line_view" model="ir.ui.view">
+            <field name="name">Import Multiple Journal Entries</field>
+            <field name="model">gen.multi.journal.entry</field>
+            <field name="arch" type="xml">
+		        <form string="Import Journal Items">
+					<group>
+		            	<field name="import_option" wedgit="selection"/>
+		                <field name="file_to_upload" />
+		            </group>
+		            <footer>
+		                <button string="Import" name="import_move_lines" type="object" />
+		                <button string="Cancel" class="btn-default" special="cancel"/>
+		            </footer>
+		        </form>
+            </field>
+        </record>
+
+        <record id="action_import_multiple_account_move_line" model="ir.actions.act_window">
+            <field name="name">Import Multiple Journal Entries</field>
+            <field name="res_model">gen.multi.journal.entry</field>
+            
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_import_multiple_account_move_line"
+                  id="bi_gen_multiple_journal_wizard_import"
+                  parent="account.menu_finance_receivables" />
+  </data>
+</odoo>
+ 

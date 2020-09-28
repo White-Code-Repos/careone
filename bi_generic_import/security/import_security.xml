@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+		<record id="group_import" model="res.groups">
+            <field name="name">Import Product Variant</field>
+        </record>
+    </data>
+</odoo>

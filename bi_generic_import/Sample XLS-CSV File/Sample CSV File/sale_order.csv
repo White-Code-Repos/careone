@@ -1,0 +1,7 @@
+ORDER,CUSTOMER,PRICELIST,PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE,DISCOUNT
+SO025,Agrolait,Public Pricelist,Basic Computer,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-25,10
+SO025,Agrolait,Public Pricelist,Little Server,2,Units,Little Server,50000,Mitchell Admin,,2017-02-25,11
+SO025,Agrolait,Public Pricelist,Computer Case,1,Units,Computer Case,2000,Mitchell Admin,,2017-02-25,12
+SO025,Agrolait,Public Pricelist,Server,3,Units,Server,100000,Mitchell Admin,,2017-02-25,13
+SO026,Axeloer,Public Pricelist,Basic Computer,1,Units,Basic Computer,10000,Mitchell Admin,,2012-12-14,14
+SO027,Camptocamp,Public Pricelist,Little Server,2,Units,Little Server,50000,Mitchell Admin,,2016-05-05,15

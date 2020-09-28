@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bi_import_purchase_order_inherit_form" model="ir.ui.view">
+            <field name="name">bi.import.purchase.order.inherit.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name='date_order' position="after">
+                    <field name="custom_seq" invisible="1"/>
+                    <field name="system_seq" invisible="1"/>
+                    <field name="purchase_name" invisible="1"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="gen_purchase_wizard_view" model="ir.ui.view">
+            <field name="name">wizard for import csv xls file </field>
+            <field name="model">gen.purchase</field>
+            <field name="arch" type="xml">
+                <form string="Import Purchase">
+            <group>
+                        <group>
+                            <field name="import_option" widget='radio' />
+                            <field name="file" filename="name" />
+                        </group>
+                        <group>
+                            <field name="stage" widget='radio' />
+                        </group>
+                    </group>
+                                
+                <group>
+                    <field name="sequence_opt"/>
+                </group>
+                <group>
+                <field name="import_prod_option" widget='radio'/>
+              </group>
+                <footer>
+                    <button name="import_csv" string="Import" class="oe_highlight" type="object"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="gen_pur_wizard" model="ir.actions.act_window">
+            <field name="name">Import Purchase</field>
+            <field name="res_model">gen.purchase</field>
+            
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="gen_pur_wizard"
+                  id="gen_pur_wizard_import" sequence="7"
+                  parent="purchase.menu_procurement_management" />
+
+    </data>
+</openerp>
+ 

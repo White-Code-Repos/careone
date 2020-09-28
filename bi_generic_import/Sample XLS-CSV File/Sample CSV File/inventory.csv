@@ -1,0 +1,4 @@
+Name,QUANTITY,UOM,LOT,DATE,Location
+E-COM07,20,Units,18,2017-02-03,Order Processing
+1234,15,Units,19,2017-02-04,Small Refrigerator
+E-COM10,22,Units,52,2017-03-04,Small Refrigerator

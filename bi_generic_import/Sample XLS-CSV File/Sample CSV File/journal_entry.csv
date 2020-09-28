@@ -1,0 +1,5 @@
+name,partner,analytic_account_id,account,date_maturity,debit,credit,amount_currency,currency
+Balance Suppliers,,,440000,,5000.00,0.00,0.00,EUR
+PI14/0101,ASUSTeK,Asustek,440000,2015-01-12,0.00,3500.00,-1.00,EUR
+PI14/0250,ASUSTeK,Asustek,440000,2015-02-01,0.00,1500.00,0.00,EUR
+

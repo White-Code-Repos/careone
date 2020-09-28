@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="form_import_product_image" model="ir.ui.view">
+            <field name="name">form.import.product.image</field>
+            <field name="model">bi.import.product.image</field>
+            <field name="arch" type="xml">
+                <form string="Import Product Images">
+                    <group>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="model"/>
+                                </group>
+                                <group>
+                                    <field name="operation"/>
+                                </group>
+
+                                <group>
+                                    <field name="update_by"
+                                           attrs="{'invisible': [('operation', '!=', 'update')],'required':[('operation','=','update')]}"
+                                           widget="radio"/>
+                                </group>
+                            </group>
+                        </div>
+                    </group>
+                    <group>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="file"/>
+                                </group>
+                            </group>
+                        </div>
+                    </group>
+                    <footer>
+                        <button name="import_image" string="Import" class="oe_highlight" type="object"/>
+                        <button string="Cancel" type="object" special="cancel" class="btn-primary"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_import_product_image" model="ir.actions.act_window">
+            <field name="name">Import Product Images</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bi.import.product.image</field>
+            
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_import_product_image" id="menu_import_product_image" parent="sale.product_menu_catalog" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager" sequence="100"/>
+
+
+    </data>
+</openerp>
+        
