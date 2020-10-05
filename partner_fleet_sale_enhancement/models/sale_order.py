@@ -22,3 +22,8 @@ class SaleOrder(models.Model):
                 partner_vehicle_id = self.env['partner.vehicle'].search([('vehicle_in_partner', '=', self.partner_id.id), ('fleet_model', '=', fleet_vehicle_id.model_id.id)], order='id desc', limit=1)
                 if partner_vehicle_id:
                     self.customer_vehicle_id = partner_vehicle_id.id
+    # hisham edition
+    @api.onchange('vehicle_id')
+    def vehicle_onchange(self):
+        if self.vehicle_id:
+            self.partner_id=self.vehicle_id.driver_id.id
