@@ -47,7 +47,14 @@ class SaleOrder(models.Model):
                                 domain="[('program_type','=', 'coupon_program')]")
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
-
+    size = fields.Selection(selection=[
+        ('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',related='vehicle_id.size' )
+    def write(self, vals):
+        """Update the Vehicle Driver when existing Customer are updated."""
+        super(SaleOrder, self).write(vals)
+        if self.partner_id != self.vehicle_id.driver_id:
+            self.vehicle_id.driver_id=self.partner_id
+        return True
     def get_coupons_count(self):
         for quotation in self:
             quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id)]))

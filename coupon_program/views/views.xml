@@ -105,6 +105,9 @@
             <xpath expr="//field[@name='vehicle_id']" position="attributes">
                 <attribute name="context">{'default_driver_id': partner_id}</attribute>
             </xpath>
+            <xpath expr="//field[@name='vehicle_id']" position="after">
+                <field name="size"/>
+            </xpath>
 
         </field>
     </record>
