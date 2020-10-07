@@ -57,6 +57,12 @@ class SalesSubscription(models.Model):
         stage = search([('in_progress', '=', True)], limit=1)
         self.stage_id = stage.id
 
+        freez_time  = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)],limit=1,order='create_date desc')
+        # raise Warning(freez_time)
+        freez_time.update({
+            'end_date' : fields.Date.from_string(fields.Date.today()),
+            })
+
 
 
     def action_freez(self):
