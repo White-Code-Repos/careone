@@ -10,8 +10,6 @@ class MRP_inherit(models.Model):
     vehicle_state = fields.Selection(string="Vehicle State",
                                      selection=[('Good', 'Good'), ('Medium', 'Medium'), ('Bad', 'Bad'), ],
                                      store=True, required=False, default=lambda self: self.vehicle_state_default_get())
-                                     # compute='get_value_from_sale',
-                                     # inverse='vehicle_state_inverse')
     date_planned_start = fields.Datetime(
         'Planned Date', default=fields.Datetime.now,
         help="Date at which you plan to start the production.",
@@ -21,18 +19,15 @@ class MRP_inherit(models.Model):
         for rec in self:
             sale_order = self.env['sale.order'].search([('name', '=', rec.origin)], order='id desc', limit=1)
             rec.vehicle_id_sale = sale_order.vehicle_id
-            # rec.vehicle_state = sale_order.vehicle_state
             rec.is_have_vehicle = True
             if sale_order.validity_date:
                 rec.date_planned_start = sale_order.validity_date
             else:
                 rec.date_planned_start = rec.create_date
+
     def vehicle_state_default_get(self):
         sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
         return sale_order.vehicle_state
-
-    def vehicle_state_inverse(self):
-        return True
 
 
 class SaleOrder(models.Model):
