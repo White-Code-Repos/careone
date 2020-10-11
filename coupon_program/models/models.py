@@ -55,6 +55,10 @@ class SaleOrder(models.Model):
         if self.partner_id != self.vehicle_id.driver_id:
             self.vehicle_id.driver_id=self.partner_id
         return True
+    def action_cancel(self):
+        for coupon in self.env['sale.coupon'].search([('sale_order_id', '=', self.id)]):
+            coupon.unlink()
+        super(SaleOrder, self).action_cancel()
     def get_coupons_count(self):
         for quotation in self:
             quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id)]))

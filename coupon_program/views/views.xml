@@ -83,7 +83,7 @@
             <xpath expr="//header" position="inside">
                 <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary"
                         type="object"
-                        attrs="{'invisible': ['|',('coupon_id', '=', False),('is_generate_coupon', '=', True)]}"/>
+                        attrs="{'invisible': ['|','|',('coupon_id', '=', False),('state', '!=', 'draft'),('is_generate_coupon', '=', True)]}"/>
             </xpath>
             <xpath expr="//button[@name='preview_sale_order']" position="after">
                 <button name="action_view_coupons" type="object" class="oe_stat_button" icon="fa-ticket"

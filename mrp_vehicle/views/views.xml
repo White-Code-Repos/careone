@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="is_have_vehicle" invisible="1"/>
                 <field name="vehicle_id_sale" attrs="{'invisible': [('is_have_vehicle','!=', True)]}"/>
+                <field name="vehicle_state" attrs="{'invisible': [('is_have_vehicle','!=', True)]}"/>
             </xpath>
 
         </field>
@@ -24,4 +25,18 @@
 
         </field>
     </record>
+    <!-- Inherit Form View to Modify it -->
+    <record id="sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale_order_form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='vehicle_id']" position="after">
+                <field name="vehicle_state"/>
+            </xpath>
+
+        </field>
+    </record>
+
 </odoo>
