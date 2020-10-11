@@ -108,7 +108,6 @@
             <xpath expr="//field[@name='vehicle_id']" position="after">
                 <field name="size"/>
             </xpath>
-
         </field>
     </record>
     <record id="coupons_tree_inherit" model="ir.ui.view">
