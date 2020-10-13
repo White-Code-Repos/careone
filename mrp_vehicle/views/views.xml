@@ -45,7 +45,7 @@
             <xpath expr="//field[@name='validity_date']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//field[@name='commitment_date']" position="after">
+            <xpath expr="//field[@name='picking_policy']" position="after">
                 <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
                        context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
                 <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
