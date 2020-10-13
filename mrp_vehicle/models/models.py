@@ -14,6 +14,9 @@ class MRP_inherit(models.Model):
         'Planned Date', default=fields.Datetime.now,
         help="Date at which you plan to start the production.",
         compute='get_value_from_sale', index=False, required=False, store=False)
+    date_deadline = fields.Datetime(
+        'Deadline', compute='get_value_from_sale', index=False, required=False, store=False,
+        help="Informative date allowing to define when the manufacturing order should be processed at the latest to fulfill delivery on time.")
 
     def get_value_from_sale(self):
         for rec in self:
@@ -24,10 +27,18 @@ class MRP_inherit(models.Model):
                 rec.date_planned_start = sale_order.validity_date
             else:
                 rec.date_planned_start = rec.create_date
+            if sale_order.service_delivery:
+                rec.date_deadline = sale_order.service_delivery
+            else:
+                rec.date_deadline = rec.create_date
 
     def vehicle_state_default_get(self):
         sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
         return sale_order.vehicle_state
+
+    def date_deadline_default_get(self):
+        sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
+        return sale_order.service_delivery
 
 
 class SaleOrder(models.Model):
@@ -37,6 +48,7 @@ class SaleOrder(models.Model):
                                      required=False, )
     clarification = fields.Selection(string="Clarification", selection=[('yes', 'Yes'), ('no', 'No'), ],
                                      required=False, )
+    service_delivery = fields.Datetime(string="Service Delivery", required=False, )
 
     def action_cancel(self):
         for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name)]):
