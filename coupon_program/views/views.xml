@@ -110,6 +110,21 @@
             </xpath>
         </field>
     </record>
+    <record id="coupon_form_view_inherit" model="ir.ui.view">
+        <field name="name">coupon.form.inherit</field>
+        <field name="model">sale.coupon</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <field name="is_canceled" invisible="1"/>
+                <button name="edit_date" type="object" string="Edit Date" class="oe_highlight"/>
+                <button name="cancel_coupon" type="object" string="Cancel" class="oe_highlight"
+                        attrs="{'invisible': [('is_canceled', '=', True)]}"/>
+            </xpath>
+
+        </field>
+    </record>
     <record id="coupons_tree_inherit" model="ir.ui.view">
         <field name="name">coupons.tree.inherit</field>
         <field name="model">sale.coupon</field>

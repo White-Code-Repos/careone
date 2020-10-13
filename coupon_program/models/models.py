@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
+from dateutil.relativedelta import relativedelta
 
 
 class CouponProgramInherit(models.Model):
@@ -48,17 +49,20 @@ class SaleOrder(models.Model):
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     size = fields.Selection(selection=[
-        ('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',related='vehicle_id.size' )
+        ('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size', related='vehicle_id.size')
+
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
         super(SaleOrder, self).write(vals)
         if self.partner_id != self.vehicle_id.driver_id:
-            self.vehicle_id.driver_id=self.partner_id
+            self.vehicle_id.driver_id = self.partner_id
         return True
+
     def action_cancel(self):
         for coupon in self.env['sale.coupon'].search([('sale_order_id', '=', self.id)]):
             coupon.unlink()
         super(SaleOrder, self).action_cancel()
+
     def get_coupons_count(self):
         for quotation in self:
             quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id)]))
@@ -102,8 +106,45 @@ class SaleOrder(models.Model):
 
 class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
-
+    state = fields.Selection([
+        ('reserved', 'Reserved'),
+        ('new', 'Valid'),
+        ('used', 'Consumed'),
+        ('expired', 'Expired'),
+        ('cancel', 'Canceled')
+    ], required=True, default='new')
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
+    is_canceled = fields.Boolean(string="", )
+    expiration_date_edit = fields.Date(string="", required=False, )
+
+    def _compute_expiration_date(self):
+        self.expiration_date = 0
+        for coupon in self.filtered(lambda x: x.program_id.validity_duration > 0):
+            if coupon.expiration_date_edit:
+                coupon.expiration_date = coupon.expiration_date_edit
+            else:
+                coupon.expiration_date = (
+                        coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+    def edit_date(self):
+        return {
+            'name': 'Expiration Date Edition',
+            'view_mode': 'form',
+            'res_model': 'date.edit',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'context': {
+                'default_coupon_id': self.id,
+            }}
+
+    def vehicle_state_default_get(self):
+        if self.program_id.validity_duration > 0:
+            return (self.create_date + relativedelta(days=self.program_id.validity_duration)).date()
+        else:
+            return 0
+
+    def cancel_coupon(self):
+        self.is_canceled = True
+        self.state = 'cancel'
 
 
 class Partner_inherit(models.Model):

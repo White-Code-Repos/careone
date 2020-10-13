@@ -8,6 +8,7 @@
     'data': [
         'views/views.xml',
         'wizard/coupon_apply.xml',
+        'wizard/expiration_date_edit.xml',
         'security/ir.model.access.csv',
     ],
 }
