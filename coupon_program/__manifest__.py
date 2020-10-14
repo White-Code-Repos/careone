@@ -6,6 +6,7 @@
     'depends': ['base','sale_coupon','partner_fleet_sale_enhancement','sale_coupons_enhanchment','sale'],
     # always loaded
     'data': [
+        'security/security.xml',
         'views/views.xml',
         'wizard/coupon_apply.xml',
         'wizard/expiration_date_edit.xml',

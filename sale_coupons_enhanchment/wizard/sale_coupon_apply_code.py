@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from datetime import datetime
 from odoo.tools.safe_eval import safe_eval
+from datetime import timedelta, datetime
 
 
 class SaleCouponApplyCode(models.TransientModel):
@@ -14,20 +15,28 @@ class SaleCouponApplyCode(models.TransientModel):
     # hisham edition
     @api.onchange('coupon_code')
     def coupon_code_onchange(self):
+        if self.coupon_code:
+            if self.coupon_code.is_free_order == True:
+                self.is_free_order = True
         today = datetime.today().date()
-        print(today.strftime("%Y-%m-%d"))
-        print(self.coupon_code.expiration_date)
-
+        today_x = datetime.today() + timedelta(hours=2)
+        real_time = datetime.now() + timedelta(hours=2)
+        current_time = real_time.time()
         sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        return {'domain': {'coupon_code': [('expiration_date', '>', today.strftime("%Y-%m-%d")),
-                                           ('program_id', '=', sales_order.coupon_id.id),
-                                           ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-                                           ('partner_id', '=', False),
-                                           '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
-                                           ('vehicle_id', '=', False)]}}
+        return {'domain': {
+            'coupon_code': [('start_date_use', '<=', today_x.date()),
+                            ('end_date_use', '>=', today_x.date()),
+                            ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                            ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+                            ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+                            ('program_id', '=', sales_order.coupon_id.id),
+                            ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+                            ('partner_id', '=', False),
+                            '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
+                            ('vehicle_id', '=', False)]}}
 
     # hisham edition
-    is_free_order = fields.Boolean(string="Free Order", )
+    is_free_order = fields.Boolean(string="Free Order", store=True)
 
     def process_coupon(self):
         """
@@ -38,11 +47,11 @@ class SaleCouponApplyCode(models.TransientModel):
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             my_domain_products = self.env['product.product'].search(
                 safe_eval(sales_order.coupon_id.rule_products_domain))
-            x=0
+            x = 0
             for rec in my_domain_products:
-                x=rec.id
+                x = rec.id
                 break
-            my_domain_product=self.env['product.product'].search([('id','=',x)])
+            my_domain_product = self.env['product.product'].search([('id', '=', x)])
             my_free_product = sales_order.coupon_id.reward_product_id
             if my_free_product:
                 order_obj_id = self.env['sale.order.line']

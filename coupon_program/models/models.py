@@ -14,10 +14,28 @@ class CouponProgramInherit(models.Model):
     nbr_coupons = fields.Integer(string="Number of Coupons", help="Number of coupons", default=1)
     partners_domain = fields.Char(string="Customer", default='[]')
     vehicles_domain = fields.Char(string="Vehicle", default='[]')
+    start_hour_generate = fields.Float(string="From", required=False, )
+    end_hour_generate = fields.Float(string="To", required=False, )
+    start_date_generate = fields.Date(string="From", required=False, )
+    end_date_generate = fields.Date(string="To", required=False, )
+    start_hour_use = fields.Float(string="From", required=False, )
+    end_hour_use = fields.Float(string="To", required=False, )
+    start_date_use = fields.Date(string="From", required=False, )
+    end_date_use = fields.Date(string="To", required=False, )
+    is_free_order = fields.Boolean(string="Allow Free Order", )
+    is_str = fields.Boolean(string="Saturday", )
+    is_sun = fields.Boolean(string="Sunday", )
+    is_mon = fields.Boolean(string="Monday", )
+    is_tus = fields.Boolean(string="Tuesday", )
+    is_wen = fields.Boolean(string="Wednesday", )
+    is_thur = fields.Boolean(string="Thursday", )
+    is_fri = fields.Boolean(string="Friday", )
 
     def generate_coupon(self):
         program = self
-        vals = {'program_id': program.id}
+        vals = {'program_id': program.id, 'is_free_order': program.is_free_order,
+                'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
+                'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
@@ -44,12 +62,62 @@ class CouponProgramInherit(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-                                domain="[('program_type','=', 'coupon_program')]")
+    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False, )
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
-    size = fields.Selection(selection=[
-        ('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size', related='vehicle_id.size')
+    size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
+                            related='vehicle_id.size')
+    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
+
+    @api.onchange('coupon_id')
+    def coupon_program_onchange(self):
+        today = datetime.today() + timedelta(hours=2)
+        real_time = datetime.now() + timedelta(hours=2)
+        current_time = real_time.time()
+        today_week_day = today.strftime("%A")
+        if today_week_day == 'Saturday':
+            return {
+                'domain': {'coupon_id': [('is_str', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+
+        elif today_week_day == 'Sunday':
+            return {
+                'domain': {'coupon_id': [('is_sun', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+        elif today_week_day == 'Monday':
+            return {
+                'domain': {'coupon_id': [('is_mon', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+        elif today_week_day == 'Tuesday':
+            return {
+                'domain': {'coupon_id': [('is_tus', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+        elif today_week_day == 'Wednesday':
+            return {
+                'domain': {'coupon_id': [('is_wen', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+        elif today_week_day == 'Thursday':
+            return {
+                'domain': {'coupon_id': [('is_thur', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+        elif today_week_day == 'Thursday':
+            return {
+                'domain': {'coupon_id': [('is_fri', '=', True), ('start_date_use', '<=', today.date()),
+                                         ('end_date_use', '>=', today.date()),
+                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
 
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
@@ -79,9 +147,9 @@ class SaleOrder(models.Model):
 
     def generate_coupon(self):
         program = self.coupon_id
-        vals = {'program_id': program.id,
-                'sale_order_id': self.id
-                }
+        vals = {'program_id': program.id, 'sale_order_id': self.id, 'is_free_order': program.is_free_order,
+                'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
+                'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
         if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
             for count in range(0, self.coupon_id.nbr_coupons):
                 self.env['sale.coupon'].create(vals)
@@ -103,9 +171,27 @@ class SaleOrder(models.Model):
                 self.env['sale.coupon'].create(vals)
         self.is_generate_coupon = True
 
+    def allow_generate_coupon(self):
+        for order in self:
+            order.is_allow_generate_coupon = False
+            if order.coupon_id and order.state == 'sale':
+                today = datetime.today() + timedelta(hours=2)
+                real_time = datetime.now() + timedelta(hours=2)
+                current_time = real_time.time()
+                if order.coupon_id.start_date_generate and order.coupon_id.end_date_generate:
+                    if order.coupon_id.start_date_generate <= today.date() <= order.coupon_id.end_date_generate:
+                        if order.coupon_id.start_hour_generate <= (
+                                current_time.hour + current_time.minute / 60) <= order.coupon_id.end_hour_generate:
+                            order.is_allow_generate_coupon = True
+
 
 class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
+    start_hour_use = fields.Float(string="From", required=False, )
+    end_hour_use = fields.Float(string="To", required=False, )
+    start_date_use = fields.Date(string="From", required=False, )
+    end_date_use = fields.Date(string="To", required=False, )
+    is_free_order = fields.Boolean(string="Allow Free Order", )
     state = fields.Selection([
         ('reserved', 'Reserved'),
         ('new', 'Valid'),
@@ -116,6 +202,23 @@ class CouponInherit(models.Model):
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
     is_canceled = fields.Boolean(string="", )
     expiration_date_edit = fields.Date(string="", required=False, )
+    is_have_permission = fields.Boolean(string="", compute='get_user_permission' )
+
+    def get_user_permission(self):
+        for coupon in self:
+            users = []
+            current_login = self.env.user
+            group_security_id = self.env['res.groups'].search([('category_id.name', '=', 'Coupon Edition')],
+                                                              order='id desc',
+                                                              limit=1)
+            for user in group_security_id.users:
+                users.append(user)
+            if current_login in users:
+                coupon.is_have_permission = True
+                print("hisho hisho")
+            print("hisho")
+            print(coupon.is_have_permission)
+            print(users)
 
     def _compute_expiration_date(self):
         self.expiration_date = 0
@@ -125,6 +228,7 @@ class CouponInherit(models.Model):
             else:
                 coupon.expiration_date = (
                         coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+
     def edit_date(self):
         return {
             'name': 'Expiration Date Edition',

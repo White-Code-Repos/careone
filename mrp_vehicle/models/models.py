@@ -36,10 +36,6 @@ class MRP_inherit(models.Model):
         sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
         return sale_order.vehicle_state
 
-    def date_deadline_default_get(self):
-        sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
-        return sale_order.service_delivery
-
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
