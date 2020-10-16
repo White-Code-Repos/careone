@@ -29,7 +29,7 @@ class SaleCouponApplyCode(models.TransientModel):
                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
                             ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-                            ('program_id', '=', sales_order.coupon_id.id),
+                            # ('program_id', '=', sales_order.coupon_id.id),
                             ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
                             ('partner_id', '=', False),
                             '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
