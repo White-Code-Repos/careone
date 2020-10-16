@@ -112,7 +112,7 @@ class SaleOrder(models.Model):
                                          ('end_date_use', '>=', today.date()),
                                          ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
                                          ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
-        elif today_week_day == 'Thursday':
+        elif today_week_day == 'Friday':
             return {
                 'domain': {'coupon_id': [('is_fri', '=', True), ('start_date_use', '<=', today.date()),
                                          ('end_date_use', '>=', today.date()),
