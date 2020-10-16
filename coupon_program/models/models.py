@@ -62,62 +62,56 @@ class CouponProgramInherit(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False, )
-    is_generate_coupon = fields.Boolean(string="", )
-    coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
-    size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
-                            related='vehicle_id.size')
-    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
-
-    @api.onchange('coupon_id')
+    @api.model
     def coupon_program_onchange(self):
         today = datetime.today() + timedelta(hours=2)
         real_time = datetime.now() + timedelta(hours=2)
         current_time = real_time.time()
         today_week_day = today.strftime("%A")
         if today_week_day == 'Saturday':
-            return {
-                'domain': {'coupon_id': [('is_str', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_str', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
 
         elif today_week_day == 'Sunday':
-            return {
-                'domain': {'coupon_id': [('is_sun', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_sun', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
         elif today_week_day == 'Monday':
-            return {
-                'domain': {'coupon_id': [('is_mon', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_mon', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
         elif today_week_day == 'Tuesday':
-            return {
-                'domain': {'coupon_id': [('is_tus', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_tus', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
         elif today_week_day == 'Wednesday':
-            return {
-                'domain': {'coupon_id': [('is_wen', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_wen', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
         elif today_week_day == 'Thursday':
-            return {
-                'domain': {'coupon_id': [('is_thur', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_thur', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
         elif today_week_day == 'Friday':
-            return {
-                'domain': {'coupon_id': [('is_fri', '=', True), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]}}
+            return [('is_fri', '=', True), ('start_date_use', '<=', today.date()),
+                    ('end_date_use', '>=', today.date()),
+                    ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))]
+
+    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,domain=coupon_program_onchange )
+    is_generate_coupon = fields.Boolean(string="", )
+    coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
+    size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
+                            related='vehicle_id.size')
+    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
+
 
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
@@ -202,7 +196,7 @@ class CouponInherit(models.Model):
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
     is_canceled = fields.Boolean(string="", )
     expiration_date_edit = fields.Date(string="", required=False, )
-    is_have_permission = fields.Boolean(string="", compute='get_user_permission' )
+    is_have_permission = fields.Boolean(string="", compute='get_user_permission')
 
     def get_user_permission(self):
         for coupon in self:
