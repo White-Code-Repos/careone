@@ -149,57 +149,45 @@
         <field name="model">sale.coupon</field>
         <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
         <field name="arch" type="xml">
-
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <group>
+                        <field name="code" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="expiration_date"/>
+                        <field name="is_expiration_date_changed" attrs="{'invisible':[('state','!=', 'new')]}"/>
+                        <field name="expiration_date_edit"
+                               attrs="{'invisible':['|',('is_expiration_date_changed','=', False),('state','!=', 'new')]}"/>
+                    </group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="vehicle_id"/>
+                        <field name="sale_order_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="is_have_permission" invisible="1"/>
+                        <field name="is_free_order" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                    </group>
+                    <group name="use_time" string="Using Time">
+                        <group string="Date">
+                            <field name="start_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                            <field name="end_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                        </group>
+                        <group string="Time">
+                            <field name="start_hour_use" widget="float_time"
+                                   attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                            <field name="end_hour_use" widget="float_time"
+                                   attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </xpath>
             <xpath expr="//header" position="inside">
                 <field name="is_canceled" invisible="1"/>
                 <button name="cancel_coupon" type="object" string="Cancel" class="oe_highlight"
                         attrs="{'invisible': ['|',('is_canceled', '=', True),('state', '!=', 'new')]}"/>
             </xpath>
-            <xpath expr="//field[@name='code']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='vehicle_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='expiration_date']" position="replace">
-                <group>
-                    <field name="code" readonly="1"/>
-                </group>
-                <group>
-                    <field name="expiration_date"/>
-                    <field name="is_expiration_date_changed" attrs="{'invisible':[('state','!=', 'new')]}"/>
-                    <field name="expiration_date_edit" attrs="{'invisible':['|',('is_expiration_date_changed','=', False),('state','!=', 'new')]}"/>
-                </group>
-                <group>
-                    <field name="partner_id"/>
-                    <field name="vehicle_id"/>
-                </group>
-            </xpath>
-            <xpath expr="//field[@name='order_id']" position="replace">
-                <field name="sale_order_id" readonly="1"/>
-            </xpath>
-            <xpath expr="//group[1]" position="after">
-                <group>
-                    <field name="is_have_permission" invisible="1"/>
-                    <field name="is_free_order" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
-                </group>
-                <group name="use_time" string="Using Time">
-                    <group string="Date">
-                        <field name="start_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
-                        <field name="end_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
-                    </group>
-                    <group string="Time">
-                        <field name="start_hour_use" widget="float_time"
-                               attrs="{'readonly':[('is_have_permission','=', False)]}"/>
-                        <field name="end_hour_use" widget="float_time"
-                               attrs="{'readonly':[('is_have_permission','=', False)]}"/>
-                    </group>
-                </group>
-            </xpath>
-
         </field>
     </record>
     <record id="coupons_tree_inherit" model="ir.ui.view">
