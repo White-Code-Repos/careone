@@ -11,6 +11,7 @@ class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
 
     coupon_code = fields.Many2one('sale.coupon', string="Code", required=True)
+    is_free_order_readonly = fields.Boolean(string="", )
 
     # hisham edition
     @api.onchange('coupon_code')
@@ -18,6 +19,7 @@ class SaleCouponApplyCode(models.TransientModel):
         if self.coupon_code:
             if self.coupon_code.is_free_order == True:
                 self.is_free_order = True
+                self.is_free_order_readonly = True
         today = datetime.today().date()
         today_x = datetime.today() + timedelta(hours=2)
         real_time = datetime.now() + timedelta(hours=2)
@@ -46,7 +48,7 @@ class SaleCouponApplyCode(models.TransientModel):
         if self.is_free_order == True:
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             my_domain_products = self.env['product.product'].search(
-                safe_eval(sales_order.coupon_id.rule_products_domain))
+                safe_eval(self.coupon_code.program_id.rule_products_domain))
             x = 0
             for rec in my_domain_products:
                 x = rec.id
