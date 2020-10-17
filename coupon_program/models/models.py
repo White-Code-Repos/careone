@@ -134,7 +134,7 @@ class SaleOrder(models.Model):
     def action_view_coupons(self):
         return {
             'name': 'Coupons',
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'res_model': 'sale.coupon',
             'target': 'new',
             'type': 'ir.actions.act_window',
