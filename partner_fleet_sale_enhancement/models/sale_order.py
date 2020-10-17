@@ -29,8 +29,13 @@ class SaleOrder(models.Model):
 
     # hisham edition
     @api.onchange('vehicle_id', 'partner_id')
-    def vehicle_onchange(self):
+    def vehicle_onchange_domain(self):
         if self.partner_id:
             return {'domain': {'vehicle_id': [('driver_id', '=', self.partner_id.id), ]}}
         else:
             return {'domain': {'vehicle_id': []}}
+
+    @api.onchange('vehicle_id')
+    def vehicle_onchange(self):
+        if not self.partner_id:
+            self.partner_id = self.vehicle_id.driver_id
