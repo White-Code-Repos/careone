@@ -33,7 +33,7 @@ class SaleOrder(models.Model):
             })
         else:
             action.update({
-                'view_mode': 'tree',
+                'view_mode': 'tree,form',
                 'domain': [('id', 'in', mrp_ids.ids)],
             })
         return action
