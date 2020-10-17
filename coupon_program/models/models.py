@@ -196,8 +196,16 @@ class CouponInherit(models.Model):
     ], required=True, default='new')
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
     is_canceled = fields.Boolean(string="", )
-    expiration_date_edit = fields.Date(string="", required=False, )
+    is_expiration_date_changed = fields.Boolean(string="Change Expiration Date", )
+    expiration_date_edit = fields.Date(string="New Expiration Date", required=False, )
     is_have_permission = fields.Boolean(string="", compute='get_user_permission')
+
+    @api.onchange('vehicle_id', 'partner_id')
+    def vehicle_onchange(self):
+        if self.partner_id:
+            return {'domain': {'vehicle_id': [('customer_id', '=', self.partner_id.id), ]}}
+        else:
+            return {'domain': {'vehicle_id': []}}
 
     def get_user_permission(self):
         for coupon in self:
