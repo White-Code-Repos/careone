@@ -227,7 +227,7 @@ class CouponInherit(models.Model):
 
     def _compute_expiration_date(self):
         self.expiration_date = 0
-        for coupon in self.filtered(lambda x: x.program_id.validity_duration > 0):
+        for coupon in self:
             if coupon.expiration_date_edit:
                 coupon.expiration_date = coupon.expiration_date_edit
             else:
