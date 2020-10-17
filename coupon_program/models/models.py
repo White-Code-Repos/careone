@@ -142,7 +142,8 @@ class SaleOrder(models.Model):
 
     def generate_coupon(self):
         program = self.coupon_id
-        vals = {'program_id': program.id, 'sale_order_id': self.id, 'is_free_order': program.is_free_order,
+        vals = {'program_id': program.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
+                'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
         if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
@@ -195,6 +196,7 @@ class CouponInherit(models.Model):
         ('cancel', 'Canceled')
     ], required=True, default='new')
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
+    customer_source_id = fields.Many2one(comodel_name="res.partner", string="Customer Source", required=False, )
     is_canceled = fields.Boolean(string="", )
     is_expiration_date_changed = fields.Boolean(string="Change Expiration Date", )
     expiration_date_edit = fields.Date(string="New Expiration Date", required=False, )
@@ -276,7 +278,27 @@ class Partner_inherit(models.Model):
                 ['|', ('partner_id', '=', False),
                  ('partner_id', '=', rec.id),
                  ('state', '=', 'new'),
-                 ('program_id', '!=', False),
+                 ('program_id', '!=', False), ('customer_source_id', '=', rec.id),
+                 # ('customer_source_id', '=', False)
                  ])
 
             rec.coupons_ids = coupons
+
+
+class fleet_vehicle_inherit(models.Model):
+    _inherit = 'fleet.vehicle'
+    sale_order_count = fields.Integer(string="", compute='get_sales_count', required=False, )
+
+    def get_sales_count(self):
+        for vehicle in self:
+            sale_ids = self.env['sale.order'].search([('vehicle_id', '=', vehicle.id)])
+            vehicle.sale_order_count = len(sale_ids)
+
+    def action_view_sales(self):
+        return {
+            'name': 'Sales Order',
+            'view_mode': 'tree,form',
+            'res_model': 'sale.order',
+            'target': 'current',
+            'type': 'ir.actions.act_window',
+            'domain': [('vehicle_id', '=', self.id)]}

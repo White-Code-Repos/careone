@@ -196,10 +196,13 @@
         <field name="model">sale.coupon</field>
         <field name="inherit_id" ref="sale_coupon.sale_coupon_view_tree"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_source_id" readonly="1"/>
                 <field name="sale_order_id" readonly="1"/>
                 <field name="sales_order_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
         </field>
@@ -222,13 +225,34 @@
                             <field name="code"/>
                             <field name="expiration_date"/>
                             <field name="program_id"/>
+                            <field name="partner_id"/>
+                            <field name="customer_source_id" readonly="1"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="sales_order_id" readonly="1"/>
                             <field name="state"/>
-                            <field name="partner_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>
             </xpath>
         </field>
     </record>
+    <!-- Inherit Form View to Modify it -->
+    <record id="fleet_vehicle_form_inherit" model="ir.ui.view">
+        <field name="name">fleet_vehicle_form_inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
 
+            <xpath expr="//button[@name='open_assignation_logs']" position="after">
+                <button name="action_view_sales"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-credit-card"
+                        attrs="{'invisible': [('sale_order_count', '=', 0)]}">
+                    <field name="sale_order_count" widget="statinfo" string="Sales"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
 </odoo>

@@ -1,6 +1,8 @@
 from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import UserError
+from datetime import timedelta, datetime
+from dateutil.relativedelta import relativedelta
 
 
 class CouponApply(models.TransientModel):
@@ -10,8 +12,12 @@ class CouponApply(models.TransientModel):
 
     @api.onchange('coupon_id')
     def coupon_code_onchange(self):
+        today = datetime.today() + timedelta(hours=2)
+        real_time = datetime.now() + timedelta(hours=2)
+        current_time = real_time.time()
         return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
                                          ('partner_id', '=', self.partner_id.id),
+                                         ('customer_source_id', '=', self.partner_id.id),
                                          ('state', '=', 'new'),
                                          ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
                                          ('end_date_use', '>=', today.date()),
