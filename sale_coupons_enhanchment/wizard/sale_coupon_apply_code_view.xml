@@ -10,8 +10,9 @@
             <field name="coupon_code" position="replace">
                 <field name="coupon_code" options="{'no_create': True}"/>
                 <!--                hisham edition -->
-                <field name="is_free_order" attrs="{'readonly':[('is_free_order_readonly_x','=', True)]}"/>
                 <field name="is_free_order_readonly_x" invisible="1"/>
+                <field name="is_free_order" force_save="1"
+                       attrs="{'readonly':[('is_free_order_readonly_x','=', True)]}"/>
             </field>
         </field>
     </record>
