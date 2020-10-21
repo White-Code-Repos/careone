@@ -40,9 +40,9 @@ class PromotionProgramInherit(models.Model):
             is_applicable_programs_today = True
         elif today_week_day == 'Friday' and applicable_programs.is_fri_promotion == True:
             is_applicable_programs_today = True
-        if applicable_programs.end_hour_use_promotion < (
-                current_time.hour + current_time.minute / 60) or applicable_programs.start_hour_use_promotion > (
-                current_time.hour + current_time.minute / 60) or applicable_programs.rule_date_from > today.date() or applicable_programs.rule_date_to < today.date() or is_applicable_programs_today != True:
+        if self.end_hour_use_promotion < (
+                current_time.hour + current_time.minute / 60) or self.start_hour_use_promotion > (
+                current_time.hour + current_time.minute / 60) or self.rule_date_from > today.date() or self.rule_date_to < today.date() or is_applicable_programs_today != True:
             message = {'error': _("The Promo Code isn't Available Now !")}
         elif self.maximum_use_number != 0 and self.order_count >= self.maximum_use_number:
             message = {'error': _('Promo code %s has been expired.') % (coupon_code)}
