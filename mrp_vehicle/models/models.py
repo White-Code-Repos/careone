@@ -44,7 +44,15 @@ class SaleOrder(models.Model):
                                      required=False, )
     clarification = fields.Selection(string="Clarification", selection=[('yes', 'Yes'), ('no', 'No'), ],
                                      required=False, )
-    service_delivery = fields.Datetime(string="Service Delivery", required=False, )
+    service_delivery = fields.Datetime(string="Service Delivery", required=False, default=fields.Datetime.now)
+
+    @api.onchange('service_delivery')
+    def onchange_service_delivery(self):
+        for i in self:
+            if i.date_order and i.service_delivery:
+                if i.date_order > i.service_delivery:
+                    raise ValidationError(
+                        "Please set Service Delivery Date properly!!!")
 
     def action_cancel(self):
         for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name)]):
