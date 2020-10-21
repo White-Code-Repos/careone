@@ -216,10 +216,14 @@ class CouponInherit(models.Model):
             group_security_id = self.env['res.groups'].search([('category_id.name', '=', 'Coupon Edition')],
                                                               order='id desc',
                                                               limit=1)
+
             for user in group_security_id.users:
                 users.append(user)
+            print(users)
             if current_login in users:
                 coupon.is_have_permission = True
+            else:
+                coupon.is_have_permission = False
 
     def _compute_expiration_date(self):
         self.expiration_date = 0
