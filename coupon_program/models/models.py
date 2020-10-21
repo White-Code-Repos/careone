@@ -220,10 +220,6 @@ class CouponInherit(models.Model):
                 users.append(user)
             if current_login in users:
                 coupon.is_have_permission = True
-                print("hisho hisho")
-            print("hisho")
-            print(coupon.is_have_permission)
-            print(users)
 
     def _compute_expiration_date(self):
         self.expiration_date = 0
