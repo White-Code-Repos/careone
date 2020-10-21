@@ -219,7 +219,6 @@ class CouponInherit(models.Model):
 
             for user in group_security_id.users:
                 users.append(user)
-            print(users)
             if current_login in users:
                 coupon.is_have_permission = True
             else:
