@@ -1,7 +1,7 @@
-PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX
-Basic Computer,1,Unit(s),Basic Computer,10000,GST 1%;GST 2%
-Little Server,2,Unit(s),Little Server,50000,GST 28%;GST 1%
-Computer Case,1,Unit(s),Computer Case,2000,
-Server,3,Unit(s),Server,100000,GST 2%;GST 28%
-iMac,1,Unit(s),iMac,10000,
-iPad,2,Unit(s),iPad,50000,GST 1%
+PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool
+Basic Computer,1,Unit(s),Basic Computer,10000,GST 1%,Agrolait,"Axeloer,Camptocamp",red,red,10000,1
+Little Server,2,Unit(s),Little Server,50000,GST 28%,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0
+Computer Case,1,Unit(s),Computer Case,2000,,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1
+Server,3,Unit(s),Server,100000,GST 2%,Agrolait,"Axeloer,Camptocamp",white,white,10000,0
+iMac,1,Unit(s),iMac,10000,,Axeloer,"Axeloer,Camptocamp",dark black,dark black,50000,1
+iPad,2,Unit(s),iPad,50000,GST 1%,,"Axeloer,Camptocamp",,,,

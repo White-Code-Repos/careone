@@ -250,6 +250,31 @@
 			</div>
 		</div>
 
+		<div class="row">
+			<div class="col" style="margin: 10px;">
+				<div class="row">
+					<div class="col-md-3 text-center">
+						<img class="img img-responsive" style="max-width:100%;" src="features/import_custom_field.png"/>
+					</div>
+					<div class="col-md-9">
+					  <h4><b>Easy to Import Custom Fields</b></h4>
+					  <span class="oe_slogan">You can easily import custom field from csv/xls file.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col" style="margin: 10px;">
+				<div class="row">
+					<div class="col-md-3 text-center">
+						<img class="img img-responsive" style="max-width:100%;" src="features/dashboard.png"/>
+					</div>
+					<div class="col-md-9">
+						<h4><b>Generic Import Dashboard</b></h4>
+						<span class="oe_slogan">You can import all the things at generic import dashboard.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </section>
 
@@ -265,19 +290,39 @@
 <section class="oe_container lead">
 	<div>
 		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Generic Import Dashboard </p>
+			<p class="oe_slogan"> Here you can import all the things at generic import dashboard. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_dashboard.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import All in One Data Menu </p>
+			<p class="oe_slogan"> You can import all the things at import all in one data menu. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_all_menu.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Customer/Supplier Invoice</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<p class="oe_slogan">You have 3 different options to import invoice order.</p>
+			<p class="oe_slogan">You have 3 different options to import invoice order with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_invoice.png">
 
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_invoice.png">
 
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="inv_tax.png">
-
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_invoice.png">
+			
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">INVOICE ID</dt>
 				<dd style="color: #31708f;">- Invoice number for the invoice.</dd>
@@ -307,7 +352,30 @@
 				<dd style="color: #31708f;">-Name of Chart Of Account</dd>
 				<dt style="color: #31708f;">DISCOUNT</dt>
 				<dd style="color: #31708f;">-Discount for the product</dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: x_partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: x_partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">The "INVOICE ID" should be same, as you can see in the image,"INVOICE ID" is same for different product list.This defines single invoice with different product lines.</p>
 			<p class="oe_slogan">Tax column is important you have to add "Tax column" though there is no need of adding tax.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
@@ -322,7 +390,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Invoice Menu </p>
 			<p class="oe_slogan"> Menu for importing data of invoice orders. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="inv_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_invoice.png">
 		</div>
 	</div>
 </section>
@@ -349,16 +417,7 @@
 			<p class="oe_slogan">You have also option to import products by it's Name/ Barcode or Code(Internal Reference).</p>
 			<p class="oe_slogan">If you want to create product while importing invoice order then you have to select import with "Name".</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_invoice_wizard.png">
-		</div>
-	</div>
-</section>
-
-<section class="oe_container lead">
-	<div>
-		<div>
-			<p class="oe_slogan"> After importing CSV/XLS with "Import Draft Invoice" option then you can see the invoice is in draft stage and invoice number is same as we given in CSV/XLS file. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="invoice_validate_csv.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_invoice.png">
 		</div>
 	</div>
 </section>
@@ -368,7 +427,25 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Invoice Tree View</p>
 			<p class="oe_slogan"> This is the tree view of invoice created from given data file. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="customer_view.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_invoice.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> After importing CSV/XLS with "Import Draft Invoice" option then you can see the invoice is in draft stage and invoice number is same as we given in CSV/XLS file. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_invoice.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the invoice is in draft stage and custom field is same as we given in CSV/XLS file. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_invoice.png">
 		</div>
 	</div>
 </section>
@@ -377,8 +454,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Validate Invoice Automatically With Import" option then you can see the invoice is in Open stage. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="open_stage_option.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="open_stage_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_invoice.png">
 		</div>
 	</div>
 </section>
@@ -387,9 +464,18 @@
 	<div>
 		<div>
 			<p class="oe_slogan"> If you select "Use System Default Sequence Number" option then name field will follow the system sequence.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="invoice_wizard_default.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="8_invoice.png">
 			<p class="oe_slogan">If all taxes are found in system then invoice will be generated.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="inv_with_tax.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="9_invoice.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the invoice is in draft stage with default sequence number and custom field is same as we given in CSV/XLS file. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="10_invoice.png">
 		</div>
 	</div>
 </section>
@@ -399,8 +485,17 @@
 		<div>
 			<p class="oe_slogan">If you select "Customer Credit Note" option then you can see the invoices created as a Customer Credit Note (Customer Refund). </p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="invoice_wizard_credit_note.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="inv_with_credit_note.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="11_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="12_invoice.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the customer credit note is in draft stage and custom field is same as we given in CSV/XLS file. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="13_invoice.png">
 		</div>
 	</div>
 </section>
@@ -425,24 +520,24 @@
 			<p class="oe_slogan">If you want to import product with "Take Details From The Product" option then follow given XLS format.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_inv_line.png">
 
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_inv_line.png">
 
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel_product.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_inv_line.png">
 
-			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format.</p>
+			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_invoice_line.png">
 
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_invoice_line.png">
 
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_invoice_line.png">
 
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color:#31708f;">PRODUCT</dt>
@@ -459,7 +554,30 @@
 				  <dd style="color:#31708f;">-Tax for product</dd>
 				  <dt style="color: #31708f;">DISCOUNT</dt>
 				  <dd style="color: #31708f;">-Discount for the product</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+                  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">If there is need of adding "Tax" you can add it but if there is no need of adding "Tax" you have to leave it blank.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
 			<p class="oe_slogan">2. When barcode is selected in Import option, please select file that contains barcode of products.</p>
@@ -471,9 +589,9 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Invoice Lines Menu </p>
-			<p class="oe_slogan"> Menu for importing data of Invoice Lines. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_record_invoice.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Invoice Lines Button </p>
+			<p class="oe_slogan"> Button for importing data of Invoice Lines. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_invoice_line.png">
 		</div>
 	</div>
 </section>
@@ -491,7 +609,7 @@
 			<p class="oe_slogan">If you want to create product while importing invoice line then you have to select import with "Name".</p>
 			
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_product_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_invoice_line.png">
 		</div>
 	</div>
 </section>
@@ -502,7 +620,17 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Invoice Line View.</p>
 			<p class="oe_slogan">After importing CSV/XLS with "Take Details From The Product" option then you can see the imported product details is taken from already created product.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_product_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_invoice_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the imported product details is taken from already created product with custom fields.</p>
+			<br/>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_invoice_line.png">
 		</div>
 	</div>
 </section>
@@ -511,8 +639,18 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Take Details From The XLS File" option then you can see the imported product details is taken from XLS file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_xls_invoice.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_xls_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_invoice_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_invoice_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the imported product details is taken from xls file with custom fields.</p>
+			<br/>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_invoice_line.png">
 		</div>
 	</div>
 </section>
@@ -522,7 +660,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Customer/Supplier Payment</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="demo_file.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="xml_payment.png">
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color:#31708f;">Partner </dt>
 				  <dd style="color:#31708f;">- Customer/Supplier name for payment.</dd>
@@ -533,8 +671,23 @@
 				  <dt style="color:#31708f;">Payment Date </dt>
 				  <dd style="color:#31708f;">- Payment date for customer/supplier payment.</dd>
 				  <dt style="color:#31708f;">Memo </dt>
-				  <dd style="color:#31708f;">- Invoice payment receipt number for customer/supplier payment.</dd>         
+				  <dd style="color:#31708f;">- Invoice payment receipt number for customer/supplier payment.</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>         
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -544,7 +697,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Payment Menu </p>
 			<p class="oe_slogan"> Menu for importing data of Customer/Supplier Payment. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_payment.png">
 		</div>
 	</div>
 </section>
@@ -554,7 +707,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Payment Wizard.</p>
 			<p class="oe_slogan">In this wizard you have to upload properly formated XLS file you want to import. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="payment_wizard.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_payment.png">
 		</div>
 	</div>
 </section>
@@ -563,8 +716,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Payment View.</p>
-			<p class="oe_slogan"> This is the tree view of newly created customer payments from given data file. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_payment.png">
+			<p class="oe_slogan"> This is the tree view of newly created customer payments from given data file with custom fields. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_payment.png">
 		</div>
 	</div>
 </section>
@@ -573,9 +726,9 @@
 	<div>
 		<div>
 			<p class="oe_slogan"> If you want to upload supplier(vendor) payment then select "Supplier Payment". </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="payment_wizard_1.png">
-			<p class="oe_slogan">This is the example of newly created supplier payments.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_payment.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_payment.png">
+			<p class="oe_slogan">This is the example of newly created supplier payments with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_payment.png">
 		</div>
 	</div>
 </section>
@@ -595,7 +748,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Bank Statement Lines</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="bank_lines_excel.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="xml_bank_statement_line.png">
 			<dl style="padding-left: 30px;text-align:left">
 				  <dt style="color:#31708f;">DATE </dt>
 				  <dd style="color:#31708f;"> - Date of the Bank Statement.</dd>
@@ -609,7 +762,30 @@
 				  <dd style="color:#31708f;">- Amount for the Bank Statement.</dd>
 				  <dt style="color:#31708f;">Currency</dt>
 				  <dd style="color:#31708f;">- Currency for the Bank Statement.</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -617,9 +793,9 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Accounting Dashboard. </p>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Accounting Dashboard </p>
 			<p class="oe_slogan"> Click on Create Statement link to create account bank statement. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="new_statement.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_bank_statement_line.png">
 		</div>
 	</div>
 </section>
@@ -629,7 +805,7 @@
 		<div>
 			
 			<p class="oe_slogan"> Click on Add Lines button to import bank statement lines </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="add_line_button.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_bank_statement_line.png">
 		</div>
 	</div>
 </section>
@@ -637,9 +813,9 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bank Statement Lines wizard.</p>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bank Statement Lines wizard</p>
 			<p class="oe_slogan">If you want to import details of bank statement lines from CSV/XLS you can also have option regarding this in import bank statement lines wizard.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_bank_line_wizard.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_bank_statement_line.png">
 		</div>
 	</div>
 </section>
@@ -647,9 +823,9 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bank Statement Lines View.</p>
-			<p class="oe_slogan"> After importing CSV/XLS you can see the imported bank statement lines under Transactions tab. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="bank_line_view.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bank Statement Lines View</p>
+			<p class="oe_slogan"> After importing CSV/XLS you can see the imported bank statement lines under Transactions tab with custom fields. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_bank_statement_line.png">
 		</div>
 	</div>
 </section>
@@ -670,16 +846,19 @@
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Sales Order</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
 			<p class="oe_slogan">Given below is the sample of import file.</p>
-			<p class="oe_slogan">You have 3 different options to import sale order.</p>
+			<p class="oe_slogan">You have 3 different options to import sale order with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
-			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product_so.png">
+			<p class="oe_slogan"><strong>Import with Code</strong></p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_sale_order.png">
 
-			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product_so.png">
+			<p class="oe_slogan"><strong>Import with Barcode</strong></p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_sale_order.png">
 
-			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="excel.png">
+			<p class="oe_slogan"><strong>Import with Name</strong></p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_sale_order.png">
+
+			<p class="oe_slogan"><strong>Custom Fields Format</strong></p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="custom_sale_order.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">ORDER</dt>
@@ -708,7 +887,30 @@
 				<dd style="color: #31708f;">- Date of sale order.</dd>
 				<dt style="color: #31708f;">DISCOUNT</dt>
 				<dd style="color: #31708f;">- Discount for the product.</dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 				</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">The "ORDER" should be same, as you can see in the image,"ORDER" is same for different product list.This defines single order with different product lines.</p>
 			<p class="oe_slogan">Tax column is important you have to add "Tax column" though there is no need of adding tax.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
@@ -723,7 +925,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Order Menu.</p>
 			<p class="oe_slogan"> Menu for importing data of Sales Order. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_order_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_sale_order.png">
 		</div>
 	</div>
 </section>
@@ -744,16 +946,7 @@
 			<p class="oe_slogan">You have also option to import products by it's Name/ Barcode or Code(Internal Reference).</p>
 			<p class="oe_slogan">If you want to create product while importing sale order then you have to select import with "Name".</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sales_wizard.png">
-		</div>
-	</div>
-</section>
-
-<section class="oe_container lead">
-	<div>
-		<div>
-			<p class="oe_slogan">After importing CSV/XLS with "Import Draft Quotation" option then you can see the sale order is in draft stage and Sequance(Sale Order number) is same as we given in CSV/XLS file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sales_validate_csv.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_sale_order.png">
 		</div>
 	</div>
 </section>
@@ -763,7 +956,25 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Order Tree View.</p>
 			<p class="oe_slogan">This is the tree view of sales order created from given data file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sales_tree.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_sale_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">After importing CSV/XLS with "Import Draft Quotation" option then you can see the sale order is in draft stage and Sequance(Sale Order number) is same as we given in CSV/XLS file.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_sale_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">Sale order is in draft stage and Sequance(Sale Order number) is same as we given in CSV/XLS file with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_sale_order.png">
 		</div>
 	</div>
 </section>
@@ -772,8 +983,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Confirm Quotation Automatically With Import" option then you can see the sale order is in sales order stage.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_order_open_stage_option.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_order_open_stage_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_sale_order.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_sale_order.png">
 		</div>
 	</div>
 </section>
@@ -782,9 +993,18 @@
 	<div>
 		<div>
 			<p class="oe_slogan"> If you select "Use System Default Sequence Number" option then name field will follow the system sequence. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sales_wizard_default.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="8_sale_order.png">
 			<p class="oe_slogan">If all taxes are found in system then sale order will be generated.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="right_tax.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="9_sale_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">Sale order is in confirmed stage and use system default sequence number with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="10_sale_order.png">
 		</div>
 	</div>
 </section>
@@ -808,24 +1028,24 @@
 			<p class="oe_slogan">If you want to import product with "Take Details From The Product" option then follow given XLS format.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_so_line.png">
 
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_so_line.png">
 
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel_product_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_so_line.png">
 
-			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format.</p>
+			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_sale_order_line.png">
 
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_sale_order_line.png">
 
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel_so_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_sale_order_line.png">
 
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color:#31708f;">PRODUCT</dt>
@@ -842,7 +1062,30 @@
 				  <dd style="color:#31708f;">-Tax for product</dd>
 				  <dt style="color: #31708f;">DISCOUNT</dt>
 				  <dd style="color: #31708f;">- Discount for the product.</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">If there is need of adding "Tax" you can add it but if there is no need of adding "Tax" you have to leave it blank.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
 			<p class="oe_slogan">2. When barcode is selected in Import option, please select file that contains barcode of products.</p>
@@ -854,9 +1097,9 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Order Lines Menu.</p>
-			<p class="oe_slogan">Menu for importing data of Sale Order Lines.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_record_sale_line.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Order Lines Button</p>
+			<p class="oe_slogan">Button for importing data of Sale Order Lines.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_sale_order_line.png">
 		</div>
 	</div>
 </section>
@@ -875,7 +1118,7 @@
 			<p class="oe_slogan">If you want to create product while importing sale order line then you have to select import with "Name".</p>
 			
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_product_so.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_sale_order_line.png">
 		</div>
 	</div>
 </section>
@@ -885,7 +1128,16 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Order Line View.</p>
 			<p class="oe_slogan">After importing CSV/XLS with "Take Details From The Product" option then you can see the imported product details is taken from already created product.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_product_so.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_sale_order_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the imported product details is taken from already created product with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_sale_order_line.png">
 		</div>
 	</div>
 </section>
@@ -894,8 +1146,17 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Take Details From The XLS File" option then you can see the imported product details is taken from XLS file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_xls_so.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_xls_so.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_sale_order_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_sale_order_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the imported product details is taken from xls file with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_sale_order_line.png">
 		</div>
 	</div>
 </section>
@@ -904,8 +1165,17 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Take Details With Adapted Pricelist" option then you can see the imported product details is taken with adapted pricelist.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_xls_so_pricelist.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_xls_so_pricelist.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="8_sale_order_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="9_sale_order_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan"> You can see the imported product details is taken from adapted pricelist with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="10_sale_order_line.png">
 		</div>
 	</div>
 </section>
@@ -928,8 +1198,8 @@
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import/Update Product Template </b></p>
 			<p class="oe_slogan"> <b> Data File Sample. </b> </p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_product_11.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_product_11_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_xml_product_template.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_xml_product_template.png">
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">Name</dt>
 				<dd style="color: #31708f;">- Name of the product.</dd>
@@ -966,7 +1236,21 @@
 				<dd style="color: #31708f;"> Product new attributes are separated by ';' </dd>
 				<dd style="color: #31708f;"> Product new attribute line is seprated by '#' </dd>
 				<dd style="color: #31708f;"> Note: Ex. Product Name - 'SHIRT' , Product Attributes - 'Size:XL;XXL#Color:Red;White' in that 'Size & Color' is an attributes, 'XL,XXL' & 'Red,White' is a value, attributes & value are separated by ':', new attributes are separated by ';' , 'Size:XL;XXL' & 'Color:Red;White' is a separate attribute line and it is separated by '#'.  </dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
 		</div>
 	</div>
 </section>
@@ -976,7 +1260,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Product Template Menu</p>
 			<p class="oe_slogan">Menu for importing data of product template.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part6.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_product_template.png">
 		</div>
 	</div>
 </section>
@@ -987,7 +1271,7 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Product Variants Wizard with Attributes </p>
 			<p class="oe_slogan">In this wizard you have to tick 'Import Variants' for upload properly formated XLS file which you want to import for upload new product variants or update data of existing product.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part8_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_product_template.png">
 		</div>
 	</div>
 </section>
@@ -995,8 +1279,8 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Created Product Variants View</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part8_2.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Created Product Variants View with Custom Fields</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_product_template.png">
 		</div>
 	</div>
 </section>
@@ -1006,7 +1290,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Product Template Wizard without Attributes </p>
 			<p class="oe_slogan"> In this wizard you have to upload properly formated XLS file which you want to import for upload new product or update data of existing product. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part7.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_product_template.png">
 		</div>
 	</div>
 </section>
@@ -1015,7 +1299,7 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Created Product Template View </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part8.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_product_template.png">
 		</div>
 	</div>
 </section>
@@ -1025,7 +1309,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> You can update product by search product by their "Name" or "Internal Reference(Code)" or "Barcode" </p>
 			<p class="oe_slogan">If you added value on column that field will be updated rest other you can put blank and we have to keep format of the file same as current.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part9.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_product_template.png">
 		</div>
 	</div>
 </section>
@@ -1033,8 +1317,8 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product After Updated Data is Displayed. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="part10.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product After Updated Data is Displayed with Custom Fields. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_product_template.png">
 		</div>
 	</div>
 </section>
@@ -1044,7 +1328,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Products With Vendor</b> </p>
 			 <p class="oe_slogan"><b>Data File Sample.</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_final_excel.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="xml_supplier_info.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				  <dt style="color:#31708f;">VENDOR </dt>
@@ -1057,7 +1341,29 @@
 				  <dd style="color:#31708f;">- Quantity of Above Selected Product.</dd>
 				  <dt style="color:#31708f;">PRICE </dt>
 				  <dd style="color:#31708f;">- Price of Above Selected Product.</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 				</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
 		</div>
 	</div>
 </section>
@@ -1067,7 +1373,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Supplier Info Menu.</p>
 			<p class="oe_slogan"> Menu for importing data of Supplier. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_menu_import.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_supplier_info.png">
 		</div>
 	</div>
 </section>
@@ -1079,7 +1385,7 @@
 			<p class="oe_slogan">In this wizard you have to upload properly formated XLS file you want to import.</p>
 			<p class="oe_slogan">While importing Supplier Info, If you want to create product which is not available in your system then select first option, It will create new product and link supplier info with it.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_import_instead.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_supplier_info.png">
 		</div>
 	</div>
 </section>
@@ -1089,7 +1395,7 @@
 		<div>
 			<p class="oe_slogan">If you want to just link supplier info with exsiting product you can go for the second option.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_image.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_supplier_info.png">
 		</div>
 	</div>
 </section>
@@ -1099,7 +1405,16 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Created Product View.</p>
 			<p class="oe_slogan">This is the view of newly created product template. It will work in the same way with other products also.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_entry_creation.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_supplier_info.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the imported supplier details is taken from xls/csv file with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_supplier_info.png">
 		</div>
 	</div>
 </section>
@@ -1122,8 +1437,8 @@
 			<p class="oe_slogan"> <strong>Data File Sample.</strong> </p>
 			<p class="oe_slogan"> <b>Given below is the sample of import file to upload product,It is mandatory to use given format to create XLS file.</b> </p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_data_file_for_varaint.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="variant_detail_for_import_varaint.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_xml_product_variant.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_xml_product_variant.png">
 			<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">Name</dt>
 				<dd style="color: #31708f;">-Name of Product</dd>
@@ -1163,7 +1478,22 @@
 				<dd style="color: #31708f;">-True/False for purchase product.</dd>
 				<dt style="color: #31708f;">On Hand Quantity</dt>
 				<dd style="color: #31708f;">-On hand quantity of product.</dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -1173,7 +1503,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Configuration of Product Variant </p>
 			<p class="oe_slogan"> Figure shows the access right given to user then user can see the 'Import Product Varaint' menu. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="access_right_fir varaint_import.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1183,7 +1513,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product Variant Menu </p>
 			<p class="oe_slogan"> Figure shows the menu for importing data of Product variants. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="menu_variant_import.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1193,7 +1523,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product Variant Wizard </p>
 			<p class="oe_slogan"> In this wizard you have to upload properly formated XLS file which you want to import for upload new product or update data of existing product. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="Wizard_import_variant.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1202,8 +1532,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Product Variant View</p>
-			<p class="oe_slogan">Figure shows the products variant created from given data file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="view_product_variants.png">
+			<p class="oe_slogan">Figure shows the products variant created from given data file with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1212,7 +1542,7 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> You can update product by search product by their "Barcode" or "Internal Reference(Code)" </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="update_view_wizard_Variant.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1221,7 +1551,7 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Product After Updated Data is Displayed. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="variant_list_view.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_product_variant.png">
 		</div>
 	</div>
 </section>
@@ -1333,8 +1663,8 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Incoming Shipment/Delivery Order/Internal Transfer</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<p class="oe_slogan">You can import Incoming Shipment/Delivery Order/Internal Transfer from Picking Type.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="picking_csv.png">
+			<p class="oe_slogan">You can import Incoming Shipment/Delivery Order/Internal Transfer from Picking Type with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="xml_picking.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">NAME</dt>
@@ -1351,7 +1681,30 @@
 				<dd style="color: #31708f;">- Quantity for the above product.</dd>
 				<dt style="color: #31708f;">LOT Number</dt>
 				<dd style="color: #31708f;">- LOT number for the above product.</dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 				</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -1362,7 +1715,7 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Incoming Shipment/Delivery Order Menu.</p>
 			<p class="oe_slogan">Menu for importing data of Incoming Shipment/Delivery Order.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_picking_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_picking.png">
 		</div>
 	</div>
 </section>
@@ -1372,7 +1725,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Incoming Shipment/Delivery Order Wizard.</p>
 			<p class="oe_slogan">In this wizard you have to upload properly formated XLS and CSV file you want to import.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_picking_wizard.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_picking.png">
 		</div>
 	</div>
 </section>
@@ -1382,7 +1735,16 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Delivery Order View.</p>
 			
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="picking_form_view.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_picking.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see delivery order view with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_picking.png">
 		</div>
 	</div>
 </section>
@@ -1401,16 +1763,19 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Purchase Order</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<p class="oe_slogan">You have 3 different options to import purchase order.</p>
+			<p class="oe_slogan">You have 3 different options to import purchase order with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_purchase_order.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_purchase_order.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_tax.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_purchase_order.png">
+
+			<p class="oe_slogan"><strong>Custom Fields Format</strong></p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="custom_purchase_order.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">PURCHASE ID</dt>
@@ -1436,7 +1801,30 @@
 				<dd style="color: #31708f;">-Tax for the product</dd>
 				<dt style="color: #31708f;">DATE</dt>
 				<dd style="color: #31708f;">- Date of purchase order.</dd>
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">The "PURCHASE ID" should be same, as you can see in the image, "PURCHASE ID" is same for different product list.This defines single order with different product lines.</p>
 			<p class="oe_slogan">Tax column is important you have to add "Tax column" though there is no need of adding tax.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
@@ -1451,7 +1839,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Purchase Order Menu.</p>
 			<p class="oe_slogan">Menu for importing data of Purchase Orders.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_order_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_purchase_order.png">
 		</div>
 	</div>
 </section>
@@ -1472,16 +1860,7 @@
 			<p class="oe_slogan">You have also option to import products by it's Name/ Barcode or Code(Internal Reference).</p>
 			<p class="oe_slogan">If you want to create product while importing purchase order then you have to select import with "Name".</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="pur_wizard.png">
-		</div>
-	</div>
-</section>
-
-<section class="oe_container lead">
-	<div>
-		<div>
-			<p class="oe_slogan">After importing CSV/XLS with "Import Draft Purchase" option then you can see the purchase order is in RFQ stage and Sequence(Purchase Order number) is same as we given in CSV/XLS file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_validate_csv.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_purchase_order.png">
 		</div>
 	</div>
 </section>
@@ -1491,7 +1870,25 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Purchase Order Tree View.</p>
 			<p class="oe_slogan">This is the tree view of purchase order created from given data file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="pur_tree_view.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_purchase_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">After importing CSV/XLS with "Import Draft Purchase" option then you can see the purchase order is in RFQ stage and Sequence(Purchase Order number) is same as we given in CSV/XLS file.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_purchase_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the purchase order is in RFQ stage and Sequence(Purchase Order number) is same as we given in CSV/XLS file with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_purchase_order.png">
 		</div>
 	</div>
 </section>
@@ -1500,8 +1897,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Confirm Purchase Automatically With Import" option then you can see the purchase order is in Purchase Order stage. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_order_open_stage_option.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_order_open_stage_invoice.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_purchase_order.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_purchase_order.png">
 		</div>
 	</div>
 </section>
@@ -1510,10 +1907,19 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Use System Default Sequence Number" option then name field will follow the system sequence.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="purchase_wizard_default.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="8_purchase_order.png">
 
 			<p class="oe_slogan">If all taxes are found in system then purchase order will be generated.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="pur_right_tax.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="9_purchase_order.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">All taxes are found in system then purchase order will be generated with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="10_purchase_order.png">
 		</div>
 	</div>
 </section>
@@ -1537,24 +1943,24 @@
 			<p class="oe_slogan">If you want to import product with "Take Details From The Product" option then follow given XLS format.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_product_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_po_line.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_product_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_po_line.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel_product_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_po_line.png">
 			
-			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format.</p>
+			<p class="oe_slogan">If you want to import product with "Take Details From The XLS File" option then follow given XLS format with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_code_xls_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_purchase_order_line.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_barcode_xls_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_purchase_order_line.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_excel_po_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_purchase_order_line.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color:#31708f;">PRODUCT</dt>
@@ -1565,11 +1971,34 @@
 				  <dd style="color:#31708f;">- UOM for above product.</dd>
 				  <dt style="color:#31708f;">PRICE</dt>
 				  <dd style="color:#31708f;">- Price for above product.</dd>
-				 <dt style="color:#31708f;">DESCRIPTION</dt>
+				  <dt style="color:#31708f;">DESCRIPTION</dt>
 				  <dd style="color:#31708f;">- Description of product</dd>
 				  <dt style="color:#31708f;">TAX</dt>
 				  <dd style="color:#31708f;">-Tax for product</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 			<p class="oe_slogan">If there is need of adding "Tax" you can add it but if there is no need of adding "Tax" you have to leave it blank.</p>
 			<p class="oe_slogan">1. When code is selected in Import option, please select file that contains code of products.</p>
 			<p class="oe_slogan">2. When barcode is selected in Import option, please select file that contains barcode of products.</p>
@@ -1583,7 +2012,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Purchase Order Lines Menu.</p>
 			<p class="oe_slogan">Menu for importing data of Purchase Order Lines.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_record_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_purchase_order_line.png">
 		</div>
 	</div>
 </section>
@@ -1602,7 +2031,7 @@
 			<p class="oe_slogan">If you want to create product while importing purchase order line then you have to select import with "Name".</p>
 			
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_product_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_purchase_order_line.png">
 		</div>
 	</div>
 </section>
@@ -1613,7 +2042,17 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Purchase Order Line View.</p>
 			<p class="oe_slogan">After importing CSV/XLS with "Take Details From The Product" option then you can see the imported product details is taken from already created product.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_product_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_purchase_order_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the imported product details is taken from already created product with custom fields.</p>
+			<br/>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_purchase_order_line.png">
 		</div>
 	</div>
 </section>
@@ -1622,8 +2061,18 @@
 	<div>
 		<div>
 			<p class="oe_slogan">If you select "Take Details From The XLS File" option then you can see the imported product details is taken from XLS file.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_wizard_xls_po.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_record_xls_po.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_purchase_order_line.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_purchase_order_line.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see the imported product details is taken from XLS file with custom fields.</p>
+			<br/>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_purchase_order_line.png">
 		</div>
 	</div>
 </section>
@@ -1634,8 +2083,8 @@
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import/Update Partners</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="partner_excel.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="partner_excel1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_xml_partner.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_xml_partner.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">NAME</dt>
@@ -1676,7 +2125,22 @@
 				<dd style="color: #31708f;">- Days for customer's payment term.</dd>
 				<dt style="color: #31708f;">VENDOR PAYMENT TERMS</dt>
 				<dd style="color: #31708f;">- Days for vendor's payment term.</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_total_amount</dt>
+				<dd style="color: #31708f;">-Total amount for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -1687,7 +2151,7 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Partners Menu.</p>
 			<p class="oe_slogan">Menu for importing data of Partners.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_partner_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_partner.png">
 		</div>
 	</div>
 </section>
@@ -1696,9 +2160,8 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Partner Wizard.</p>
-			<p class="oe_slogan">In this wizard you have to
-					upload properly formated XLS or CSV file you want to import for create partner or update partner data.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_partner_wizard.png">
+			<p class="oe_slogan">In this wizard you have to upload properly formated XLS or CSV file you want to import for create partner or update partner data.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_partner.png">
 		</div>
 	</div>
 </section>
@@ -1707,8 +2170,16 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Created Partner Kanban View.</p>
-			
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="kanban_view_partner.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_partner.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see imported partners with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_partner.png">
 		</div>
 	</div>
 </section>
@@ -1718,7 +2189,16 @@
 		<div>
 			
 			<p class="oe_slogan">Kanban view of partner after update partner data.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_19.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_partner.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see update partners details with custom fields.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_partner.png">
 		</div>
 	</div>
 </section>
@@ -1739,7 +2219,7 @@
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Bill of Material</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="bom_excel.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="xml_bom.png">
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color:#31708f;">Main Product Name</dt>
 				  <dd style="color:#31708f;">- Product Name </dd>
@@ -1750,10 +2230,33 @@
 				  <dt style="color:#31708f;">Product of Material</dt>
 				  <dd style="color:#31708f;">- Name of the the product used in manufacturing of main product .</dd>
 				  <dt style="color:#31708f;">Quantity of sub product</dt>
-				  <dd style="color:#31708f;">- Quantity of material product.</dd>
+				  <dd style="color:#31708f;">- Quantity of material product</dd>
 				  <dt style="color:#31708f;">Unit of Measurement</dt>
-				  <dd style="color:#31708f;">-UOM for sub product .</dd>
+				  <dd style="color:#31708f;">-UOM for sub product</dd>
+				  <dt style="color: #31708f;">x_partner_id@name</dt>
+				  <dd style="color: #31708f;">-Name of partner for custom field</dd>
+				  <dt style="color: #31708f;">x_partner_ids@name</dt>
+				  <dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				  <dt style="color: #31708f;">x_color</dt>
+				  <dd style="color: #31708f;">-Name of color for custom field</dd>
+				  <dt style="color: #31708f;">x_notes</dt>
+				  <dd style="color: #31708f;">-Notes for custom field</dd>
+				  <dt style="color: #31708f;">x_amount</dt>
+				  <dd style="color: #31708f;">-Amount for custom field</dd>
+				  <dt style="color: #31708f;">x_bool</dt>
+				  <dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -1763,7 +2266,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bill Of Material Menu.</p>
 			<p class="oe_slogan">Menu for importing data of Bill of Material.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_bom_menu.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_bom.png">
 		</div>
 	</div>
 </section>
@@ -1773,7 +2276,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Bill of Material Wizard.</p>
 			<p class="oe_slogan">In this wizard you have to upload properly formated CSV or XLS file you want to import with BOM type.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="import_bom_wizard.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_bom.png">
 		</div>
 	</div>
 </section>
@@ -1783,8 +2286,17 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Bill Of Material View </p>
 			<p class="oe_slogan"> This is tree and form view of BOM from given data file. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="bom_view.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="bom_form_view.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_bom.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_bom.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan">You can see BOM from given data file with custom field.</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_bom.png">
 		</div>
 	</div>
 </section>
@@ -1807,13 +2319,13 @@
 			<p class="oe_slogan">You have 3 different options to Import Sale Pricelist.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_3.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_sale_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_2.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_sale_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_sale_pricelist.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">PRICELIST NAME</dt>
@@ -1842,7 +2354,30 @@
 
 				<dt style="color: #31708f;">AMOUNT</dt>
 				<dd style="color: #31708f;">- Define price which will use for computation.</dd>
+
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
 		</div>
 	</div>
 </section>
@@ -1853,7 +2388,7 @@
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Pricelist Menu.</p>
 			<p class="oe_slogan">Menu for importing data of sale pricelist.</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_4.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_sale_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1872,7 +2407,25 @@
 			<p class="oe_slogan">You have option to import products by select type for pricelist computation.</p>
 			
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_5.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_sale_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Sale Pricelist View</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_sale_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Sale Pricelist View with Custom Fields</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_sale_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1882,8 +2435,8 @@
 		<div>
 			
 			<p class="oe_slogan">When you select 'Formula' in computation type then at that time you need to add some extra columns in your CSV or XLS file as shown in below image.</p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_formula_0.png">
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_formula_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_xml_sale_pricelist.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_xml_sale_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1891,9 +2444,26 @@
 <section class="oe_container lead">
 	<div>
 		<div>
-			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Sale Pricelist View.</p>
-			
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="sale_pricelist_6.png">
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Import Sale Pricelist Wizard</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_sale_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Sale Pricelist View</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="6_sale_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;">Sale Pricelist View with Custom Fields</p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="7_sale_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1903,16 +2473,16 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Vendor Pricelist</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<p class="oe_slogan">You have 3 different options to Import Vendor Pricelist.</p>
+			<p class="oe_slogan">You have 3 different options to Import Vendor Pricelist with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_3.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_vendor_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_2.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_vendor_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_vendor_pricelist.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">VENDOR</dt>
@@ -1941,7 +2511,31 @@
 
 				<dt style="color: #31708f;">DELAY</dt>
 				<dd style="color: #31708f;">- Define delay.</dd>
+
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -1951,7 +2545,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Vendor Pricelist Menu. </p>
 			<p class="oe_slogan"> Menu for importing data of vendor pricelist. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_4.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_vendor_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1967,7 +2561,7 @@
 			<p class="oe_slogan">You have option to import products variant by it's Name/ Barcode or Code(Internal Reference).</p>
 			
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_5.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_vendor_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1976,8 +2570,16 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Vendor Pricelist View. </p>
-			
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="vendor_pricelist_6.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_vendor_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Vendor Pricelist View with Custom Fields. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_vendor_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -1987,16 +2589,16 @@
 		<div>
 			<p class="oe_slogan" style="color: #2875aa;font-size: 35px;font-style: italic;font-weight:bolder;"> <b>Import Product Pricelist</b> </p>
 			<p class="oe_slogan"><b>Data File Sample.</b></p>
-			<p class="oe_slogan">You have 3 different options to Import Product Pricelist.</p>
+			<p class="oe_slogan">You have 3 different options to Import Product Pricelist with custom fields.</p>
 			<p class="oe_slogan" style="color: #5082c4;"><b>If you are using only numeric value for Internal ref or Barcode field then please make sure the cell type/format is Text/Character</b></p>
 			<p class="oe_slogan"><strong>Import with Code.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_3.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="code_product_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Barcode.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_2.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="barcode_product_pricelist.png">
 			
 			<p class="oe_slogan"><strong>Import with Name.</strong></p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_1.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="name_product_pricelist.png">
 			
 				<dl style="padding-left: 30px;text-align:left">
 				<dt style="color: #31708f;">PRODUCT NAME</dt>
@@ -2016,7 +2618,31 @@
 
 				<dt style="color: #31708f;">END DATE</dt>
 				<dd style="color: #31708f;">- Define end date.</dd>
+
+				<dt style="color: #31708f;">x_partner_id@name</dt>
+				<dd style="color: #31708f;">-Name of partner for custom field</dd>
+				<dt style="color: #31708f;">x_partner_ids@name</dt>
+				<dd style="color: #31708f;">-Multiple tags of color for custom field</dd>
+				<dt style="color: #31708f;">x_color</dt>
+				<dd style="color: #31708f;">-Name of color for custom field</dd>
+				<dt style="color: #31708f;">x_notes</dt>
+				<dd style="color: #31708f;">-Notes for custom field</dd>
+				<dt style="color: #31708f;">x_amount</dt>
+				<dd style="color: #31708f;">-Amount for custom field</dd>
+				<dt style="color: #31708f;">x_bool</dt>
+				<dd style="color: #31708f;">-Boolean field for custom field</dd>
 			</dl>
+
+			<p class="oe_slogan" style="font-size: 20px;"><b> Important Notes For Custom Field </b></p>
+			<p class="oe_slogan">1. "Many2one_field" replace with technical name of field @name = field name of related model of Many2one For Ex: partner_id@name</p>
+			<p class="oe_slogan">2. "Many2many_field" replace with technical name of field @name = field name of related model of Many2many For Ex: partner_ids@name</p>
+			<p class="oe_slogan">3. "Char_field" replace with technical name of field </p>
+			<p class="oe_slogan">4. "Text_field" replace with technical name of field </p>
+			<p class="oe_slogan">5. "Int_field" replace with technical name of field </p>
+			<p class="oe_slogan">6. "Float_field" replace with technical name of field </p>
+			<p class="oe_slogan">7. "Boolean_field" replace with technical name of field </p>
+			<p class="oe_slogan">8. "Selection_field" replace with technical name of field </p>
+
 		</div>
 	</div>
 </section>
@@ -2026,7 +2652,7 @@
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Import Product Pricelist Menu </p>
 			<p class="oe_slogan"> Menu for importing data of product pricelist. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_4.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="1_product_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -2038,7 +2664,7 @@
 			<p class="oe_slogan"><strong>1. Import Product By :</strong></p>
 			<p class="oe_slogan">You have option to import products by it's Name/ Barcode or Code(Internal Reference).</p>
 			<br/>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_5.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="2_product_pricelist.png">
 		</div>
 	</div>
 </section>
@@ -2047,7 +2673,25 @@
 	<div>
 		<div>
 			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product Pricelist View. </p>
-			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="product_pricelist_6.png">
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="3_product_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product Pricelist Form View. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="4_product_pricelist.png">
+		</div>
+	</div>
+</section>
+
+<section class="oe_container lead">
+	<div>
+		<div>
+			<p class="oe_slogan" style="color: #49a3fe;font-size: 35px;font-style: italic;font-weight:bolder;"> Product Pricelist View with Custom Fields. </p>
+			<img class="img-border img-responsive thumbnail mb16" style="border: 3px solid black;" src="5_product_pricelist.png">
 		</div>
 	</div>
 </section>

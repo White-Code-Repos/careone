@@ -9,6 +9,8 @@ from odoo import models, fields, exceptions, api, _
 import time
 from datetime import date, datetime
 import io
+import re 
+
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -29,14 +31,40 @@ try:
 except ImportError:
 	_logger.debug('Cannot `import base64`.')
 
+class product_template_inherit(models.Model):
+	_inherit = "product.template"
+
+	is_import = fields.Boolean("import records" ,default = False)
+
+class product_product_inherit(models.Model):
+	_inherit = "product.product"
+
+	is_import = fields.Boolean("import records" ,default = False)	
+
+
 class gen_product(models.TransientModel):
 	_name = "gen.product"
+	_description = "Gen Product"
 
 	file = fields.Binary('File',required=True)
 	product_option = fields.Selection([('create','Create Product'),('update','Update Product')],string='Option', required=True,default="create")
 	product_search = fields.Selection([('by_code','Search By Code'),('by_name','Search By Name'),('by_barcode','Search By Barcode')],string='Search Product')
 	with_variant = fields.Boolean(string="Import Variants")
 	import_option = fields.Selection([('csv', 'CSV File'),('xls', 'XLS File')],string='Select',default='xls')
+
+	def check_splcharacter(self ,test):
+		# Make own character set and pass 
+		# this as argument in compile method
+	 
+		string_check= re.compile('@')
+	 
+		# Pass the string in search 
+		# method of regex object.
+		if(string_check.search(str(test)) == None):
+			return False
+		else: 
+			return True
+
 
 	def create_product(self, values):
 		product_obj = self.env['product.product']
@@ -151,7 +179,106 @@ class gen_product(models.TransientModel):
 				  'taxes_id':[(6,0,tax_id_lst)],
 				  'supplier_taxes_id':[(6,0,supplier_taxes_id)],
 				  'tracking': tracking, 
+				  'is_import' : True
 			  }
+		
+		main_list = values.keys()
+		count = 0
+		custom_vals = {}
+		for i in main_list:
+			count+= 1
+			model_id = self.env['ir.model'].search([('model','=','product.template')])			
+			if count > 14:
+				if type(i) == bytes:
+					normal_details = i.decode('utf-8')
+				else:
+					normal_details = i
+				if normal_details.startswith('x_'):
+					any_special = self.check_splcharacter(normal_details)
+					if any_special:
+						split_fields_name = normal_details.split("@")
+						technical_fields_name = split_fields_name[0]
+						many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+						if many2x_fields.id:
+							if many2x_fields.ttype in ['many2one','many2many']: 
+								if many2x_fields.ttype =="many2one":
+									if values.get(i):
+										fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+										if fetch_m2o.id:
+											custom_vals.update({
+												technical_fields_name: fetch_m2o.id
+												})
+										else:
+											raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+								if many2x_fields.ttype =="many2many":
+									m2m_value_lst = []
+									if values.get(i):
+										if ';' in values.get(i):
+											m2m_names = values.get(i).split(';')
+											for name in m2m_names:
+												m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+												if not m2m_id:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+												m2m_value_lst.append(m2m_id.id)
+
+										elif ',' in values.get(i):
+											m2m_names = values.get(i).split(',')
+											for name in m2m_names:
+												m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+												if not m2m_id:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+												m2m_value_lst.append(m2m_id.id)
+
+										else:
+											m2m_names = values.get(i).split(',')
+											m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+											if not m2m_id:
+												raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+											m2m_value_lst.append(m2m_id.id)
+									custom_vals.update({
+										technical_fields_name : m2m_value_lst
+										})		
+							else:
+								raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                                                                                                        						
+						else:
+							raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+					else:
+						normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+						if normal_fields.id:
+							if normal_fields.ttype ==  'boolean':
+								custom_vals.update({
+									normal_details : values.get(i)
+									})
+							elif normal_fields.ttype == 'char':
+								custom_vals.update({
+									normal_details : values.get(i)
+									})								
+							elif normal_fields.ttype == 'float':
+								if values.get(i) == '':
+									float_value = 0.0
+								else:
+									float_value = float(values.get(i)) 
+								custom_vals.update({
+									normal_details : float_value
+									})                              
+							elif normal_fields.ttype == 'integer':
+								if values.get(i) == '':
+									int_value = 0
+								else:
+									int_value = int(values.get(i)) 
+								custom_vals.update({
+									normal_details : int_value
+									})   								
+							elif normal_fields.ttype == 'selection':
+								custom_vals.update({
+									normal_details : values.get(i)
+									})								
+							elif normal_fields.ttype == 'text':
+								custom_vals.update({
+									normal_details : values.get(i)
+									})								
+						else:
+							raise Warning(_('"%s" This custom field is not available in system') % normal_details)
 		
 		if self.with_variant and self.product_option == 'create':
 			vals.update({'attribute_line_ids':[] })
@@ -161,14 +288,20 @@ class gen_product(models.TransientModel):
 				for pair in atr_value:
 					temp = pair.split(':')
 					attr = temp[0]
-					attr_values = temp[1].split(';')
+					string_check_semicoma= re.compile(';')
+					string_check_coma= re.compile(',')
+					# Pass the string in search 
+					# method of regex object.
+					if string_check_semicoma.search(str(temp[1])):
+						attr_values = temp[1].split(';')
+					elif string_check_semicoma.search(str(temp[1])):
+						attr_values = temp[1].split(',')
+					else:
+						attr_values = temp[1]
 					val_list = []
-					
-					
 					for att in attr_values:
 						if att == '':
-							raise Warning(_('Please give the values after ;'))
-					
+							raise Warning(_('Please give the values after ;'))					
 					attribute = self.env['product.attribute'].search([['name','=',attr]],limit=1)
 					if not attribute:
 						if attr in ('color','colour','Color','Colour'):
@@ -190,24 +323,17 @@ class gen_product(models.TransientModel):
 									'name':val,
 									'attribute_id':attribute.id 
 									})
-						
-						
-						attribute_value = self.env['product.attribute.value'].search([('name','=',val), ('attribute_id', '=', attr)], limit=1)
-						if not attribute_value:
-							if attribute_value.attribute_id.name != attr:
-								attribute_value = self.env['product.attribute.value'].create({
-                                        'name':val,
-                                        'attribute_id':attribute.id 
-                                        })
-								
 						val_list.append(attribute_value.id)
 
 					vals['attribute_line_ids'].append((0,0,{
 							'attribute_id':attribute.id,
 							'value_ids':[(6,0,val_list)]
 							}))
-
 				res = self.env['product.template'].create(vals)
+				res.update(custom_vals)
+				res.update({
+					'is_import' : True
+					})
 				res._create_variant_ids()
 				for var in res.product_variant_ids:
 					var.write({
@@ -220,13 +346,13 @@ class gen_product(models.TransientModel):
 
 
 		res = product_obj.create(vals)
-
+		res.product_tmpl_id.update(custom_vals)
+		res.product_tmpl_id.update({
+			'is_import' : True
+			})
 		return res
 
 	def import_product(self):
-
-
-
 		if self.import_option == 'csv':
 			res = {}
 			keys = ['name', 'default_code','categ_id','type','barcode','uom_id', 'uom_po_id','sale_price',
@@ -236,6 +362,7 @@ class gen_product(models.TransientModel):
 										'taxes_id',
 										'supplier_taxes_id',
 										'tracking']
+			old_keys = len(keys)
 			if self.with_variant:
 				keys.append('attributes')
 			try:
@@ -248,21 +375,26 @@ class gen_product(models.TransientModel):
 			except Exception:
 				raise exceptions.Warning(_("Invalid file!"))
 			values = {}
-			
 			for i in range(len(file_reader)):
 				field = list(map(str, file_reader[i]))
+				count = 1
+				count_keys = len(keys)
+				if self.with_variant:
+					count_keys +=1
+				if len(field) > count_keys:
+					for new_fields in field:
+						if count > count_keys :
+							keys.append(new_fields)
+						count+=1							
+
 				values = dict(zip(keys, field))
-				
 				if values:
 					if i == 0:
 						continue
 					else:
 						if self.product_option == 'create':
-							
 							res = self.create_product(values)
-							
 						else : 
-
 							product_obj = self.env['product.product']
 							product_categ_obj = self.env['product.category']
 							product_uom_obj = self.env['uom.uom']
@@ -270,7 +402,7 @@ class gen_product(models.TransientModel):
 							categ_type = False
 							barcode = False
 							uom_id = False
-							uom_po_id = False
+							uom_po_id = False							
 							if values.get('categ_id')=='':
 								pass
 							else:
@@ -370,6 +502,8 @@ class gen_product(models.TransientModel):
 							else:
 								tracking = 'none'
 
+
+
 							if self.product_search == 'by_code':
 
 								if not values.get('default_code'):
@@ -400,6 +534,102 @@ class gen_product(models.TransientModel):
 									if values.get('volume'):
 										product_ids.write({'volume': values.get('volume') or False})
 
+									main_list = values.keys()
+									count = 0
+									for i in main_list:
+										count+= 1
+										model_id = self.env['ir.model'].search([('model','=','product.template')])			
+										if count > 14:
+											if type(i) == bytes:
+												normal_details = i.decode('utf-8')
+											else:
+												normal_details = i
+											if normal_details.startswith('x_'):
+												any_special = self.check_splcharacter(normal_details)
+												if any_special:
+													split_fields_name = normal_details.split("@")
+													technical_fields_name = split_fields_name[0]
+													many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+													if many2x_fields.id:
+														if many2x_fields.ttype in ['many2one','many2many']: 
+															if many2x_fields.ttype =="many2one":
+																if values.get(i):
+																	fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+																	if fetch_m2o.id:
+																		product_ids.update({
+																			technical_fields_name: fetch_m2o.id
+																			})
+																	else:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+															if many2x_fields.ttype =="many2many":
+																m2m_value_lst = []
+																if values.get(i):
+																	if ';' in values.get(i):
+																		m2m_names = values.get(i).split(';')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	elif ',' in values.get(i):
+																		m2m_names = values.get(i).split(',')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	else:
+																		m2m_names = values.get(i).split(',')
+																		m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+																		m2m_value_lst.append(m2m_id.id)
+																product_ids.update({
+																	technical_fields_name : m2m_value_lst
+																	})
+														else:
+															raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)								
+													else:
+														raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+												else:
+													normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+													if normal_fields.id:
+														if normal_fields.ttype ==  'boolean':
+															product_ids.update({
+																normal_details : values.get(i)
+																})
+														elif normal_fields.ttype == 'char':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'float':
+															if values.get(i) == '':
+																float_value = 0.0
+															else:
+																float_value = float(values.get(i)) 
+															product_ids.update({
+																normal_details : float_value
+																})                              
+														elif normal_fields.ttype == 'integer':
+															if values.get(i) == '':
+																int_value = 0
+															else:
+																int_value = int(values.get(i)) 
+															product_ids.update({
+																normal_details : int_value
+																})   							
+														elif normal_fields.ttype == 'selection':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'text':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+													else:
+														raise Warning(_('"%s" This custom field is not available in system') % normal_details)
 
 									product_ids.write({
 										'taxes_id':[(6,0,tax_id_lst)],
@@ -435,6 +665,105 @@ class gen_product(models.TransientModel):
 										product_ids.write({'weight': values.get('weight') or False})
 									if values.get('volume'):
 										product_ids.write({'volume': values.get('volume') or False})
+
+									main_list = values.keys()
+									count = 0
+									for i in main_list:
+										count+= 1
+										model_id = self.env['ir.model'].search([('model','=','product.template')])			
+										if count > 14:
+											if type(i) == bytes:
+												normal_details = i.decode('utf-8')
+											else:
+												normal_details = i
+											if normal_details.startswith('x_'):
+												any_special = self.check_splcharacter(normal_details)
+												if any_special:
+													split_fields_name = normal_details.split("@")
+													technical_fields_name = split_fields_name[0]
+													many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+													if many2x_fields.id:
+														if many2x_fields.ttype in ['many2one','many2many']: 
+															if many2x_fields.ttype =="many2one":
+																if values.get(i):
+																	fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+																	if fetch_m2o.id:
+																		product_ids.update({
+																			technical_fields_name: fetch_m2o.id
+																			})
+																	else:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+															if many2x_fields.ttype =="many2many":
+																m2m_value_lst = []
+																if values.get(i):
+																	if ';' in values.get(i):
+																		m2m_names = values.get(i).split(';')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	elif ',' in values.get(i):
+																		m2m_names = values.get(i).split(',')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	else:
+																		m2m_names = values.get(i).split(',')
+																		m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+																		m2m_value_lst.append(m2m_id.id)
+																product_ids.update({
+																	technical_fields_name : m2m_value_lst
+																	})		
+														else:
+															raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)						
+													else:
+														raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+												else:
+													normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+													if normal_fields.id:
+														if normal_fields.ttype ==  'boolean':
+															product_ids.update({
+																normal_details : values.get(i)
+																})
+														elif normal_fields.ttype == 'char':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'float':
+															if values.get(i) == '':
+																float_value = 0.0
+															else:
+																float_value = float(values.get(i)) 
+															product_ids.update({
+																normal_details : float_value
+																})                              
+														elif normal_fields.ttype == 'integer':
+															if values.get(i) == '':
+																int_value = 0
+															else:
+																int_value = int(values.get(i)) 
+															product_ids.update({
+																normal_details : int_value
+																})   							
+														elif normal_fields.ttype == 'selection':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'text':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+													else:
+														raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+
+
 
 									product_ids.write({
 										'taxes_id':[(6,0,tax_id_lst)],
@@ -472,6 +801,103 @@ class gen_product(models.TransientModel):
 										product_ids.write({'volume': values.get('volume') or False})
 
 
+									main_list = values.keys()
+									count = 0
+									for i in main_list:
+										count+= 1
+										model_id = self.env['ir.model'].search([('model','=','product.template')])			
+										if count > 14:
+											if type(i) == bytes:
+												normal_details = i.decode('utf-8')
+											else:
+												normal_details = i
+											if normal_details.startswith('x_'):
+												any_special = self.check_splcharacter(normal_details)
+												if any_special:
+													split_fields_name = normal_details.split("@")
+													technical_fields_name = split_fields_name[0]
+													many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+													if many2x_fields.id:
+														if many2x_fields.ttype in ['many2one','many2many']:
+															if many2x_fields.ttype =="many2one":
+																if values.get(i):
+																	fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+																	if fetch_m2o.id:
+																		product_ids.update({
+																			technical_fields_name: fetch_m2o.id
+																			})
+																	else:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+															if many2x_fields.ttype =="many2many":
+																m2m_value_lst = []
+																if values.get(i):
+																	if ';' in values.get(i):
+																		m2m_names = values.get(i).split(';')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	elif ',' in values.get(i):
+																		m2m_names = values.get(i).split(',')
+																		for name in m2m_names:
+																			m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																			if not m2m_id:
+																				raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+																			m2m_value_lst.append(m2m_id.id)
+
+																	else:
+																		m2m_names = values.get(i).split(',')
+																		m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+																		m2m_value_lst.append(m2m_id.id)
+																product_ids.update({
+																	technical_fields_name : m2m_value_lst
+																	})	
+														else:
+															raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)															
+													else:
+														raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+												else:
+													normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+													if normal_fields.id:
+														if normal_fields.ttype ==  'boolean':
+															product_ids.update({
+																normal_details : values.get(i)
+																})
+														elif normal_fields.ttype == 'char':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'float':
+															if values.get(i) == '':
+																float_value = 0.0
+															else:
+																float_value = float(values.get(i)) 
+															product_ids.update({
+																normal_details : float_value
+																})                              
+														elif normal_fields.ttype == 'integer':
+															if values.get(i) == '':
+																int_value = 0
+															else:
+																int_value = int(values.get(i)) 
+															product_ids.update({
+																normal_details : int_value
+																})   							
+														elif normal_fields.ttype == 'selection':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+														elif normal_fields.ttype == 'text':
+															product_ids.update({
+																normal_details : values.get(i)
+																})								
+													else:
+														raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+
 									product_ids.write({
 										'taxes_id':[(6,0,tax_id_lst)],
 										'supplier_taxes_id':[(6,0,supplier_taxes_id)],
@@ -501,7 +927,7 @@ class gen_product(models.TransientModel):
 			for row_no in range(sheet.nrows):
 				val = {}
 				if row_no <= 0:
-					fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+					line_fields = list(map(lambda row:row.value.encode('utf-8'), sheet.row(row_no)))
 				else:
 					line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
 					l1 = ['0','1','2','3','4','5','6','7','8','9', '.']
@@ -510,11 +936,12 @@ class gen_product(models.TransientModel):
 						if l not in l1:
 							flag = True
 							break;
- 					
+					
 					if flag:
 						code = line[1]
 					else:
 						code = line[1][:-2]
+# 						code = str(int(float(line[1])))
 					
 					if self.product_option == 'create':
 						values.update( {
@@ -535,7 +962,14 @@ class gen_product(models.TransientModel):
 										})
 						if self.with_variant:
 							values.update({'attributes': line[14],})
-							
+						count = 0
+						for l_fields in line_fields:
+							if self.with_variant:							
+								if count > 14:
+									values.update({l_fields : line[count]})
+							elif count > 13:
+								values.update({l_fields : line[count]})
+							count+=1								
 						res = self.create_product(values)
 					else:
 						product_obj = self.env['product.product']
@@ -649,7 +1083,6 @@ class gen_product(models.TransientModel):
 								raise Warning(_('Please give Internal Reference for updating Products'))
 
 							product_ids = self.env['product.template'].search([('default_code','=', code)],limit=1)
-
 							if product_ids:
 								if categ_id != False:
 									product_ids.write({'categ_id': categ_id[0].id or False})
@@ -671,6 +1104,104 @@ class gen_product(models.TransientModel):
 									product_ids.write({'weight': line[9] or False})
 								if line[10]:
 									product_ids.write({'volume': line[10] or False})
+
+								count = 0
+								for l_fields in line_fields:
+								# main_list = values.keys()
+								# for i in main_list:
+									model_id = self.env['ir.model'].search([('model','=','product.template')])			
+									if count > 14:
+										if type(i) == bytes:
+											normal_details = l_fields.decode('utf-8')
+										else:
+											normal_details = l_fields
+										if normal_details.startswith('x_'):
+											any_special = self.check_splcharacter(normal_details)
+											if any_special:
+												split_fields_name = normal_details.split("@")
+												technical_fields_name = split_fields_name[0]
+												many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+												if many2x_fields.id:
+													if many2x_fields.ttype in ['many2one','many2many']:
+														if many2x_fields.ttype =="many2one":
+															if line[count]:
+																fetch_m2o = self.env[many2x_fields.relation].search([('name','=',line[count])])
+																if fetch_m2o.id:
+																	product_ids.update({
+																		technical_fields_name: fetch_m2o.id
+																		})
+																else:
+																	raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , line[count]))
+														if many2x_fields.ttype =="many2many":
+															m2m_value_lst = []
+															if line[count]:
+																if ';' in line[count]:
+																	m2m_names = line[count].split(';')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																elif ',' in line[count]:
+																	m2m_names = line[count].split(',')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																else:
+																	m2m_names = line[count].split(',')
+																	m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																	if not m2m_id:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , m2m_names))
+																	m2m_value_lst.append(m2m_id.id)
+															product_ids.update({
+																technical_fields_name : m2m_value_lst
+																})	
+													else:
+														raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)															
+												else:
+													raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+											else:
+												normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+												if normal_fields.id:
+													if normal_fields.ttype ==  'boolean':
+														product_ids.update({
+															normal_details : line[count]
+															})
+													elif normal_fields.ttype == 'char':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'float':
+														if values.get(i) == '':
+															float_value = 0.0
+														else:
+															float_value = float(values.get(i)) 
+														product_ids.update({
+															normal_details : float_value
+															})                              
+													elif normal_fields.ttype == 'integer':
+														if values.get(i) == '':
+															int_value = 0
+														else:
+															int_value = int(values.get(i)) 
+														product_ids.update({
+															normal_details : int_value
+															})   							
+													elif normal_fields.ttype == 'selection':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'text':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+												else:
+													raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+									count+= 1
 
 								product_ids.write({
 									'taxes_id':[(6,0,tax_id_lst)],
@@ -707,6 +1238,105 @@ class gen_product(models.TransientModel):
 								if line[10]:
 									product_ids.write({'volume': line[10] or False})
 
+								count = 0
+								for l_fields in line_fields:
+								# main_list = values.keys()
+								# for i in main_list:
+									model_id = self.env['ir.model'].search([('model','=','product.template')])			
+									if count > 14:
+										if type(i) == bytes:
+											normal_details = l_fields.decode('utf-8')
+										else:
+											normal_details = l_fields
+										if normal_details.startswith('x_'):
+											any_special = self.check_splcharacter(normal_details)
+											if any_special:
+												split_fields_name = normal_details.split("@")
+												technical_fields_name = split_fields_name[0]
+												many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+												if many2x_fields.id:
+													if  many2x_fields.ttype in ['many2many','many2one']:
+														if many2x_fields.ttype =="many2one":
+															if line[count]:
+																fetch_m2o = self.env[many2x_fields.relation].search([('name','=',line[count])])
+																if fetch_m2o.id:
+																	product_ids.update({
+																		technical_fields_name: fetch_m2o.id
+																		})
+																else:
+																	raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , line[count]))
+														if many2x_fields.ttype =="many2many":
+															m2m_value_lst = []
+															if line[count]:
+																if ';' in line[count]:
+																	m2m_names = line[count].split(';')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																elif ',' in line[count]:
+																	m2m_names = line[count].split(',')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																else:
+																	m2m_names = line[count].split(',')
+																	m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																	if not m2m_id:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , m2m_names))
+																	m2m_value_lst.append(m2m_id.id)
+															product_ids.update({
+																technical_fields_name : m2m_value_lst
+																})		
+													else:
+														raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)														
+												else:
+													raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+											else:
+												normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+												if normal_fields.id:
+													if normal_fields.ttype ==  'boolean':
+														product_ids.update({
+															normal_details : line[count]
+															})
+													elif normal_fields.ttype == 'char':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'float':
+														if values.get(i) == '':
+															float_value = 0.0
+														else:
+															float_value = float(values.get(i)) 
+														product_ids.update({
+															normal_details : float_value
+															})                              
+													elif normal_fields.ttype == 'integer':
+														if values.get(i) == '':
+															int_value = 0
+														else:
+															int_value = int(values.get(i)) 
+														product_ids.update({
+															normal_details : int_value
+															})   							
+													elif normal_fields.ttype == 'selection':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'text':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+												else:
+													raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+									count+= 1
+
+
 								product_ids.write({
 									'taxes_id':[(6,0,tax_id_lst)],
 									'supplier_taxes_id':[(6,0,supplier_taxes_id)],
@@ -742,6 +1372,104 @@ class gen_product(models.TransientModel):
 								if line[10]:
 									product_ids.write({'volume': line[10] or False})
 
+								count = 0
+								for l_fields in line_fields:
+								# main_list = values.keys()
+								# for i in main_list:
+									model_id = self.env['ir.model'].search([('model','=','product.template')])			
+									if count > 14:
+										if type(i) == bytes:
+											normal_details = l_fields.decode('utf-8')
+										else:
+											normal_details = l_fields
+										if normal_details.startswith('x_'):
+											any_special = self.check_splcharacter(normal_details)
+											if any_special:
+												split_fields_name = normal_details.split("@")
+												technical_fields_name = split_fields_name[0]
+												many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+												if many2x_fields.id:
+													if many2x_fields.ttype in ['many2one','many2many']:
+														if many2x_fields.ttype =="many2one":
+															if line[count]:
+																fetch_m2o = self.env[many2x_fields.relation].search([('name','=',line[count])])
+																if fetch_m2o.id:
+																	product_ids.update({
+																		technical_fields_name: fetch_m2o.id
+																		})
+																else:
+																	raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , line[count]))
+														if many2x_fields.ttype =="many2many":
+															m2m_value_lst = []
+															if line[count]:
+																if ';' in line[count]:
+																	m2m_names = line[count].split(';')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																elif ',' in line[count]:
+																	m2m_names = line[count].split(',')
+																	for name in m2m_names:
+																		m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+																		if not m2m_id:
+																			raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+																		m2m_value_lst.append(m2m_id.id)
+
+																else:
+																	m2m_names = line[count].split(',')
+																	m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+																	if not m2m_id:
+																		raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , m2m_names))
+																	m2m_value_lst.append(m2m_id.id)
+															product_ids.update({
+																technical_fields_name : m2m_value_lst
+																})					
+													else:
+														raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)								
+												else:
+													raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+											else:
+												normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+												if normal_fields.id:
+													if normal_fields.ttype ==  'boolean':
+														product_ids.update({
+															normal_details : line[count]
+															})
+													elif normal_fields.ttype == 'char':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'float':
+														if values.get(i) == '':
+															float_value = 0.0
+														else:
+															float_value = float(values.get(i)) 
+														product_ids.update({
+															normal_details : float_value
+															})                              
+													elif normal_fields.ttype == 'integer':
+														if values.get(i) == '':
+															int_value = 0
+														else:
+															int_value = int(values.get(i)) 
+														product_ids.update({
+															normal_details : int_value
+															})   							
+													elif normal_fields.ttype == 'selection':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+													elif normal_fields.ttype == 'text':
+														product_ids.update({
+															normal_details : line[count]
+															})								
+												else:
+													raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+									count+= 1
+
 								product_ids.write({
 									'taxes_id':[(6,0,tax_id_lst)],
 									'supplier_taxes_id':[(6,0,supplier_taxes_id)],
@@ -750,4 +1478,3 @@ class gen_product(models.TransientModel):
 							else:
 								raise Warning(_('%s product not found.') % line[4])  
 			return res
-

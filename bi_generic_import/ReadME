@@ -88,5 +88,46 @@ issue solve:-
 ==>13.0.2.4: Fixed the issue when give same values with different attributes it will create now.
 ==>13.0.2.5: Fixed the issue when updating internal refference it's taken float value.
 
+Date 28th sept 2020
+version 13.0.2.6
+improvement added :-
+	- added custom fields in invoice , invoice line , bank statement , sale order lines , sale order , purchase order line , purchase order , mrp ,  partner , account payment , stock picking , pricelist , product , product variant , supplier info.
+
+Date 1st oct 2020
+version 13.0.2.7
+improvement added :-
+	 added dashboard for generic import , show which records imported , and show list all module 
+
+Date 1st oct 2020
+version 13.0.2.8
+issue solve:-
+	- in csv where we are using ; in multiple value after reopen csv its value goes seperate in columns so our module given error while added extra column.
+	- multiple argument pass in warning given traceback , resolve it.
 
 
+Date 8th oct 2020
+version 13.0.2.9
+issue solve:-
+	- if float and integer value getting false then gives traceback
+	- partner import issue solve form csv
+
+=> 13.0.3.0 : Improved an index with custom fields and add dashboard.
+improvement added in index :-
+	- added custom fields in invoice , invoice line , bank statement , sale order lines , sale order , purchase order line , purchase order , mrp ,  partner , account payment , stock picking , pricelist , product , product variant , supplier info.
+
+Date 14/10/2020
+Version 13.0.4.0
+improvement :-
+	- added bank statement and journal entry in dashboard
+	- change button view
+	- added all object in that another menu
+	- change string of dashboard
+
+=> 13.0.4.1 : Improved an index as per latest changes.
+
+Date 15/10/2020
+Version 13.0.4.2
+improvement :-
+	- string show properly
+
+=> 13.0.4.3 : Improved an index as per latest changes.

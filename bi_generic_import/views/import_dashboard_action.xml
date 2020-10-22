@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Open sale order view -->
+	<record id="action_sale_order_import_view" model="ir.actions.act_window">
+		<field name="name">Sale Order</field>
+		<field name="res_model">sale.order</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="sale.view_order_tree"/>
+		<field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a sale order
+			</p><p>
+				
+			</p>
+		</field>
+	</record>
+
+	<!-- Open purchase order view -->
+	<record id="action_purchase_order_import_view" model="ir.actions.act_window">
+		<field name="name">Purchase Order</field>
+		<field name="res_model">purchase.order</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="purchase.purchase_order_tree"/>
+		<field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a purchase order
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+	<!-- Open Invoice/bills view -->
+	<record id="action_invoice_bills_import_view" model="ir.actions.act_window">
+		<field name="name">Invoice / Bills</field>
+		<field name="res_model">account.move</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True),('type', 'in', ['in_invoice','out_invoice','out_refund','in_refund'])]</field>
+		<field name="view_id" ref="account.view_invoice_tree"/>
+		<field name="search_view_id" ref="account.view_account_invoice_filter"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a Invoice / Bills
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+	<!-- Open shippment/delivery view -->
+	<record id="action_picking_import_view" model="ir.actions.act_window">
+		<field name="name">Delivery / shippment</field>
+		<field name="res_model">stock.picking</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="stock.vpicktree"/>
+		<field name="search_view_id" ref="stock.view_picking_internal_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a Delivery / Shipment
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+	<!-- Open mrp view -->
+	<record id="action_mrp_import_view" model="ir.actions.act_window">
+		<field name="name">Bill Of material</field>
+		<field name="res_model">mrp.bom</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="mrp.mrp_bom_tree_view"/>
+		<field name="search_view_id" ref="mrp.view_mrp_bom_filter"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a Bill Of Material
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+
+	<!-- Open partner view -->
+	<record id="action_partner_import_view" model="ir.actions.act_window">
+		<field name="name">Partner / vendor</field>
+		<field name="res_model">res.partner</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="base.res_partner_kanban_view"/>
+		<field name="search_view_id" ref="base.view_res_partner_filter"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a partner
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+	<!-- Open pricelist view -->
+	<record id="action_pricelist_import_view" model="ir.actions.act_window">
+		<field name="name">pricelist</field>
+		<field name="res_model">product.pricelist</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="product.product_pricelist_view_tree"/>
+		<field name="search_view_id" ref="product.product_pricelist_view_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a pricelist
+			</p><p>
+				
+			</p>
+		</field>
+	</record>	
+
+
+	<!-- Open template view -->
+	<record id="action_product_template_import_view" model="ir.actions.act_window">
+		<field name="name">Product Template</field>
+		<field name="res_model">product.template</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="product.product_template_kanban_view"/>
+		<field name="search_view_id" ref="product.product_template_search_view"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a product
+			</p><p>
+				
+			</p>
+		</field>
+	</record>		
+
+
+	<!-- Open variant view -->
+	<record id="action_product_product_import_view" model="ir.actions.act_window">
+		<field name="name">Product Varaint</field>
+		<field name="res_model">product.product</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="product.product_product_tree_view"/>
+		<field name="search_view_id" ref="product.product_search_form_view"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a product Variant
+			</p><p>
+				
+			</p>
+		</field>
+	</record>
+
+	<!-- Open variant view -->
+	<record id="action_stock_inventory_import_view" model="ir.actions.act_window">
+		<field name="name">Inventory</field>
+		<field name="res_model">stock.inventory</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="stock.view_inventory_tree"/>
+		<field name="search_view_id" ref="stock.view_inventory_filter"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a Inventory Adjustment
+			</p><p>
+				
+			</p>
+		</field>
+	</record>
+
+	<record id="action_account_payment_import_view" model="ir.actions.act_window">
+		<field name="name">Payment</field>
+		<field name="res_model">account.payment</field>
+		<field name="view_mode">tree,kanban,form</field>
+		<field name="context">{}</field>
+		<field name="domain">[('is_import', '=', True)]</field>
+		<field name="view_id" ref="account.view_account_payment_tree"/>
+		<field name="search_view_id" ref="account.view_account_payment_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a payment
+			</p><p>
+				
+			</p>
+		</field>
+	</record>
+</odoo>

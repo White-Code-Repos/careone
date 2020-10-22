@@ -10,7 +10,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMA
 from datetime import date, datetime
 from odoo.exceptions import Warning
 from odoo import models, fields, exceptions, api, _
-
+import re
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -37,9 +37,11 @@ class purchase_order(models.Model):
     custom_seq = fields.Boolean('Custom Sequence')
     system_seq = fields.Boolean('System Sequence')
     purchase_name = fields.Char('Purchase Name')
+    is_import = fields.Boolean("import records" ,default = False)    
 
 class gen_purchase(models.TransientModel):
     _name = "gen.purchase"
+    _description = "Gen Purchase"
 
     file = fields.Binary('File')
     sequence_opt = fields.Selection([('custom', 'Use Excel/CSV Sequence Number'), ('system', 'Use System Default Sequence Number')], string='Sequence Option',default='custom')
@@ -49,6 +51,18 @@ class gen_purchase(models.TransientModel):
         string="Purchase Stage Option", default='draft')
     import_prod_option = fields.Selection([('name', 'Name'),('code', 'Code'),('barcode', 'Barcode')],string='Import Product By ',default='name')        
 
+    def check_splcharacter(self ,test):
+        # Make own character set and pass 
+        # this as argument in compile method
+     
+        string_check= re.compile('@')
+     
+        # Pass the string in search 
+        # method of regex object.
+        if(string_check.search(str(test)) == None):
+            return False
+        else: 
+            return True
     
     def make_purchase(self, values):
         purchase_obj = self.env['purchase.order']
@@ -89,8 +103,104 @@ class gen_purchase(models.TransientModel):
                 'date_order':pur_date,
                 'custom_seq': True if values.get('seq_opt') == 'custom' else False,
                 'system_seq': True if values.get('seq_opt') == 'system' else False,
-                'purchase_name' : values.get('purchase_no')
+                'purchase_name' : values.get('purchase_no'),
+                'is_import' :True
             })
+            main_list = values.keys()
+            # count = 0
+            for i in main_list:
+                model_id = self.env['ir.model'].search([('model','=','purchase.order')])           
+                # if count > 19:
+                if type(i) == bytes:
+                    normal_details = i.decode('utf-8')
+                else:
+                    normal_details = i
+                if normal_details.startswith('x_'):
+                    any_special = self.check_splcharacter(normal_details)
+                    if any_special:
+                        split_fields_name = normal_details.split("@")
+                        technical_fields_name = split_fields_name[0]
+                        many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                        if many2x_fields.id:
+                            if many2x_fields.ttype in ['many2one','many2many']:
+                                if many2x_fields.ttype =="many2one":
+                                    if values.get(i):
+                                        fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+                                        if fetch_m2o.id:
+                                            pur_id.update({
+                                                technical_fields_name: fetch_m2o.id
+                                                })
+                                        else:
+                                            raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+                                if many2x_fields.ttype =="many2many":
+                                    m2m_value_lst = []
+                                    if values.get(i):
+                                        if ';' in values.get(i):
+                                            m2m_names = values.get(i).split(';')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        elif ',' in values.get(i):
+                                            m2m_names = values.get(i).split(',')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        else:
+                                            m2m_names = values.get(i).split(',')
+                                            m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                            if not m2m_id:
+                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+                                            m2m_value_lst.append(m2m_id.id)
+                                    pur_id.update({
+                                        technical_fields_name : m2m_value_lst
+                                        })       
+                            else:
+                                raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                                                      
+                        else:
+                            raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                    else:
+                        normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                        if normal_fields.id:
+                            if normal_fields.ttype ==  'boolean':
+                                pur_id.update({
+                                    normal_details : values.get(i)
+                                    })
+                            elif normal_fields.ttype == 'char':
+                                pur_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'float':
+                                if values.get(i) == '':
+                                    float_value = 0.0
+                                else:
+                                    float_value = float(values.get(i)) 
+                                pur_id.update({
+                                    normal_details : float_value
+                                    })                              
+                            elif normal_fields.ttype == 'integer':
+                                if values.get(i) == '':
+                                    int_value = 0
+                                else:
+                                    int_value = int(values.get(i)) 
+                                pur_id.update({
+                                    normal_details : int_value
+                                    })                               
+                            elif normal_fields.ttype == 'selection':
+                                pur_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'text':
+                                pur_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                        else:
+                            raise Warning(_('"%s" This custom field is not available in system') % normal_details)            
         self.make_purchase_line(values, pur_id)
         return pur_id
 
@@ -224,7 +334,15 @@ class gen_purchase(models.TransientModel):
                 raise exceptions.Warning(_("Invalid file!"))
             values = {}
             for i in range(len(file_reader)):
+                #                val = {}
                 field = list(map(str, file_reader[i]))
+                count = 1
+                count_keys = len(keys)
+                if len(field) > count_keys:
+                    for new_fields in field:
+                        if count > count_keys :
+                            keys.append(new_fields)                
+                        count+=1                   
                 values = dict(zip(keys, field))
                 if values:
                     if i == 0:
@@ -256,7 +374,7 @@ class gen_purchase(models.TransientModel):
                 val = {}
                 tax_line = ''
                 if row_no <= 0:
-                    fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+                    line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
                 else:
                     line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
                     if line[9] != '':
@@ -276,6 +394,11 @@ class gen_purchase(models.TransientModel):
                                    'seq_opt':self.sequence_opt
 
                                    })
+                    count = 0
+                    for l_fields in line_fields:
+                        if(count > 10):
+                            values.update({l_fields : line[count]})                        
+                        count+=1                        
                     res = self.make_purchase(values)
                     purchase_ids.append(res)
                     
