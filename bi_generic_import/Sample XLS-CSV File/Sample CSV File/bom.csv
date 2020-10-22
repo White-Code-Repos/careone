@@ -1,5 +1,5 @@
-Main Product,Ref ,Qty ,Material Product,Quantity of Material Product,UOM
-Table Kit,zzzz,1,Bolt,1,Units
-Desk Combination,aaaaaa,3,Office Chair Black,2,Units
-Desk Combination,dfsdf,1,Corner Desk Black,1,Units
-Desk Combination,asdas,1,Desk Stand with Screen,1,Units
+Main Product,Ref ,Qty ,Material Product,Quantity of Material Product,UOM,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool
+Table Kit,zzzz,1,Bolt,1,Units,Agrolait,"Axeloer,Camptocamp",red,red,10000,1
+Desk Combination,aaaaaa,3,Office Chair Black,2,Units,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0
+Desk Combination,dfsdf,1,Corner Desk Black,1,Units,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1
+Desk Combination,asdas,1,Desk Stand with Screen,1,Units,Agrolait,"Axeloer,Camptocamp",white,white,10000,0

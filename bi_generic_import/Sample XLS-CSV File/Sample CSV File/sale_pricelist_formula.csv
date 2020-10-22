@@ -1,5 +1,5 @@
-PRICELIST NAME,CURRENCY,APPLY ON,CATEGORY / VARIANT / PRODUCT,MIN. QTY,START DATE,END DATE,BASED ON,PRICE DISCOUNT,SURCHARGE,ROUNDING,MIN MARGIN,MAX MARGIN,OTHER PRICELIST
-Agrolait,INR,Global,,5,2018-10-01,2018-10-05,Public pricelist,10,11,12,13,14,
-Camptocamp,USD,Product Category,Internal,3,2018-10-02,2018-10-06,Cost,11,12,13,14,15,
-China Export,EUR,Product,Chair floor protection,4,2018-10-03,2018-11-07,Other Pricelist,12,13,14,15,16,Camptocamp
-The Jackson Group,INR,Product Variant,Office Chair,7,2018-10-04,2018-11-08,Cost,13,14,15,16,17,
+PRICELIST NAME,CURRENCY,APPLY ON,CATEGORY / VARIANT / PRODUCT,MIN. QTY,START DATE,END DATE,BASED ON,PRICE DISCOUNT,SURCHARGE,ROUNDING,MIN MARGIN,MAX MARGIN,OTHER PRICELIST,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool
+Agrolait,INR,Global,,5,2018-10-01,2018-10-05,Public pricelist,10,11,12,13,14,,Agrolait,"Axeloer,Camptocamp",red,red,10000,1
+Camptocamp,USD,Product Category,Internal,3,2018-10-02,2018-10-06,Cost,11,12,13,14,15,,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0
+China Export,EUR,Product,Chair floor protection,4,2018-10-03,2018-11-07,Other Pricelist,12,13,14,15,16,Camptocamp,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1
+The Jackson Group,INR,Product Variant,Office Chair,7,2018-10-04,2018-11-08,Cost,13,14,15,16,17,,Agrolait,"Axeloer,Camptocamp",white,white,10000,0

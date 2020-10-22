@@ -6,9 +6,10 @@ import tempfile
 import binascii
 import xlrd
 import io
+import re
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import date, datetime
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning ,ValidationError
 from odoo import models, fields, exceptions, api, _
 
 import logging
@@ -47,10 +48,12 @@ class AccountMove(models.Model):
     custom_seq = fields.Boolean('Custom Sequence')
     system_seq = fields.Boolean('System Sequence')
     invoice_name = fields.Char('Invocie Name')
+    is_import = fields.Boolean("import records" ,default = False)    
 
 
 class gen_inv(models.TransientModel):
     _name = "gen.invoice"
+    _description = "Generic Invoice"
 
     file = fields.Binary('File')
     account_opt = fields.Selection([('default', 'Use Account From Configuration product/Property'), ('custom', 'Use Account From Excel/CSV')], string='Account Option', required=True, default='default')
@@ -62,7 +65,18 @@ class gen_inv(models.TransientModel):
         string="Invoice Stage Option", default='draft')
     import_prod_option = fields.Selection([('name', 'Name'),('code', 'Code'),('barcode', 'Barcode')],string='Import Product By ',default='name')        
 
-
+    def check_splcharacter(self ,test):
+        # Make own character set and pass 
+        # this as argument in compile method
+     
+        string_check= re.compile('@')
+     
+        # Pass the string in search 
+        # method of regex object.
+        if(string_check.search(str(test)) == None):
+            return False
+        else: 
+            return True
     
     def make_invoice(self, values):
         invoice_obj = self.env['account.move']
@@ -116,11 +130,11 @@ class gen_inv(models.TransientModel):
                         self.make_invoice_line(values, invoice_search)
                         return invoice_search
                     else:
-                        raise Warning(_('User(Salesperson) is different for "%s" .\n Please define same.') % values.get('invoice'))
+                        raise ValidationError(_('User(Salesperson) is different for "%s" .\n Please define same.') % (values.get('invoice')))
                 else:
-                    raise Warning(_('Currency is different for "%s" .\n Please define same.') % values.get('invoice'))
+                    raise ValidationError(_('Currency is different for "%s" .\n Please define same.') % (values.get('invoice')))
             else:
-                raise Warning(_('Customer name is different for "%s" .\n Please define same.') % values.get('invoice'))
+                raise ValidationError(_('Customer name is different for "%s" .\n Please define same.') % (values.get('invoice')))
         else:
             partner_id = self.find_partner(values.get('customer'))
             currency_id = self.find_currency(values.get('currency'))
@@ -221,6 +235,7 @@ class gen_inv(models.TransientModel):
                 'currency_id' : currency_id.id,
                 'user_id':salesperson_id.id,
                 'name':name,
+                'is_import' : True,
                 'custom_seq': True if values.get('seq_opt') == 'custom' else False,
                 'system_seq': True if values.get('seq_opt') == 'system' else False,
                 'type' : type_inv,
@@ -229,6 +244,101 @@ class gen_inv(models.TransientModel):
                 'name' : values.get('invoice'),
 
             })
+            main_list = values.keys()
+            # count = 0
+            for i in main_list:
+                model_id = self.env['ir.model'].search([('model','=','account.move')])           
+                # if count > 19:
+                if type(i) == bytes:
+                    normal_details = i.decode('utf-8')
+                else:
+                    normal_details = i
+                if normal_details.startswith('x_'):
+                    any_special = self.check_splcharacter(normal_details)
+                    if any_special:
+                        split_fields_name = normal_details.split("@")
+                        technical_fields_name = split_fields_name[0]
+                        many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                        if many2x_fields.id:
+                            if many2x_fields.ttype in ['many2one','many2many']:
+                                if many2x_fields.ttype =="many2one":
+                                    if values.get(i):
+                                        fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+                                        if fetch_m2o.id:
+                                            inv_id.update({
+                                                technical_fields_name: fetch_m2o.id
+                                                })
+                                        else:
+                                            raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , values.get(i)))
+                                if many2x_fields.ttype =="many2many":
+                                    m2m_value_lst = []
+                                    if values.get(i):
+                                        if ';' in values.get(i):
+                                            m2m_names = values.get(i).split(';')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        elif ',' in values.get(i):
+                                            m2m_names = values.get(i).split(',')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        else:
+                                            m2m_names = values.get(i).split(',')
+                                            m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                            if not m2m_id:
+                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , m2m_names))
+                                            m2m_value_lst.append(m2m_id.id)
+                                    inv_id.update({
+                                        technical_fields_name : m2m_value_lst
+                                        })     
+                            else:
+                                raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                             
+                        else:
+                            raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                    else:
+                        normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                        if normal_fields.id:
+                            if normal_fields.ttype ==  'boolean':
+                                inv_id.update({
+                                    normal_details : values.get(i)
+                                    })
+                            elif normal_fields.ttype == 'char':
+                                inv_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'float':
+                                if values.get(i) == '':
+                                    float_value = 0.0
+                                else:
+                                    float_value = float(values.get(i)) 
+                                inv_id.update({
+                                    normal_details : float_value
+                                    })                              
+                            elif normal_fields.ttype == 'integer':
+                                if values.get(i) == '':
+                                    int_value = 0
+                                else:
+                                    int_value = int(values.get(i)) 
+                                inv_id.update({
+                                    normal_details : int_value
+                                    })                            
+                            elif normal_fields.ttype == 'selection':
+                                inv_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'text':
+                                inv_id.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                        else:
+                            raise Warning(_('"%s" This custom field is not available in system') % normal_details)            
             self.make_invoice_line(values, inv_id)
             return inv_id
 
@@ -484,12 +594,19 @@ class gen_inv(models.TransientModel):
             invoice_ids=[]
             for i in range(len(file_reader)):
                 field = list(map(str, file_reader[i]))
+                count = 1
+                count_keys = len(keys)
+                if len(field) > count_keys:
+                    for new_fields in field:
+                        if count > count_keys :
+                            keys.append(new_fields)                
+                        count+=1              
                 values = dict(zip(keys, field))
                 if values:
                     if i == 0:
                         continue
                     else:
-                        values.update({'type':self.type,'option':self.import_option,'seq_opt':self.sequence_opt})
+                        values.update({'seq_opt':self.sequence_opt})
                         res = self.make_invoice(values)
                         invoice_ids.append(res)
 
@@ -513,56 +630,62 @@ class gen_inv(models.TransientModel):
             for row_no in range(sheet.nrows):
                 val = {}
                 if row_no <= 0:
-                    fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+                    line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
                 else:
                     line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-                    if self.account_opt == 'default':
-                        if len(line) == 13:
-                            a1 = int(float(line[11]))
-                            a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                            date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                            values.update( {'invoice':line[0],
-                                            'customer': line[1],
-                                            'currency': line[2],
-                                            'product': line[3].split('.')[0],
-                                            'quantity': line[5],
-                                            'uom': line[6],
-                                            'description': line[7],
-                                            'price': line[8],
-                                            'salesperson': line[9],
-                                            'tax': line[10],
-                                            'date': date_string,
-                                            'seq_opt':self.sequence_opt,
-                                            'disc':line[12]
-                                            })
-                        elif len(line) > 13:
-                            raise Warning(_('Your File has extra column please refer sample file'))
-                        else:
-                            raise Warning(_('Your File has less column please refer sample file'))
-                    else:
-                        if len(line) == 13:
-                            a1 = int(float(line[11]))
-                            a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                            date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                            values.update( {'invoice':line[0],
-                                            'customer': line[1],
-                                            'currency': line[2],
-                                            'product': line[3].split('.')[0],
-                                            'account': line[4],
-                                            'quantity': line[5],
-                                            'uom': line[6],
-                                            'description': line[7],
-                                            'price': line[8],
-                                            'salesperson': line[9],
-                                            'tax': line[10],
-                                            'date': date_string,
-                                            'seq_opt':self.sequence_opt,
-                                            'disc':line[12]
-                                            })
-                        elif len(line) > 13:
-                            raise Warning(_('Your File has extra column please refer sample file'))
-                        else:
-                            raise Warning(_('Your File has less column please refer sample file'))
+                    # if self.account_opt == 'default':
+                    #     if len(line) == 13:
+                    a1 = int(float(line[11]))
+                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    values.update( {'invoice':line[0],
+                                    'customer': line[1],
+                                    'currency': line[2],
+                                    'product': line[3].split('.')[0],
+                                    'account': line[4],                                            
+                                    'quantity': line[5],
+                                    'uom': line[6],
+                                    'description': line[7],
+                                    'price': line[8],
+                                    'salesperson': line[9],
+                                    'tax': line[10],
+                                    'date': date_string,
+                                    'seq_opt':self.sequence_opt,
+                                    'disc':line[12]
+                                    })
+                    count = 0
+                    for l_fields in line_fields:
+                        if(count > 12):
+                            values.update({l_fields : line[count]})                        
+                        count+=1                     
+                    #     elif len(line) > 13:
+                    #         raise Warning(_('Your File has extra column please refer sample file'))
+                    #     else:
+                    #         raise Warning(_('Your File has less column please refer sample file'))
+                    # else:
+                    #     if len(line) == 13:
+                        #     a1 = int(float(line[11]))
+                        #     a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                        #     date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                        #     values.update( {'invoice':line[0],
+                        #                     'customer': line[1],
+                        #                     'currency': line[2],
+                        #                     'product': line[3].split('.')[0],
+                        #                     'account': line[4],
+                        #                     'quantity': line[5],
+                        #                     'uom': line[6],
+                        #                     'description': line[7],
+                        #                     'price': line[8],
+                        #                     'salesperson': line[9],
+                        #                     'tax': line[10],
+                        #                     'date': date_string,
+                        #                     'seq_opt':self.sequence_opt,
+                        #                     'disc':line[12]
+                        #                     })
+                        # elif len(line) > 13:
+                        #     raise Warning(_('Your File has extra column please refer sample file'))
+                        # else:
+                        #     raise Warning(_('Your File has less column please refer sample file'))
                     res = self.make_invoice(values)
                     invoice_ids.append(res)
 

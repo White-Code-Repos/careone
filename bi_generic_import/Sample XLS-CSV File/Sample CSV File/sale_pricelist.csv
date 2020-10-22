@@ -1,5 +1,5 @@
-PRICELIST NAME,CURRENCY,APPLY ON,CATEGORY / VARIANT / PRODUCT,MIN. QTY,START DATE,END DATE,COMPUTE PRICE,AMOUNT
-Agrolait,INR,Global,,5,2018-10-01,2018-10-05,Fix,100
-Camptocamp,INR,Product Category,Internal,3,2018-10-02,2018-10-06,Percentage,10
-China Export,INR,Product,Bolt,4,2018-10-03,2018-11-07,Percentage,50
-The Jackson Group,INR,Product Variant,Office Chair,7,2018-10-04,2018-11-08,Fix,200
+PRICELIST NAME,CURRENCY,APPLY ON,CATEGORY / VARIANT / PRODUCT,MIN. QTY,START DATE,END DATE,COMPUTE PRICE,AMOUNT,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool
+Agrolait,INR,Global,,5,2018-10-01,2018-10-05,Fix,100,Agrolait,"Axeloer,Camptocamp",red,red,10000,1
+Camptocamp,INR,Product Category,Internal,3,2018-10-02,2018-10-06,Percentage,10,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0
+China Export,INR,Product,Bolt,4,2018-10-03,2018-11-07,Percentage,50,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1
+The Jackson Group,INR,Product Variant,Office Chair,7,2018-10-04,2018-11-08,Fix,200,Agrolait,"Axeloer,Camptocamp",white,white,10000,0

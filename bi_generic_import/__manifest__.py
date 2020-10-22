@@ -3,7 +3,7 @@
 
 {
     'name': 'Odoo all import for Sales, Purchase, Invoice, Inventory, Pricelist, BOM, Payment, Bank Statement, Journal Entry, Picking, Product, Customer.',
-    'version': '13.0.2.5',
+    'version': '13.0.4.3',
     'sequence': 4,
     'summary': 'Odoo import Data Import All in one import Invoice import Sales import Inventory import Purchase import stock inventory import Picking import Product image import Customer import serial import lot import bank statement import journal entry import payment',
     'price': 149,
@@ -588,7 +588,9 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
     'live_test_url':'https://www.youtube.com/watch?v=bG7ImzFkSfo',
     'depends': ['base', 'sale_management', 'account','mrp', 'purchase', 'stock','product_expiry','bi_import_chart_of_accounts'],
     'data': [
-    	"security/import_security.xml",
+    		"security/import_security.xml",
+        	'security/ir.model.access.csv',    		
+    	     'data/data.xml',
              "views/account_invoice.xml",
              "views/purchase_invoice.xml",
              "views/sale.xml",
@@ -605,7 +607,9 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
              "views/supp_info.xml",
              "views/mrp.xml",
              "views/pricelist.xml",
-             "views/product_variant.xml"         
+             "views/product_variant.xml",
+             "views/import_dashboard_action.xml",             
+             "views/import_dashboard.xml",
              ],
 	'qweb': [
 		],
