@@ -4,10 +4,10 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="is_have_vehicle" invisible="1"/>
                 <field name="vehicle_id_sale" attrs="{'invisible': [('is_have_vehicle','!=', True)]}"/>
+                <field name="vehicle_state" attrs="{'invisible': [('is_have_vehicle','!=', True)]}"/>
             </xpath>
 
         </field>
@@ -24,4 +24,38 @@
 
         </field>
     </record>
+    <!-- Inherit Form View to Modify it -->
+    <record id="sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale_order_form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="service_delivery"/>
+            </xpath>
+            <xpath expr="//field[@name='vehicle_id']" position="after">
+                <field name="vehicle_state"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_policy']" position="after">
+                <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
+                       context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+                <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
+                       context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']" position="after">
+                <field name="validity_date" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}"/>
+            </xpath>
+
+        </field>
+    </record>
+
 </odoo>

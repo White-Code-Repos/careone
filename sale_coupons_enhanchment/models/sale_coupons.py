@@ -40,7 +40,7 @@ class SaleCoupon(models.Model):
         self.expiration_date = 0
 
         for coupon in self.filtered(lambda x: x.program_id.validity_duration > 0):
-            if not coupon.from_subscription or not coupon.expiration_date_2  : 
+            if not coupon.from_subscription or not coupon.expiration_date_2  :
                 coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
                 coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
             else:
@@ -88,4 +88,3 @@ class SaleCouponGenerate(models.TransientModel):
                 self.env['sale.coupon'].create(vals)
 
 
-    

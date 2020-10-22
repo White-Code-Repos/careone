@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
+from dateutil.relativedelta import relativedelta
 
 
 class CouponProgramInherit(models.Model):
@@ -13,10 +14,28 @@ class CouponProgramInherit(models.Model):
     nbr_coupons = fields.Integer(string="Number of Coupons", help="Number of coupons", default=1)
     partners_domain = fields.Char(string="Customer", default='[]')
     vehicles_domain = fields.Char(string="Vehicle", default='[]')
+    start_hour_generate = fields.Float(string="From", required=False, )
+    end_hour_generate = fields.Float(string="To", required=False, )
+    start_date_generate = fields.Date(string="From", required=False, )
+    end_date_generate = fields.Date(string="To", required=False, )
+    start_hour_use = fields.Float(string="From", required=False, )
+    end_hour_use = fields.Float(string="To", required=False, )
+    start_date_use = fields.Date(string="From", required=False, )
+    end_date_use = fields.Date(string="To", required=False, )
+    is_free_order = fields.Boolean(string="Allow Free Order", )
+    is_str = fields.Boolean(string="Saturday", )
+    is_sun = fields.Boolean(string="Sunday", )
+    is_mon = fields.Boolean(string="Monday", )
+    is_tus = fields.Boolean(string="Tuesday", )
+    is_wen = fields.Boolean(string="Wednesday", )
+    is_thur = fields.Boolean(string="Thursday", )
+    is_fri = fields.Boolean(string="Friday", )
 
     def generate_coupon(self):
         program = self
-        vals = {'program_id': program.id}
+        vals = {'program_id': program.id, 'is_free_order': program.is_free_order,
+                'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
+                'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
@@ -43,10 +62,69 @@ class CouponProgramInherit(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+
+    @api.model
+    def coupon_program_onchange(self):
+        today = datetime.today() + timedelta(hours=2)
+        real_time = datetime.now() + timedelta(hours=2)
+        current_time = real_time.time()
+        today_week_day = today.strftime("%A")
+        if today_week_day == 'Saturday':
+            return [('is_str', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+
+        elif today_week_day == 'Sunday':
+            return [('is_sun', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        elif today_week_day == 'Monday':
+            return [('is_mon', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        elif today_week_day == 'Tuesday':
+            return [('is_tus', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        elif today_week_day == 'Wednesday':
+            return [('is_wen', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        elif today_week_day == 'Thursday':
+            return [('is_thur', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        elif today_week_day == 'Friday':
+            return [('is_fri', '=', True), ('start_date_generate', '<=', today.date()),
+                    ('end_date_generate', '>=', today.date()),
+                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+
     coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-                                domain="[('program_type','=', 'coupon_program')]")
+                                domain=coupon_program_onchange)
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
+    size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
+                            related='vehicle_id.size')
+    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
+
+    def write(self, vals):
+        """Update the Vehicle Driver when existing Customer are updated."""
+        super(SaleOrder, self).write(vals)
+        if self.partner_id != self.vehicle_id.driver_id:
+            self.vehicle_id.driver_id = self.partner_id
+        return True
+
+    def action_cancel(self):
+        for coupon in self.env['sale.coupon'].search([('sale_order_id', '=', self.id)]):
+            coupon.unlink()
+        super(SaleOrder, self).action_cancel()
 
     def get_coupons_count(self):
         for quotation in self:
@@ -64,9 +142,10 @@ class SaleOrder(models.Model):
 
     def generate_coupon(self):
         program = self.coupon_id
-        vals = {'program_id': program.id,
-                'sale_order_id': self.id
-                }
+        vals = {'program_id': program.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
+                'is_free_order': program.is_free_order,
+                'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
+                'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
         if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
             for count in range(0, self.coupon_id.nbr_coupons):
                 self.env['sale.coupon'].create(vals)
@@ -88,11 +167,92 @@ class SaleOrder(models.Model):
                 self.env['sale.coupon'].create(vals)
         self.is_generate_coupon = True
 
+    def allow_generate_coupon(self):
+        for order in self:
+            order.is_allow_generate_coupon = False
+            if order.coupon_id and order.state == 'sale':
+                today = datetime.today() + timedelta(hours=2)
+                real_time = datetime.now() + timedelta(hours=2)
+                current_time = real_time.time()
+                if order.coupon_id.start_date_generate and order.coupon_id.end_date_generate:
+                    if order.coupon_id.start_date_generate <= today.date() <= order.coupon_id.end_date_generate:
+                        if order.coupon_id.start_hour_generate <= (
+                                current_time.hour + current_time.minute / 60) <= order.coupon_id.end_hour_generate:
+                            order.is_allow_generate_coupon = True
+
 
 class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
-
+    start_hour_use = fields.Float(string="From", required=False, )
+    end_hour_use = fields.Float(string="To", required=False, )
+    start_date_use = fields.Date(string="From", required=False, )
+    end_date_use = fields.Date(string="To", required=False, )
+    is_free_order = fields.Boolean(string="Allow Free Order", )
+    state = fields.Selection([
+        ('reserved', 'Reserved'),
+        ('new', 'Valid'),
+        ('used', 'Consumed'),
+        ('expired', 'Expired'),
+        ('cancel', 'Canceled')
+    ], required=True, default='new')
     sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order Ref", required=False, )
+    customer_source_id = fields.Many2one(comodel_name="res.partner", string="Customer Source", required=False, )
+    is_canceled = fields.Boolean(string="", )
+    is_expiration_date_changed = fields.Boolean(string="Change Expiration Date", )
+    expiration_date_edit = fields.Date(string="New Expiration Date", required=False, )
+    is_have_permission = fields.Boolean(string="", compute='get_user_permission')
+
+    @api.onchange('vehicle_id', 'partner_id')
+    def vehicle_onchange(self):
+        if self.partner_id:
+            return {'domain': {'vehicle_id': [('customer_id', '=', self.partner_id.id), ]}}
+        else:
+            return {'domain': {'vehicle_id': []}}
+
+    def get_user_permission(self):
+        for coupon in self:
+            users = []
+            current_login = self.env.user
+            group_security_id = self.env['res.groups'].search([('category_id.name', '=', 'Coupon Edition')],
+                                                              order='id desc',
+                                                              limit=1)
+
+            for user in group_security_id.users:
+                users.append(user)
+            if current_login in users:
+                coupon.is_have_permission = True
+            else:
+                coupon.is_have_permission = False
+
+    def _compute_expiration_date(self):
+        self.expiration_date = 0
+        for coupon in self:
+            if coupon.expiration_date_edit:
+                coupon.expiration_date = coupon.expiration_date_edit
+            else:
+                coupon.expiration_date = (
+                        coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+
+    def edit_date(self):
+        return {
+            'name': 'Expiration Date Edition',
+            'view_mode': 'form',
+            'res_model': 'date.edit',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'context': {
+                'default_coupon_id': self.id,
+            }}
+
+    def vehicle_state_default_get(self):
+        if self.program_id.validity_duration > 0:
+            return (self.create_date + relativedelta(days=self.program_id.validity_duration)).date()
+        else:
+            return 0
+
+    def cancel_coupon(self):
+        self.is_canceled = True
+        self.state = 'cancel'
 
 
 class Partner_inherit(models.Model):
@@ -117,7 +277,27 @@ class Partner_inherit(models.Model):
                 ['|', ('partner_id', '=', False),
                  ('partner_id', '=', rec.id),
                  ('state', '=', 'new'),
-                 ('program_id', '!=', False),
+                 ('program_id', '!=', False), ('customer_source_id', '=', rec.id),
+                 # ('customer_source_id', '=', False)
                  ])
 
             rec.coupons_ids = coupons
+
+
+class fleet_vehicle_inherit(models.Model):
+    _inherit = 'fleet.vehicle'
+    sale_order_count = fields.Integer(string="", compute='get_sales_count', required=False, )
+
+    def get_sales_count(self):
+        for vehicle in self:
+            sale_ids = self.env['sale.order'].search([('vehicle_id', '=', vehicle.id)])
+            vehicle.sale_order_count = len(sale_ids)
+
+    def action_view_sales(self):
+        return {
+            'name': 'Sales Order',
+            'view_mode': 'tree,form',
+            'res_model': 'sale.order',
+            'target': 'current',
+            'type': 'ir.actions.act_window',
+            'domain': [('vehicle_id', '=', self.id)]}

@@ -12,8 +12,23 @@
                             class="oe_highlight"/>
                 </header>
             </xpath>
+            <xpath expr="//field[@name='discount_apply_on']" position="before">
+                <field name="is_free_order"/>
+            </xpath>
             <xpath expr="//group[@name='validity']" position="after">
                 <!-- Add your fields or attributes here -->
+                <group name="generate_time" string="Generation Time">
+                    <group string="Date">
+                        <field name="start_date_generate"/>
+                        <field name="end_date_generate"/>
+
+                    </group>
+                    <group string="Time">
+                        <field name="start_hour_generate" widget="float_time"/>
+                        <field name="end_hour_generate" widget="float_time"/>
+                    </group>
+                </group>
+
                 <group name="coupons" string="Number of Coupons To Generate">
                     <field name="generation_type" widget="radio"/>
                     <field name="partners_domain" attrs="{'invisible': [('generation_type', '!=', 'nbr_customer')]}"
@@ -22,6 +37,25 @@
                            widget="domain" options="{'model': 'partner.vehicle'}"/>
                     <field name="nbr_coupons"/>
                     <!--                    attrs="{'invisible': [('generation_type', '!=', 'nbr_coupon')]}"-->
+                </group>
+                <group name="use_time" string="Using Time">
+                    <group string="Date">
+                        <field name="start_date_use"/>
+                        <field name="end_date_use"/>
+                    </group>
+                    <group string="Time">
+                        <field name="start_hour_use" widget="float_time"/>
+                        <field name="end_hour_use" widget="float_time"/>
+                    </group>
+                    <group string="Available Days">
+                        <field name="is_str"/>
+                        <field name="is_sun"/>
+                        <field name="is_mon"/>
+                        <field name="is_tus"/>
+                        <field name="is_wen"/>
+                        <field name="is_thur"/>
+                        <field name="is_fri"/>
+                    </group>
                 </group>
             </xpath>
             <xpath expr="//field[@name='order_count']/.." position="before">
@@ -83,7 +117,7 @@
             <xpath expr="//header" position="inside">
                 <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary"
                         type="object"
-                        attrs="{'invisible': ['|',('coupon_id', '=', False),('is_generate_coupon', '=', True)]}"/>
+                        attrs="{'invisible': ['|',('is_allow_generate_coupon', '=', False),('is_generate_coupon', '=', True)]}"/>
             </xpath>
             <xpath expr="//button[@name='preview_sale_order']" position="after">
                 <button name="action_view_coupons" type="object" class="oe_stat_button" icon="fa-ticket"
@@ -93,7 +127,7 @@
             </xpath>
             <xpath expr="//field[@name='customer_vehicle_id']" position="after">
                 <field name="coupon_id"/>
-                <!--                <field name="coupon_customer_id"/>-->
+                <field name="is_allow_generate_coupon" invisible="1"/>
                 <field name="is_generate_coupon" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='customer_vehicle_id']" position="attributes">
@@ -105,7 +139,56 @@
             <xpath expr="//field[@name='vehicle_id']" position="attributes">
                 <attribute name="context">{'default_driver_id': partner_id}</attribute>
             </xpath>
-
+            <xpath expr="//field[@name='vehicle_id']" position="after">
+                <field name="size"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="coupon_form_view_inherit" model="ir.ui.view">
+        <field name="name">coupon.form.inherit</field>
+        <field name="model">sale.coupon</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <group>
+                        <field name="code" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="expiration_date"/>
+                        <field name="is_expiration_date_changed" attrs="{'invisible':[('state','!=', 'new')]}"/>
+                        <field name="expiration_date_edit"
+                               attrs="{'invisible':['|',('is_expiration_date_changed','=', False),('state','!=', 'new')]}"/>
+                    </group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="vehicle_id"/>
+                        <field name="sale_order_id" readonly="1"/>
+                        <field name="sales_order_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="is_have_permission" invisible="1"/>
+                        <field name="is_free_order" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                    </group>
+                    <group name="use_time" string="Using Time">
+                        <group string="Date">
+                            <field name="start_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                            <field name="end_date_use" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                        </group>
+                        <group string="Time">
+                            <field name="start_hour_use" widget="float_time"
+                                   attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                            <field name="end_hour_use" widget="float_time"
+                                   attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name="is_canceled" invisible="1"/>
+                <button name="cancel_coupon" type="object" string="Cancel" class="oe_highlight"
+                        attrs="{'invisible': ['|',('is_canceled', '=', True),('state', '!=', 'new')]}"/>
+            </xpath>
         </field>
     </record>
     <record id="coupons_tree_inherit" model="ir.ui.view">
@@ -113,9 +196,13 @@
         <field name="model">sale.coupon</field>
         <field name="inherit_id" ref="sale_coupon.sale_coupon_view_tree"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_source_id" readonly="1"/>
                 <field name="sale_order_id" readonly="1"/>
+                <field name="sales_order_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
         </field>
@@ -138,13 +225,34 @@
                             <field name="code"/>
                             <field name="expiration_date"/>
                             <field name="program_id"/>
+                            <field name="partner_id"/>
+                            <field name="customer_source_id" readonly="1"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="sales_order_id" readonly="1"/>
                             <field name="state"/>
-                            <field name="partner_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>
             </xpath>
         </field>
     </record>
+    <!-- Inherit Form View to Modify it -->
+    <record id="fleet_vehicle_form_inherit" model="ir.ui.view">
+        <field name="name">fleet_vehicle_form_inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
 
+            <xpath expr="//button[@name='open_assignation_logs']" position="after">
+                <button name="action_view_sales"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-credit-card"
+                        attrs="{'invisible': [('sale_order_count', '=', 0)]}">
+                    <field name="sale_order_count" widget="statinfo" string="Sales"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
 </odoo>

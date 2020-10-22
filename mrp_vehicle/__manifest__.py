@@ -6,7 +6,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mrp','fleet','sale'],
+    'depends': ['base','mrp','fleet','sale','sales_fleet_service'],
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
