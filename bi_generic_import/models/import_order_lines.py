@@ -11,7 +11,7 @@ from odoo.exceptions import UserError, ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 import io
-
+import re
 try:
 	import xlrd
 except ImportError:
@@ -28,12 +28,25 @@ except ImportError:
 class order_line_wizard(models.TransientModel):
 
 	_name='order.line.wizard'
+	_description = "Order Line Wizard"
 
 	sale_order_file=fields.Binary(string="Select File")
 	import_option = fields.Selection([('csv', 'CSV File'),('xls', 'XLS File')],string='Select',default='csv')
 	import_prod_option = fields.Selection([('barcode', 'Barcode'),('code', 'Code'),('name', 'Name')],string='Import Product By ',default='name')
 	product_details_option = fields.Selection([('from_product','Take Details From The Product'),('from_xls','Take Details From The XLS File'),('from_pricelist','Take Details With Adapted Pricelist')],default='from_xls')
 
+	def check_splcharacter(self ,test):
+		# Make own character set and pass 
+		# this as argument in compile method
+	 
+		string_check= re.compile('@')
+	 
+		# Pass the string in search 
+		# method of regex object.
+		if(string_check.search(str(test)) == None):
+			return False
+		else: 
+			return True
 	
 	def import_sol(self):
 		if self.import_option == 'csv':
@@ -50,6 +63,13 @@ class order_line_wizard(models.TransientModel):
 			values = {}
 			for i in range(len(file_reader)):
 				field = list(map(str, file_reader[i]))
+				count = 1
+				count_keys = len(keys)
+				if len(field) > count_keys:
+					for new_fields in field:
+						if count > count_keys :
+							keys.append(new_fields)                
+						count+=1    				
 				values = dict(zip(keys, field))
 				if values:
 					if i == 0:
@@ -91,7 +111,7 @@ class order_line_wizard(models.TransientModel):
 			for row_no in range(sheet.nrows):
 				val = {}
 				if row_no <= 0:
-					fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+					line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
 				else:
 					line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
 					if self.product_details_option == 'from_product':
@@ -116,6 +136,11 @@ class order_line_wizard(models.TransientModel):
 										'quantity' : line[1],
 										'disc':line[6]
 									})  
+					count = 0
+					for l_fields in line_fields:
+						if(count > 6):
+							values.update({l_fields : line[count]})                        
+						count+=1   
 					res = self.create_order_line(values)
 		return res
 
@@ -160,6 +185,99 @@ class order_line_wizard(models.TransientModel):
 													'price_unit':product_id.lst_price,
 													'discount':values.get('disc')
 													})
+					main_list = values.keys()
+					for i in main_list:
+						model_id = self.env['ir.model'].search([('model','=','sale.order.line')])           
+						if type(i) == bytes:
+							normal_details = i.decode('utf-8')
+						else:
+							normal_details = i
+						if normal_details.startswith('x_'):
+							any_special = self.check_splcharacter(normal_details)
+							if any_special:
+								split_fields_name = normal_details.split("@")
+								technical_fields_name = split_fields_name[0]
+								many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+								if many2x_fields.id:
+									if many2x_fields.ttype in ['many2one','many2many']: 
+										if many2x_fields.ttype =="many2one":
+											if values.get(i):
+												fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+												if fetch_m2o.id:
+													order_lines.update({
+														technical_fields_name: fetch_m2o.id
+														})
+												else:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+										if many2x_fields.ttype =="many2many":
+											m2m_value_lst = []
+											if values.get(i):
+												if ';' in values.get(i):
+													m2m_names = values.get(i).split(';')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												elif ',' in values.get(i):
+													m2m_names = values.get(i).split(',')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												else:
+													m2m_names = values.get(i).split(',')
+													m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+													m2m_value_lst.append(m2m_id.id)
+											order_lines.update({
+												technical_fields_name : m2m_value_lst
+												})        
+									else:
+										raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                                                   
+								else:
+									raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+							else:
+								normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+								if normal_fields.id:
+									if normal_fields.ttype ==  'boolean':
+										order_lines.update({
+											normal_details : values.get(i)
+											})
+									elif normal_fields.ttype == 'char':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'float':
+										if values.get(i) == '':
+											float_value = 0.0
+										else:
+											float_value = float(values.get(i)) 
+										order_lines.update({
+											normal_details : float_value
+											})                              
+									elif normal_fields.ttype == 'integer':
+										if values.get(i) == '':
+											int_value = 0
+										else:
+											int_value = int(values.get(i)) 
+										order_lines.update({
+											normal_details : int_value
+											})                               
+									elif normal_fields.ttype == 'selection':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'text':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+								else:
+									raise Warning(_('"%s" This custom field is not available in system') % normal_details)                        					
 			else:
 				raise UserError(_('We cannot import data in validated or confirmed order.'))
 		
@@ -221,6 +339,96 @@ class order_line_wizard(models.TransientModel):
 							'discount':values.get('disc')
 							})
 						order_lines._onchange_discount()
+						main_list = values.keys()
+						for i in main_list:
+							model_id = self.env['ir.model'].search([('model','=','sale.order.line')])           
+							if type(i) == bytes:
+								normal_details = i.decode('utf-8')
+							else:
+								normal_details = i
+							if normal_details.startswith('x_'):
+								any_special = self.check_splcharacter(normal_details)
+								if any_special:
+									split_fields_name = normal_details.split("@")
+									technical_fields_name = split_fields_name[0]
+									many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+									if many2x_fields.id:
+										if many2x_fields.ttype =="many2one":
+											if values.get(i):
+												fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+												if fetch_m2o.id:
+													order_lines.update({
+														technical_fields_name: fetch_m2o.id
+														})
+												else:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+										if many2x_fields.ttype =="many2many":
+											m2m_value_lst = []
+											if values.get(i):
+												if ';' in values.get(i):
+													m2m_names = values.get(i).split(';')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												elif ',' in values.get(i):
+													m2m_names = values.get(i).split(',')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												else:
+													m2m_names = values.get(i).split(',')
+													m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+													m2m_value_lst.append(m2m_id.id)
+											order_lines.update({
+												technical_fields_name : m2m_value_lst
+												})                              
+									else:
+										raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+								else:
+									normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+									if normal_fields.id:
+										if normal_fields.ttype ==  'boolean':
+											order_lines.update({
+												normal_details : values.get(i)
+												})
+										elif normal_fields.ttype == 'char':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+										elif normal_fields.ttype == 'float':
+											if values.get(i) == '':
+												float_value = 0.0
+											else:
+												float_value = float(values.get(i)) 
+											order_lines.update({
+												normal_details : float_value
+												})                              
+										elif normal_fields.ttype == 'integer':
+											if values.get(i) == '':
+												int_value = 0
+											else:
+												int_value = int(values.get(i)) 
+											order_lines.update({
+												normal_details : int_value
+												})                           
+										elif normal_fields.ttype == 'selection':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+										elif normal_fields.ttype == 'text':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+									else:
+										raise Warning(_('"%s" This custom field is not available in system') % normal_details)						
 				else:
 					order_lines=self.env['sale.order.line'].create({
 												'order_id':sale_order_brw.id,
@@ -231,6 +439,96 @@ class order_line_wizard(models.TransientModel):
 												'price_unit':values.get('price'),
 												'discount':values.get('disc')
 												})
+					main_list = values.keys()
+					for i in main_list:
+						model_id = self.env['ir.model'].search([('model','=','sale.order.line')])           
+						if type(i) == bytes:
+							normal_details = i.decode('utf-8')
+						else:
+							normal_details = i
+						if normal_details.startswith('x_'):
+							any_special = self.check_splcharacter(normal_details)
+							if any_special:
+								split_fields_name = normal_details.split("@")
+								technical_fields_name = split_fields_name[0]
+								many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+								if many2x_fields.id:
+									if many2x_fields.ttype =="many2one":
+										if values.get(i):
+											fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+											if fetch_m2o.id:
+												order_lines.update({
+													technical_fields_name: fetch_m2o.id
+													})
+											else:
+												raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+									if many2x_fields.ttype =="many2many":
+										m2m_value_lst = []
+										if values.get(i):
+											if ';' in values.get(i):
+												m2m_names = values.get(i).split(';')
+												for name in m2m_names:
+													m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+													m2m_value_lst.append(m2m_id.id)
+
+											elif ',' in values.get(i):
+												m2m_names = values.get(i).split(',')
+												for name in m2m_names:
+													m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+													m2m_value_lst.append(m2m_id.id)
+
+											else:
+												m2m_names = values.get(i).split(',')
+												m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+												if not m2m_id:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+												m2m_value_lst.append(m2m_id.id)
+										order_lines.update({
+											technical_fields_name : m2m_value_lst
+											})                              
+								else:
+									raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+							else:
+								normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+								if normal_fields.id:
+									if normal_fields.ttype ==  'boolean':
+										order_lines.update({
+											normal_details : values.get(i)
+											})
+									elif normal_fields.ttype == 'char':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'float':
+										if values.get(i) == '':
+											float_value = 0.0
+										else:
+											float_value = float(values.get(i)) 
+										order_lines.update({
+											normal_details : float_value
+											})                              
+									elif normal_fields.ttype == 'integer':
+										if values.get(i) == '':
+											int_value = 0
+										else:
+											int_value = int(values.get(i)) 
+										order_lines.update({
+											normal_details : int_value
+											})                            
+									elif normal_fields.ttype == 'selection':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'text':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+								else:
+									raise Warning(_('"%s" This custom field is not available in system') % normal_details)                        					
 			else:
 				raise UserError(_('We cannot import data in validated or confirmed order.'))
 			
@@ -264,6 +562,96 @@ class order_line_wizard(models.TransientModel):
 											'product_uom_qty': order_lines.product_uom_qty + float(values.get('quantity')),
 											'discount':values.get('disc')
 											})
+						main_list = values.keys()
+						for i in main_list:
+							model_id = self.env['ir.model'].search([('model','=','sale.order.line')])           
+							if type(i) == bytes:
+								normal_details = i.decode('utf-8')
+							else:
+								normal_details = i
+							if normal_details.startswith('x_'):
+								any_special = self.check_splcharacter(normal_details)
+								if any_special:
+									split_fields_name = normal_details.split("@")
+									technical_fields_name = split_fields_name[0]
+									many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+									if many2x_fields.id:
+										if many2x_fields.ttype =="many2one":
+											if values.get(i):
+												fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+												if fetch_m2o.id:
+													order_lines.update({
+														technical_fields_name: fetch_m2o.id
+														})
+												else:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+										if many2x_fields.ttype =="many2many":
+											m2m_value_lst = []
+											if values.get(i):
+												if ';' in values.get(i):
+													m2m_names = values.get(i).split(';')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												elif ',' in values.get(i):
+													m2m_names = values.get(i).split(',')
+													for name in m2m_names:
+														m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+														if not m2m_id:
+															raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+														m2m_value_lst.append(m2m_id.id)
+
+												else:
+													m2m_names = values.get(i).split(',')
+													m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+													m2m_value_lst.append(m2m_id.id)
+											order_lines.update({
+												technical_fields_name : m2m_value_lst
+												})                              
+									else:
+										raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+								else:
+									normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+									if normal_fields.id:
+										if normal_fields.ttype ==  'boolean':
+											order_lines.update({
+												normal_details : values.get(i)
+												})
+										elif normal_fields.ttype == 'char':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+										elif normal_fields.ttype == 'float':
+											if values.get(i) == '':
+												float_value = 0.0
+											else:
+												float_value = float(values.get(i)) 
+											order_lines.update({
+												normal_details : float_value
+												})                              
+										elif normal_fields.ttype == 'integer':
+											if values.get(i) == '':
+												int_value = 0
+											else:
+												int_value = int(values.get(i)) 
+											order_lines.update({
+												normal_details : int_value
+												})                               
+										elif normal_fields.ttype == 'selection':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+										elif normal_fields.ttype == 'text':
+											order_lines.update({
+												normal_details : values.get(i)
+												})                              
+									else:
+										raise Warning(_('"%s" This custom field is not available in system') % normal_details)												
 						order_lines._onchange_discount()
 				else:
 					order_lines=self.env['sale.order.line'].create({
@@ -273,6 +661,96 @@ class order_line_wizard(models.TransientModel):
 														'discount':values.get('disc')
 														})
 					order_lines.product_id_change() 
+					main_list = values.keys()
+					for i in main_list:
+						model_id = self.env['ir.model'].search([('model','=','sale.order.line')])           
+						if type(i) == bytes:
+							normal_details = i.decode('utf-8')
+						else:
+							normal_details = i
+						if normal_details.startswith('x_'):
+							any_special = self.check_splcharacter(normal_details)
+							if any_special:
+								split_fields_name = normal_details.split("@")
+								technical_fields_name = split_fields_name[0]
+								many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+								if many2x_fields.id:
+									if many2x_fields.ttype =="many2one":
+										if values.get(i):
+											fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+											if fetch_m2o.id:
+												order_lines.update({
+													technical_fields_name: fetch_m2o.id
+													})
+											else:
+												raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+									if many2x_fields.ttype =="many2many":
+										m2m_value_lst = []
+										if values.get(i):
+											if ';' in values.get(i):
+												m2m_names = values.get(i).split(';')
+												for name in m2m_names:
+													m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+													m2m_value_lst.append(m2m_id.id)
+
+											elif ',' in values.get(i):
+												m2m_names = values.get(i).split(',')
+												for name in m2m_names:
+													m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+													if not m2m_id:
+														raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+													m2m_value_lst.append(m2m_id.id)
+
+											else:
+												m2m_names = values.get(i).split(',')
+												m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+												if not m2m_id:
+													raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+												m2m_value_lst.append(m2m_id.id)
+										order_lines.update({
+											technical_fields_name : m2m_value_lst
+											})                              
+								else:
+									raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+							else:
+								normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+								if normal_fields.id:
+									if normal_fields.ttype ==  'boolean':
+										order_lines.update({
+											normal_details : values.get(i)
+											})
+									elif normal_fields.ttype == 'char':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'float':
+										if values.get(i) == '':
+											float_value = 0.0
+										else:
+											float_value = float(values.get(i)) 
+										order_lines.update({
+											normal_details : float_value
+											})                              
+									elif normal_fields.ttype == 'integer':
+										if values.get(i) == '':
+											int_value = 0
+										else:
+											int_value = int(values.get(i)) 
+										order_lines.update({
+											normal_details : int_value
+											})                              
+									elif normal_fields.ttype == 'selection':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+									elif normal_fields.ttype == 'text':
+										order_lines.update({
+											normal_details : values.get(i)
+											})                              
+								else:
+									raise Warning(_('"%s" This custom field is not available in system') % normal_details)                        					
 					order_lines._onchange_discount()					
 			else:
 				raise UserError(_('We cannot import data in validated or confirmed order.'))

@@ -48,6 +48,7 @@ except ImportError:
 
 class gen_inv(models.TransientModel):
     _name = "gen.inv"
+    _description = "Gen Inv"
 
     file = fields.Binary('File')
     inv_name = fields.Char('Inventory Name')
@@ -87,7 +88,7 @@ class gen_inv(models.TransientModel):
             except Exception:
                 raise exceptions.Warning(_("Invalid file!"))
             values = {}
-            inventory_id = self.env['stock.inventory'].create({'name':self.inv_name,'location_ids':self.location_ids.ids,'company_id' : self.env.user.company_id.id})
+            inventory_id = self.env['stock.inventory'].create({'name':self.inv_name,'location_ids':self.location_ids.ids,'company_id' : self.env.user.company_id.id,'is_import' : True})
             product_list = []
             for i in range(len(file_reader)):
                 val = {}
@@ -258,7 +259,7 @@ class gen_inv(models.TransientModel):
             except Exception:
                 raise exceptions.Warning(_("Invalid file!"))
 
-            inventory_id = self.env['stock.inventory'].create({'name':self.inv_name,'location_ids':self.location_ids.ids,'company_id' : self.env.user.company_id.id})
+            inventory_id = self.env['stock.inventory'].create({'name':self.inv_name,'location_ids':self.location_ids.ids,'company_id' : self.env.user.company_id.id,'is_import' : True})
             product_obj = self.env['product.product']
             stock_lot_obj = self.env['stock.production.lot']
             product_list= []
@@ -500,7 +501,7 @@ class gen_inv(models.TransientModel):
 class stock_inventory(models.Model):
     _inherit = "stock.inventory"
 
-
+    is_import = fields.Boolean(string = " Is Imported data" , default = False)
     
     def action_start(self):
         if self._context.get('ids'):

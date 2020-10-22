@@ -9,6 +9,7 @@ from odoo import models, fields, exceptions, api, _
 import time
 from datetime import date, datetime
 import io
+import re 
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -29,13 +30,32 @@ try:
 except ImportError:
     _logger.debug('Cannot `import base64`.')
 
+class res_partner_inherit(models.Model):
+    _inherit = "res.partner"
+
+    is_import = fields.Boolean("import records" ,default = False)   
+
 class gen_partner(models.TransientModel):
     _name = "gen.partner"
+    _description = "Gen Partner"
 
     file = fields.Binary('File')
     import_option = fields.Selection([('csv', 'CSV File'),('xls', 'XLS File')],string='Select',default='csv')
     partner_option = fields.Selection([('create','Create Partner'),('update','Update Partner')],string='Option', required=True,default="create")
 
+
+    def check_splcharacter(self ,test):
+        # Make own character set and pass 
+        # this as argument in compile method
+     
+        string_check= re.compile('@')
+     
+        # Pass the string in search 
+        # method of regex object.
+        if(string_check.search(str(test)) == None):
+            return False
+        else: 
+            return True
     
     def find_country(self,val):
         if type(val) == dict:
@@ -196,6 +216,7 @@ class gen_partner(models.TransientModel):
                   'email':values.get('email'),
                   'user_id':saleperson,
                   'ref':values.get('ref'),
+                  'is_import' : True,
                   'property_payment_term_id':cust_pmt_term,
                   'property_supplier_payment_term_id':vendor_pmt_term,
                   }
@@ -207,7 +228,104 @@ class gen_partner(models.TransientModel):
         if is_supplier:
             vals.update({
                 'customer_rank' : 1
-                })            
+                })
+
+        main_list = values.keys()
+        count = 0
+        for i in main_list:
+            model_id = self.env['ir.model'].search([('model','=','res.partner')])           
+            if count > 19:
+                if type(i) == bytes:
+                    normal_details = i.decode('utf-8')
+                else:
+                    normal_details = i
+                if normal_details.startswith('x_'):
+                    any_special = self.check_splcharacter(normal_details)
+                    if any_special:
+                        split_fields_name = normal_details.split("@")
+                        technical_fields_name = split_fields_name[0]
+                        many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                        if many2x_fields.id:
+                            if many2x_fields.ttype in ['many2one','many2many']: 
+                                if many2x_fields.ttype =="many2one":
+                                    if values.get(i):
+                                        fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+                                        if fetch_m2o.id:
+                                            vals.update({
+                                                technical_fields_name: fetch_m2o.id
+                                                })
+                                        else:
+                                            raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+                                if many2x_fields.ttype =="many2many":
+                                    m2m_value_lst = []
+                                    if values.get(i):
+                                        if ';' in values.get(i):
+                                            m2m_names = values.get(i).split(';')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        elif ',' in values.get(i):
+                                            m2m_names = values.get(i).split(',')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        else:
+                                            m2m_names = values.get(i).split(',')
+                                            m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                            if not m2m_id:
+                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+                                            m2m_value_lst.append(m2m_id.id)
+                                    vals.update({
+                                        technical_fields_name : m2m_value_lst
+                                        })    
+                            else:
+                                raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                                                       
+                        else:
+                            raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                    else:
+                        normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                        if normal_fields.id:
+                            if normal_fields.ttype ==  'boolean':
+                                vals.update({
+                                    normal_details : values.get(i)
+                                    })
+                            elif normal_fields.ttype == 'char':
+                                vals.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'float':
+                                if values.get(i) == '':
+                                    float_value = 0.0
+                                else:
+                                    float_value = float(values.get(i)) 
+                                vals.update({
+                                    normal_details : float_value
+                                    })                              
+                            elif normal_fields.ttype == 'integer':
+                                if values.get(i) == '':
+                                    int_value = 0
+                                else:
+                                    int_value = int(values.get(i)) 
+                                vals.update({
+                                    normal_details : int_value
+                                    })                             
+                            elif normal_fields.ttype == 'selection':
+                                vals.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'text':
+                                vals.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                        else:
+                            raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+            count+= 1
         partner_search = self.env['res.partner'].search([('name','=',values.get('name'))]) 
         if partner_search:
             raise Warning(_('"%s" Customer/Vendor already exist.') % values.get('name'))  
@@ -230,7 +348,14 @@ class gen_partner(models.TransientModel):
 
             for i in range(len(file_reader)):
                 values = {}
-                field = map(str, file_reader[i])
+                field = list(map(str, file_reader[i]))
+                count = 1
+                count_keys = len(keys)
+                if len(field) > count_keys:
+                    for new_fields in field:
+                        if count > count_keys :
+                            keys.append(new_fields)                
+                        count+=1                            
                 values = dict(zip(keys, field))
                 if values:
                     if i == 0:
@@ -313,6 +438,100 @@ class gen_partner(models.TransientModel):
                                 search_partner.ref = values.get('ref')
                                 search_partner.property_payment_term_id = cust_pmt_term or False
                                 search_partner.property_supplier_payment_term_id = vendor_pmt_term or False
+
+                                main_list = values.keys()
+                                count = 0
+                                for i in main_list:
+                                    count+= 1
+                                    model_id = self.env['ir.model'].search([('model','=','res.partner')])           
+                                    if count > 19:
+                                        if type(i) == bytes:
+                                            normal_details = i.decode('utf-8')
+                                        else:
+                                            normal_details = i
+                                        if normal_details.startswith('x_'):
+                                            any_special = self.check_splcharacter(normal_details)
+                                            if any_special:
+                                                split_fields_name = normal_details.split("@")
+                                                technical_fields_name = split_fields_name[0]
+                                                many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                                                if many2x_fields.id:
+                                                    if many2x_fields.ttype =="many2one":
+                                                        if values.get(i):
+                                                            fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+                                                            if fetch_m2o.id:
+                                                                search_partner.update({
+                                                                    technical_fields_name: fetch_m2o.id
+                                                                    })
+                                                            else:
+                                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , values.get(i)))
+                                                    if many2x_fields.ttype =="many2many":
+                                                        m2m_value_lst = []
+                                                        if values.get(i):
+                                                            if ';' in values.get(i):
+                                                                m2m_names = values.get(i).split(';')
+                                                                for name in m2m_names:
+                                                                    m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                                    if not m2m_id:
+                                                                        raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                                    m2m_value_lst.append(m2m_id.id)
+
+                                                            elif ',' in values.get(i):
+                                                                m2m_names = values.get(i).split(',')
+                                                                for name in m2m_names:
+                                                                    m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                                    if not m2m_id:
+                                                                        raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , name))
+                                                                    m2m_value_lst.append(m2m_id.id)
+
+                                                            else:
+                                                                m2m_names = values.get(i).split(',')
+                                                                m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                                                if not m2m_id:
+                                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (i , m2m_names))
+                                                                m2m_value_lst.append(m2m_id.id)
+                                                        search_partner.update({
+                                                            technical_fields_name : m2m_value_lst
+                                                            })                              
+                                                else:
+                                                    raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                                            else:
+                                                normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                                                if normal_fields.id:
+                                                    if normal_fields.ttype ==  'boolean':
+                                                        search_partner.update({
+                                                            normal_details : values.get(i)
+                                                            })
+                                                    elif normal_fields.ttype == 'char':
+                                                        search_partner.update({
+                                                            normal_details : values.get(i)
+                                                            })                              
+                                                    elif normal_fields.ttype == 'float':
+                                                        if values.get(i) == '':
+                                                            float_value = 0.0
+                                                        else:
+                                                            float_value = float(values.get(i)) 
+                                                        search_partner.update({
+                                                            normal_details : float_value
+                                                            })                              
+                                                    elif normal_fields.ttype == 'integer':
+                                                        if values.get(i) == '':
+                                                            int_value = 0
+                                                        else:
+                                                            int_value = int(values.get(i)) 
+                                                        search_partner.update({
+                                                            normal_details : int_value
+                                                            })                              
+                                                    elif normal_fields.ttype == 'selection':
+                                                        search_partner.update({
+                                                            normal_details : values.get(i)
+                                                            })                              
+                                                    elif normal_fields.ttype == 'text':
+                                                        search_partner.update({
+                                                            normal_details : values.get(i)
+                                                            })                              
+                                                else:
+                                                    raise Warning(_('"%s" This custom field is not available in system') % normal_details)                                
                             else:
                                 raise Warning(_('%s partner not found.') % values.get('name'))
         else:
@@ -330,7 +549,7 @@ class gen_partner(models.TransientModel):
                 values = {}
                 res = {}
                 if row_no <= 0:
-                    fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+                    line_fields = list(map(lambda row:row.value.encode('utf-8'), sheet.row(row_no)))
                 else:
                     line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
                     if self.partner_option == 'create':
@@ -356,6 +575,11 @@ class gen_partner(models.TransientModel):
                                         'vendor_pmt_term': line[19],
                                         
                                         })
+                        count = 0
+                        for l_fields in line_fields:
+                            if(count > 19):
+                                values.update({l_fields : line[count]})                        
+                            count+=1                                
                         res = self.create_partner(values)
                     else:
                         search_partner = self.env['res.partner'].search([('name','=',line[0])])
@@ -388,7 +612,7 @@ class gen_partner(models.TransientModel):
                                 if parent_search:
                                     parent =  parent_search.id
                                 else:
-                                    raise Warning("Parent contact  not available")
+                                    raise Warning("Parent contact not available")
                         
                         if line[6]:
                             state = self.find_state(line)
@@ -433,6 +657,101 @@ class gen_partner(models.TransientModel):
                             search_partner.ref = line[17]
                             search_partner.property_payment_term_id = cust_pmt_term or False
                             search_partner.property_supplier_payment_term_id = vendor_pmt_term or False
+
+                            count = 0
+                            for l_fields in line_fields:
+                            # main_list = values.keys()
+                            # for i in main_list:
+                                model_id = self.env['ir.model'].search([('model','=','res.partner')])          
+                                if count > 19:
+                                    if type(i) == bytes:
+                                        normal_details = l_fields.decode('utf-8')
+                                    else:
+                                        normal_details = l_fields
+                                    if normal_details.startswith('x_'):
+                                        any_special = self.check_splcharacter(normal_details)
+                                        if any_special:
+                                            split_fields_name = normal_details.split("@")
+                                            technical_fields_name = split_fields_name[0]
+                                            many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                                            if many2x_fields.id:
+                                                if many2x_fields.ttype =="many2one":
+                                                    if line[count]:
+                                                        fetch_m2o = self.env[many2x_fields.relation].search([('name','=',line[count])])
+                                                        if fetch_m2o.id:
+                                                            search_partner.update({
+                                                                technical_fields_name: fetch_m2o.id
+                                                                })
+                                                        else:
+                                                            raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , line[count]))
+                                                if many2x_fields.ttype =="many2many":
+                                                    m2m_value_lst = []
+                                                    if line[count]:
+                                                        if ';' in line[count]:
+                                                            m2m_names = line[count].split(';')
+                                                            for name in m2m_names:
+                                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                                if not m2m_id:
+                                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+                                                                m2m_value_lst.append(m2m_id.id)
+
+                                                        elif ',' in line[count]:
+                                                            m2m_names = line[count].split(',')
+                                                            for name in m2m_names:
+                                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                                if not m2m_id:
+                                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , name))
+                                                                m2m_value_lst.append(m2m_id.id)
+
+                                                        else:
+                                                            m2m_names = line[count].split(',')
+                                                            m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                                            if not m2m_id:
+                                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (technical_fields_name , m2m_names))
+                                                            m2m_value_lst.append(m2m_id.id)
+                                                    search_partner.update({
+                                                        technical_fields_name : m2m_value_lst
+                                                        })                              
+                                            else:
+                                                raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                                        else:
+                                            normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                                            if normal_fields.id:
+                                                if normal_fields.ttype ==  'boolean':
+                                                    search_partner.update({
+                                                        normal_details : line[count]
+                                                        })
+                                                elif normal_fields.ttype == 'char':
+                                                    search_partner.update({
+                                                        normal_details : line[count]
+                                                        })                              
+                                                elif normal_fields.ttype == 'float':
+                                                    if values.get(i) == '':
+                                                        float_value = 0.0
+                                                    else:
+                                                        float_value = float(values.get(i)) 
+                                                    search_partner.update({
+                                                        normal_details : float_value
+                                                        })                              
+                                                elif normal_fields.ttype == 'integer':
+                                                    if values.get(i) == '':
+                                                        int_value = 0
+                                                    else:
+                                                        int_value = int(values.get(i)) 
+                                                    search_partner.update({
+                                                        normal_details : int_value
+                                                        })                            
+                                                elif normal_fields.ttype == 'selection':
+                                                    search_partner.update({
+                                                        normal_details : line[count]
+                                                        })                              
+                                                elif normal_fields.ttype == 'text':
+                                                    search_partner.update({
+                                                        normal_details : line[count]
+                                                        })                              
+                                            else:
+                                                raise Warning(_('"%s" This custom field is not available in system') % normal_details)
+                                count+= 1                            
                         else:
                             raise Warning(_('%s partner not found.') % line[0])
         

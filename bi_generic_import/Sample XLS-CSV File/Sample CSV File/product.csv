@@ -1,6 +1,6 @@
-NAME,INTERNAL REFERANCE,CATEGORY,TYPE,BARCODE,UOM,PURCHASE UOM,SALE PRICE,COST PRICE,WEIGHT,VOLUME,CUSTOMER TAXES,VENDOR TAXES,TRACKING,ATTRIBUTES,,
-LCD TV SU,LTV0011,Internal,Consumable,120345661,Units,Units,250,200,103,44,,,,Size:32inch,38inch#Resolution:720p,1080p
-LED TV SU,LCD0011,Internal,Storable Product,1234506781,Units,Units,235,240,146,32,,,By Unique Serial Number,Size:36inch,42inch#Resolution:1080p,4K
+NAME,INTERNAL REFERANCE,CATEGORY,TYPE,BARCODE,UOM,PURCHASE UOM,SALE PRICE,COST PRICE,WEIGHT,VOLUME,CUSTOMER TAXES,VENDOR TAXES,TRACKING,ATTRIBUTES,x_partner_id@name,x_color
+LCD TV SU,LTV0011,Internal,Consumable,120345661,Units,Units,250,200,103,44,,,,"Size:32inch,38inch#Resolution:720p,1080p",Gemini Furniture,purple
+LED TV SU,LCD0011,Internal,Storable Product,1234506781,Units,Units,235,240,146,32,,,By Unique Serial Number,"Size:36inch,42inch#Resolution:1080p,4K",Azure Interior,violet
 SET UP BOX,ST001,Expenses,Consumable,A445566,Units,Units,248,123,532,32,,,,,,
-SET UP BOX1,ST0011,Consumable,Consumable,A4455643,Units,Units,246,123,532,32,,,,,,
-SMART PHONE,PH001,Software,Storable Product,S1000001,Units,Units,490,250,50,22,,,By Lots,Color:Red,Grey,
+SET UP BOX1,ST0011,Consumable,Consumable,A4455643,Units,Units,246,123,532,32,,,,,The Jackson Group,
+SMART PHONE,PH001,Software,Storable Product,S1000001,Units,Units,490,250,50,22,,,By Lots,"Color:Red,Grey",,

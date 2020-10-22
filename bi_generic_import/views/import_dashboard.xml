@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="import_dashboard_kanban_dashboard" model="ir.ui.view">
+        <field name="name">import.dashboard.kanban</field>
+        <field name="model">import.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_salesteam_kanban" create="0">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="import_data"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content o_kanban_get_form" style="width:20%;">
+                            <div class="o_has_icon">
+                                <div class="container o_kanban_card_content">
+                                    <div class="row" style="flex-wrap: nowrap;">
+                                        <div class="col-xs-6 o_kanban_primary_left">
+                                            <div t-if="record.state.raw_value =='sale.order'" style="color:teal;margin-left: 30px;" name ="sale order">
+                                                <left>
+                                                    <i class="fa fa-shopping-cart fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='purchase.order'" style="color:teal;margin-left: 30px;" name ="purchase order">
+                                                <left>
+                                                    <i class="fa fa-credit-card-alt fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='account.move'" style="color:teal;margin-left: 30px;" name ="account move">
+                                                <left>
+                                                    <i class="fa fa-money fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='stock.picking'" style="color:teal;margin-left: 30px;" name ="stock picking">
+                                                <left><i class="fa fa-shopping-bag fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='mrp.bom'" style="color:teal;margin-left: 30px;" name ="mrp bom">
+                                                <left><i class="fa fa-industry fa-5x"/>
+                                                </left>
+                                            </div>                                      
+                                            <div t-if="record.state.raw_value =='res.partner'" style="color:teal;margin-left: 30px;" name ="res partner">
+                                                <left><i class="fa fa-user fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='product.pricelist'" style="color:teal;margin-left: 30px;" name ="product pricelist">
+                                                <left><i class="fa fa-list fa-5x"/>
+                                                </left>
+                                            </div>              
+                                            <div t-if="record.state.raw_value =='product.template'" style="color:teal;margin-left: 30px;" name ="product template">
+                                                <left><i class="fa fa-product-hunt fa-5x"/>
+                                                </left>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='product.product'" style="color:teal;margin-left: 30px;" name ="variant">
+                                                <left><i class="fa fa-product-hunt fa-5x"/>
+                                                </left>
+                                            </div>  
+                                            <div t-if="record.state.raw_value =='stock.inventory'" style="color:teal;margin-left: 30px;" name ="Inventory">
+                                                <left><i class="fa fa-exchange fa-5x"/>
+                                                </left>
+                                            </div> 
+                                            <div t-if="record.state.raw_value =='account.payment'" style="color:teal;margin-left: 30px;" name ="account payment">
+                                                <left><i class="fa fa-credit-card fa-5x"/>
+                                                </left>
+                                            </div> 
+                                        </div>
+                                        <div class="col-xs-6 o_kanban_primary_right" style="margin-left: 20%;" >
+                                            <div t-if="record.state.raw_value =='sale.order'">
+                                                <a style="font-size: 20px;" name="%(action_sale_order_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Sale</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(gen_sale_import_wizard)d" type="action">
+                                                    <span class="o_label">Import Sales</span>
+                                                </button>                                           
+                                            </div>
+
+                                            <div t-if="record.state.raw_value == 'purchase.order'">
+                                                <a  style="font-size: 20px;" name="%(action_purchase_order_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Purchase</span>
+                                                </a>
+                                                <br/>
+                                                <button  class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(gen_pur_wizard)d" type="action">
+                                                    <span class="o_label">Import Purchase</span>
+                                                </button>                                                
+                                            </div>
+
+                                            <div t-if="record.state.raw_value =='account.move'">
+                                                <a  style="font-size: 20px;" name="%(action_invoice_bills_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Invoice / Bills / Credit Note</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary"  style="margin-top: 20%;" name="%(bi_gen_inv_wizard_action)d" type="action">
+                                                    <span class="o_label">Import Invoice/Bills</span>
+                                                </button>
+                                            </div>
+
+                                            <div t-if="record.state.raw_value =='stock.picking'">
+                                                <a  style="font-size: 20px;" name="%(action_picking_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Shippment / Delivery</span>
+                                                </a>
+                                                <br/>
+                                                <button  class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(bi_gen_picking_wizard_action)d" type="action">
+                                                    <span class="o_label">Import Picking</span>
+                                                </button>
+                                            </div>
+
+                                            <div t-if="record.state.raw_value =='mrp.bom'">
+                                                <a  style="font-size: 20px;" name="%(action_mrp_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Bill of Materials</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary"  style="margin-top: 20%;" name="%(bi_gen_bom_wizard_action)d" type="action">
+                                                    <span class="o_label">Import BOM</span>
+                                                </button>
+                                            </div> 
+
+                                            <div t-if="record.state.raw_value =='res.partner'">
+                                                <a  style="font-size: 20px;" name="%(action_partner_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Partner</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary"  style="margin-top: 20%;" name="%(action_gen_partner_import_wizard)d" type="action">
+                                                    <span class="o_label">Import Partner</span>
+                                                </button>
+                                            </div>
+
+                                            <div t-if="record.state.raw_value =='product.pricelist'">
+                                                <a  style="font-size: 20px;" name="%(action_pricelist_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Pricelist</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary"  style="margin-top: 20%;" name="%(action_import_sale_pricelist_wizard)d" type="action">
+                                                    <span class="o_label">Import Pricelist</span>
+                                                </button>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='product.template'">
+                                                <a  style="font-size: 20px;" name="%(action_product_template_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Product Template</span>
+                                                </a>
+                                                <br/>
+                                                <button class="btn btn-sm btn-primary"  style="margin-top: 20%;" name="%(gen_product_import_wizard)d" type="action">
+                                                    <span class="o_label">Import Product</span>
+                                                </button>
+                                            </div>                                      
+                                            <div t-if="record.state.raw_value =='product.product'">
+                                                <a  style="font-size: 20px;" name="%(action_product_product_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Product Variant</span>
+                                                </a>
+                                                <br/>
+                                                <button  class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(gen_product_variant_import_wizard)d" type="action">
+                                                    <span class="o_label">Import Product Variant</span>
+                                                </button>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='stock.inventory'">
+                                                <a  style="font-size: 20px;" name="%(action_stock_inventory_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Inventory</span>
+                                                </a>
+                                                <br/>
+                                                <button  class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(gen_inv_wizard)d" type="action">
+                                                    <span class="o_label">Import Inventory</span>
+                                                </button>
+                                            </div>  
+                                            <div t-if="record.state.raw_value =='account.payment'" name ="account payment details">
+                                                <a  style="font-size: 20px;" name="%(action_account_payment_import_view)d" type="action">
+                                                    <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                                                    <span class="o_label">Payment</span>
+                                                </a>
+                                                <br/>
+                                                <button  class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(action_import_customer_payment)d" type="action">
+                                                    <span class="o_label">Import Payment</span>
+                                                </button>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="import_kanban_dashboard_action" model="ir.actions.act_window">
+        <field name="name">Import's Dashboard</field>
+        <field name="res_model">import.dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="import_dashboard_kanban_dashboard"/>
+        <field name="usage">menu</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            </p>
+        </field>
+    </record>
+
+    <menuitem 
+        action="import_kanban_dashboard_action" 
+        id="import_kanban_dashboard_view"
+        parent="menu_dashboard" 
+        sequence="0" 
+        name="Dashboard"/>
+
+    <menuitem 
+        id="import_all_in_one_dashboard_view"
+        parent="menu_import_root" 
+        sequence="12" 
+        name="Import All in one Data"/>
+
+    <menuitem 
+        id="import_sale_dashboard_view" 
+        action="gen_sale_import_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="2" 
+        name="Import sale order"
+        groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+
+    <menuitem 
+        id="import_invoice_dashboard_view" 
+        action="bi_gen_inv_wizard_action"
+        parent="import_all_in_one_dashboard_view"
+        sequence="3" 
+        name="Import Invoice/Bills"/>
+
+    <menuitem 
+        id="import_payment_dashboard_view" 
+        action="action_import_customer_payment"
+        parent="import_all_in_one_dashboard_view"
+        sequence="4" 
+        name="Import Customer Payment"/>
+
+
+    <menuitem 
+        id="import_BOM_dashboard_view" 
+        action="bi_gen_bom_wizard_action"
+        parent="import_all_in_one_dashboard_view"
+        sequence="5" 
+        name="Import BOM"/>
+
+    <menuitem 
+        id="import_partner_dashboard_view" 
+        action="action_gen_partner_import_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="6" 
+        name="Import Partner"/>
+
+
+    <menuitem 
+        id="import_picking_dashboard_view" 
+        action="bi_gen_picking_wizard_action"
+        parent="import_all_in_one_dashboard_view"
+        sequence="7" 
+        name="Import Picking"/>
+
+
+    <menuitem 
+        id="import_pricelist_dashboard_view" 
+        action="action_import_sale_pricelist_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="8" 
+        name="Import Pricelist"/>
+        
+    <menuitem 
+        id="import_variant_dashboard_view" 
+        action="gen_product_variant_import_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="9" 
+        name="Import Product Variant"/>
+
+    <menuitem 
+        id="import_template_dashboard_view" 
+        action="gen_product_import_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="10" 
+        name="Import Product"/>
+
+    <menuitem 
+        id="import_purchase_dashboard_view" 
+        action="gen_pur_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="11" 
+        name="Import Purchase"/>        
+
+    <menuitem 
+        id="import_inventory_dashboard_view" 
+        action="gen_inv_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="12" 
+        name="Import Inventory"/>   
+
+    <menuitem 
+        id="import_inventory_dashboard_view" 
+        action="gen_inv_wizard"
+        parent="import_all_in_one_dashboard_view"
+        sequence="12" 
+        name="Import Inventory"/>     
+</odoo>

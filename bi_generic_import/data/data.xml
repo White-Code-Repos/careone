@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <data noupdate="1">
+        
+        <record id="menu_dashboard_sale_order" model="import.dashboard">
+            <field name="name">Sale Order</field>
+            <field name="state">sale.order</field>
+        </record>
+
+        <record id="menu_dashboard_purchase_order" model="import.dashboard">
+            <field name="name">purchase Orders</field>
+            <field name="state">purchase.order</field>
+        </record>
+
+        <record id="menu_dashboard_invoice" model="import.dashboard">
+            <field name="name">Invoice / Bill</field>
+            <field name="state">account.move</field>
+        </record>
+
+        <record id="menu_dashboard_picking" model="import.dashboard">
+            <field name="name">Picking</field>
+            <field name="state">stock.picking</field>
+        </record>
+
+        <record id="menu_dashboard_mrp" model="import.dashboard">
+            <field name="name">MRP</field>
+            <field name="state">mrp.bom</field>
+        </record>
+
+        <record id="menu_dashboard_partner" model="import.dashboard">
+            <field name="name">Partner</field>
+            <field name="state">res.partner</field>
+        </record>
+
+        <record id="menu_dashboard_pricelist" model="import.dashboard">
+            <field name="name">Pricelist</field>
+            <field name="state">product.pricelist</field>
+        </record>   
+
+        <record id="menu_dashboard_product_template" model="import.dashboard">
+            <field name="name">Product Template</field>
+            <field name="state">product.template</field>
+        </record>           
+
+        <record id="menu_dashboard_product_variant" model="import.dashboard">
+            <field name="name">Product Variant</field>
+            <field name="state">product.product</field>
+        </record>    
+
+        <record id="menu_dashboard_stock_inventory" model="import.dashboard">
+            <field name="name">Inventory</field>
+            <field name="state">stock.inventory</field>
+        </record> 
+        <record id="menu_dashboard_account_payment" model="import.dashboard">
+            <field name="name">Payment</field>
+            <field name="state">account.payment</field>
+        </record> 
+    </data>
+</odoo>
