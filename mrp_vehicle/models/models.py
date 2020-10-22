@@ -48,6 +48,18 @@ class SaleOrder(models.Model):
     clarification = fields.Selection(string="Clarification", selection=[('yes', 'Yes'), ('no', 'No'), ],
                                      required=False, )
     service_delivery = fields.Datetime(string="Service Delivery", required=False, default=fields.Datetime.now)
+    planned_date = fields.Datetime(string="Planned Date", compute='get_planned_date')
+
+    @api.model
+    def get_planned_date(self):
+        planned_date = False
+        for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name),
+                                                            ('state', 'in',
+                                                             ['confirmed', 'planned', 'progress', 'to_close',
+                                                              'done'])]):
+            if mrp_order.date_planned_finished:
+                planned_date = mrp_order.date_planned_finished
+        self.planned_date = planned_date
 
     @api.onchange('service_delivery')
     def onchange_service_delivery(self):
