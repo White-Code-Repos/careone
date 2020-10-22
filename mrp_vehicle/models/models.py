@@ -76,3 +76,8 @@ class SaleOrder(models.Model):
                 mrp_order.button_unplan()
             mrp_order.action_cancel()
         return res
+
+    def show_gantt_view(self):
+        action = self.env.ref('mrp.action_mrp_workorder_production').read()[0]
+        action['views'] = [(self.env.ref('mrp_vehicle.mrp_workorder_view_gantt_enhanced').id, 'gantt')]
+        return action
