@@ -74,5 +74,7 @@ class SaleOrder(models.Model):
         for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name)]):
             if mrp_order.state == 'planned' or mrp_order.date_planned_start or mrp_order.date_planned_finished:
                 mrp_order.button_unplan()
+                mrp_order.date_planned_start = False
+                mrp_order.date_planned_finished = False
             mrp_order.action_cancel()
         return res
