@@ -29,19 +29,19 @@ class PromotionProgramInherit(models.Model):
         current_time = real_time.time()
         today_week_day = today.strftime("%A")
         is_applicable_programs_today = False
-        if today_week_day == 'Saturday' and applicable_programs.is_str_promotion == True:
+        if today_week_day == 'Saturday' and self.is_str_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Sunday' and applicable_programs.is_sun_promotion == True:
+        elif today_week_day == 'Sunday' and self.is_sun_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Monday' and applicable_programs.is_mon_promotion == True:
+        elif today_week_day == 'Monday' and self.is_mon_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Tuesday' and applicable_programs.is_tus_promotion == True:
+        elif today_week_day == 'Tuesday' and self.is_tus_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Wednesday' and applicable_programs.is_wen_promotion == True:
+        elif today_week_day == 'Wednesday' and self.is_wen_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Thursday' and applicable_programs.is_thur_promotion == True:
+        elif today_week_day == 'Thursday' and self.is_thur_promotion == True:
             is_applicable_programs_today = True
-        elif today_week_day == 'Friday' and applicable_programs.is_fri_promotion == True:
+        elif today_week_day == 'Friday' and self.is_fri_promotion == True:
             is_applicable_programs_today = True
         if self.end_hour_use_promotion < (
                 current_time.hour + current_time.minute / 60) or self.start_hour_use_promotion > (
