@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
-
 
 
 class PromotionProgramInherit(models.Model):
