@@ -32,6 +32,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
                 <field name="service_delivery"/>
+                <field name="planned_date"/>
             </xpath>
             <xpath expr="//field[@name='vehicle_id']" position="after">
                 <field name="vehicle_state"/>

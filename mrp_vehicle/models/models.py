@@ -70,10 +70,9 @@ class SaleOrder(models.Model):
                         "Please set Service Delivery Date properly!!!")
 
     def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
         for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name)]):
-            if mrp_order.state == 'draft':
-                mrp_order.state = 'cancel'
-            else:
-                raise ValidationError(
-                    "You Can't Cancel Sales Order That Related With Manufacturing Order with state not Draft !")
-        super(SaleOrder, self).action_cancel()
+            if mrp_order.state == 'planned' or mrp_order.date_planned_start != False or mrp_order.date_planned_finished != False:
+                mrp_order.button_unplan()
+            mrp_order.action_cancel()
+        return res
