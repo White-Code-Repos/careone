@@ -17,20 +17,18 @@
                             <field name="rule_date_from" class="oe_inline"/>
                             <field name="rule_date_to" class="oe_inline"/>
                         </group>
-                        <group>
-                            <group string="Time">
-                                <field name="start_hour_use_promotion" widget="float_time"/>
-                                <field name="end_hour_use_promotion" widget="float_time"/>
-                            </group>
-                            <group string="Available Days">
-                                <field name="is_str_promotion"/>
-                                <field name="is_sun_promotion"/>
-                                <field name="is_mon_promotion"/>
-                                <field name="is_tus_promotion"/>
-                                <field name="is_wen_promotion"/>
-                                <field name="is_thur_promotion"/>
-                                <field name="is_fri_promotion"/>
-                            </group>
+                        <group name="use_time_promotion" string="Time">
+                            <field name="start_hour_use_promotion" widget="float_time"/>
+                            <field name="end_hour_use_promotion" widget="float_time"/>
+                        </group>
+                        <group string="Available Days">
+                            <field name="is_str_promotion"/>
+                            <field name="is_sun_promotion"/>
+                            <field name="is_mon_promotion"/>
+                            <field name="is_tus_promotion"/>
+                            <field name="is_wen_promotion"/>
+                            <field name="is_thur_promotion"/>
+                            <field name="is_fri_promotion"/>
                         </group>
                     </group>
                 </xpath>

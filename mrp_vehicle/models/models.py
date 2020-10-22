@@ -34,7 +34,10 @@ class MRP_inherit(models.Model):
 
     def vehicle_state_default_get(self):
         sale_order = self.env['sale.order'].search([], order='id desc', limit=1)
-        return sale_order.vehicle_state
+        if sale_order:
+            return sale_order.vehicle_state
+        else:
+            return False
 
 
 class SaleOrder(models.Model):
