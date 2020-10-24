@@ -1,4 +1,38 @@
 <odoo>
+
+    <record id="mrp_workorder_view_gantt_enhanced" model="ir.ui.view">
+        <field name="name">mrp.workorder.view.gantt</field>
+        <field name="model">mrp.workorder</field>
+        <field name="arch" type="xml">
+            <gantt class="o_mrp_workorder_gantt" date_stop="date_planned_finished" date_start="date_planned_start" string="Operations" default_group_by="workcenter_id" create="0"
+                progress="progress" plan="0" default_scale="day"
+                decoration-danger="date_planned_start &lt; current_date and state in ['pending', 'ready']"
+                decoration-success="state == 'done'"
+                decoration-warning="state == 'cancel'"
+                color="production_id">
+
+                <field name="date_planned_start"/>
+                <field name="state"/>
+                <field name="workcenter_id"/>
+
+                <templates>
+                    <div t-name="gantt-popover" class="container-fluid">
+                        <div class="row no-gutters">
+                            <div class="col">
+                                <ul class="pl-1 mb-0 list-unstyled">
+                                    <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD HH:mm:ss')"/></li>
+                                    <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD HH:mm:ss')"/></li>
+                                    <li><strong>Workcenter: </strong> <t t-esc="workcenter_id[1]"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </templates>
+            </gantt>
+        </field>
+    </record>
+
+
     <record id="mrp_form_view_inherit" model="ir.ui.view">
         <field name="name">mrp.form.view.inherit</field>
         <field name="model">mrp.production</field>
@@ -30,8 +64,20 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//button[@name='preview_sale_order']" position="before">
+                <button type="object" class="oe_stat_button" name="show_gantt_view"
+                        attrs="{'invisible': [('service_delivery', '=', False)]}">
+                    <i class="fa fa-gantt-chart"></i>
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_text">Gantt</span>
+                    </div>
+                </button>
+
+            </xpath>
+
             <xpath expr="//field[@name='date_order']" position="after">
                 <field name="service_delivery"/>
+                <field name="planned_date"/>
             </xpath>
             <xpath expr="//field[@name='vehicle_id']" position="after">
                 <field name="vehicle_state"/>

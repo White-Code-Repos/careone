@@ -47,13 +47,37 @@ class SaleOrder(models.Model):
                                      required=False, )
     clarification = fields.Selection(string="Clarification", selection=[('yes', 'Yes'), ('no', 'No'), ],
                                      required=False, )
-    service_delivery = fields.Datetime(string="Service Delivery", required=False, )
+    service_delivery = fields.Datetime(string="Service Delivery", required=False, default=fields.Datetime.now)
+    planned_date = fields.Datetime(string="Planned Date", compute='get_planned_date')
+
+    @api.model
+    def get_planned_date(self):
+        planned_date = False
+        for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name),
+                                                            ('state', 'in',
+                                                             ['confirmed', 'planned', 'progress', 'to_close',
+                                                              'done'])]):
+            if mrp_order.date_planned_finished:
+                planned_date = mrp_order.date_planned_finished
+        self.planned_date = planned_date
+
+    @api.onchange('service_delivery')
+    def onchange_service_delivery(self):
+        for i in self:
+            if i.date_order and i.service_delivery:
+                if i.date_order > i.service_delivery:
+                    raise ValidationError(
+                        "Please set Service Delivery Date properly!!!")
 
     def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
         for mrp_order in self.env['mrp.production'].search([('origin', '=', self.name)]):
-            if mrp_order.state == 'draft':
-                mrp_order.state = 'cancel'
-            else:
-                raise ValidationError(
-                    "You Can't Cancel Sales Order That Related With Manufacturing Order with state not Draft !")
-        super(SaleOrder, self).action_cancel()
+            if mrp_order.state == 'planned' or mrp_order.date_planned_start or mrp_order.date_planned_finished:
+                mrp_order.button_unplan()
+            mrp_order.action_cancel()
+        return res
+
+    def show_gantt_view(self):
+        action = self.env.ref('mrp.action_mrp_workorder_production').read()[0]
+        action['views'] = [(self.env.ref('mrp_vehicle.mrp_workorder_view_gantt_enhanced').id, 'gantt')]
+        return action
