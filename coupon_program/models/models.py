@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 
 class CouponProgramInherit(models.Model):
@@ -113,26 +114,39 @@ class SaleOrder(models.Model):
                 'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use}
-        if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
-            for count in range(0, self.coupon_id.nbr_coupons):
-                self.env['sale.coupon'].create(vals)
+        order_products = []
+        program_products = []
+        is_product_ability = False
+        for rec in self.order_line:
+            order_products.append(rec.product_id)
+        for product in self.env['product.product'].search(safe_eval(self.coupon_id.rule_products_domain)):
+            program_products.append(product)
+        for product in order_products:
+            if product in program_products:
+                is_product_ability = True
+        if is_product_ability == True:
+            if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    self.env['sale.coupon'].create(vals)
 
-        if self.coupon_id.generation_type == 'nbr_customer':
-            vals.update({'partner_id': self.partner_id.id})
-            for count in range(0, self.coupon_id.nbr_coupons):
-                coupon = self.env['sale.coupon'].create(vals)
-                subject = '%s, a coupon has been generated for you' % (self.partner_id.name)
-                template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
-                if template:
-                    template.send_mail(coupon.id,
-                                       email_values={'email_to': self.partner_id.email,
-                                                     'email_from': self.env.user.email or '',
-                                                     'subject': subject, })
-        if self.coupon_id.generation_type == 'nbr_vehicles':
-            vals.update({'vehicle_id': self.vehicle_id.id})
-            for count in range(0, self.coupon_id.nbr_coupons):
-                self.env['sale.coupon'].create(vals)
-        self.is_generate_coupon = True
+            if self.coupon_id.generation_type == 'nbr_customer':
+                vals.update({'partner_id': self.partner_id.id})
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    coupon = self.env['sale.coupon'].create(vals)
+                    subject = '%s, a coupon has been generated for you' % (self.partner_id.name)
+                    template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
+                    if template:
+                        template.send_mail(coupon.id,
+                                           email_values={'email_to': self.partner_id.email,
+                                                         'email_from': self.env.user.email or '',
+                                                         'subject': subject, })
+            if self.coupon_id.generation_type == 'nbr_vehicles':
+                vals.update({'vehicle_id': self.vehicle_id.id})
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    self.env['sale.coupon'].create(vals)
+            self.is_generate_coupon = True
+        else:
+            raise ValidationError("Your Program Doesn't Contain your any product in that order !")
 
     def allow_generate_coupon(self):
         for order in self:
