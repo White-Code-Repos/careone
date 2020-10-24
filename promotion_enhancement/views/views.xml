@@ -33,7 +33,7 @@
                     </group>
                 </xpath>
                 <xpath expr="//field[@name='promo_applicability']" position="after">
-                    <field name="coupon_program_id" attrs="{'invisible':[('promo_applicability','=', 'on_next_order')]}"/>
+                    <field name="coupon_program_id" attrs="{'invisible':[('promo_applicability','!=', 'on_next_order')]}"/>
                 </xpath>
 
             </field>

@@ -15,15 +15,78 @@ class CouponApply(models.TransientModel):
         today = datetime.today() + timedelta(hours=2)
         real_time = datetime.now() + timedelta(hours=2)
         current_time = real_time.time()
-        return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
-                                         ('partner_id', '=', self.partner_id.id),
-                                         ('customer_source_id', '=', self.partner_id.id),
-                                         ('state', '=', 'new'),
-                                         ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
-                                         ('end_date_use', '>=', today.date()),
-                                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
-                                         ]}}
+        today_week_day = today.strftime("%A")
+        if today_week_day == 'Saturday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_str', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+        elif today_week_day == 'Sunday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_sun', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+
+        elif today_week_day == 'Monday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_mon', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+        elif today_week_day == 'Tuesday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_tus', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+        elif today_week_day == 'Wednesday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_wen', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+        elif today_week_day == 'Thursday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_thur', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
+        elif today_week_day == 'Friday':
+            return {'domain': {'coupon_id': ['|', ('partner_id', '=', False),
+                                             ('partner_id', '=', self.partner_id.id),
+                                             ('customer_source_id', '=', self.partner_id.id),
+                                             ('state', '=', 'new'), ('program_id.is_fri', '=', True),
+                                             ('program_id', '!=', False), ('start_date_use', '<=', today.date()),
+                                             ('end_date_use', '>=', today.date()),
+                                             ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                             ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60))
+                                             ]}}
 
     def apply_action(self):
         fleet_vehicle_id = self.env['fleet.vehicle'].search([('driver_id', '=', self.partner_id.id)], order='id desc',

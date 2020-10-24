@@ -68,43 +68,10 @@ class SaleOrder(models.Model):
         today = datetime.today() + timedelta(hours=2)
         real_time = datetime.now() + timedelta(hours=2)
         current_time = real_time.time()
-        today_week_day = today.strftime("%A")
-        if today_week_day == 'Saturday':
-            return [('is_str', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-
-        elif today_week_day == 'Sunday':
-            return [('is_sun', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-        elif today_week_day == 'Monday':
-            return [('is_mon', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-        elif today_week_day == 'Tuesday':
-            return [('is_tus', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-        elif today_week_day == 'Wednesday':
-            return [('is_wen', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-        elif today_week_day == 'Thursday':
-            return [('is_thur', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-        elif today_week_day == 'Friday':
-            return [('is_fri', '=', True), ('start_date_generate', '<=', today.date()),
-                    ('end_date_generate', '>=', today.date()),
-                    ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
-                    ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
+        return [('start_date_generate', '<=', today.date()),
+                ('end_date_generate', '>=', today.date()),
+                ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
+                ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
 
     coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
                                 domain=coupon_program_onchange)
@@ -229,6 +196,8 @@ class CouponInherit(models.Model):
         for coupon in self:
             if coupon.expiration_date_edit:
                 coupon.expiration_date = coupon.expiration_date_edit
+            elif coupon.end_date_use:
+                coupon.expiration_date = coupon.end_date_use
             else:
                 coupon.expiration_date = (
                         coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
