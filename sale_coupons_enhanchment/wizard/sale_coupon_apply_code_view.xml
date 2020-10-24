@@ -8,11 +8,15 @@
         <field name="inherit_id" ref="sale_coupon.sale_coupon_apply_code_view_form"/>
         <field name="arch" type="xml">
             <field name="coupon_code" position="replace">
-                <field name="coupon_code" options="{'no_create': True}"/>
+                <field name="code_type"/>
+                <field name="promo_code"
+                       attrs="{'invisible':[('code_type','=', 'coupon')],'required':[('code_type','=', 'promo')]}"/>
+                <field name="coupon_code" options="{'no_create': True}"
+                       attrs="{'invisible':[('code_type','=', 'promo')] , 'required':[('code_type','=', 'coupon')]}"/>
                 <!--hisham edition -->
                 <field name="is_free_order_readonly_x" invisible="1"/>
                 <field name="is_free_order" force_save="1"
-                       attrs="{'readonly':[('is_free_order_readonly_x','=', True)]}"/>
+                       attrs="{'readonly':[('is_free_order_readonly_x','=', True)],'invisible':[('code_type','=', 'promo')]}"/>
             </field>
         </field>
     </record>

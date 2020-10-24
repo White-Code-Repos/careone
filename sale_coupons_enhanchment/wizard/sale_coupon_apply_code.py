@@ -9,8 +9,10 @@ from datetime import timedelta, datetime
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
-
-    coupon_code = fields.Many2one('sale.coupon', string="Code", required=True)
+    code_type = fields.Selection(string="Code Type", selection=[('promo', 'Promotion'), ('coupon', 'Coupon'), ],
+                                 required=True, default='coupon')
+    promo_code = fields.Char(string="Promo Code", required=False, )
+    coupon_code = fields.Many2one('sale.coupon', string="Coupon Code", required=False)
     is_free_order_readonly_x = fields.Boolean(string="", )
 
     # hisham edition
@@ -45,43 +47,70 @@ class SaleCouponApplyCode(models.TransientModel):
         Apply the entered coupon code if valid, raise an UserError otherwise.
 
         """
-        if self.is_free_order == True:
+        if self.code_type == 'promo':
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-            my_domain_products = self.env['product.product'].search(
-                safe_eval(self.coupon_code.program_id.rule_products_domain))
-            x = 0
-            for rec in my_domain_products:
-                x = rec.id
-                break
-            my_domain_product = self.env['product.product'].search([('id', '=', x)])
-            my_free_product = self.coupon_code.program_id.reward_product_id
-            if my_free_product:
-                order_obj_id = self.env['sale.order.line']
-                my_domain_product_line = {
-                    'product_id': my_domain_product.id,
-                    'order_id': sales_order.id
-                }
-                my_free_product_line = {
-                    'product_id': my_free_product.id,
-                    'order_id': sales_order.id
-                }
-                order_obj_id.create(my_domain_product_line)
-                order_obj_id.create(my_free_product_line)
-                base_records_ids = []
-                for rec in sales_order.order_line:
-                    base_records_ids.append(rec.id)
-                error_status = self.apply_coupon(sales_order, self.coupon_code.code)
-                self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
-                if error_status.get('error', False):
-                    raise UserError(error_status.get('error', False))
-                if error_status.get('not_found', False):
-                    raise UserError(error_status.get('not_found', False))
-            else:
-                raise UserError("You Can't Use Free Order With That Program !")
-        else:
-            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-            error_status = self.apply_coupon(sales_order, self.coupon_code.code)
+            error_status = self.apply_promo(sales_order, self.promo_code)
             if error_status.get('error', False):
                 raise UserError(error_status.get('error', False))
             if error_status.get('not_found', False):
                 raise UserError(error_status.get('not_found', False))
+
+        else:
+            if self.is_free_order == True:
+                sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+                my_domain_products = self.env['product.product'].search(
+                    safe_eval(self.coupon_code.program_id.rule_products_domain))
+                x = 0
+                for rec in my_domain_products:
+                    x = rec.id
+                    break
+                my_domain_product = self.env['product.product'].search([('id', '=', x)])
+                my_free_product = self.coupon_code.program_id.reward_product_id
+                if my_free_product:
+                    order_obj_id = self.env['sale.order.line']
+                    my_domain_product_line = {
+                        'product_id': my_domain_product.id,
+                        'order_id': sales_order.id
+                    }
+                    my_free_product_line = {
+                        'product_id': my_free_product.id,
+                        'order_id': sales_order.id
+                    }
+                    order_obj_id.create(my_domain_product_line)
+                    order_obj_id.create(my_free_product_line)
+                    base_records_ids = []
+                    for rec in sales_order.order_line:
+                        base_records_ids.append(rec.id)
+                    error_status = self.apply_coupon(sales_order, self.coupon_code.code)
+                    self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
+                    if error_status.get('error', False):
+                        raise UserError(error_status.get('error', False))
+                    if error_status.get('not_found', False):
+                        raise UserError(error_status.get('not_found', False))
+                else:
+                    raise UserError("You Can't Use Free Order With That Program !")
+            else:
+                sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+                error_status = self.apply_coupon(sales_order, self.coupon_code.code)
+                if error_status.get('error', False):
+                    raise UserError(error_status.get('error', False))
+                if error_status.get('not_found', False):
+                    raise UserError(error_status.get('not_found', False))
+
+    def apply_promo(self, order, coupon_code):
+        error_status = {}
+        program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
+        if program:
+            error_status = program._check_promo_code(order, coupon_code)
+            if not error_status:
+                if program.promo_applicability == 'on_next_order':
+                    # Avoid creating the coupon if it already exist
+                    if program.discount_line_product_id.id not in order.generated_coupon_ids.filtered(
+                            lambda coupon: coupon.state in ['new', 'reserved']).mapped('discount_line_product_id').ids:
+                        order._create_reward_coupon(program)
+                else:  # The program is applied on this order
+                    order._create_reward_line(program)
+                    order.code_promo_program_id = program
+        else:
+            error_status = {'not_found': _('The code %s is invalid') % (coupon_code)}
+        return error_status

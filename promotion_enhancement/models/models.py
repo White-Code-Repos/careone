@@ -19,7 +19,7 @@ class PromotionProgramInherit(models.Model):
     is_wen_promotion = fields.Boolean(string="Wednesday", )
     is_thur_promotion = fields.Boolean(string="Thursday", )
     is_fri_promotion = fields.Boolean(string="Friday", )
-
+    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, )
     def _check_promo_code(self, order, coupon_code):
         message = {}
         applicable_programs = order._get_applicable_programs()
@@ -98,18 +98,43 @@ class SalesOrderInherit(models.Model):
         ], limit=1)
         if coupon:
             coupon.write({'state': 'reserved'})
+            self.generated_coupon_ids |= coupon
+            return coupon
         else:
-            coupon = self.env['sale.coupon'].create({
-                'program_id': program.id,
-                'state': 'reserved',
-                'partner_id': self.partner_id.id,
-                'start_hour_use': program.start_hour_use_promotion,
-                'end_hour_use': program.end_hour_use_promotion,
-                'start_date_use': program.rule_date_from,
-                'end_date_use': program.rule_date_to,
-                'discount_line_product_id': program.discount_line_product_id.id,
-                'order_id': self.id,
+            program_x = program.coupon_program_id
+            vals = {'program_id': program_x.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
+                    'is_free_order': program_x.is_free_order,
+                    'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
+                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
+            if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    self.env['sale.coupon'].create(vals)
 
-            })
-        self.generated_coupon_ids |= coupon
-        return coupon
+            if self.coupon_id.generation_type == 'nbr_customer':
+                vals.update({'partner_id': self.partner_id.id})
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    coupon = self.env['sale.coupon'].create(vals)
+                    subject = '%s, a coupon has been generated for you' % (self.partner_id.name)
+                    template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
+                    if template:
+                        template.send_mail(coupon.id,
+                                           email_values={'email_to': self.partner_id.email,
+                                                         'email_from': self.env.user.email or '',
+                                                         'subject': subject, })
+            if self.coupon_id.generation_type == 'nbr_vehicles':
+                vals.update({'vehicle_id': self.vehicle_id.id})
+                for count in range(0, self.coupon_id.nbr_coupons):
+                    self.env['sale.coupon'].create(vals)
+            self.is_generate_coupon = True
+            # coupon = self.env['sale.coupon'].create({
+            #     'program_id': program.id,
+            #     'state': 'reserved',
+            #     'partner_id': self.partner_id.id,
+            #     'start_hour_use': program.coupon_program_id.start_hour_use,
+            #     'end_hour_use': program.coupon_program_id.end_hour_use,
+            #     'start_date_use': program.coupon_program_id.start_date_use,
+            #     'end_date_use': program.coupon_program_id.end_date_use,
+            #     'discount_line_product_id': program.discount_line_product_id.id,
+            #     'order_id': self.id,
+            # })
+
