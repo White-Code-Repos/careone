@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_vehicle_part,access_vehicle_part,model_vehicle_part,,1,1,1,1
+access_fleet_color,access_fleet_color,model_fleet_color,,1,1,1,1
+access_fleet_model,access_fleet_model,model_fleet_model,,1,1,1,1
