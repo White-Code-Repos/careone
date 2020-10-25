@@ -6,5 +6,3 @@ class FleetVehicle(models.Model):
 
 
     category_ids = fields.Many2many('product.category', string='Categories')
-
-

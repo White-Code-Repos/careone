@@ -9,9 +9,18 @@ class SaleOrder(models.Model):
     count_vehicle_part = fields.Char(compute='_count_vehicle_parts', type='integer', string="Vehicle Parts")
     sale_vehicle_parts_ids = fields.One2many('sale.vehicle.parts', 'order_id', string='Vehicle Parts')
 
+    color_id = fields.Many2one('fleet.color', string='Vehicle color')
+    model_id = fields.Many2one('fleet.model', string='Model year')
+
     def _count_vehicle_parts(self):
         for vehicle_parts in self:
             vehicle_parts.count_vehicle_part = self.env['sale.vehicle.parts'].search_count([('order_id', '=', self.id)])
+
+    @api.onchange('vehicle_id')
+    def onchange_color_model(self):
+        if self.vehicle_id:
+            self.color_id = self.vehicle_id.color.id
+            self.model_id = self.vehicle_id.model_year.id
 
 
 class SaleVehicleParts(models.Model):

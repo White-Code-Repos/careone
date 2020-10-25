@@ -32,6 +32,8 @@
             <field name="partner_id" position="after">
                 <!--                hisham edition remove domain="[('driver_id', '=', partner_id)]" -->
                 <field name="vehicle_id"/>
+                <field name="color_id"/>
+                <field name="model_id"/>
             </field>
             <xpath expr="//field[@name='partner_id']" position="attributes">
                 <attribute name="placeholder">Name, Email, Mobile, or Reference</attribute>
