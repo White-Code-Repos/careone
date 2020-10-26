@@ -38,6 +38,7 @@ class sale_order(models.Model):
 	system_seq = fields.Boolean('System Sequence')
 	sale_name = fields.Char('Sale Name')
 	is_import = fields.Boolean("import records" ,default = False)
+	# vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle")
 
 
 class gen_sale(models.TransientModel):
@@ -78,6 +79,35 @@ class gen_sale(models.TransientModel):
 			if sale_search.partner_id.name == values.get('customer'):
 				if  sale_search.pricelist_id.name == values.get('pricelist'):
 					lines = self.make_order_line(values, sale_search)
+
+					vehicle= values.get('vehicle_id')
+					license_plate = values.get('license_plate')
+					vehicle_split = vehicle.split('/')
+
+					if len(vehicle_split) >= 2:
+						brand_id = self.env['fleet.vehicle.model.brand'].search([('name','=',vehicle_split[0])],limit=1)
+						model_id = self.env['fleet.vehicle.model'].search([('name','=',vehicle_split[1]),
+							('brand_id','=',brand_id.id)],limit=1)
+						vehicle_id = self.env['fleet.vehicle'].search([
+							('model_id','=',model_id.id),
+							('license_plate','=',license_plate)])
+					elif len(vehicle_split) > 1:
+						vehicle_id = self.env['fleet.vehicle'].search([
+							('model_id.name','ilike',vehicle_split[0]),
+							('license_plate','=',license_plate)])
+					else:
+						vehicle_id = False
+
+					if not vehicle_id:
+						return sale_id
+
+					sale_id.write({
+						'vehicle_id' : vehicle_id and vehicle_id.id
+					})
+
+					vehicle_id.write({
+						'license_plate' : license_plate
+					})
 					return sale_search
 				else:
 					raise Warning(_('Pricelist is different for "%s" .\n Please define same.') % values.get('order'))
@@ -93,6 +123,8 @@ class gen_sale(models.TransientModel):
 			currency_id = self.find_currency(values.get('pricelist'))
 			user_id  = self.find_user(values.get('user'))
 			order_date = self.make_order_date(values.get('date'))
+			create_date = self.make_order_date(values.get('create_date',False))
+
 			sale_id = sale_obj.create({
 				'partner_id' : partner_id.id,
 				'pricelist_id' : currency_id.id,
@@ -104,6 +136,10 @@ class gen_sale(models.TransientModel):
 				'sale_name' : values.get('order'),
 				'is_import' : True
 			})
+
+			if create_date:
+				self.env.cr.execute("update sale_order set create_date=%s where id=%s", [create_date,sale_id.id])
+
 			main_list = values.keys()
 			# count = 0
 			for i in main_list:
@@ -201,9 +237,39 @@ class gen_sale(models.TransientModel):
 							raise Warning(_('"%s" This custom field is not available in system') % normal_details)
 			# count+= 1			
 			lines = self.make_order_line(values, sale_id)
+
+			vehicle= values.get('vehicle_id')
+			license_plate = values.get('license_plate')
+			vehicle_split = vehicle.split('/')
+
+			if len(vehicle_split) >= 2:
+				brand_id = self.env['fleet.vehicle.model.brand'].search([('name','=',vehicle_split[0])],limit=1)
+				model_id = self.env['fleet.vehicle.model'].search([('name','=',vehicle_split[1]),
+					('brand_id','=',brand_id.id)],limit=1)
+				vehicle_id = self.env['fleet.vehicle'].search([
+					('model_id','=',model_id.id),
+					('license_plate','=',license_plate)])
+			elif len(vehicle_split) > 1:
+				vehicle_id = self.env['fleet.vehicle'].search([
+					('model_id.name','ilike',vehicle_split[0]),
+					('license_plate','=',license_plate)])
+			else:
+				vehicle_id = False
+
+			if not vehicle_id:
+				return sale_id
+
+			sale_id.write({
+				'vehicle_id' : vehicle_id and vehicle_id.id
+			})
+
+			vehicle_id.write({
+				'license_plate' : license_plate
+			})
+
 			return sale_id
 
-	
+
 	def make_order_line(self, values, sale_id):
 		product_obj = self.env['product.product']
 		order_line_obj = self.env['sale.order.line']
@@ -276,11 +342,11 @@ class gen_sale(models.TransientModel):
 	
 	def make_order_date(self, date):
 		DATETIME_FORMAT = "%Y-%m-%d"
-		i_date = datetime.strptime(date, DATETIME_FORMAT)
-		return i_date
-
-
-
+		if date:
+			i_date = datetime.strptime(date, DATETIME_FORMAT)
+			return i_date
+		else:
+			return False
 	
 	def find_user(self, name):
 		user_obj = self.env['res.users']
@@ -290,8 +356,6 @@ class gen_sale(models.TransientModel):
 		else:
 			raise Warning(_(' "%s" User is not available.') % name)
 
-
-	
 	def find_currency(self, name):
 		currency_obj = self.env['product.pricelist']
 		currency_search = currency_obj.search([('name', '=', name)])
@@ -317,7 +381,7 @@ class gen_sale(models.TransientModel):
 		"""Load Inventory data from the CSV file."""
 		if self.import_option == 'csv':
 			try:
-				keys = ['order', 'customer', 'pricelist','product', 'quantity', 'uom', 'description', 'price','user','tax','date','disc']
+				keys = ['order', 'customer', 'pricelist','product', 'quantity', 'uom', 'description', 'price','user','tax','date','disc','create_date','vehicle_id','license_plate']
 				csv_data = base64.b64decode(self.file)
 				data_file = io.StringIO(csv_data.decode("utf-8"))
 				data_file.seek(0)
@@ -348,12 +412,14 @@ class gen_sale(models.TransientModel):
 
 						values.update({'seq_opt':self.sequence_opt})
 						res = self.make_sale(values)
-						sale_ids.append(res)
+						date_string = values.get('date_string')
+						sale_ids.append([res,date_string])
 			if self.stage == 'confirm':
 				for res in sale_ids: 
-					if res.state in ['draft', 'sent']:
-						res.action_confirm()
-	
+					if res[0].state in ['draft', 'sent']:
+						res[0].action_confirm()
+						self.env.cr.execute("update sale_order set date_order=%s where id=%s", [res[1],res[0].id])
+
 		else:
 			try:
 				fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
@@ -378,7 +444,16 @@ class gen_sale(models.TransientModel):
 						date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
 					else:
 						raise Warning(_("Please assign date."))
+
+					if line[12] != '':					
+						a1 = int(float(line[12]))
+						a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+						create_date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+					else:
+						create_date_string = ''
 					
+					print(line,'====================line \n\n')
+
 					values.update( {'order':line[0],
 									'customer': line[1],
 									'pricelist': line[2],
@@ -390,22 +465,24 @@ class gen_sale(models.TransientModel):
 									'user': line[8],
 									'tax': line[9],
 									'date':date_string,
+									'create_date' : create_date_string,
 									'seq_opt':self.sequence_opt,
-									'disc':line[11]
+									'disc':line[11],
+									'vehicle_id' : line[13],
+									'license_plate' : line[14],
 									})
 					count = 0
 					for l_fields in line_fields:
-						if(count > 11):
+						if(count > 13):
 							values.update({l_fields : line[count]})                        
 						count+=1            
 					res = self.make_sale(values)
-					sale_ids.append(res)
+					sale_ids.append([res,date_string])
 			
 			if self.stage == 'confirm':
 				for res in sale_ids: 
-					if res.state in ['draft', 'sent']:
-						res.action_confirm()
-
-
+					if res[0].state in ['draft', 'sent']:
+						res[0].action_confirm()
+						self.env.cr.execute("update sale_order set date_order=%s where id=%s", [res[1],res[0].id])
 		return res
 

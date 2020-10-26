@@ -242,7 +242,7 @@ class gen_inv(models.TransientModel):
                 'invoice_date':inv_date,
                 'journal_id' : journal.id,
                 'name' : values.get('invoice'),
-
+                'invoice_origin' : values.get('invoice_origin')
             })
             main_list = values.keys()
             # count = 0
@@ -581,7 +581,7 @@ class gen_inv(models.TransientModel):
         """Load Inventory data from the CSV file."""
         if self.import_option == 'csv':
             try:
-                keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc']
+                keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','invoice_origin']
                 csv_data = base64.b64decode(self.file)
                 data_file = io.StringIO(csv_data.decode("utf-8"))
                 data_file.seek(0)
@@ -651,7 +651,8 @@ class gen_inv(models.TransientModel):
                                     'tax': line[10],
                                     'date': date_string,
                                     'seq_opt':self.sequence_opt,
-                                    'disc':line[12]
+                                    'disc':line[12],
+                                    'invoice_origin' : line[13],
                                     })
                     count = 0
                     for l_fields in line_fields:

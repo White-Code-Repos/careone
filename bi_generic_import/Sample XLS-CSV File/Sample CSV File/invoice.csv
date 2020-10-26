@@ -1,6 +1,6 @@
-INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool,x_total_amount
-invoice14,Agrolait,EUR,Basic Computer,100000,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,10,Agrolait,"Axeloer,Camptocamp",red,red,10000,1,10000
-invoice14,Agrolait,EUR,Little Server,101000,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,11,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0,50000
-invoice15,Agrolait,EUR,Server,101110,3,Units,Server,100000,Mitchell Admin,,2017-02-06,12,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1,100000
-invoice16,Agrolait,EUR,Basic Computer,101120,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,13,Agrolait,"Axeloer,Camptocamp",white,white,10000,0,10000
-invoice17,Camptocamp,EUR,Little Server,,2,Units,Little Server,50000,Mitchell Admin,,2017-02-08,14,Axeloer,"Axeloer,Camptocamp",dark black,dark black,50000,1,50000
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,INVOICE_ORIGIN
+invoice14,Agrolait,EUR,Basic Computer,100000,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,10,S00007
+invoice14,Agrolait,EUR,Little Server,101000,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,,S00007
+invoice15,Agrolait,EUR,Server,101110,3,Units,Server,100000,Mitchell Admin,,2017-02-06,,S00007
+invoice16,Agrolait,EUR,Basic Computer,101120,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,,S00007
+invoice17,Camptocamp,EUR,Little Server,,2,Units,Little Server,50000,Mitchell Admin,,2017-02-08,10,S00007

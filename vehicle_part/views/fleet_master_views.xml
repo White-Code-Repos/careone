@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_vehicle_color_tree" model="ir.ui.view">
+            <field name="name">fleet.color.tree</field>
+            <field name="model">fleet.color</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Vehicle Color">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_vehicle_color_form" model="ir.ui.view">
+            <field name="name">fleet.color.form</field>
+            <field name="model">fleet.color</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Vehicle Color">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vehicle_color_search" model="ir.ui.view">
+            <field name="name">fleet.color.search</field>
+            <field name="model">fleet.color</field>
+            <field name="type">search</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Vehicle Color">
+                    <field name="name" select="True"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_open_vehicle_color_view">
+            <field name="name">Vehicle Color</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fleet.color</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_vehicle_color"
+                  parent="fleet.fleet_configuration"
+                  sequence="1"
+                  action="act_open_vehicle_color_view"/>
+
+        <record id="view_vehicle_model_tree" model="ir.ui.view">
+            <field name="name">fleet.model.tree</field>
+            <field name="model">fleet.model</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Vehicle model">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_vehicle_model_form" model="ir.ui.view">
+            <field name="name">fleet.model.form</field>
+            <field name="model">fleet.model</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Vehicle model">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vehicle_model_search" model="ir.ui.view">
+            <field name="name">fleet.model.search</field>
+            <field name="model">fleet.model</field>
+            <field name="type">search</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Vehicle model">
+                    <field name="name" select="True"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_open_vehicle_model_view">
+            <field name="name">Vehicle Model</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fleet.model</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_vehicle_model"
+                  parent="fleet.fleet_configuration"
+                  sequence="2"
+                  action="act_open_vehicle_model_view"/>
+    </data>
+</odoo>
