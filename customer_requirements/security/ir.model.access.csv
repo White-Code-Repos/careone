@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_req,customer_requirements,model_customer_questions,,1,1,1,1
+access_multi_answer,customer_multi_answer,model_multi_answer,,1,1,1,1
+access_sale_question,customer_sale_question,model_sale_question,,1,1,1,1

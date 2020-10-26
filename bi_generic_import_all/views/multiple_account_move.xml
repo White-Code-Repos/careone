@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
 		        <form string="Import Journal Items">
 					<group>
-		            	<field name="import_option" wedgit="selection"/>
+		            	<field name="import_option" widget="selection"/>
 		                <field name="file_to_upload" />
 		            </group>
 		            <footer>
