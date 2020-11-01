@@ -80,7 +80,7 @@ class Purchaserequester(models.Model):
     def _getUserGroupId(self):
         return [('groups_id', '=', self.env.ref('purchase.group_purchase_manager').id)]
 
-    approver_id = fields.Many2one('res.users', string='Approver',  domain=_getUserGroupId, readonly=False, states={
+    approver_id = fields.Many2one(comodel_name='res.users', string='Approver',  domain=_getUserGroupId, readonly=False, states={
                                   'acc': [('readonly', True)]}, track_visibility='always')
     description = fields.Text(string="Description", required=True, states={
                               'acc': [('readonly', True)]}, track_visibility='always')
@@ -91,12 +91,12 @@ class Purchaserequester(models.Model):
                                  default=datetime.today(),
                                  help="Depicts the date where the Quotation should be validated and converted into a purchase order.", readonly=False, states={'acc': [('readonly', True)]}, track_visibility='always')
 
-    user_id = fields.Many2one('res.users', string='Requester', index=True, track_visibility='onchange',
+    user_id = fields.Many2one(comodel_name='res.users', string='Requester', index=True, track_visibility='onchange',
                               default=lambda self: self.env.user)
 
-    purchase_order_id = fields.One2many('purchase.order', 'purchase_requester_id',
+    purchase_order_id = fields.One2many(comodel_name='purchase.order', inverse_name='purchase_requester_id',
                                         string='Purchase Order Reference', states={'acc': [('readonly', True)]})
-    res_id = fields.Many2one('res.users', string='Approver')
+    res_id = fields.Many2one(comodel_name='res.users', string='Approver')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('drft', 'Draft'),
@@ -117,9 +117,7 @@ class PurchaseOrderInherit(models.Model):
     def _getUserGroupId(self):
         return [('groups_id', '=', self.env.ref('purchase.group_purchase_manager').id)]
 
-    approver_id = fields.Many2one(
-        string='Approver', domain=_getUserGroupId, readonly=True)
-    purchase_inhrt_id = fields.Many2one(
-        'res.users', string='Approver',  store=True, readonly=False)
-    purchase_requester_id = fields.Many2one(
-        'purchase.requester', string='Purchase Request Reference')
+    approver_id = fields.Many2one(comodel_name='res.users',string='Approver', domain=_getUserGroupId, readonly=True)
+    purchase_inhrt_id = fields.Many2one(comodel_name='res.users', string='Approver',  store=True, readonly=False)
+    purchase_requester_id = fields.Many2one(comodel_name='purchase.requester', string='Purchase Request Reference')
+    
