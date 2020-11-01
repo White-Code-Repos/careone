@@ -1,29 +1,21 @@
-# -*- coding: utf-8 -*-
-# © 2016 Serpent Consulting Services Pvt. Ltd. (support@serpentcs.com)
+# Copyright 2016 Serpent Consulting Services Pvt. Ltd. (support@serpentcs.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'Mass Editing v13',
-    'version': '13.0.1.1.0',
-    'author': 'Serpent Consulting Services Pvt. Ltd., '
-              'Tecnativa, '
-              'Odoo Community Association (OCA)',
-    'contributors': [
-        'Oihane Crucelaegui <oihanecrucelaegi@gmail.com>',
-        'Serpent Consulting Services Pvt. Ltd. <support@serpentcs.com>',
-        'Jay Vora <jay.vora@serpentcs.com>'
+    "name": "Mass Editing",
+    "version": "13.0.1.0.2",
+    "author": "Serpent Consulting Services Pvt. Ltd., "
+    "Tecnativa, "
+    "GRAP, "
+    "Odoo Community Association (OCA)",
+    "category": "Tools",
+    "website": "https://github.com/OCA/server-ux",
+    "license": "AGPL-3",
+    "summary": "Mass Editing",
+    "uninstall_hook": "uninstall_hook",
+    "depends": ["mass_operation_abstract"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/mass_editing_view.xml",
+        "wizard/view_mass_editing_wizard.xml",
     ],
-    'category': 'Tools',
-    'website': 'http://www.serpentcs.com',
-    'license': 'GPL-3 or any later version',
-    'summary': 'Mass Editing (adaptation  v 10.0 to 13.0)',# boris.gra
-    # 'uninstall_hook': 'uninstall_hook',# boris.gra
-    'depends': ['base'],
-    'data': [
-        'security/ir.model.access.csv',
-        'views/mass_editing_view.xml',
-        'views/basic_js.xml',# boris.gra
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
 }
