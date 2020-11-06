@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_subscription_line,access.subscription.line,model_subscription_freeze_line,,1,1,1,1
+access_subscription_product,access.subscription.product,model_subscription_product,,1,1,1,1
+access_subscription_product_template,access.subscription.product.template,model_subscription_product_template,,1,1,1,1

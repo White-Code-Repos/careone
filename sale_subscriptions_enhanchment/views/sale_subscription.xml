@@ -12,7 +12,6 @@
                 <field name="new_end_date" invisible="1"/>
                 <field name="last_state" invisible="1"/>
                 <field name="un_freez_date" invisible="1"/>
-                <field name="coupon_program"/>
             </xpath>
 
             <xpath expr="//button[3]" position="after">
@@ -20,42 +19,54 @@
                 <field name="display_name" invisible="1"/>
                 <field name="apper_generate_coupon" invisible="1"/>
                 <field name="show_freez" invisible="1"/>
-                <button string="Freezing" name="action_freez" type="object"  class="btn-primary" attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
+                <button string="Freezing" name="action_freez" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
 
-                <button string="UN-Freezing" name="acrion_unfreeze" type="object"  class="btn-primary" attrs="{'invisible': [('is_freez', '!=', True)]}"/>
-
-               <!--  <button string="Generate Coupon"  name="%(sale_coupon.sale_coupon_generate_action)d" type="action"  class="btn-primary" attrs="{'invisible': [('apper_generate_coupon', '!=', True)]}"/> -->
-
-               <button string="Generate Coupon"  name="generate_coupon" type="object"  class="btn-primary" attrs="{'invisible': [('apper_generate_coupon', '!=', True)]}"/>
+                <button string="UN-Freezing" name="acrion_unfreeze" type="object" class="btn-primary"
+                        attrs="{'invisible': [('is_freez', '!=', True)]}"/>
 
 
             </xpath>
             <xpath expr="//button[@name='open_website_url']" position='before'>
                 <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
-                            <field name="freeze_times" widget="statinfo" string="Freezes"/>
+                    <field name="freeze_times" widget="statinfo" string="Freezes"/>
                 </button>
             </xpath>
+            <xpath expr="//page[@id='lines']" position="replace">
+                <page name="subs_product" string="Subscription Products">
+                    <field name="subs_products_ids" readonly="1" force_save="1">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                            <field name="consumed_qty"/>
+                            <field name="qty_per_day"/>
+                            <field name="qty_counter"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
         </field>
-
-       
     </record>
+
     <record id="subscription_line_tree" model="ir.ui.view">
-            <field name="name">subscription.freeze.line.view</field>
-            <field name="model">subscription.freeze.line</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="start_date" readonly="1"/>
-                    <field name="end_date" readonly="1" />
-                   
-                </tree>
-            </field>
+        <field name="name">subscription.freeze.line.view</field>
+        <field name="model">subscription.freeze.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_date" readonly="1"/>
+                <field name="end_date" readonly="1"/>
+            </tree>
+        </field>
     </record>
-
-    <!-- <record id="sale_coupon_generate_action" model="ir.actions.act_window">
-        <field name="name">Number of Coupons To Generate</field>
-        <field name="res_model">sale.coupon.generate</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="view_id" ref="sale_coupon.sale_coupon_generate_view_form"/>
-    </record> -->
+    <!-- Inherit Form View to Modify it -->
+    <record id="sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale_order_form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pricelist_id']" position="after">
+                <field name="subscription_id"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
