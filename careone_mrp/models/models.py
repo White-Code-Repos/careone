@@ -2,9 +2,12 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
-class MrpWorkorder(models.Model):
-    _inherit = 'mrp.workorder'
+class MrpProduction(models.Model):
+    _inherit = 'mrp.production'
 
-    emp_ids = fields.Many2many(string='employees',comodel_name='res.user',)
     
+    emp_ids = fields.Many2many(
+        string='employees',
+        comodel_name='hr.employee',
+    )
     

@@ -1,11 +1,12 @@
 <odoo>
     <record id="workorder_form" model="ir.ui.view">
         <field name="name">workorder_form</field>
-        <field name="model">mrp.wororder</field>
+        <field name="model">mrp.workorder</field>
+        <field name="priority">999</field>
         <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
         <field name="arch" type="xml">
             <xpath expr='//label[@for="date_planned_start"]/../../..' position="replace"/>
-            <xpath expr='//label[@for="date_planned_start"]/../../..' position="replace">
+            <xpath expr='//field[@name="worksheet_type"]/..' position="before">
                 <page string="Time Tracking" groups="mrp.group_mrp_manager">
                     <group>
                         <group>
@@ -78,7 +79,7 @@
     <record id="production_form" model="ir.ui.view">
         <field name="name">production_form</field>
         <field name="model">mrp.production</field>
-        <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
             <field name="user_id" position="after">
                 <field name='emp_ids' widget="many2many_tags"/>
