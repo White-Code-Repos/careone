@@ -54,33 +54,34 @@ class SalesSubscription(models.Model):
         for rec in self.template_id.subs_product_ids:
             qty = 0
             qty_per_day = 0
-            for order in orders:
-                confirm_time = order.date_order
-                for line in order.order_line:
-                    if rec.product_id == line.product_id and line.price_unit == 0:
-                        qty += line.product_uom_qty
-                        if current_hour in shift_hours:
-                            if 0 in shift_hours and shift_hours[0] != 0:
-                                zer_index = shift_hours.index(0)
-                                current_hour_index = shift_hours.index(current_hour)
-                                if zer_index > current_hour_index:
-                                    # this shift is 2 days and this is the first day
+            if orders:
+                for order in orders:
+                    confirm_time = order.date_order
+                    for line in order.order_line:
+                        if rec.product_id == line.product_id and line.price_unit == 0:
+                            qty += line.product_uom_qty
+                            if current_hour in shift_hours:
+                                if 0 in shift_hours and shift_hours[0] != 0:
+                                    zer_index = shift_hours.index(0)
+                                    current_hour_index = shift_hours.index(current_hour)
+                                    if zer_index > current_hour_index:
+                                        # this shift is 2 days and this is the first day
+                                        today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
+                                        if datetime.strptime(today,
+                                                             '%Y-%m-%d %H:%M') <= confirm_time <= now:
+                                            qty_per_day += line.product_uom_qty
+                                    elif zer_index <= current_hour_index:
+                                        # second day
+                                        yesterday = str((now - timedelta(days=1)).date()) + " " + str(
+                                            shift_hours[0]) + ":00"
+                                        if datetime.strptime(
+                                                yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
+                                            qty_per_day += line.product_uom_qty
+                                else:
                                     today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
                                     if datetime.strptime(today,
                                                          '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                         qty_per_day += line.product_uom_qty
-                                elif zer_index <= current_hour_index:
-                                    # second day
-                                    yesterday = str((now - timedelta(days=1)).date()) + " " + str(
-                                        shift_hours[0]) + ":00"
-                                    if datetime.strptime(
-                                            yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
-                                        qty_per_day += line.product_uom_qty
-                            else:
-                                today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
-                                if datetime.strptime(today,
-                                                     '%Y-%m-%d %H:%M') <= confirm_time <= now:
-                                    qty_per_day += line.product_uom_qty
             records.append((0, 0, {
                 'product_id': rec.product_id.id,
                 'qty': rec.qty,
@@ -265,6 +266,46 @@ class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False, )
+
+    def _prepare_subscription_data(self, template):
+        """Prepare a dictionnary of values to create a subscription from a template."""
+        self.ensure_one()
+        date_today = fields.Date.context_today(self)
+        recurring_invoice_day = date_today.day
+        recurring_next_date = self.env['sale.subscription']._get_recurring_next_date(
+            template.recurring_rule_type, template.recurring_interval,
+            date_today, recurring_invoice_day
+        )
+        records = []
+        for rec in template.subs_product_ids:
+            records.append((0, 0, {
+                'product_id': rec.product_id.id,
+                'qty': rec.qty,
+                'qty_per_day': rec.qty_per_day,
+                'consumed_qty': 0,
+                'qty_counter': 0,
+            }))
+        values = {
+            'name': template.name,
+            'template_id': template.id,
+            'partner_id': self.partner_invoice_id.id,
+            'user_id': self.user_id.id,
+            'team_id': self.team_id.id,
+            'date_start': fields.Date.today(),
+            'description': self.note or template.description,
+            'pricelist_id': self.pricelist_id.id,
+            'company_id': self.company_id.id,
+            'analytic_account_id': self.analytic_account_id.id,
+            'recurring_next_date': recurring_next_date,
+            'recurring_invoice_day': recurring_invoice_day,
+            'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode in [
+                'validate_send_payment', 'success_payment'] else False,
+            'subs_products_ids': records
+        }
+        default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
+        if default_stage:
+            values['stage_id'] = default_stage.id
+        return values
 
     @api.onchange('subscription_id')
     def onchange_method(self):
