@@ -3,7 +3,7 @@
     'version': '13.0.1.0.0',
     'author': 'White-code (Zienab Abd El Nasser)',
     'category': 'Sale',
-    'depends': [
+    'depends': ['sale',
         'sale_subscription',
     ],
     'data': [
