@@ -19,13 +19,12 @@
                 <field name="display_name" invisible="1"/>
                 <field name="apper_generate_coupon" invisible="1"/>
                 <field name="show_freez" invisible="1"/>
+                <field name="is_without_freeze" invisible="1"/>
                 <button string="Freezing" name="action_freez" type="object" class="btn-primary"
-                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
-
-                <button string="UN-Freezing" name="acrion_unfreeze" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|',('is_freez', '=', True),('is_without_freeze', '=', True)]}"/>
+                <!--                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>-->
+                <button string="UN-Freezing" name="action_unfreeze" type="object" class="btn-primary"
                         attrs="{'invisible': [('is_freez', '!=', True)]}"/>
-
-
             </xpath>
             <xpath expr="//button[@name='open_website_url']" position='before'>
                 <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
@@ -55,6 +54,7 @@
             <tree>
                 <field name="start_date" readonly="1"/>
                 <field name="end_date" readonly="1"/>
+                <field name="freeze_duration"/>
             </tree>
         </field>
     </record>
@@ -65,7 +65,8 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pricelist_id']" position="after">
-                <field name="subscription_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+                <field name="subscription_id"
+                       options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
             </xpath>
         </field>
     </record>

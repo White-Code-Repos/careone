@@ -24,10 +24,10 @@ class SalesSubscription(models.Model):
     last_state = fields.Integer()
     un_freez_date = fields.Date()
     is_freez = fields.Boolean(default=False)
-
+    freeze_for = fields.Integer(string="", required=False, related='template_id.freeze_for')
     freeze_times = fields.Integer(compute='_get_freeze_times')
     display_name = fields.Char(related='stage_id.display_name')
-
+    is_without_freeze = fields.Boolean(string="", )
     show_freez = fields.Boolean(compute="_get_show_freez")
 
     @api.onchange('template_id')
@@ -104,71 +104,47 @@ class SalesSubscription(models.Model):
         else:
             self.show_freez = False
 
-    def acrion_unfreeze(self):
-        print('unfreez')
-        today = fields.Date.from_string(fields.Date.today())
+    def action_unfreeze(self):
 
-        date_1 = datetime.strptime(str(today), '%Y-%m-%d')
-        date_2 = datetime.strptime(str(self.un_freez_date), '%Y-%m-%d')
-        delta = date_2 - date_1
-        self.template_id.new_freeze_for = int(delta.days)
+        freezing_times = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
+        duration = 0
+        for rec in freezing_times:
+            duration += rec.freeze_duration
+        if self.freeze_times >= self.freeze_for or duration >= self.template_id.freez_duration:
+            self.is_without_freeze = True
+
         self.is_freez = False
-        self.template_id.freez_duration = self.template_id.freez_duration + 1
-
-        search = self.env['sale.subscription.stage'].search
-
-        stage = search([('in_progress', '=', True)], limit=1)
-        self.stage_id = stage.id
-
         freez_time = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)], limit=1,
                                                                  order='create_date desc')
-        # raise Warning(freez_time)
+        x = (fields.Date.from_string(fields.Date.today()) - freez_time.start_date).days
+        if x == 0:
+            dur = 1
+        else:
+            dur = x
         freez_time.update({
             'end_date': fields.Date.from_string(fields.Date.today()),
+            'freeze_duration': dur
         })
 
     def action_freez(self):
-        print('Freezing')
-
-        freeze_for = 0
-        if self.template_id.new_freeze_for > 0:
-            freeze_for = self.template_id.new_freeze_for
-        else:
-            freeze_for = self.template_id.freeze_for
-
+        print(self.freeze_for)
+        print(self.freeze_times)
+        freeze_for = self.template_id.freeze_for
         if freeze_for == 0:
             raise UserError('Please Enter Freezing Duration First')
         if freeze_for < 0:
-            raise UserError('Wrong Vlaue for Freezing Duration')
-
+            raise UserError('Wrong Value for Freezing Duration')
         self.last_state = self.stage_id.id
-        self.new_end_date = datetime.strptime(str(self.end_date), '%Y-%m-%d') + relativedelta(days=+ freeze_for)
         today = fields.Date.from_string(fields.Date.today())
-        self.un_freez_date = datetime.strptime(str(today), '%Y-%m-%d') + relativedelta(days=+ freeze_for)
-
-        search = self.env['sale.subscription.stage'].search
-        for sub in self:
-            stage = search([('name', '=', 'Freezing')], limit=1)
-            if not stage:
-                stage = search([('in_progress', '=', True)], limit=1)
-            sub.write({
-                'freez_duration': self.freez_duration - 1,
-                'is_freez': True,
-                'stage_id': stage.id, 'to_renew': False, 'date': today,
-                'last_state': self.stage_id.id,
-                'new_end_date': datetime.strptime(str(self.end_date), '%Y-%m-%d') + relativedelta(days=+ freeze_for),
-                'un_freez_date': datetime.strptime(str(today), '%Y-%m-%d') + relativedelta(days=+ freeze_for),
-            })
-            self.template_id.new_freeze_for = 0
-            if self.template_id.freez_duration > 0:
-                self.template_id.freez_duration = self.template_id.freez_duration - 1
-
-            freez_data = {
-                'start_date': today,
-                'end_date': datetime.strptime(str(today), '%Y-%m-%d') + relativedelta(days=+ freeze_for),
-                'subscription_id': self.id,
-            }
-            line = self.env['subscription.freeze.line'].create(freez_data)
+        self.write({
+            'is_freez': True,
+            'last_state': self.stage_id.id,
+        })
+        freez_data = {
+            'start_date': today,
+            'subscription_id': self.id,
+        }
+        self.env['subscription.freeze.line'].create(freez_data)
         return True
 
     @api.model
@@ -180,7 +156,6 @@ class SalesSubscription(models.Model):
         for rec in records:
             stage = search([('in_progress', '=', True)], limit=1)
             rec.write({
-                # 'stage_id' : records.last_state,
                 'stage_id': stage.id,
                 'end_date': records.new_end_date,
                 'is_freez': False,
@@ -258,17 +233,24 @@ class SalesSubscriptionFreeze(models.Model):
     description = 'subscription Freezes'
     start_date = fields.Date("Start Date", readonly=True)
     end_date = fields.Date("End Date", readonly=True)
-
+    freeze_duration = fields.Integer(string="Duration", required=False, )
     subscription_id = fields.Many2one('sale.subscription', readonly=True)
+
+    # def get_freeze_duration(self):
+    #     for record in self:
+    #         x = 0
+    #         if record.start_date and record.end_date:
+    #             x = (record.end_date - record.end_date).days
+    #             if x == 0:
+    #                 self.freeze_duration = 1
+    #             else:
+    #                 self.freeze_duration = x
+    #         self.freeze_duration = x
+    #
 
 
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
-
-    # @api.model
-    # def _get_domain_subscription_id(self):
-    #     return [('partner_id', '=', self.partner_id.id)]
-
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
                                       domain="[('partner_id', '=', partner_id)]", )
 
