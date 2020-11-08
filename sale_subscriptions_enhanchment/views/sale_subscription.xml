@@ -65,7 +65,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pricelist_id']" position="after">
-                <field name="subscription_id"/>
+                <field name="subscription_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
             </xpath>
         </field>
     </record>

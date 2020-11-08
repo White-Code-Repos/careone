@@ -265,7 +265,12 @@ class SalesSubscriptionFreeze(models.Model):
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
-    subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False, )
+    # @api.model
+    # def _get_domain_subscription_id(self):
+    #     return [('partner_id', '=', self.partner_id.id)]
+
+    subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
+                                      domain="[('partner_id', '=', partner_id)]", )
 
     def _prepare_subscription_data(self, template):
         """Prepare a dictionnary of values to create a subscription from a template."""
