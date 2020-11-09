@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Inherit Form View to Modify it -->
-    <record id="product_form_inherit" model="ir.ui.view">
-        <field name="name">product_form_inherit</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
-        <field name="arch" type="xml">
 
-            <xpath expr="//field[@name='subscription_template_id']" position="after">
-                <field name="no_of_vehicles" attrs="{'invisible': [('recurring_invoice', '!=', True)]}"/>
-            </xpath>
-
-        </field>
-    </record>
     <record id="sale_subscription_inherited_form" model="ir.ui.view">
         <field name="name">sale.subscription.template.inherited.form</field>
         <field name="model">sale.subscription.template</field>

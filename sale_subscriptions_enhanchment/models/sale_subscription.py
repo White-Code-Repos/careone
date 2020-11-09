@@ -401,6 +401,3 @@ class SalesOrderInherit(models.Model):
         return super(SalesOrderInherit, self).action_confirm()
 
 
-class ProductInherit(models.Model):
-    _inherit = 'product.product'
-    no_of_vehicles = fields.Integer(string="No Of Vehicles", required=False, )
