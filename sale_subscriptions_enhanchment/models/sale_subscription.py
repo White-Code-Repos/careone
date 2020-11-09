@@ -226,6 +226,7 @@ class SubscriptionProducts(models.Model):
     qty_per_day = fields.Integer(string="Quantity Per Day", required=False, )
     consumed_qty = fields.Integer(string="Consumed Qty", required=False, )
     qty_counter = fields.Integer(string="Consumed Qty Per Day", required=False)
+    vehicle_id = fields.Many2one('fleet.vehicle', 'Vehicle', help='Vehicle concerned by this log')
 
 
 class SalesSubscriptionFreeze(models.Model):
@@ -254,7 +255,7 @@ class SalesOrderInherit(models.Model):
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
                                       domain="[('partner_id', '=', partner_id)]", )
 
-    def _prepare_subscription_data(self, template):
+    def _prepare_subscription_data(self, template, no_of_vehicles):
         """Prepare a dictionnary of values to create a subscription from a template."""
         self.ensure_one()
         date_today = fields.Date.context_today(self)
@@ -265,13 +266,14 @@ class SalesOrderInherit(models.Model):
         )
         records = []
         for rec in template.subs_product_ids:
-            records.append((0, 0, {
-                'product_id': rec.product_id.id,
-                'qty': rec.qty,
-                'qty_per_day': rec.qty_per_day,
-                'consumed_qty': 0,
-                'qty_counter': 0,
-            }))
+            for record in range(no_of_vehicles):
+                records.append((0, 0, {
+                    'product_id': rec.product_id.id,
+                    'qty': rec.qty,
+                    'qty_per_day': rec.qty_per_day,
+                    'consumed_qty': 0,
+                    'qty_counter': 0,
+                }))
         values = {
             'name': template.name,
             'template_id': template.id,
@@ -293,6 +295,31 @@ class SalesOrderInherit(models.Model):
         if default_stage:
             values['stage_id'] = default_stage.id
         return values
+
+    def create_subscriptions(self):
+        res = []
+        for order in self:
+            to_create = self._split_subscription_lines()
+            # create a subscription for each template with all the necessary lines
+            for template in to_create:
+                products = []
+                no_of_vehicles = 0
+                for rec in order.order_line:
+                    products.append(rec.product_id)
+                for rec in products:
+                    if rec.subscription_template_id == template:
+                        no_of_vehicles = rec.no_of_vehicles
+                values = order._prepare_subscription_data(template, no_of_vehicles)
+                values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
+                subscription = self.env['sale.subscription'].sudo().create(values)
+                subscription.onchange_date_start()
+                res.append(subscription.id)
+                to_create[template].write({'subscription_id': subscription.id})
+                subscription.message_post_with_view(
+                    'mail.message_origin_link', values={'self': subscription, 'origin': order},
+                    subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+                )
+        return res
 
     @api.onchange('subscription_id')
     def onchange_method(self):
@@ -316,7 +343,6 @@ class SalesOrderInherit(models.Model):
                 })
 
     def action_confirm(self):
-
         orders = self.env['sale.order'].search(
             [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
         shift_hours = []
@@ -370,12 +396,11 @@ class SalesOrderInherit(models.Model):
                     if (rec.qty_counter + line.product_uom_qty) > rec.qty_per_day:
                         raise ValidationError(
                             "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity per day" % rec.product_id.name)
-                    print('hisham')
                     rec.consumed_qty += line.product_uom_qty
                     rec.qty_counter += line.product_uom_qty
-
         return super(SalesOrderInherit, self).action_confirm()
 
-# class OrderLineInherit(models.Model):
-#     _inherit = 'sale.order.line'
-#     subs_ref = fields.Char(string="", required=False, )
+
+class ProductInherit(models.Model):
+    _inherit = 'product.product'
+    no_of_vehicles = fields.Integer(string="No Of Vehicles", required=False, )
