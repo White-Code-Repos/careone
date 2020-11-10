@@ -1,6 +1,6 @@
-INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,INVOICE_ORIGIN
-invoice14,Agrolait,EUR,Basic Computer,100000,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,10,S00007
-invoice14,Agrolait,EUR,Little Server,101000,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,,S00007
-invoice15,Agrolait,EUR,Server,101110,3,Units,Server,100000,Mitchell Admin,,2017-02-06,,S00007
-invoice16,Agrolait,EUR,Basic Computer,101120,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,,S00007
-invoice17,Camptocamp,EUR,Little Server,,2,Units,Little Server,50000,Mitchell Admin,,2017-02-08,10,S00007
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,INVOICE_ORIGIN,Fleet,License Plate,analytic_account_id,Analytic_Tags_ids
+invoice14,Agrolait,EUR,Basic Computer,100000,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,10,S00007,Opel/Astra,1-ACK-205,Administrative,Contracts
+invoice14,Agrolait,EUR,Little Server,101000,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,,S00007,Opel/Astra,1-ACK-205,Administrative,Contracts
+invoice15,Agrolait,EUR,Server,101110,3,Units,Server,100000,Mitchell Admin,,2017-02-06,,S00007,Opel/Astra,1-ACK-205,Camp to Camp,Contracts
+invoice16,Agrolait,EUR,Basic Computer,101120,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,,S00007,Opel/Astra,1-ACK-205,Asustek,Contracts
+invoice17,Camptocamp,EUR,Little Server,,2,Units,Little Server,50000,Mitchell Admin,,2017-02-08,10,S00007,Audi/A1/,1-AUD-001,Asustek,Contracts

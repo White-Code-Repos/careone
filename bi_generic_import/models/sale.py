@@ -99,15 +99,15 @@ class gen_sale(models.TransientModel):
 						vehicle_id = False
 
 					if not vehicle_id:
-						return sale_id
+						return sale_search
 
-					sale_id.write({
+					sale_search.write({
 						'vehicle_id' : vehicle_id and vehicle_id.id
 					})
-
-					vehicle_id.write({
-						'license_plate' : license_plate
-					})
+					if vehicle_id:
+						vehicle_id.write({
+							'license_plate' : license_plate
+						})
 					return sale_search
 				else:
 					raise Warning(_('Pricelist is different for "%s" .\n Please define same.') % values.get('order'))
@@ -124,7 +124,7 @@ class gen_sale(models.TransientModel):
 			user_id  = self.find_user(values.get('user'))
 			order_date = self.make_order_date(values.get('date'))
 			create_date = self.make_order_date(values.get('create_date',False))
-
+			
 			sale_id = sale_obj.create({
 				'partner_id' : partner_id.id,
 				'pricelist_id' : currency_id.id,
@@ -134,7 +134,7 @@ class gen_sale(models.TransientModel):
 				'custom_seq': True if values.get('seq_opt') == 'custom' else False,
 				'system_seq': True if values.get('seq_opt') == 'system' else False,
 				'sale_name' : values.get('order'),
-				'is_import' : True
+				'is_import' : True,
 			})
 
 			if create_date:
@@ -271,10 +271,11 @@ class gen_sale(models.TransientModel):
 
 
 	def make_order_line(self, values, sale_id):
+		
 		product_obj = self.env['product.product']
 		order_line_obj = self.env['sale.order.line']
 		current_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+		tag_ids = []
 		if self.import_prod_option == 'barcode':
 		  product_search = product_obj.search([('barcode',  '=',values['product'])])
 		elif self.import_prod_option == 'code':
@@ -323,8 +324,42 @@ class gen_sale(models.TransientModel):
 					if not tax:
 						raise Warning(_('"%s" Tax not in your system') % name)
 					tax_ids.append(tax.id)
+		if values.get('analytic_Tag'):
+			if ';' in  values.get('analytic_Tag'):
+				tag_names = values.get('analytic_Tag').split(';')
+				for name in tag_names:
+					tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+					if not tag:
+						raise Warning(_('"%s" Analytic Tags not in your system') % name)
+					tag_ids.append(tag.id)
 
-		so_order_lines = order_line_obj.create({
+			elif ',' in  values.get('analytic_Tag'):
+				tag_names = values.get('analytic_Tag').split(',')
+				for name in tag_names:
+					tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+					if not tag:
+						raise Warning(_('"%s" Analytic Tags not in your system') % name)
+					tag_ids.append(tag.id)
+			else:
+				tag_names = values.get('analytic_Tag').split(',')
+				tag= self.env['account.analytic.tag'].search([('name', '=', tag_names)])
+				if not tag:
+					raise Warning(_('"%s" Analytic Tags not in your system') % tag_names)
+				tag_ids.append(tag.id)
+		if tag_ids:
+			so_order_lines = order_line_obj.create({
+											'order_id':sale_id.id,
+											'product_id':product_id.id,
+											'name':values.get('description'),
+											'product_uom_qty':values.get('quantity'),
+											'product_uom':product_uom.id,
+											'price_unit':values.get('price'),
+											'analytic_tag_ids' : [(6, 0, tag_ids)],
+											'discount':values.get('disc')
+
+											})
+		else:
+			so_order_lines = order_line_obj.create({
 											'order_id':sale_id.id,
 											'product_id':product_id.id,
 											'name':values.get('description'),
@@ -336,6 +371,16 @@ class gen_sale(models.TransientModel):
 											})
 		if tax_ids:
 			so_order_lines.write({'tax_id':([(6,0,tax_ids)])})
+
+		if values.get('analytic_account_id'):
+			analytic_account_id = self.env['account.analytic.account'].search([('name','=',values.get('analytic_account_id'))])
+			if analytic_account_id:
+				analytic_account_id = analytic_account_id
+				sale_id.write({
+				'analytic_account_id' : analytic_account_id.id
+				})
+			else:
+				raise Warning(_(' "%s" Analytic Account is not available.') % values.get('analytic_account_id'))
 		return True
 
 
@@ -381,7 +426,7 @@ class gen_sale(models.TransientModel):
 		"""Load Inventory data from the CSV file."""
 		if self.import_option == 'csv':
 			try:
-				keys = ['order', 'customer', 'pricelist','product', 'quantity', 'uom', 'description', 'price','user','tax','date','disc','create_date','vehicle_id','license_plate']
+				keys = ['order', 'customer', 'pricelist','product', 'quantity', 'uom', 'description', 'price','user','tax','date','disc','create_date','vehicle_id','license_plate','analytic_account_id','analytic_Tag']
 				csv_data = base64.b64decode(self.file)
 				data_file = io.StringIO(csv_data.decode("utf-8"))
 				data_file.seek(0)
@@ -452,8 +497,7 @@ class gen_sale(models.TransientModel):
 					else:
 						create_date_string = ''
 					
-					print(line,'====================line \n\n')
-
+					
 					values.update( {'order':line[0],
 									'customer': line[1],
 									'pricelist': line[2],
@@ -469,6 +513,8 @@ class gen_sale(models.TransientModel):
 									'seq_opt':self.sequence_opt,
 									'disc':line[11],
 									'vehicle_id' : line[13],
+									'analytic_account_id' : line[15],
+									'analytic_Tag' : line[16],
 									'license_plate' : line[14],
 									})
 					count = 0
