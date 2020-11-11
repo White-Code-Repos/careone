@@ -1,90 +1,126 @@
 <odoo>
-    <record id="workorder_form" model="ir.ui.view">
-        <field name="name">workorder_form</field>
-        <field name="model">mrp.workorder</field>
-        <field name="priority">999</field>
-        <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
-        <field name="arch" type="xml">
-            <xpath expr='//label[@for="date_planned_start"]/../../..' position="replace"/>
-            <xpath expr='//field[@name="worksheet_type"]/..' position="before">
-                <page string="Time Tracking" groups="mrp.group_mrp_manager">
+    <data>
+        <record id="workorder_form" model="ir.ui.view">
+            <field name="name">workorder_form</field>
+            <field name="model">mrp.workorder</field>
+            <field name="priority">999</field>
+            <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="product_id"]/..' position="after">
                     <group>
+                        <field name="mrp_group_id" readonly="1"/>
+                        <field name="user_ids"/>
+                    </group>
+                </xpath>
+                <xpath expr='//label[@for="date_planned_start"]/../../..' position="replace"/>
+                <xpath expr='//field[@name="worksheet_type"]/..' position="before">
+                    <page string="Time Tracking" groups="mrp.group_mrp_manager">
                         <group>
-                            <label for="date_planned_start" string="Planned Date"/>
-                            <div class="o_row">
-                                <field name="date_planned_start" class="mr8"/>
-                                <div attrs="{'invisible': [('date_planned_start', '=', False)]}" class="o_row">
-                                    <strong attrs="{'invisible': [('date_planned_finished', '=', False)]}" class="mr8">to</strong>
-                                    <strong class="oe_edit_only mr8" attrs="{'invisible': [('date_planned_finished', '!=', False)]}">to</strong>
-                                    <field name="date_planned_finished"/>
+                            <group>
+                                <label for="date_planned_start" string="Planned Date"/>
+                                <div class="o_row">
+                                    <field name="date_planned_start" class="mr8"/>
+                                    <div attrs="{'invisible': [('date_planned_start', '=', False)]}" class="o_row">
+                                        <strong attrs="{'invisible': [('date_planned_finished', '=', False)]}" class="mr8">to</strong>
+                                        <strong class="oe_edit_only mr8" attrs="{'invisible': [('date_planned_finished', '!=', False)]}">to</strong>
+                                        <field name="date_planned_finished"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <label for="date_start" string="Effective Date"/>
-                            <div class="o_row">
-                                <field name="date_start" readonly="1"/>
-                                <div attrs="{'invisible': [('date_finished', '=', False)]}">
-                                    <strong class="mr8">to</strong>
-                                    <field name="date_finished" readonly="1"/>
+                                <label for="date_start" string="Effective Date"/>
+                                <div class="o_row">
+                                    <field name="date_start" readonly="1"/>
+                                    <div attrs="{'invisible': [('date_finished', '=', False)]}">
+                                        <strong class="mr8">to</strong>
+                                        <field name="date_finished" readonly="1"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </group>
-                        <group>
-                            <label for="duration_expected"/>
-                            <div>
-                                <field name="duration_expected" widget="float_time" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <label for="duration_expected"/>
+                                <div>
+                                    <field name="duration_expected" widget="float_time" class="oe_inline"/>
                                 minutes
-                            </div>
-                            <label for="duration"/>
-                            <div>
-                                <button style="pointer-events: none;" class="oe_inline badge badge-secondary">
-                                    <field name="duration" widget="mrp_time_counter" help="Time the currently logged user spent on this workorder."/>
-                                </button>
-                            </div>
+                                </div>
+                                <label for="duration"/>
+                                <div>
+                                    <button style="pointer-events: none;" class="oe_inline badge badge-secondary">
+                                        <field name="duration" widget="mrp_time_counter" help="Time the currently logged user spent on this workorder."/>
+                                    </button>
+                                </div>
+                            </group>
                         </group>
-                    </group>
-                    <group>
-                        <field name="time_ids" nolabel="1" context="{'default_workcenter_id': workcenter_id, 'default_workorder_id': id}">
-                            <tree>
-                                <field name="date_start"/>
-                                <field name="date_end"/>
-                                <field name="duration" widget="float_time" sum="Total duration"/>
-                                <field name="user_id"/>
-                                <field name="workcenter_id" invisible="1"/>
-                                <field name="company_id" invisible="1"/>
-                                <field name="loss_id" string="Productivity"/>
-                            </tree>
-                            <form>
-                                <group>
+                        <group>
+                            <field name="time_ids" nolabel="1" context="{'default_workcenter_id': workcenter_id, 'default_workorder_id': id}">
+                                <tree>
+                                    <field name="date_start"/>
+                                    <field name="date_end"/>
+                                    <field name="duration" widget="float_time" sum="Total duration"/>
+                                    <field name="user_id"/>
+                                    <field name="workcenter_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="loss_id" string="Productivity"/>
+                                </tree>
+                                <form>
                                     <group>
-                                        <field name="date_start"/>
-                                        <field name="date_end"/>
-                                        <field name="duration" widget="float_time"/>
-                                        <field name="company_id" invisible="1"/>
+                                        <group>
+                                            <field name="date_start"/>
+                                            <field name="date_end"/>
+                                            <field name="duration" widget="float_time"/>
+                                            <field name="company_id" invisible="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="user_id"/>
+                                            <field name="workcenter_id"/>
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="loss_id"/>
+                                        </group>
                                     </group>
-                                    <group>
-                                        <field name="user_id"/>
-                                        <field name="workcenter_id"/>
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="loss_id"/>
-                                    </group>
-                                </group>
-                            </form>
-                        </field>
-                    </group>
-                </page>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="production_form" model="ir.ui.view">
-        <field name="name">production_form</field>
-        <field name="model">mrp.production</field>
-        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
-        <field name="arch" type="xml">
-            <field name="user_id" position="after">
-                <field name='emp_ids' widget="many2many_tags"/>
+                                </form>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
             </field>
-        </field>
-    </record>
+        </record>
+
+        <record id="production_form" model="ir.ui.view">
+            <field name="name">production_form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name='sale_order_id'/>
+                    <field name='mrp_group_id' attrs="{'readonly':[('sale_order_id','!=',False)]}"/>
+                    <field name='user_ids' widget="many2many_tags" domain="[('id','in',mrp_group_id.user_ids.ids)]"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- sale order  -->
+        <record model="ir.ui.view" id="view_order_form">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="mrp_group_id"/>
+                    <field name='user_ids' widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- mrp group -->
+        action
+        <record id="action_mrp_group" model="ir.actions.act_window">
+            <field name="name">MRP groups</field>
+            <field name="display_name">MRP groups</field>
+            <field name="res_model">mrp.group</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_mrp_groups" action="action_mrp_group" name="mrp groups" parent="mrp.menu_mrp_bom" sequence="111"/>
+
+    </data>
 
 </odoo>

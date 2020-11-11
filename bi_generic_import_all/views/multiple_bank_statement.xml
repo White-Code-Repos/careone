@@ -2,7 +2,6 @@
 <openerp>
     <data>
 
-
      <record id="import_multiple_bank_statement_wizard" model="ir.ui.view">
         <field name="name">import.multiple.bank.statement.wizard</field>
         <field name="model">account.multiple.bank.statement.wizard</field>
