@@ -25,7 +25,7 @@ class MrpProduction(models.Model):
 
     @api.onchange('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
-        self.user_ids = sale_order_id.user_ids or mrp_group_id.user_ids
+        self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
 
     @api.model
     def create(self, values):
@@ -59,7 +59,7 @@ class SaleOrder(models.Model):
 
     @api.onchange('mrp_group_id')
     def set_mrp_users(self):
-        self.user_ids = mrp_group_id.user_ids
+        self.user_ids = self.mrp_group_id.user_ids
 
     @api.depends("production_ids")
     def _compute_production_count(self):
