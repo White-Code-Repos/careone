@@ -592,13 +592,13 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
     "website" : "https://www.browseinfo.in",
     "price": 49,
     "currency": 'EUR',
-    "depends" : ['base','hr_attendance','point_of_sale','project','bi_generic_import'],
+    "depends" : ['base','hr_attendance','project','bi_generic_import'],
     "data": [
        'views/multiple_account_move.xml',
        'views/attendances.xml',
        'views/import_image_view.xml',
        'views/multiple_bank_statement.xml',
-       'views/pos.xml',
+       #'views/pos.xml',
        'views/task.xml',
        'views/invoice_with_payment.xml'
     ],
