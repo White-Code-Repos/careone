@@ -245,6 +245,7 @@ class SubscriptionProductsTemplate(models.Model):
 
 class SubscriptionProducts(models.Model):
     _name = 'subscription.product'
+    _description='Subscription'
     subs_id = fields.Many2one(comodel_name="sale.subscription", string="", required=False, )
     product_id = fields.Many2one(comodel_name="product.product", string="Product", required=False, )
     qty = fields.Integer(string="Quantity", required=False, )
