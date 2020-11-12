@@ -8,8 +8,6 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
-    ('draft', draft)]
-    
     state = fields.Selection(selection_add=[
         ('gm_discount', 'GM Discount approve'),
         ('ceo_discount', 'CEO Discount approve'),
