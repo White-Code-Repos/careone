@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
+
 class MrpGroup(models.Model):
     _name = 'mrp.group'
     _description= "MRP group"
