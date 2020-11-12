@@ -1,10 +1,15 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
+class MrpWorkcenterProductivityLossType(models.Model):
+    _inherit = "mrp.workcenter.productivity.loss.type"
+
+    is_calculated = fields.Boolean('calculated', default=False)
 
 class MrpWorkcenterProductivity(models.Model):
     _inherit = "mrp.workcenter.productivity"
-    @api.depends('date_end', 'date_start','loss_type','loss_type.is_calculated')
+
+    @api.depends('date_end', 'date_start','loss_id','loss_id.loss_type.is_calculated')
     def _compute_duration(self):
         for blocktime in self:
             if blocktime.date_end:
@@ -21,12 +26,6 @@ class MrpWorkcenterProductivity(models.Model):
                     blocktime.duration = round(diff.total_seconds() / 60.0, 2)
             else:
                 blocktime.duration = 0.0
-
-
-class MrpWorkcenterProductivityLossType(models.Model):
-    _inherit = "mrp.workcenter.productivity.loss.type"
-
-    is_calculated = fields.Boolean('calculated', default=False)
     
 
 class MrpGroup(models.Model):
