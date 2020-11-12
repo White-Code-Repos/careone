@@ -17,7 +17,7 @@ class MrpWorkcenterProductivity(models.Model):
                 d2 = fields.Datetime.from_string(blocktime.date_end)
                 diff = d2 - d1
                 if (
-                    blocktime.loss_type.calculated or (blocktime.loss_type not in ('productive', 'performance'))
+                    blocktime.loss_id.loss_type.calculated or (blocktime.loss_type not in ('productive', 'performance'))
                     ) and blocktime.workcenter_id.resource_calendar_id:
 
                     r = blocktime.workcenter_id._get_work_days_data_batch(d1, d2)[blocktime.workcenter_id.id]['hours']
@@ -54,6 +54,9 @@ class MrpProduction(models.Model):
     @api.constrains('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
         self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
+        mrp_grp_id = self.sale_order_id.mrp_group_id or self.mrp_group_id
+        self.location_src_id = mrp_grp_id.location_id
+        # self.location_dest_id = mrp_grp_id.location_id
 
     @api.model
     def create(self, values):
