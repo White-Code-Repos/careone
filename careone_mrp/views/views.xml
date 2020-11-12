@@ -80,6 +80,18 @@
                         </group>
                     </page>
                 </xpath>
+                <xpath expr='//field[@name="time_ids"]//tree//field[@name="user_id"]' position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr='//field[@name="time_ids"]//tree' position="attributes">
+                    <attribute name="editable">inline</attribute>
+                </xpath>
+                <xpath expr='//field[@name="time_ids"]//tree' position="inside">
+                    <field name="is_calculated"/>
+                    <button name="button_pending"/>
+                    <button name="button_start"/>
+                </xpath>
+
             </field>
         </record>
 
@@ -120,7 +132,7 @@
         </record>
 
         <menuitem id="menu_mrp_groups" action="action_mrp_group" name="mrp groups" parent="mrp.menu_mrp_bom" sequence="111"/>
-        
+
     </data>
 
 </odoo>
