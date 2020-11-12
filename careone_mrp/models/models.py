@@ -32,7 +32,7 @@ class MrpWorkcenterProductivity(models.Model):
 
 class MrpGroup(models.Model):
     _name = 'mrp.group'
-    _description= "MRP group"
+    _description= "MRP Group"
 
     name = fields.Char(string='Name',)   
     location_id = fields.Many2one(string='location',comodel_name='stock.location', domain=[('usage','=','internal')])
