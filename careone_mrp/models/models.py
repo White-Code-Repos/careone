@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class MrpWorkcenterProductivity(models.Model):
-    _name = "mrp.workcenter.productivity"
+    _inherit = "mrp.workcenter.productivity"
     @api.depends('date_end', 'date_start','loss_type','loss_type.is_calculated')
     def _compute_duration(self):
         for blocktime in self:
@@ -42,6 +42,7 @@ class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="production_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users', related="production_id.user_ids")
+
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
