@@ -120,7 +120,6 @@
         </record>
 
         <menuitem id="menu_mrp_groups" action="action_mrp_group" name="mrp groups" parent="mrp.menu_mrp_bom" sequence="111"/>
-
     </data>
 
 </odoo>
