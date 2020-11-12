@@ -7,8 +7,10 @@ from odoo.exceptions import UserError
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
-    state = fields.Selection([
+    
+    ('draft', draft)]
+    
+    state = fields.Selection(selection_add=[
         ('gm_discount', 'GM Discount approve'),
         ('ceo_discount', 'CEO Discount approve'),
         ('draft', 'Quotation'),
@@ -17,7 +19,7 @@ class SaleOrder(models.Model):
         ('sale', 'Sales Order'),
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+    ])
 
     no_credit_has_ceo_access = fields.Boolean(default=True)
 
