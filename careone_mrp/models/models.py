@@ -87,6 +87,11 @@ class MrpWorkcenterProductivity(models.Model):
 
     is_calculated = fields.Boolean('calculated', default=True)
 
+    def button_pending(self):
+        return self.workorder_id.button_pending()
+    def button_start(self):
+        return self.workorder_id.button_start()
+
     @api.depends('date_end', 'date_start','is_calculated')
     def _compute_duration(self):
         for blocktime in self:
