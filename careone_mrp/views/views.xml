@@ -87,9 +87,9 @@
                     <attribute name="editable">inline</attribute>
                 </xpath>
                 <xpath expr='//field[@name="time_ids"]//tree' position="inside">
-                    <field name="is_calculated"/>
                     <button name="button_pending" icon="fa-pause" type="object"/>
                     <button name="button_start" icon="fa-play" type="object"/>
+                    <field name="is_calculated"/>
                 </xpath>
 
             </field>
