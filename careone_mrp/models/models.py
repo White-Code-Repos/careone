@@ -26,7 +26,7 @@ class MrpWorkcenterProductivity(models.Model):
 class MrpWorkcenterProductivityLossType(models.Model):
     _inherit = "mrp.workcenter.productivity.loss.type"
 
-    is_calculated =  = fields.Boolean('calculated', default=False)
+    is_calculated = fields.Boolean('calculated', default=False)
     
 
 class MrpGroup(models.Model):
