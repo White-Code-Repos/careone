@@ -111,7 +111,6 @@
         </record>
 
         <!-- mrp group -->
-        action
         <record id="action_mrp_group" model="ir.actions.act_window">
             <field name="name">MRP groups</field>
             <field name="display_name">MRP groups</field>

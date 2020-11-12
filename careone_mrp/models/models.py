@@ -2,6 +2,33 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
+class MrpWorkcenterProductivity(models.Model):
+    _name = "mrp.workcenter.productivity"
+    @api.depends('date_end', 'date_start','loss_type','loss_type.is_calculated')
+    def _compute_duration(self):
+        for blocktime in self:
+            if blocktime.date_end:
+                d1 = fields.Datetime.from_string(blocktime.date_start)
+                d2 = fields.Datetime.from_string(blocktime.date_end)
+                diff = d2 - d1
+                if (
+                    blocktime.loss_type.calculated or (blocktime.loss_type not in ('productive', 'performance'))
+                    ) and blocktime.workcenter_id.resource_calendar_id:
+
+                    r = blocktime.workcenter_id._get_work_days_data_batch(d1, d2)[blocktime.workcenter_id.id]['hours']
+                    blocktime.duration = round(r * 60, 2)
+                else:
+                    blocktime.duration = round(diff.total_seconds() / 60.0, 2)
+            else:
+                blocktime.duration = 0.0
+
+
+class MrpWorkcenterProductivityLossType(models.Model):
+    _inherit = "mrp.workcenter.productivity.loss.type"
+
+    is_calculated =  = fields.Boolean('calculated', default=False)
+    
+
 class MrpGroup(models.Model):
     _name = 'mrp.group'
     _description= "MRP group"
