@@ -10,7 +10,7 @@
     'currency': 'EUR',
     'category' : 'Extra Tools',
     'description': """
-
+     new 
 	BrowseInfo developed a new odoo/OpenERP module apps
 	This module use for import bulk bom from Excel file. Import bill of material from CSV or Excel file.
     Import bom lines, Import multiple bom lines, Import bill of material using excel, Import BOM from csv.BOM Import, Add BOM from Excel.Add bom form csv.Add CSV file.Import bom data. Import excel file
