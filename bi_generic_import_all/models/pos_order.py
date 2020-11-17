@@ -29,7 +29,8 @@ except ImportError:
 
 class gen_pos_order(models.TransientModel):
     _name = "gen.pos.order"
-
+    _description = "Generate POS Order"
+    
     file_to_upload = fields.Binary('File')
     import_option = fields.Selection([('csv', 'CSV File'),('xls', 'XLS File')],string='Select',default='csv')
 

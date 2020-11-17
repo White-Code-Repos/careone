@@ -11,12 +11,11 @@ class FleetVehicle(models.Model):
 class FleetColor(models.Model):
 	_name = 'fleet.color'
 	_description = 'Vehicle Color'
-
-	name = fields.Char('Color')
+	name = fields.Char('Color ')
 
 class FleetModel(models.Model):
 	_name = 'fleet.model'
-	_description = 'Vehicle Model'
+	_description = 'Vehicle Model Addon'
 
 	name = fields.Char('Model')
 
