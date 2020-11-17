@@ -56,7 +56,9 @@ MAP_INVOICE_TYPE_PARTNER_TYPE = {
 class gen_inv_inherit(models.TransientModel):
     _inherit = "gen.invoice"
 
-    stage = fields.Selection([('draft', 'Import Draft Invoice'), ('confirm', 'Validate Invoice Automatically With Import'),('payment', 'Import Invoice with Payment')],string="Invoice Stage Option", default='draft')
+    stage = fields.Selection(
+        [('draft', 'Import Draft Invoice'), ('confirm', 'Validate Invoice Automatically With Import'),('payment', 'Import Invoice with Payment')],
+        string="Invoice Stage Option", default='draft')
     partial_payment = fields.Selection(
         [('keep','Keep Open'),('writeoff','Write-Off')],
         string="Partial Payment",default='keep')
