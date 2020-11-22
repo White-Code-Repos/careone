@@ -3,10 +3,11 @@
 # pylint: disable=manifest-required-author
 {
     'name': 'Account Reports Update Filters',
-    'summary': 'Account Reports Update Filters',
-    'author': "Hashem ALy",
+    'summary': 'Update Account Reports Filters',
+    'author': "White-Code, Hashem ALy",
+    'website': "http://www.white-code.co.uk",
     'category': 'Accounting',
-    'version': '13.0.0.1.0',
+    'version': '13.0.0.2.0',
     'license': 'AGPL-3',
     'depends': [
         'account',

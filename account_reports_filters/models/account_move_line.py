@@ -22,4 +22,7 @@ class AccountMoveLine(models.Model):
             group_domain = [('analytic_account_id.group_id', 'in',
                              context['analytic_group_ids'].ids)]
             domain += group_domain
+        if context.get('account_group_ids'):
+            domain += [('account_id.group_id', 'in',
+                        context['account_group_ids'].ids)]
         return super(AccountMoveLine, self)._query_get(domain=domain)

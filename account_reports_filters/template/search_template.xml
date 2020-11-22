@@ -7,4 +7,43 @@
                     src="/account_reports_filters/static/src/js/account_report.js"></script>
         </xpath>
     </template>
+
+    <template id="search_template_account_groups">
+        <a t-if="options.get('analytic')" type="button" class="dropdown-toggle"
+           data-toggle="dropdown">
+            <span class="fa fa-filter"/>
+            Groups:
+            <t t-set="selected_account_groups"
+               t-value="[c['name'] for c in options['account_groups'] if c['selected']]"/>
+            <t t-if="len(selected_account_groups) > 0">
+                <t t-set="group_value"
+                   t-value="', '.join(selected_account_groups)"/>
+            </t>
+            <t t-else="">
+                <t t-set="group_value">All</t>
+            </t>
+            <t t-esc="group_value"/>
+            <span class="caret"/>
+        </a>
+        <div class="dropdown-menu o_filter_menu" role="menu">
+            <t t-foreach="options['account_groups']" t-as="group">
+                <a t-att-title="group.get('name')"
+                   data-filter="account_groups"
+                   t-att-data-id="group.get('id')"
+                   class="dropdown-item js_account_report_choice_filter">
+                    <t t-esc="group.get('name')"/>
+                </a>
+            </t>
+        </div>
+    </template>
+
+    <template id="search_template" inherit_id="account_reports.search_template">
+        <xpath expr="." position="inside">
+            <div class="btn-group o_dropdown o_account_reports_filter_account_groups"
+                 t-if="options.get('account_groups') != None">
+                <t t-call="account_reports_filters.search_template_account_groups"/>
+            </div>
+        </xpath>
+    </template>
+
 </odoo>
