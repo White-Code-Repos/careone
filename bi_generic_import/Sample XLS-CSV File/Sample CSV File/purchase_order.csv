@@ -1,7 +1,7 @@
-PURCHASE ID,SUPPLIER,CURRENCY,PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX,Date,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool
-PO000010,Agrolait,USD,Basic Computer,1,Unit(s),Basic Computer,10000,Tax 15.00%,2017-01-21,Agrolait,"Axeloer,Camptocamp",red,red,10000,1
-PO000010,Agrolait,USD,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-01-21,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0
-PO000010,Agrolait,USD,Computer Case,1,Unit(s),Computer Case,2000,,2017-01-21,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1
-PO000012,ASUSTeK,EUR,Server,3,Unit(s),Server,100000,Tax 15.00%,2016-11-12,Agrolait,"Axeloer,Camptocamp",white,white,10000,0
-PO000013,Axeloer,USD,Basic Computer,1,Unit(s),Basic Computer,10000,,2015-08-18,Axeloer,"Axeloer,Camptocamp",dark black,dark black,50000,1
-PO000015,Camptocamp,EUR,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-06-07,,,,,,
+PURCHASE ID,SUPPLIER,CURRENCY,PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,TAX,Date,x_partner_id@name,x_partner_ids@name,x_color,x_notes,x_amount,x_bool,analytic_account_id,analytic_Tag
+PO000010,Agrolait,USD,Basic Computer,1,Unit(s),Basic Computer,10000,Tax 15.00%,2017-01-21,Agrolait,"Axeloer,Camptocamp",red,red,10000,1,Administrative,Contracts
+PO000010,Agrolait,USD,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-01-21,Agrolait,"Axeloer,Camptocamp",blue,blue,50000,0,Administrative,Contracts
+PO000010,Agrolait,USD,Computer Case,1,Unit(s),Computer Case,2000,,2017-01-21,Camptocamp,"Axeloer,Camptocamp",purple,purple,100000,1,Administrative,Contracts
+PO000012,ASUSTeK,EUR,Server,3,Unit(s),Server,100000,Tax 15.00%,2016-11-12,Agrolait,"Axeloer,Camptocamp",white,white,10000,0,Administrative,Contracts
+PO000013,Axeloer,USD,Basic Computer,1,Unit(s),Basic Computer,10000,,2015-08-18,Axeloer,"Axeloer,Camptocamp",dark black,dark black,50000,1,Administrative,Contracts
+PO000015,Camptocamp,EUR,Little Server,2,Unit(s),Little Server,50000,Tax 15.00%,2017-06-07,,,,,,,Administrative,Contracts
