@@ -1,0 +1,11 @@
+<odoo>
+    <record model="ir.module.category" id="salesperson_management">
+        <field name="name">Sales Person Edition</field>
+        <field name="description">User access level for Sales Person Edition</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="salesperson_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="salesperson_management"/>
+    </record>
+</odoo>

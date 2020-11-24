@@ -1,0 +1,56 @@
+<odoo>
+    <record id="commission_report_action" model="ir.actions.act_window">
+        <field name="name">Commission Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="commission_report" name="Commission Report" parent="commission_root" action="commission_report_action"
+              sequence="3"/>
+    <record id="commission_report_tree_view" model="ir.ui.view">
+        <field name="name">commission_report_tree_view</field>
+        <field name="model">commission.report</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Report" create='false' edit='false'>
+                <field name="employee_id"/>
+                <field name="plan_id"/>
+                <field name="rule_id"/>
+                <field name="commission_type"/>
+                <field name="commission_item"/>
+                <field name="accomplish"/>
+                <field name="emp_comm"/>
+            </tree>
+        </field>
+    </record>
+    <record id="commission_report_form_view" model="ir.ui.view">
+        <field name="name">commission_report_form_view</field>
+        <field name="model">commission.report</field>
+        <field name="arch" type="xml">
+            <form string="Commission Report" create='false' edit='false'>
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="rule_id"/>
+                        <field name="plan_id"/>
+                        <field name="commission_type"/>
+                        <field name="commission_item"/>
+                        <field name="accomplish"/>
+                        <field name="emp_comm"/>
+                        <field name="money_target_ids"
+                               attrs="{'invisible': [('commission_type', '!=', 'money')]}">
+                            <tree>
+                                <field name="calculation_type"/>
+                                <field name="min_amount"/>
+                                <field name="max_amount"/>
+                                <field name="commission"/>
+                                <!--                                <field name="accomplish"/>-->
+                                <!--                                <field name="emp_comm"/>-->
+                            </tree>
+                        </field>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
