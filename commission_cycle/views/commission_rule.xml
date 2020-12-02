@@ -51,8 +51,8 @@
                             <tree editable="bottom">
                                 <field name="product_calculation_type"/>
                                 <field name="category_id"/>
-                                <field name="min_qty"/>
-                                <field name="max_qty"/>
+                                <field name="min_amount"/>
+                                <field name="max_amount"/>
                                 <field name="commission"/>
                             </tree>
                         </field>
