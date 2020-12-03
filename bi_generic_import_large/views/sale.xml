@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bi_import_sale_order_inherit_form" model="ir.ui.view">
+            <field name="name">bi.import.sale.order.inherit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name='pricelist_id' position="after">
+                    <field name="custom_seq" invisible="1"/>
+                    <field name="system_seq" invisible="1"/>
+                    <field name="sale_name" invisible="1"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="gen_sale_wizard_view" model="ir.ui.view">
+            <field name="name">wizard for import sale order from csv file </field>
+            <field name="model">gen.sale</field>
+            <field name="arch" type="xml">
+                <form string="Import Sale Order">
+                    <group>
+                        <group>
+                            <field name="import_option" widget="radio" />
+                            <field name="file" filename="name" />
+                        </group>
+                        <group>
+                            <field name="stage" widget="radio" />
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="sequence_opt"/>
+                    </group>
+                    <group>
+                        <field name="import_prod_option" widget='radio'/>
+                      </group>
+                    <footer>
+                        <button name="import_sale" string="Import" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="gen_sale_import_wizard" model="ir.actions.act_window">
+            <field name="name">Import Sale Order</field>
+            <field name="res_model">gen.sale</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="gen_sale_import_wizard"
+                  id="gen_sale_wizard_import"
+                  parent="sale.menu_sales_config"
+                  groups="sales_team.group_sale_salesman,sales_team.group_sale_manager" />
+
+    </data>
+</openerp>
+ 

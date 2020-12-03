@@ -1,0 +1,6 @@
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE
+invoice61,Agrolait,EUR,Basic Computer CS,100000,1,Unit(s),Basic Computer,10000,Administrator,IGST 18%,2017-02-03
+invoice61,Agrolait,EUR,Little Server 400,101000,2,Unit(s),Little Server,50000,Administrator,IGST 18%,2017-02-04
+invoice71,Agrolait,EUR,Server 400,101110,3,Unit(s),Server,100000,Demo User,,2017-02-06
+invoice71,Agrolait,EUR,Basic Computer CS,101120,1,Unit(s),Basic Computer,10000,Demo User,,2017-02-07
+invoice81,Camptocamp,EUR,Little Server 400,101120,2,Unit(s),Little Server,50000,Demo User,,2017-02-08

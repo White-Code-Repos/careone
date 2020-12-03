@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+     <record id="gen_inv_wizard_view" model="ir.ui.view">
+        <field name="name">wizard for import csv file </field>
+        <field name="model">gen.inv</field>
+        <field name="arch" type="xml">
+            <form string="Generate Inv">
+                <group>
+                    <group>
+                        <field name="inv_name" />
+                    </group>
+                    <group>
+                        <field name="location_id"  />
+                    </group>
+                    <group>
+                        <field name="import_option" widget='radio' />
+                    </group>
+                    <group>
+                        <field name="lot_option"/>
+                    </group>
+		            </group>
+                    <group>
+                        <field name="location_id_option"/>
+                    </group>
+		            <group>
+		                <field name="import_prod_option"/>
+		            </group>
+		            <group>
+		                <field name="file"  filename="filename"  />
+		            </group>
+		            <footer>
+		                <button name="import_csv" string="Import" type="object"/>
+		            </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="gen_inv_wizard" model="ir.actions.act_window">
+            <field name="name">Import Inventory</field>
+            <field name="res_model">gen.inv</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+   <menuitem action="gen_inv_wizard"
+    id="gen_inv_wizard_import"
+     parent="stock.menu_stock_inventory_control" groups="stock.group_stock_user" sequence="31"/>
+
+  </data>
+</odoo>
+ 

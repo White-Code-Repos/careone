@@ -1,0 +1,7 @@
+ORDER,CUSTOMER,PRICELIST,PRODUCT,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE
+SO0255,Agrolait,Public Pricelist,Basic Computer,1,Unit(s),Basic Computer,10000,Administrator,Tax 15.00%,2017-02-25
+SO0255,Agrolait,Public Pricelist,Little Server,2,Unit(s),Little Server,50000,Administrator,Tax 15.00%,2017-02-25
+SO0255,Agrolait,Public Pricelist,Computer Case,1,Unit(s),Computer Case,2000,Administrator,,2017-02-25
+SO0255,Agrolait,Public Pricelist,Server,3,Unit(s),Server,100000,Administrator,Tax 15.00%,2017-02-25
+SO0266,Axeloer,Public Pricelist,Basic Computer,1,Unit(s),Basic Computer,10000,Demo User,,2012-12-14
+SO0277,Camptocamp,Public Pricelist,Little Server,2,Unit(s),Little Server,50000,Demo User,Tax 15.00%,2016-05-05

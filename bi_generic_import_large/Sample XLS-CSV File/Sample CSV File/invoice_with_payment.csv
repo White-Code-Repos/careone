@@ -1,0 +1,6 @@
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,ACCOUNT,QUANTITY,UOM,DESCRIPTION ,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,JOURNAL,AMOUNT,PAYMENT DATE
+invoice9,Agrolait,EUR,Acoustic Bloc Screens,101501,1,Units,Acoustic Bloc Screens,1000,Mitchell Admin,,2017-02-03,10,Bank,500,2018-02-03
+invoice9,Agrolait,EUR,Large Desk,101501,2,Units,Large Desk,5000,Mitchell Admin,,2017-02-04,11,Bank,2500,2018-02-04
+invoice10,Agrolait,USD,Acoustic Bloc Screens,101501,3,Units,Acoustic Bloc Screens,10000,Mitchell Admin,,2017-02-06,12,Bank,7500,2018-02-06
+invoice11,Agrolait,EUR,Large Desk,101401,1,Units,Large Desk,1000,Mitchell Admin,,2017-02-07,13,Bank,800,2018-02-07
+invoice12,Camptocamp,USD,Acoustic Bloc Screens,101401,2,Units,Acoustic Bloc Screens,5000,Mitchell Admin,,2017-11-23,14,Bank,3500,2018-11-23
