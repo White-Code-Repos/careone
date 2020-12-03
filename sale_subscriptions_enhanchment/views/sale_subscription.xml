@@ -35,6 +35,8 @@
                 <page name="subs_product" string="Subscription Products">
                     <field name="subs_products_ids" force_save="1">
                         <tree editable="bottom" create="0" delete="0">
+                            <field name="subs_id" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
                             <field name="vehicle_id"/>
                             <field name="product_id" readonly="1"/>
                             <field name="qty" readonly="1"/>

@@ -30,6 +30,11 @@ class SalesSubscription(models.Model):
     is_without_freeze = fields.Boolean(string="", )
     show_freez = fields.Boolean(compute="_get_show_freez")
 
+    # @api.onchange('subs_products_ids')
+    # def set_domain(self):
+    #     print("hena hena hena")
+    #     return {'domain': {'subs_products_ids.vehicle_id': [('driver_id', '=', se)]}}
+
     @api.onchange('template_id')
     def get_products_lines(self):
         orders = self.env['sale.order'].search([('subscription_id', '=', self._origin.id), ('state', '=', 'sale')])
@@ -220,14 +225,16 @@ class SubscriptionProductsTemplate(models.Model):
 
 class SubscriptionProducts(models.Model):
     _name = 'subscription.product'
+
     subs_id = fields.Many2one(comodel_name="sale.subscription", string="", required=False, )
     product_id = fields.Many2one(comodel_name="product.product", string="Product", required=False, )
     qty = fields.Integer(string="Quantity", required=False, )
     qty_per_day = fields.Integer(string="Quantity Per Day", required=False, )
     consumed_qty = fields.Integer(string="Consumed Qty", required=False, )
     qty_counter = fields.Integer(string="Consumed Qty Per Day", required=False)
-    vehicle_id = fields.Many2one('fleet.vehicle', 'Vehicle', help='Vehicle concerned by this log')
-
+    partner_id = fields.Many2one(comodel_name="res.partner", string="", required=False,related='subs_id.partner_id' )
+    vehicle_id = fields.Many2one('fleet.vehicle', 'Vehicle', help='Vehicle concerned by this log',
+                                 domain="[('driver_id', '=', partner_id)]")
 
 class SalesSubscriptionFreeze(models.Model):
     _name = "subscription.freeze.line"
@@ -330,17 +337,28 @@ class SalesOrderInherit(models.Model):
             if self.order_line:
                 for record in self.order_line:
                     if record.price_unit == 0:
-                        print("here here")
                         self.write({'order_line': [(2, record.id)]})
             for rec in sub.subs_products_ids:
-                self.order_line |= self.env['sale.order.line'].new({
-                    'product_id': rec.product_id.id,
-                    'name': self.env['sale.order.line'].get_sale_order_line_multiline_description_sale(rec.product_id),
-                    'product_uom_qty': rec.qty_per_day,
-                    'price_unit': 0,
-                    'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
-                    'product_uom': rec.product_id.uom_id.id,
-                })
+                if not self.customer_vehicle_id:
+                    self.order_line |= self.env['sale.order.line'].new({
+                        'product_id': rec.product_id.id,
+                        'name': self.env['sale.order.line'].get_sale_order_line_multiline_description_sale(
+                            rec.product_id),
+                        'product_uom_qty': rec.qty_per_day,
+                        'price_unit': 0,
+                        'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
+                        'product_uom': rec.product_id.uom_id.id,
+                    })
+                elif rec.vehicle_id == self.customer_vehicle_id:
+                    self.order_line |= self.env['sale.order.line'].new({
+                        'product_id': rec.product_id.id,
+                        'name': self.env['sale.order.line'].get_sale_order_line_multiline_description_sale(
+                            rec.product_id),
+                        'product_uom_qty': rec.qty_per_day,
+                        'price_unit': 0,
+                        'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
+                        'product_uom': rec.product_id.uom_id.id,
+                    })
 
     def action_confirm(self):
         orders = self.env['sale.order'].search(
@@ -399,5 +417,3 @@ class SalesOrderInherit(models.Model):
                     rec.consumed_qty += line.product_uom_qty
                     rec.qty_counter += line.product_uom_qty
         return super(SalesOrderInherit, self).action_confirm()
-
-
