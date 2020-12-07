@@ -55,6 +55,31 @@ class gen_sale(models.TransientModel):
             if sale_search.partner_id.name == values.get('customer'):
                 if  sale_search.pricelist_id.name == values.get('pricelist'):
                     lines = self.make_order_line(values, sale_search)
+                    vehicle= values.get('vehicle_id')
+                    license_plate = values.get('license_plate')
+                    vehicle_split = vehicle.split('/')
+
+                    if len(vehicle_split) >= 2:
+                        brand_id = self.env['fleet.vehicle.model.brand'].search([('name','=',vehicle_split[0])],limit=1)
+                        model_id = self.env['fleet.vehicle.model'].search([('name','=',vehicle_split[1]),
+                            ('brand_id','=',brand_id.id)],limit=1)
+                        vehicle_id = self.env['fleet.vehicle'].search([
+                            ('model_id','=',model_id.id),
+                            ('license_plate','=',license_plate)])
+                    elif len(vehicle_split) > 1:
+                        vehicle_id = self.env['fleet.vehicle'].search([
+                            ('model_id.name','ilike',vehicle_split[0]),
+                            ('license_plate','=',license_plate)])
+                    else:
+                        vehicle_id = False
+
+                    if not vehicle_id:
+                        return sale_search
+                    self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_search.id])
+                    if vehicle_id:
+                        vehicle_id.write({
+                            'license_plate' : license_plate
+                        })
                     return sale_search
                 else:
                     raise Warning(_('Pricelist is different for "%s" .\n Please define same.') % values.get('order'))
@@ -70,6 +95,7 @@ class gen_sale(models.TransientModel):
             currency_id = self.find_currency(values.get('pricelist'))
             user_id  = self.find_user(values.get('user'))
             order_date = self.make_order_date(values.get('date'))
+            create_date = self.make_order_date(values.get('create_date',False))
             # sale_id = sale_obj.create({
             #     'partner_id' : partner_id.id,
             #     'pricelist_id' : currency_id.id,
@@ -87,6 +113,9 @@ class gen_sale(models.TransientModel):
                 (partner_id.id,currency_id.id,name,user_id.id,order_date,True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,values.get('order'),
                     self.env.user.company_id.id,'draft',partner_id.id,partner_id.id,'direct',warehouse_ids.id))                                         
             sale_id = sale_obj.search([],order='id desc', limit=1)
+            if create_date:
+                self.env.cr.execute("update sale_order set create_date=%s where id=%s", [create_date,sale_id.id])
+            
             main_list = values.keys()
             # count = 0
             for i in main_list:
@@ -184,6 +213,31 @@ class gen_sale(models.TransientModel):
                             raise Warning(_('"%s" This custom field is not available in system') % normal_details)
             # count+= 1         
             lines = self.make_order_line(values, sale_id)
+            vehicle= values.get('vehicle_id')
+            license_plate = values.get('license_plate')
+            vehicle_split = vehicle.split('/')
+
+            if len(vehicle_split) >= 2:
+                brand_id = self.env['fleet.vehicle.model.brand'].search([('name','=',vehicle_split[0])],limit=1)
+                model_id = self.env['fleet.vehicle.model'].search([('name','=',vehicle_split[1]),
+                    ('brand_id','=',brand_id.id)],limit=1)
+                vehicle_id = self.env['fleet.vehicle'].search([
+                    ('model_id','=',model_id.id),
+                    ('license_plate','=',license_plate)])
+            elif len(vehicle_split) > 1:
+                vehicle_id = self.env['fleet.vehicle'].search([
+                    ('model_id.name','ilike',vehicle_split[0]),
+                    ('license_plate','=',license_plate)])
+            else:
+                vehicle_id = False
+
+            if not vehicle_id:
+                return sale_id
+            self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_id.id])
+
+            vehicle_id.write({
+                'license_plate' : license_plate
+            })
             return sale_id
 
     
@@ -240,6 +294,29 @@ class gen_sale(models.TransientModel):
                     if not tax:
                         raise Warning(_('"%s" Tax not in your system') % name)
                     tax_ids.append(tax.id)
+        tag_ids = []
+        if values.get('analytic_Tag'):
+            if ';' in  values.get('analytic_Tag'):
+                tag_names = values.get('analytic_Tag').split(';')
+                for name in tag_names:
+                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+                    if not tag:
+                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
+                    tag_ids.append(tag.id)
+
+            elif ',' in  values.get('analytic_Tag'):
+                tag_names = values.get('analytic_Tag').split(',')
+                for name in tag_names:
+                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+                    if not tag:
+                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
+                    tag_ids.append(tag.id)
+            else:
+                tag_names = values.get('analytic_Tag').split(',')
+                tag= self.env['account.analytic.tag'].search([('name', '=', tag_names)])
+                if not tag:
+                    raise Warning(_('"%s" Analytic Tags not in your system') % tag_names)
+                tag_ids.append(tag.id)
 
         # so_order_lines = order_line_obj.create({
         #                                     'order_id':sale_id.id,
@@ -254,10 +331,131 @@ class gen_sale(models.TransientModel):
         res = self.env.cr.execute("""INSERT INTO sale_order_line (order_id,product_id,name,product_uom_qty,product_uom,price_unit,company_id,customer_lead,discount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , 
                 (sale_id.id,product_id.id,values.get('description'),values.get('quantity'),product_uom.id,values.get('price'),sale_id.company_id.id,0.0,values.get('disc')) )                                        
         so_order_lines = order_line_obj.search([],order='id desc', limit=1)
+        if tag_ids:
+            so_order_lines.write({'analytic_tag_ids' : [(6, 0, tag_ids)]})
+        if values.get('analytic_account_id'):
+            analytic_account_id = self.env['account.analytic.account'].search([('name','=',values.get('analytic_account_id'))])
+            if analytic_account_id:
+                analytic_account_id = analytic_account_id
+                self.env.cr.execute("update sale_order set analytic_account_id=%s where id=%s", [analytic_account_id.id,sale_id.id])
+                    
+            else:
+                raise Warning(_(' "%s" Analytic Account is not available.') % values.get('analytic_account_id'))
 
         if tax_ids:
             so_order_lines.write({'tax_id':([(6,0,tax_ids)])})
         return True
+
+    def import_sale(self):
+
+        """Load Inventory data from the CSV file."""
+        if self.import_option == 'csv':
+            try:
+                keys = ['order', 'customer', 'pricelist','product', 'quantity', 'uom', 'description', 'price','user','tax','date','disc','create_date','vehicle_id','license_plate','analytic_account_id','analytic_Tag']
+                csv_data = base64.b64decode(self.file)
+                data_file = io.StringIO(csv_data.decode("utf-8"))
+                data_file.seek(0)
+                file_reader = []
+                sale_ids = []
+                csv_reader = csv.reader(data_file, delimiter=',')
+                file_reader.extend(csv_reader)
+            except Exception:
+                raise exceptions.Warning(_("Invalid file!"))
+            values = {}
+            for i in range(len(file_reader)):
+                #                val = {}
+                field = list(map(str, file_reader[i]))
+                count = 1
+                count_keys = len(keys)
+                if len(field) > count_keys:
+                    for new_fields in field:
+                        if count > count_keys :
+                            keys.append(new_fields)                
+                        count+=1                
+                values = dict(zip(keys, field))
+                if values:
+                    if i == 0:
+                        continue
+                    else:
+                        if values.get('date') == '':
+                            raise Warning(_("Please assign date."))
+
+                        values.update({'seq_opt':self.sequence_opt})
+                        res = self.make_sale(values)
+                        date_string = values.get('date_string')
+                        sale_ids.append([res,date_string])
+            if self.stage == 'confirm':
+                for res in sale_ids: 
+                    if res[0].state in ['draft', 'sent']:
+                        res[0].action_confirm()
+                        self.env.cr.execute("update sale_order set date_order=%s where id=%s", [res[1],res[0].id])
+
+        else:
+            try:
+                fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
+                fp.write(binascii.a2b_base64(self.file))
+                fp.seek(0)
+                values = {}
+                sale_ids = []
+                workbook = xlrd.open_workbook(fp.name)
+                sheet = workbook.sheet_by_index(0)
+            except Exception:
+                raise exceptions.Warning(_("Invalid file!"))
+
+            for row_no in range(sheet.nrows):
+                val = {}
+                if row_no <= 0:
+                    line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+                else:
+                    line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
+                    if line[10] != '':                  
+                        a1 = int(float(line[10]))
+                        a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                        date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    else:
+                        raise Warning(_("Please assign date."))
+
+                    if line[12] != '':                  
+                        a1 = int(float(line[12]))
+                        a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                        create_date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    else:
+                        create_date_string = ''
+                    
+                    
+                    values.update( {'order':line[0],
+                                    'customer': line[1],
+                                    'pricelist': line[2],
+                                    'product': line[3],
+                                    'quantity': line[4],
+                                    'uom': line[5],
+                                    'description': line[6],
+                                    'price': line[7],
+                                    'user': line[8],
+                                    'tax': line[9],
+                                    'date':date_string,
+                                    'create_date' : create_date_string,
+                                    'seq_opt':self.sequence_opt,
+                                    'disc':line[11],
+                                    'vehicle_id' : line[13],
+                                    'analytic_account_id' : line[15],
+                                    'analytic_Tag' : line[16],
+                                    'license_plate' : line[14],
+                                    })
+                    count = 0
+                    for l_fields in line_fields:
+                        if(count > 13):
+                            values.update({l_fields : line[count]})                        
+                        count+=1            
+                    res = self.make_sale(values)
+                    sale_ids.append([res,date_string])
+            
+            if self.stage == 'confirm':
+                for res in sale_ids: 
+                    if res[0].state in ['draft', 'sent']:
+                        res[0].action_confirm()
+                        self.env.cr.execute("update sale_order set date_order=%s where id=%s", [res[1],res[0].id])
+        return res
 
 
 

@@ -1,2 +1,7 @@
 1) Version: 13.0.0.1 | Date : 03/12/2020
 -->  Add import invoice with payment option for import invoice .
+
+2) Version: 13.0.0.2 | Date : 07/12/2020
+-->  For sales order, Add create date, Fleet, License Plate, Analytic_Tag_ids and analytic_account_id field in the templates.
+-->  For invoice, Add invoice_origin, Fleet, License Plate, Analytic_Tag_ids and analytic_account_id field in the templates.
+--> Fixed the issue when select Confirm Quotation Automatically With Import option.
