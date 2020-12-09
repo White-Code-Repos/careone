@@ -1,6 +1,6 @@
-INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION,PRICE,SALESPERSON,TAX,DATE
-invoice61,Agrolait,EUR,Basic Computer CS,100000,1,Unit(s),Basic Computer,10000,Administrator,IGST 18%,2017-02-03
-invoice61,Agrolait,EUR,Little Server 400,101000,2,Unit(s),Little Server,50000,Administrator,IGST 18%,2017-02-04
-invoice71,Agrolait,EUR,Server 400,101110,3,Unit(s),Server,100000,Demo User,,2017-02-06
-invoice71,Agrolait,EUR,Basic Computer CS,101120,1,Unit(s),Basic Computer,10000,Demo User,,2017-02-07
-invoice81,Camptocamp,EUR,Little Server 400,101120,2,Unit(s),Little Server,50000,Demo User,,2017-02-08
+INVOICE ID,PARTNER,CURRENCY,PRODUCT,Account,QUANTITY,UOM,DESCRIPTION ,PRICE,SALESPERSON,TAX,DATE,DISCOUNT,JOURNAL,AMOUNT,PAYMENT DATE,INVOICE ORIGIN,Fleet,License Plate,analytic_account_id,Analytic_Tags_ids
+invoice19,Agrolait,EUR,Basic Computer,100000,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-03,10,Bank,500,2018-02-03,SO026,Opel/Astra,1-ACK-205,Administrative,Contracts
+invoice19,Agrolait,EUR,Little Server,101000,2,Units,Little Server,50000,Mitchell Admin,,2017-02-04,11,Bank,2500,2018-02-04,SO026,Opel/Astra,1-ACK-205,Administrative,Contracts
+invoice11,Agrolait,USD,Server,101110,3,Units,Server,100000,Mitchell Admin,,2017-02-06,12,Bank,7500,2018-02-06,SO026,Opel/Astra,1-ACK-205,Camp to Camp,Contracts
+invoice12,Axeloer,EUR,Basic Computer,101120,1,Units,Basic Computer,10000,Mitchell Admin,,2017-02-07,13,Bank,800,2018-02-07,SO026,Opel/Astra,1-ACK-205,Asustek,Contracts
+invoice13,Camptocamp,USD,Little Server,101130,2,Units,Little Server,50000,Mitchell Admin,,2017-02-08,14,Bank,3500,2018-11-23,SO026,Audi/A1/,1-AUD-001,Asustek,Contracts

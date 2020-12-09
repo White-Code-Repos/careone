@@ -228,13 +228,20 @@ class gen_inv(models.TransientModel):
             #     'name' : values.get('invoice'),
 
             # })
-
-            inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,l10n_in_export_type,invoice_user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
+            if 'l10n_in_export_type' in self.env['account.move']._fields:
+                inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,l10n_in_export_type,invoice_user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
                 True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,
                 type_inv,inv_date,inv_date,journal.id,values.get('invoice'),company_id,'draft','regular',salesperson_id.id))
+
+            else:
+                inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,invoice_user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
+                True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,
+                type_inv,inv_date,inv_date,journal.id,values.get('invoice'),company_id,'draft',salesperson_id.id))
             
 
             inv_id = self.env['account.move'].search([],order='id desc', limit=1)
+            if values.get('invoice_origin'):
+                self.env.cr.execute("update account_move set invoice_origin=%s where id=%s", [values.get('invoice_origin'),inv_id.id])
 
             main_list = values.keys()
             # count = 0
@@ -463,6 +470,29 @@ class gen_inv(models.TransientModel):
                     if not tax:
                         raise Warning(_('"%s" Tax not in your system') % tax_names)
                     tax_ids.append(tax.id)
+        tag_ids = []
+        if values.get('Analytic_Tags_ids'):
+            if ';' in  values.get('Analytic_Tags_ids'):
+                tag_names = values.get('Analytic_Tags_ids').split(';')
+                for name in tag_names:
+                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+                    if not tag:
+                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
+                    tag_ids.append(tag.id)
+
+            elif ',' in  values.get('Analytic_Tags_ids'):
+                tag_names = values.get('Analytic_Tags_ids').split(',')
+                for name in tag_names:
+                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
+                    if not tag:
+                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
+                    tag_ids.append(tag.id)
+            else:
+                tag_names = values.get('Analytic_Tags_ids').split(',')
+                tag= self.env['account.analytic.tag'].search([('name', '=', tag_names)])
+                if not tag:
+                    raise Warning(_('"%s" Analytic Tags not in your system') % tag_names)
+                tag_ids.append(tag.id)
 
         if self.account_opt == 'default':
             if inv_id.type == 'out_invoice':
@@ -530,6 +560,44 @@ class gen_inv(models.TransientModel):
             'account_id' : account.id,
             'product_uom_id' : product_uom.id,
         }
+
+        if values.get('analytic_account_id'):
+            analytic_account_id = self.env['account.analytic.account'].search([('name','=',values.get('analytic_account_id'))])
+            if analytic_account_id:
+                analytic_account_id = analytic_account_id
+            else:
+                raise Warning(_(' "%s" Analytic Account is not available.') % values.get('analytic_account_id'))
+
+        if tag_ids:
+            vals.update({'analytic_tag_ids' : [(6, 0, tag_ids)]})
+        if values.get('analytic_account_id'):
+            vals.update({'analytic_account_id' : analytic_account_id.id,})
+        vehicle= values.get('vehicle_id')
+        license_plate = values.get('license_plate')
+        vehicle_split = vehicle.split('/')
+
+        if len(vehicle_split) >= 2:
+            brand_id = self.env['fleet.vehicle.model.brand'].search([('name','=',vehicle_split[0])],limit=1)
+            model_id = self.env['fleet.vehicle.model'].search([('name','=',vehicle_split[1]),
+                ('brand_id','=',brand_id.id)],limit=1)
+            vehicle_id = self.env['fleet.vehicle'].search([
+                ('model_id','=',model_id.id),
+                ('license_plate','=',license_plate)])
+        elif len(vehicle_split) > 1:
+            vehicle_id = self.env['fleet.vehicle'].search([
+                ('model_id.name','ilike',vehicle_split[0]),
+                ('license_plate','=',license_plate)])
+        else:
+            vehicle_id = False
+
+        if not vehicle_id:
+            return inv_id
+        self.env.cr.execute("update account_move set vehicle_id=%s where id=%s", [vehicle_id.id,inv_id.id])
+
+        vehicle_id.write({
+            'license_plate' : license_plate
+        })
+        
         if tax_ids:
             vals.update({'tax_ids':([(6,0,tax_ids)])})
 
@@ -716,7 +784,7 @@ class gen_inv(models.TransientModel):
         """Load Inventory data from the CSV file."""
         if self.import_option == 'csv':
             try:
-                keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','journal','amount','paymentdate']
+                keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','journal','amount','paymentdate','invoice_origin','vehicle_id','license_plate','analytic_account_id','Analytic_Tags_ids']
                 csv_data = base64.b64decode(self.file)
                 data_file = io.StringIO(csv_data.decode("utf-8"))
                 data_file.seek(0)
@@ -806,7 +874,12 @@ class gen_inv(models.TransientModel):
                                     'tax': line[10],
                                     'date': date_string,
                                     'seq_opt':self.sequence_opt,
-                                    'disc':line[12]
+                                    'disc':line[12],
+                                    'analytic_account_id' : line[19],
+                                    'Analytic_Tags_ids' : line[20],
+                                    'invoice_origin' : line[16],
+                                    'vehicle_id' : line[17],
+                                    'license_plate' : line[18],
                                     })
                     count = 0
                     for l_fields in line_fields:
