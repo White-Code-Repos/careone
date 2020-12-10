@@ -600,6 +600,7 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
        'views/import_image_view.xml',
        'views/multiple_bank_statement.xml',
     #   'views/pos.xml',
+   
        'views/task.xml',
        'views/invoice_with_payment.xml',
        "views/import_dashboard_action.xml",             
