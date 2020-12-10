@@ -148,6 +148,7 @@ class SaleOrder(models.Model):
         else:
             raise ValidationError("Your Program Doesn't Contain your any product in that order !")
 
+#
     def allow_generate_coupon(self):
         for order in self:
             order.is_allow_generate_coupon = False
