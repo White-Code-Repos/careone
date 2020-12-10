@@ -41,9 +41,7 @@
                         <span class="o_label">POS Order</span>
                     </a>
                     <br/>
-                    <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(action_pos_import)d" type="action">
-                        <span class="o_label">Import Pos Order</span>
-                    </button>                                           
+                                                      
                 </div>
                 <div t-if="record.state.raw_value =='project.task'">
                     <a style="font-size: 20px;" name="%(action_task_import_view)d" type="action">
@@ -91,12 +89,7 @@
     </record>
 
 
-    <menuitem 
-        id="import_pos_dashboard_view" 
-        action="action_pos_import"
-        parent="bi_generic_import.import_all_in_one_dashboard_view"
-        sequence="12" 
-        name="Import POS"/>
+
 
     <menuitem 
         id="import_task_dashboard_view" 
