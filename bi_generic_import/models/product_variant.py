@@ -32,12 +32,6 @@ try:
 except ImportError:
     _logger.debug('Cannot `import base64`.')
 
-
-class product_template(models.Model):
-    _inherit = "product.template"
-
-    analytic_account_id = fields.Many2one('account.analytic.account',string='Analytic Account')
-
 class gen_product_variant(models.TransientModel):
     _name = "gen.product.variant"
     _description = "Gen Product variant"
@@ -187,68 +181,6 @@ class gen_product_variant(models.TransientModel):
         else:
             quantity = values.get('on_hand')
 
-        if values.get('Attribute'):
-            attributes = self.env['product.attribute'].search([('name','=',values.get('Attribute'))])
-            if attributes:
-                attributes = attributes
-            else:
-                raise Warning(_(' "%s" Attributes is not available.') % values.get('Attribute'))
-        
-        value_ids = []
-        if values.get('Variant Value'):
-            if ';' in  values.get('Variant Value'):
-                variant_names = values.get('Variant Value').split(';')
-                for name in variant_names:
-                    variant= self.env['product.attribute.value'].search([('name', '=', name)])
-                    if not variant:
-                        raise Warning(_('"%s" Attribute Value not in your system') % name)
-                    value_ids.append(variant.id)
-
-            elif ',' in  values.get('Variant Value'):
-                variant_names = values.get('Variant Value').split(',')
-                for name in variant_names:
-                    variant= self.env['product.attribute.value'].search([('name', '=', name)])
-                    if not variant:
-                        raise Warning(_('"%s" Attribute Value not in your system') % name)
-                    value_ids.append(variant.id)
-            else:
-                variant_names = values.get('Variant Value').split(',')
-                variant= self.env['product.attribute.value'].search([('name', '=', variant_names)])
-                if not variant:
-                    raise Warning(_('"%s" Attribute Value not in your system') % variant_names)
-                value_ids.append(variant.id)
-
-        route_list = []
-        if values.get('Routes (Route_ids)'):
-            if ';' in  values.get('Routes (Route_ids)'):
-                route_names = values.get('Routes (Route_ids)').split(';')
-                for name in route_names:
-                    route= self.env['stock.location.route'].search([('name', '=', name)])
-                    if not route:
-                        raise Warning(_('"%s" Routes not in your system') % name)
-                    route_list.append(route.id)
-
-            elif ',' in  values.get('Routes (Route_ids)'):
-                route_names = values.get('Routes (Route_ids)').split(',')
-                for name in route_names:
-                    route= self.env['stock.location.route'].search([('name', '=', name)])
-                    if not route:
-                        raise Warning(_('"%s" Routes not in your system') % name)
-                    route_list.append(route.id)
-            else:
-                route_names = values.get('Routes (Route_ids)').split(',')
-                route= self.env['stock.location.route'].search([('name', '=', route_names)])
-                if not route:
-                    raise Warning(_('"%s" Routes not in your system') % route_names)
-                route_list.append(route.id)
-
-        if values.get('analytic_account_id'):
-            analytic_account_id = self.env['account.analytic.account'].search([('name','=',values.get('analytic_account_id'))])
-            if analytic_account_id:
-                analytic_account_id = analytic_account_id
-            else:
-                raise Warning(_(' "%s" Analytic Account is not available.') % values.get('analytic_account_id'))
-
         attribute = {}
         vals = {
                   'name':values.get('name'),
@@ -269,43 +201,9 @@ class gen_product_variant(models.TransientModel):
                   'weight':values.get('weight'),
                   'volume':values.get('volume'),
                   'image_1920':image_medium,
-                  'is_import':True,
-            }
-        if values.get('Routes (Route_ids)'):
-            vals.update({'route_ids' : ([(6, 0, route_list)])})
-        if values.get('analytic_account_id'):
-            vals.update({'analytic_account_id' : analytic_account_id.id,})
+                  'is_import':True
+              }
         template = product_tmpl_obj.create(vals)
-        if values.get('Attribute') and values.get('Variant Value'):
-            template.attribute_line_ids.create({
-                'attribute_id' : attributes.id,
-                'product_tmpl_id' : template.id,
-                'value_ids' : ([(6, 0, value_ids)])
-            })
-        if values.get('Variant price (Value Price Extra)'):
-            template.attribute_line_ids.product_template_value_ids.write({'price_extra' : float(values.get('Variant price (Value Price Extra)')),})
-
-        if values.get('Income Account (property_account_Income_id)'):
-            income_account = self.env['account.account'].search([('code','=',values.get('Income Account (property_account_Income_id)'))])
-            if income_account:
-                income_account = income_account
-                template.write({
-                'property_account_income_id' : income_account.id
-                })
-            else:
-                raise Warning(_(' "%s" Income Account is not available.') % values.get('Income Account (property_account_Income_id)'))
-
-        if values.get('Expense Account (property_account_Expense_id)'):
-            expense_account = self.env['account.account'].search([('code','=',values.get('Expense Account (property_account_Expense_id)'))])
-            if expense_account:
-                expense_account = expense_account
-                template.write({
-                'property_account_expense_id' : expense_account.id
-                })
-            else:
-                raise Warning(_(' "%s" Expense Account is not available.') % values.get('Expense Account (property_account_Expense_id)'))
-        
-
         res = template.product_variant_id
 
         main_list = values.keys()
@@ -453,20 +351,7 @@ class gen_product_variant(models.TransientModel):
                     'image',
                     'sale_ok',
                     'purchase_ok',
-                    'on_hand',
-                    'x_partner_id',
-                    'x_partner_ids',
-                    'x_color',
-                    'x_notes',
-                    'x_amount',
-                    'x_bool',
-                    'Attribute',
-                    'Variant Value',
-                    'Variant price (Value Price Extra)',
-                    'analytic_account_id',
-                    'Expense Account (property_account_Expense_id)',
-                    'Income Account (property_account_Income_id)',
-                    'Routes (Route_ids)',   ]
+                    'on_hand'   ]
             
             try:
                 csv_data = base64.b64decode(self.file)
@@ -948,13 +833,6 @@ class gen_product_variant(models.TransientModel):
                                         'volume': line[14],
                                         'image':line[15],
                                         'sale_ok':line[16],
-                                        'Attribute':line[25],
-                                        'Variant Value':line[26],
-                                        'Routes (Route_ids)':line[31],
-                                        'Income Account (property_account_Income_id)':line[30],
-                                        'Expense Account (property_account_Expense_id)':line[29],
-                                        'Variant price (Value Price Extra)' : line[27],
-                                        'analytic_account_id' : line[28],
                                         'purchase_ok':line[17],
                                         'on_hand': line[18],                                    
                                         })

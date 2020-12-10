@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="import_dashboard_kanban_dashboard_inherit" model="ir.ui.view">
+        <field name="name">import.dashboard.kanban.inherit</field>
+        <field name="model">import.dashboard</field>
+        <field name="inherit_id" ref="bi_generic_import.import_dashboard_kanban_dashboard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='account payment']" position="after">
+                <div t-if="record.state.raw_value =='pos.order'" style="color:teal;margin-left: 30px;">
+                    <left>
+                        <i class="fa fa-shopping-cart fa-5x"/>
+                    </left>
+                </div>
+                <div t-if="record.state.raw_value =='project.task'" style="color:teal;margin-left: 30px;">
+                    <left>
+                        <i class="fa fa-tasks fa-5x"/>
+                    </left>
+                </div>
+                <div t-if="record.state.raw_value =='hr.attendance'" style="color:teal;margin-left: 30px;">
+                    <left>
+                        <i class="fa fa-credit-card-alt fa-5x"/>
+                    </left>
+                </div>
+                <div t-if="record.state.raw_value =='account.bank.statement'" style="color:teal;margin-left: 30px;">
+                    <left>
+                        <i class="fa fa-university  fa-5x"/>
+                    </left>
+                </div>
+                <div t-if="record.state.raw_value =='account.move.journal'" style="color:teal;margin-left: 30px;">
+                    <left>
+                        <i class="fa fa-book fa-5x"/>
+                    </left>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@name='account payment details']" position="after">
+                <div t-if="record.state.raw_value =='pos.order'">
+                    <a style="font-size: 20px;" name="%(action_pos_order_import_view)d" type="action">
+                        <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                        <span class="o_label">POS Order</span>
+                    </a>
+                    <br/>
+                    <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(action_pos_import)d" type="action">
+                        <span class="o_label">Import Pos Order</span>
+                    </button>                                           
+                </div>
+                <div t-if="record.state.raw_value =='project.task'">
+                    <a style="font-size: 20px;" name="%(action_task_import_view)d" type="action">
+                        <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                        <span class="o_label">Task</span>
+                    </a>
+                    <br/>
+                    <button class="btn btn-sm btn-primary" tyle="margin-top: 20%;" name="%(import_task_wizard_action)d" type="action">
+                        <span class="o_label">Import Task</span>
+                    </button>                                           
+                </div>
+                <div t-if="record.state.raw_value =='hr.attendance'">
+                    <a style="font-size: 20px;" name="%(action_attendace_import_view)d" type="action">
+                        <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                        <span class="o_label">Attendance</span>
+                    </a>
+                    <br/>
+                    <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(hr_attendance_import_action)d" type="action">
+                        <span class="o_label">Import Attendance</span>
+                    </button>                                           
+                </div>
+                <div t-if="record.state.raw_value =='account.bank.statement'">
+                    <a style="font-size: 20px;" name="%(action_bank_statement_import_view)d" type="action">
+                        <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                        <span class="o_label">Bank Statement</span>
+                    </a>
+                    <br/>
+                    <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(action_import_multiple_bank_statement)d" type="action">
+                        <span class="o_label">Import Bank Statement</span>
+                    </button>                                           
+                </div>
+                <div t-if="record.state.raw_value =='account.move.journal'">
+                    <a style="font-size: 20px;" name="%(action_journal_entry_import_view)d" type="action">
+                        <span class="o_value"><t t-esc="record.import_data.raw_value"/></span>
+                        <span class="o_label">Journal Entry</span>
+                    </a>
+                    <br/>
+                    <button class="btn btn-sm btn-primary" style="margin-top: 20%;" name="%(action_import_multiple_account_move_line)d" type="action">
+                        <span class="o_label">Import Journal Entry</span>
+                    </button>                                           
+                </div>
+            </xpath>
+ 
+        </field>
+    </record>
+
+
+    <menuitem 
+        id="import_pos_dashboard_view" 
+        action="action_pos_import"
+        parent="bi_generic_import.import_all_in_one_dashboard_view"
+        sequence="12" 
+        name="Import POS"/>
+
+    <menuitem 
+        id="import_task_dashboard_view" 
+        action="import_task_wizard_action"
+        parent="bi_generic_import.import_all_in_one_dashboard_view"
+        sequence="13" 
+        name="Import Task"/>
+
+    <menuitem 
+        id="import_attendance_dashboard_view" 
+        action="hr_attendance_import_action"
+        parent="bi_generic_import.import_all_in_one_dashboard_view"
+        sequence="14" 
+        name="Import Attendance"/>
+
+    <menuitem 
+        id="import_journal_dashboard_view" 
+        action="action_import_multiple_account_move_line"
+        parent="bi_generic_import.import_all_in_one_dashboard_view"
+        sequence="15" 
+        name="Import Journal Entry"/>
+
+    <menuitem 
+        id="import_statement_dashboard_view" 
+        action="action_import_multiple_bank_statement"
+        parent="bi_generic_import.import_all_in_one_dashboard_view"
+        sequence="16" 
+        name="Import Bank Statement"/>
+</odoo>

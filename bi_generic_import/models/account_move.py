@@ -94,7 +94,7 @@ class gen_journal_entry(models.TransientModel):
 		move_line_obj = self.env['account.move.line']
 		move_obj = self.env['account.move']
 		vals = {}
-		tag_ids = []
+
 		if values.get('partner'):
 			partner_name = values.get('partner')  
 			if self.find_partner(partner_name) != None:
@@ -156,33 +156,6 @@ class gen_journal_entry(models.TransientModel):
 				vals.update({'analytic_account_id' : analytic_account_id })
 			else:
 				raise Warning(_('Wrong Account Code %s') % account_anlytic_account)	
-		
-		if values.get('analytic_Tag'):
-			if ';' in  values.get('analytic_Tag'):
-				tag_names = values.get('analytic_Tag').split(';')
-				for name in tag_names:
-					tag= self.env['account.analytic.tag'].search([('name', '=', name)])
-					if not tag:
-						raise Warning(_('"%s" Analytic Tags not in your system') % name)
-					tag_ids.append(tag.id)
-
-			elif ',' in  values.get('analytic_Tag'):
-				tag_names = values.get('analytic_Tag').split(',')
-				for name in tag_names:
-					tag= self.env['account.analytic.tag'].search([('name', '=', name)])
-					if not tag:
-						raise Warning(_('"%s" Analytic Tags not in your system') % name)
-					tag_ids.append(tag.id)
-			else:
-				tag_names = values.get('analytic_Tag').split(',')
-				tag= self.env['account.analytic.tag'].search([('name', '=', tag_names)])
-				if not tag:
-					raise Warning(_('"%s" Analytic Tags not in your system') % tag_names)
-				tag_ids.append(tag.id)
-			if tag_ids:
-				vals.update({'analytic_tag_ids' : [(6, 0, tag_ids)]})
-
-
 		main_list = values.keys()
 		for i in main_list:
 			model_id = self.env['ir.model'].search([('model','=','account.move.line')])           
@@ -281,7 +254,7 @@ class gen_journal_entry(models.TransientModel):
  
 	def import_move_lines (self):
 		if  self.import_option == 'csv':
-			keys = ['name', 'partner' , 'analytic_account_id', 'account_code', 'date_maturity', 'debit', 'credit', 'amount_currency','currency','analytic_Tag']
+			keys = ['name', 'partner' , 'analytic_account_id', 'account_code', 'date_maturity', 'debit', 'credit', 'amount_currency','currency']
 			
 			try:
 				csv_data = base64.b64decode(self.file_to_upload)
@@ -351,7 +324,6 @@ class gen_journal_entry(models.TransientModel):
 								'debit': line[5],
 								'credit': line[6],
 								'amount_currency': line[7],
-								'analytic_Tag' : line[9],
 								'currency': line[8],
 							}
 						count = 0

@@ -3,10 +3,10 @@
 
 {
     'name': 'Odoo all import for Sales, Purchase, Invoice, Inventory, Pricelist, BOM, Payment, Bank Statement, Journal Entry, Picking, Product, Customer.',
-    'version': '13.0.4.5',
+    'version': '13.0.4.4',
     'sequence': 4,
     'summary': 'Odoo import Data Import All in one import Invoice import Sales import Inventory import Purchase import stock inventory import Picking import Product image import Customer import serial import lot import bank statement import journal entry import payment',
-    'price': 149,
+    'price': 119,
     'currency': 'EUR',
     'category' : 'Extra Tools',
     'description': """

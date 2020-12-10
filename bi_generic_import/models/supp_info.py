@@ -68,13 +68,21 @@ class gen_suppinfo(models.TransientModel):
     def _create_product_suppinfo(self,values):
         name = self._find_vendor(values.get('vendor'))
         product_tmpl_id = self._find_product_template(values.get('product'),values.get('create_link_option'))
+        if values.get('quantity'):
+            min_qty = int(float(values.get('quantity')))
+        else:
+            min_qty = False
+        if values.get('delivery_time'):
+            delay = int(float(values.get('delivery_time')))
+        else:
+            delay = False
         vals = {
                'name':name,
                'product_tmpl_id':product_tmpl_id,
                'product_name': self.env['product.template'].browse(product_tmpl_id).name,
-               'min_qty': int(float(values.get('quantity'))),
+               'min_qty': min_qty,
                'price': values.get('price'),
-               'delay': int(float(values.get('delivery_time')))
+               'delay': delay
                }    
         main_list = values.keys()
         for i in main_list:

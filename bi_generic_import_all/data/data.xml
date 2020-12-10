@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <data noupdate="1">
+        
+        <record id="menu_dashboard_task" model="import.dashboard">
+            <field name="name">Task</field>
+            <field name="state">project.task</field>
+        </record>
+
+        <record id="menu_dashboard_pos_order" model="import.dashboard">
+            <field name="name">POS Orders</field>
+            <field name="state">pos.order</field>
+        </record>
+
+        <record id="menu_dashboard_hr_attandance" model="import.dashboard">
+            <field name="name">Attendaces</field>
+            <field name="state">hr.attendance</field>
+        </record>
+
+        <record id="menu_dashboard_bank_statement" model="import.dashboard">
+            <field name="name">Bank Statements</field>
+            <field name="state">account.bank.statement</field>
+        </record>
+
+        <record id="menu_dashboard_journal_entry" model="import.dashboard">
+            <field name="name">Journal Entry</field>
+            <field name="state">account.move.journal</field>
+        </record>
+
+    </data>
+</odoo>

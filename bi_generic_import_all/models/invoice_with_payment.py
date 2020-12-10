@@ -98,6 +98,7 @@ class gen_inv_inherit(models.TransientModel):
                         'payment_difference_handling': 'open',
                         'payment_date': date_payment,
                         'payment_method_id':payment_method.id,
+                        'is_import' : True
                         })
                 elif self.partial_payment == 'writeoff':
                     pay_rec = self.env['account.payment'].create({
@@ -114,6 +115,7 @@ class gen_inv_inherit(models.TransientModel):
                         'writeoff_account_id': self.writeoff_account.id,
                         'payment_date': date_payment,
                         'payment_method_id':payment_method.id,
+                        'is_import' : True
                         })
             else:
                  pay_rec = self.env['account.payment'].create({
@@ -127,7 +129,103 @@ class gen_inv_inherit(models.TransientModel):
                         'journal_id':journal.id,
                         'payment_date': date_payment,
                         'payment_method_id':payment_method.id,
+                        'is_import' : True
                         })
+            main_list = values.keys()
+            # count = 0
+            for i in main_list:
+                model_id = self.env['ir.model'].search([('model','=','account.payment')])           
+                # if count > 19:
+                if type(i) == bytes:
+                    normal_details = i.decode('utf-8')
+                else:
+                    normal_details = i
+                if normal_details.startswith('x_'):
+                    any_special = self.check_splcharacter(normal_details)
+                    if any_special:
+                        split_fields_name = normal_details.split("@")
+                        technical_fields_name = split_fields_name[0]
+                        many2x_fields = self.env['ir.model.fields'].search([('name','=',technical_fields_name),('state','=','manual'),('model_id','=',model_id.id)])
+                        if many2x_fields.id:
+                            if many2x_fields.ttype in ['many2one','many2many']:
+                                if many2x_fields.ttype =="many2one":
+                                    if values.get(i):
+                                        fetch_m2o = self.env[many2x_fields.relation].search([('name','=',values.get(i))])
+                                        if fetch_m2o.id:
+                                            pay_rec.update({
+                                                technical_fields_name: fetch_m2o.id
+                                                })
+                                        else:
+                                            raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , values.get(i)))
+                                if many2x_fields.ttype =="many2many":
+                                    m2m_value_lst = []
+                                    if values.get(i):
+                                        if ';' in values.get(i):
+                                            m2m_names = values.get(i).split(';')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        elif ',' in values.get(i):
+                                            m2m_names = values.get(i).split(',')
+                                            for name in m2m_names:
+                                                m2m_id = self.env[many2x_fields.relation].search([('name', '=', name)])
+                                                if not m2m_id:
+                                                    raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , name))
+                                                m2m_value_lst.append(m2m_id.id)
+
+                                        else:
+                                            m2m_names = values.get(i).split(',')
+                                            m2m_id = self.env[many2x_fields.relation].search([('name', 'in', m2m_names)])
+                                            if not m2m_id:
+                                                raise Warning(_('"%s" This custom field value "%s" not available in system') % (many2x_fields.name , m2m_names))
+                                            m2m_value_lst.append(m2m_id.id)
+                                    pay_rec.update({
+                                        technical_fields_name : m2m_value_lst
+                                        })     
+                            else:
+                                raise Warning(_('"%s" This custom field type is not many2one/many2many') % technical_fields_name)                             
+                        else:
+                            raise Warning(_('"%s" This m2x custom field is not available in system') % technical_fields_name)
+                    else:
+                        normal_fields = self.env['ir.model.fields'].search([('name','=',normal_details),('state','=','manual'),('model_id','=',model_id.id)])
+                        if normal_fields.id:
+                            if normal_fields.ttype ==  'boolean':
+                                pay_rec.update({
+                                    normal_details : values.get(i)
+                                    })
+                            elif normal_fields.ttype == 'char':
+                                pay_rec.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'float':
+                                if values.get(i) == '':
+                                    float_value = 0.0
+                                else:
+                                    float_value = float(values.get(i)) 
+                                pay_rec.update({
+                                    normal_details : float_value
+                                    })                              
+                            elif normal_fields.ttype == 'integer':
+                                if values.get(i) == '':
+                                    int_value = 0
+                                else:
+                                    int_value = int(values.get(i)) 
+                                pay_rec.update({
+                                    normal_details : int_value
+                                    })                            
+                            elif normal_fields.ttype == 'selection':
+                                pay_rec.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                            elif normal_fields.ttype == 'text':
+                                pay_rec.update({
+                                    normal_details : values.get(i)
+                                    })                              
+                        else:
+                            raise Warning(_('"%s" This custom field is not available in system') % normal_details)
             pay_rec.post()
 
 
@@ -154,6 +252,13 @@ class gen_inv_inherit(models.TransientModel):
                 payment = {}
                 for i in range(len(file_reader)):
                     field = list(map(str, file_reader[i]))
+                    count = 1
+                    count_keys = len(keys)
+                    if len(field) > count_keys:
+                        for new_fields in field:
+                            if count > count_keys :
+                                keys.append(new_fields)                
+                            count+=1 
                     values = dict(zip(keys, field))
                     if values:
                         if i == 0:
@@ -207,51 +312,34 @@ class gen_inv_inherit(models.TransientModel):
                     else:
                         line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
 
-                        if self.account_opt == 'default':
-                            if line[12]:
-                                if line[12] == '':
-                                    raise Warning(_('Please assign a date'))
-                                else:
-                                    a1 = int(float(line[12]))
-                                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                                values.update( {'invoice':line[0],
-                                                'customer': line[1],
-                                                'currency': line[2],
-                                                'product': line[3].split('.')[0],
-                                                'quantity': line[5],
-                                                'uom': line[6],
-                                                'description': line[7],
-                                                'price': line[8],
-                                                'discount':line[9],
-                                                'salesperson': line[10],
-                                                'tax': line[11],
-                                                'date': date_string,
-                                                'seq_opt':self.sequence_opt,
-                                                })
-                        else:
-                            if line[12]:
-                                if line[12] == '':
-                                    raise Warning(_('Please assign a date'))
-                                else:
-                                    a1 = int(float(line[12]))
-                                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                                values.update( {'invoice':line[0],
-                                                'customer': line[1],
-                                                'currency': line[2],
-                                                'product': line[3].split('.')[0],
-                                                'account': line[4],
-                                                'quantity': line[5],
-                                                'uom': line[6],
-                                                'description': line[7],
-                                                'price': line[8],
-                                                'discount':line[9],
-                                                'salesperson': line[10],
-                                                'tax': line[11],
-                                                'date': date_string,
-                                                'seq_opt':self.sequence_opt,
-                                                })
+
+                        if line[12]:
+                            if line[12] == '':
+                                raise Warning(_('Please assign a date'))
+                            else:
+                                a1 = int(float(line[12]))
+                                a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                                date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                            values.update( {'invoice':line[0],
+                                            'customer': line[1],
+                                            'currency': line[2],
+                                            'product': line[3].split('.')[0],
+                                            'account': line[4],
+                                            'quantity': line[5],
+                                            'uom': line[6],
+                                            'description': line[7],
+                                            'price': line[8],
+                                            'discount':line[9],
+                                            'salesperson': line[10],
+                                            'tax': line[11],
+                                            'date': date_string,
+                                            'seq_opt':self.sequence_opt,
+                                            })
+                            count = 0
+                            for l_fields in line_fields:
+                                if(count > 12):
+                                    values.update({l_fields : line[count]})                        
+                                count+=1 
 
                         res = self.make_invoice(values)
                         res._recompute_dynamic_lines()

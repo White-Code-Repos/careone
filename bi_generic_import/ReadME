@@ -132,13 +132,8 @@ improvement :-
 
 => 13.0.4.3 : Improved an index as per latest changes.
 
-=> 13.0.4.4 : Add Date Order , Create Date, fleet and licencse plate for sale order.
-			: Add Invoice Origin for Invoice. (for XLS and CSV)
-
-Version: 13.0.4.5 | Date : 6/11/2020
-- For sales order, Add Analytic_Tag_ids and analytic_account_id field in the templates.
-- For purchase order, Add Analytic_Tag_ids and analytic_account_id field in the templates.
-- For invoice, Add Fleet, License Plate, Analytic_Tag_ids and analytic_account_id field in the templates.
-- For Journal entry, Add Analytic_Tag_ids field in the templates.
-- For Product, Add Variant Value, Variant price (Value Price Extra), analytic_account_id, Income Account (property_account_Income_id), Expense Account (property_account_Expense_id) and Routes (Route_ids) field in the templates.
- 
+Version 13.0.4.4:
+	- Fixed the traceback issue, when import invoice and Date, price and quantity are not given on file.
+	- Fixed the traceback issue, when import Supplier and DELIVERY TIME, QUANTITY are not given on file.
+	- Fixed the traceback issue, when import picking and date is not given on file.
+	- Fixed the traceback issue, when import inventory and date is not given on file.

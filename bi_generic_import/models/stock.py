@@ -332,9 +332,12 @@ class gen_inv(models.TransientModel):
                         else:
                             if line:
                                 values.update({'code':line[0],'quantity':line[1],'UOM':line[2],'lot':line[3],'life_date':line[4]})
-                                a1 = int(float(line[4]))
-                                a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                                date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                                if line[4]:
+                                    a1 = int(float(line[4]))
+                                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                                else:
+                                    date_string = False
                                 if self.import_prod_option == 'barcode':
                                     res = values['code'].replace('.', '', 1).isdigit() 
                                     if res == True:

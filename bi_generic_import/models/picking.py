@@ -295,8 +295,9 @@ class import_pickingss(models.TransientModel):
     
     def _get_date(self, date):
         DATETIME_FORMAT = "%Y-%m-%d"
-        i_date = datetime.strptime(date, DATETIME_FORMAT)
-        return i_date
+        if date:
+            i_date = datetime.strptime(date, DATETIME_FORMAT)
+            return i_date
 
     
     def import_picking(self):
@@ -352,9 +353,12 @@ class import_pickingss(models.TransientModel):
                 else:
                     
                     line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-                    a1 = int(float(line[3]))
-                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    if line[3]:
+                        a1 = int(float(line[3]))
+                        a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                        date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    else:
+                        date_string = False
                     values.update( {
                                     'name': line[0],
                                     'customer': line[1],

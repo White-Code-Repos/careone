@@ -25,6 +25,7 @@ except ImportError:
 
 class bi_import_product_image(models.TransientModel):
     _name = "bi.import.product.image"
+    _description = "Bi Import Product Image"
 
     model = fields.Selection([('template', 'Product Template'), ('product', 'Product')], string='Models', required=True)
     operation = fields.Selection([('create', 'Create Product'), ('update', 'Update Product')], string='Operations',

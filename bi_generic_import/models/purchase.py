@@ -291,45 +291,9 @@ class gen_purchase(models.TransientModel):
                     if not tax:
                         raise Warning(_('"%s" Tax not in your system') % name)
                     tax_ids.append(tax.id)
-        tag_ids = []
-        if values.get('analytic_Tag'):
-            if ';' in  values.get('analytic_Tag'):
-                tag_names = values.get('analytic_Tag').split(';')
-                for name in tag_names:
-                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
-                    if not tag:
-                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
-                    tag_ids.append(tag.id)
-
-            elif ',' in  values.get('analytic_Tag'):
-                tag_names = values.get('analytic_Tag').split(',')
-                for name in tag_names:
-                    tag= self.env['account.analytic.tag'].search([('name', '=', name)])
-                    if not tag:
-                        raise Warning(_('"%s" Analytic Tags not in your system') % name)
-                    tag_ids.append(tag.id)
-            else:
-                tag_names = values.get('analytic_Tag').split(',')
-                tag= self.env['account.analytic.tag'].search([('name', '=', tag_names)])
-                if not tag:
-                    raise Warning(_('"%s" Analytic Tags not in your system') % tag_names)
-                tag_ids.append(tag.id)
 
         if tax_ids:
             po_order_lines.write({'taxes_id':([(6, 0, tax_ids)])})
-        if tag_ids:
-            po_order_lines.write({'analytic_tag_ids':([(6, 0, tag_ids)])})
-
-        if values.get('analytic_account_id'):
-            analytic_account_id = self.env['account.analytic.account'].search([('name','=',values.get('analytic_account_id'))])
-            if analytic_account_id:
-                analytic_account_id = analytic_account_id
-                po_order_lines.write({
-                'account_analytic_id' : analytic_account_id.id
-                })
-            else:
-                raise Warning(_(' "%s" Analytic Account is not available.') % values.get('analytic_account_id'))
-       
 
         return True
 
@@ -358,7 +322,7 @@ class gen_purchase(models.TransientModel):
         """Load Inventory data from the CSV file."""
         if self.import_option == 'csv':
             try:
-                keys = ['purchase_no', 'vendor', 'currency', 'product', 'quantity', 'uom', 'description', 'price','tax','date','analytic_account_id','analytic_Tag']
+                keys = ['purchase_no', 'vendor', 'currency', 'product', 'quantity', 'uom', 'description', 'price','tax','date']
                 csv_data = base64.b64decode(self.file)
                 data_file = io.StringIO(csv_data.decode("utf-8"))
                 data_file.seek(0)
@@ -426,8 +390,6 @@ class gen_purchase(models.TransientModel):
                                    'description': line[6],
                                    'price': line[7],
                                    'tax': line[8],
-                                   'analytic_account_id' : line[16],
-                                    'analytic_Tag' : line[17],
                                    'date': date_string,
                                    'seq_opt':self.sequence_opt
 
