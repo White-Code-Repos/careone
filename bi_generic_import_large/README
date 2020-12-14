@@ -5,3 +5,7 @@
 -->  For sales order, Add create date, Fleet, License Plate, Analytic_Tag_ids and analytic_account_id field in the templates.
 -->  For invoice, Add invoice_origin, Fleet, License Plate, Analytic_Tag_ids and analytic_account_id field in the templates.
 --> Fixed the issue when select Confirm Quotation Automatically With Import option.
+
+3) Version: 13.0.0.3 | Date : 10/12/2020
+-->  Remove journal, amount, payment date for invoice without payment.
+-->  Fixed the issue when import invoice and vehicle is not available.

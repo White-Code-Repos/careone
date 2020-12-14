@@ -73,13 +73,12 @@ class gen_sale(models.TransientModel):
                     else:
                         vehicle_id = False
 
-                    if not vehicle_id:
-                        return sale_search
-                    self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_search.id])
                     if vehicle_id:
-                        vehicle_id.write({
-                            'license_plate' : license_plate
-                        })
+                        self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_search.id])
+                        if vehicle_id:
+                            vehicle_id.write({
+                                'license_plate' : license_plate
+                            })
                     return sale_search
                 else:
                     raise Warning(_('Pricelist is different for "%s" .\n Please define same.') % values.get('order'))
@@ -231,13 +230,12 @@ class gen_sale(models.TransientModel):
             else:
                 vehicle_id = False
 
-            if not vehicle_id:
-                return sale_id
-            self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_id.id])
+            if vehicle_id:
+                self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_id.id])
 
-            vehicle_id.write({
-                'license_plate' : license_plate
-            })
+                vehicle_id.write({
+                    'license_plate' : license_plate
+                })
             return sale_id
 
     
