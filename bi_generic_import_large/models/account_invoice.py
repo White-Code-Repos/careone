@@ -232,10 +232,7 @@ class gen_inv(models.TransientModel):
                 inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,l10n_in_export_type,invoice_user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
                 True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,
                 type_inv,inv_date,inv_date,journal.id,values.get('invoice'),company_id,'draft','regular',salesperson_id.id))
-            elif 'extract_state' in self.env['account.move']._fields:
-                inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,invoice_user_id,extract_state) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
-                True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,
-                type_inv,inv_date,inv_date,journal.id,values.get('invoice'),company_id,'draft',salesperson_id.id,'no_extract_requested'))
+
             else:
                 inv_id = self.env.cr.execute("""INSERT INTO account_move (partner_id,currency_id,name,is_import,custom_seq,system_seq,type,invoice_date,date,journal_id,invoice_name,company_id,state,invoice_user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , (partner_id.id,currency_id.id,name,True,
                 True if values.get('seq_opt') == 'custom' else False,True if values.get('seq_opt') == 'system' else False,
@@ -499,67 +496,47 @@ class gen_inv(models.TransientModel):
 
         if self.account_opt == 'default':
             if inv_id.type == 'out_invoice':
-                if product_id:
-                    if product_id.property_account_income_id:
-                        account = product_id.property_account_income_id
-                    elif product_id.categ_id.property_account_income_categ_id:
-                        account = product_id.categ_id.property_account_income_categ_id
-                    else:
-                        account_search = self.env['ir.property'].search([('name', '=', 'property_account_income_categ_id')])
-                        account = account_search.value_reference
-                        if account:
-                            account = account.split(",")[1]
-                            account = self.env['account.account'].browse(account)
-                            account = account.id
-                        else:
-                            account = False
+                if product_id.property_account_income_id:
+                    account = product_id.property_account_income_id
+                elif product_id.categ_id.property_account_income_categ_id:
+                    account = product_id.categ_id.property_account_income_categ_id
+                else:
+                    account_search = self.env['ir.property'].search([('name', '=', 'property_account_income_categ_id')])
+                    account = account_search.value_reference
+                    account = account.split(",")[1]
+                    account = self.env['account.account'].browse(account)
             if inv_id.type == 'in_invoice':
-                if product_id:
-                    if product_id.property_account_expense_id:
-                        account = product_id.property_account_expense_id
-                    elif product_id.categ_id.property_account_expense_categ_id:
-                        account = product_id.categ_id.property_account_expense_categ_id
-                    else:
-                        account_search = self.env['ir.property'].search([('name', '=', 'property_account_expense_categ_id')])
-                        account = account_search.value_reference
-                        if account:
-                            account = account.split(",")[1]
-                            account = self.env['account.account'].browse(account)
-                            account = account.id
-                        else:
-                            account = False
+                if product_id.property_account_expense_id:
+                    account = product_id.property_account_expense_id
+                elif product_id.categ_id.property_account_expense_categ_id:
+                    account = product_id.categ_id.property_account_expense_categ_id
+                else:
+                    account_search = self.env['ir.property'].search([('name', '=', 'property_account_expense_categ_id')])
+                    account = account_search.value_reference
+                    account = account.split(",")[1]
+                    account = self.env['account.account'].browse(account)
 
             if inv_id.type == 'out_refund':
-                if product_id:
-                    if product_id.property_account_income_id:
-                        account = product_id.property_account_income_id
-                    elif product_id.categ_id.property_account_income_categ_id:
-                        account = product_id.categ_id.property_account_income_categ_id
-                    else:
-                        account_search = self.env['ir.property'].search([('name', '=', 'property_account_income_categ_id')])
-                        account = account_search.value_reference
-                        if account:
-                            account = account.split(",")[1]
-                            account = self.env['account.account'].browse(account)
-                            account = account.id
-                        else:
-                            account = False
+                if product_id.property_account_income_id:
+                    account = product_id.property_account_income_id
+                elif product_id.categ_id.property_account_income_categ_id:
+                    account = product_id.categ_id.property_account_income_categ_id
+                else:
+                    account_search = self.env['ir.property'].search([('name', '=', 'property_account_income_categ_id')])
+                    account = account_search.value_reference
+                    account = account.split(",")[1]
+                    account = self.env['account.account'].browse(account)
             if inv_id.type == 'in_refund':
-                if product_id:
-                    if product_id.property_account_expense_id:
-                        account = product_id.property_account_expense_id
-                    elif product_id.categ_id.property_account_expense_categ_id:
-                        account = product_id.categ_id.property_account_expense_categ_id
-                    else:
-                        account_search = self.env['ir.property'].search([('name', '=', 'property_account_expense_categ_id')])
-                        account = account_search.value_reference
-                        if account:
-                            account = account.split(",")[1]
-                            account = self.env['account.account'].browse(account)
-                            account = account.id
-                        else:
-                            account = False
-                
+                if product_id.property_account_expense_id:
+                    account = product_id.property_account_expense_id
+                elif product_id.categ_id.property_account_expense_categ_id:
+                    account = product_id.categ_id.property_account_expense_categ_id
+                else:
+                    account_search = self.env['ir.property'].search([('name', '=', 'property_account_expense_categ_id')])
+                    account = account_search.value_reference
+                    account = account.split(",")[1]
+                    account = self.env['account.account'].browse(account)
+
         else:
             if values.get('account') == '':
                 raise Warning(_(' You can not left blank account field if you select Excel/CSV Account Option'))
@@ -573,18 +550,14 @@ class gen_inv(models.TransientModel):
                     account = account_id
                 else:
                     raise Warning(_(' "%s" Account is not available.') % values.get('account'))
-        if product_id:
-            product_id = product_id.id
-        else:
-            product_id = False
-            account = False
+
         vals = {
-            'product_id' : product_id,
+            'product_id' : product_id.id,
             'quantity' : values.get('quantity'),
             'price_unit' :values.get('price'),
             'discount':values.get('disc'),
             'name' : values.get('description'),
-            'account_id' : account,
+            'account_id' : account.id,
             'product_uom_id' : product_uom.id,
         }
 
@@ -617,12 +590,13 @@ class gen_inv(models.TransientModel):
         else:
             vehicle_id = False
 
-        if vehicle_id:
-            self.env.cr.execute("update account_move set vehicle_id=%s where id=%s", [vehicle_id.id,inv_id.id])
+        if not vehicle_id:
+            return inv_id
+        self.env.cr.execute("update account_move set vehicle_id=%s where id=%s", [vehicle_id.id,inv_id.id])
 
-            vehicle_id.write({
-                'license_plate' : license_plate
-            })
+        vehicle_id.write({
+            'license_plate' : license_plate
+        })
         
         if tax_ids:
             vals.update({'tax_ids':([(6,0,tax_ids)])})
@@ -808,320 +782,168 @@ class gen_inv(models.TransientModel):
     
     def import_csv(self):
         """Load Inventory data from the CSV file."""
-        if self.stage == 'payment':
-            if self.import_option == 'csv':
-                try:
-                    keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','journal','amount','paymentdate','invoice_origin','vehicle_id','license_plate','analytic_account_id','Analytic_Tags_ids']
-                    csv_data = base64.b64decode(self.file)
-                    data_file = io.StringIO(csv_data.decode("utf-8"))
-                    data_file.seek(0)
-                    file_reader = []
-                    csv_reader = csv.reader(data_file, delimiter=',')
-                    file_reader.extend(csv_reader)
-                except Exception:
-                    raise exceptions.Warning(_("Invalid file!"))
-                values = {}
-                payment = {}
-                invoice_ids=[]
-                for i in range(len(file_reader)):
-                    field = list(map(str, file_reader[i]))
-                    count = 1
-                    count_keys = len(keys)
-                    if len(field) > count_keys:
-                        for new_fields in field:
-                            if count > count_keys :
-                                keys.append(new_fields)                
-                            count+=1              
-                    values = dict(zip(keys, field))
-                    if values:
-                        if i == 0:
-                            continue
-                        else:
-                            values.update({'type':self.type,'option':self.import_option,'seq_opt':self.sequence_opt})
-                            res = self.make_invoice(values)
-                            res._recompute_dynamic_lines()
-                            res._compute_amount()
-                            invoice_ids.append(res)
-                            if self.stage == 'payment':
-                                if values.get('paymentdate') == '':
-                                    raise Warning(_('Please assign a payment date'))
-                                if values.get('journal') and values.get('amount'):
-                                    if res in payment:
-                                        if payment[res][0] != values.get('journal'):
-                                            raise Warning(_('Please Use same Journal for Invoice %s' %values.get('invoice')))   
-                                        else:
-                                            payment.update({res:[values.get('journal'),float(values.get('amount'))+float(payment[res][1]),values.get('paymentdate') ]})
-                                    else:
-                                        payment.update({res:[values.get('journal'),values.get('amount'),values.get('paymentdate')]})
-                                else:
-                                    raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %values.get('invoice')))
-                if self.stage == 'confirm':
-                    for res in invoice_ids: 
-                        if res.state in ['draft']:
-                            res.action_post()
-                if self.stage == 'payment':
-                        self.create_payment(payment,values)
-            else:
-                try:
-                    fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
-                    fp.write(binascii.a2b_base64(self.file))
-                    fp.seek(0)
-                    values = {}
-                    payment = {}
-                    invoice_ids=[]
-                    workbook = xlrd.open_workbook(fp.name)
-                    sheet = workbook.sheet_by_index(0)
-                except Exception:
-                    raise exceptions.Warning(_("Invalid file!"))
-                for row_no in range(sheet.nrows):
-                    val = {}
-                    if row_no <= 0:
-                        line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+        if self.import_option == 'csv':
+            try:
+                keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','journal','amount','paymentdate','invoice_origin','vehicle_id','license_plate','analytic_account_id','Analytic_Tags_ids']
+                csv_data = base64.b64decode(self.file)
+                data_file = io.StringIO(csv_data.decode("utf-8"))
+                data_file.seek(0)
+                file_reader = []
+                csv_reader = csv.reader(data_file, delimiter=',')
+                file_reader.extend(csv_reader)
+            except Exception:
+                raise exceptions.Warning(_("Invalid file!"))
+            values = {}
+            payment = {}
+            invoice_ids=[]
+            for i in range(len(file_reader)):
+                field = list(map(str, file_reader[i]))
+                count = 1
+                count_keys = len(keys)
+                if len(field) > count_keys:
+                    for new_fields in field:
+                        if count > count_keys :
+                            keys.append(new_fields)                
+                        count+=1              
+                values = dict(zip(keys, field))
+                if values:
+                    if i == 0:
+                        continue
                     else:
-                        line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-                        # if self.account_opt == 'default':
-                        #     if len(line) == 13:
-                        a1 = int(float(line[11]))
-                        a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                        date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                        values.update( {'invoice':line[0],
-                                        'customer': line[1],
-                                        'currency': line[2],
-                                        'product': line[3].split('.')[0],
-                                        'account': line[4],                                            
-                                        'quantity': line[5],
-                                        'uom': line[6],
-                                        'description': line[7],
-                                        'price': line[8],
-                                        'salesperson': line[9],
-                                        'tax': line[10],
-                                        'date': date_string,
-                                        'seq_opt':self.sequence_opt,
-                                        'disc':line[12],
-                                        'analytic_account_id' : line[19],
-                                        'Analytic_Tags_ids' : line[20],
-                                        'invoice_origin' : line[16],
-                                        'vehicle_id' : line[17],
-                                        'license_plate' : line[18],
-                                        })
-                        count = 0
-                        for l_fields in line_fields:
-                            if(count > 12):
-                                values.update({l_fields : line[count]})                        
-                            count+=1                     
-                        #     elif len(line) > 13:
-                        #         raise Warning(_('Your File has extra column please refer sample file'))
-                        #     else:
-                        #         raise Warning(_('Your File has less column please refer sample file'))
-                        # else:
-                        #     if len(line) == 13:
-                            #     a1 = int(float(line[11]))
-                            #     a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                            #     date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                            #     values.update( {'invoice':line[0],
-                            #                     'customer': line[1],
-                            #                     'currency': line[2],
-                            #                     'product': line[3].split('.')[0],
-                            #                     'account': line[4],
-                            #                     'quantity': line[5],
-                            #                     'uom': line[6],
-                            #                     'description': line[7],
-                            #                     'price': line[8],
-                            #                     'salesperson': line[9],
-                            #                     'tax': line[10],
-                            #                     'date': date_string,
-                            #                     'seq_opt':self.sequence_opt,
-                            #                     'disc':line[12]
-                            #                     })
-                            # elif len(line) > 13:
-                            #     raise Warning(_('Your File has extra column please refer sample file'))
-                            # else:
-                            #     raise Warning(_('Your File has less column please refer sample file'))
+                        values.update({'type':self.type,'option':self.import_option,'seq_opt':self.sequence_opt})
                         res = self.make_invoice(values)
                         res._recompute_dynamic_lines()
                         res._compute_amount()
                         invoice_ids.append(res)
                         if self.stage == 'payment':
-                            if line[15] == '':
+                            if values.get('paymentdate') == '':
                                 raise Warning(_('Please assign a payment date'))
-                            else:
-                                a2 = int(float(line[15]))
-                                a2_as_datetime = datetime(*xlrd.xldate_as_tuple(a2, workbook.datemode))
-                                date_string2 = a2_as_datetime.date().strftime('%Y-%m-%d')
-                                if line[13] and line[14]:
-                                    if res in payment:
-                                        if payment[res][0] != line[13]:
-                                            raise Warning(_('Please Use same Journal for Invoice %s' %line[0]))   
-                                        else:
-                                            payment.update({res:[line[13],float(line[14])+float(payment[res][1]),date_string2 ]})
+
+                            if values.get('journal') and values.get('amount'):
+                                if res in payment:
+                                    if payment[res][0] != values.get('journal'):
+                                        raise Warning(_('Please Use same Journal for Invoice %s' %values.get('invoice')))   
                                     else:
-                                        payment.update({res:[line[13],line[14],date_string2 ]})
+                                        payment.update({res:[values.get('journal'),float(values.get('amount'))+float(payment[res][1]),values.get('paymentdate') ]})
                                 else:
-                                    raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %line[0]))
-                if self.stage == 'confirm':
-                    for res in invoice_ids: 
-                        if res.state in ['draft']:
-                            res.action_post()
-    
-                if self.stage == 'payment':
+                                    payment.update({res:[values.get('journal'),values.get('amount'),values.get('paymentdate')]})
+                            else:
+                                raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %values.get('invoice')))
+
+            if self.stage == 'confirm':
+                for res in invoice_ids: 
+                    if res.state in ['draft']:
+                        res.action_post()
+            if self.stage == 'payment':
                     self.create_payment(payment,values)
-                return res
+
         else:
-            if self.import_option == 'csv':
-                try:
-                    keys = ['invoice', 'customer', 'currency', 'product','account', 'quantity', 'uom', 'description', 'price','salesperson','tax','date','disc','invoice_origin','vehicle_id','license_plate','analytic_account_id','Analytic_Tags_ids']
-                    csv_data = base64.b64decode(self.file)
-                    data_file = io.StringIO(csv_data.decode("utf-8"))
-                    data_file.seek(0)
-                    file_reader = []
-                    csv_reader = csv.reader(data_file, delimiter=',')
-                    file_reader.extend(csv_reader)
-                except Exception:
-                    raise exceptions.Warning(_("Invalid file!"))
+            try:
+                fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
+                fp.write(binascii.a2b_base64(self.file))
+                fp.seek(0)
                 values = {}
                 payment = {}
                 invoice_ids=[]
-                for i in range(len(file_reader)):
-                    field = list(map(str, file_reader[i]))
-                    count = 1
-                    count_keys = len(keys)
-                    if len(field) > count_keys:
-                        for new_fields in field:
-                            if count > count_keys :
-                                keys.append(new_fields)                
-                            count+=1              
-                    values = dict(zip(keys, field))
-                    if values:
-                        if i == 0:
-                            continue
-                        else:
-                            values.update({'type':self.type,'option':self.import_option,'seq_opt':self.sequence_opt})
-                            res = self.make_invoice(values)
-                            res._recompute_dynamic_lines()
-                            res._compute_amount()
-                            invoice_ids.append(res)
-                            if self.stage == 'payment':
-                                if values.get('paymentdate') == '':
-                                    raise Warning(_('Please assign a payment date'))
-                                if values.get('journal') and values.get('amount'):
-                                    if res in payment:
-                                        if payment[res][0] != values.get('journal'):
-                                            raise Warning(_('Please Use same Journal for Invoice %s' %values.get('invoice')))   
-                                        else:
-                                            payment.update({res:[values.get('journal'),float(values.get('amount'))+float(payment[res][1]),values.get('paymentdate') ]})
-                                    else:
-                                        payment.update({res:[values.get('journal'),values.get('amount'),values.get('paymentdate')]})
-                                else:
-                                    raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %values.get('invoice')))
-                if self.stage == 'confirm':
-                    for res in invoice_ids: 
-                        if res.state in ['draft']:
-                            res.action_post()
-                if self.stage == 'payment':
-                        self.create_payment(payment,values)
-            else:
-                try:
-                    fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
-                    fp.write(binascii.a2b_base64(self.file))
-                    fp.seek(0)
-                    values = {}
-                    payment = {}
-                    invoice_ids=[]
-                    workbook = xlrd.open_workbook(fp.name)
-                    sheet = workbook.sheet_by_index(0)
-                except Exception:
-                    raise exceptions.Warning(_("Invalid file!"))
-                for row_no in range(sheet.nrows):
-                    val = {}
-                    if row_no <= 0:
-                        line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
-                    else:
-                        line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-                        # if self.account_opt == 'default':
-                        #     if len(line) == 13:
-                        a1 = int(float(line[11]))
-                        a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                        date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                        values.update( {'invoice':line[0],
-                                        'customer': line[1],
-                                        'currency': line[2],
-                                        'product': line[3].split('.')[0],
-                                        'account': line[4],                                            
-                                        'quantity': line[5],
-                                        'uom': line[6],
-                                        'description': line[7],
-                                        'price': line[8],
-                                        'salesperson': line[9],
-                                        'tax': line[10],
-                                        'date': date_string,
-                                        'seq_opt':self.sequence_opt,
-                                        'disc':line[12],
-                                        'analytic_account_id' : line[16],
-                                        'Analytic_Tags_ids' : line[17],
-                                        'invoice_origin' : line[13],
-                                        'vehicle_id' : line[14],
-                                        'license_plate' : line[15],
-                                        })
-                        count = 0
-                        for l_fields in line_fields:
-                            if(count > 12):
-                                values.update({l_fields : line[count]})                        
-                            count+=1                     
-                        #     elif len(line) > 13:
-                        #         raise Warning(_('Your File has extra column please refer sample file'))
-                        #     else:
-                        #         raise Warning(_('Your File has less column please refer sample file'))
+                workbook = xlrd.open_workbook(fp.name)
+                sheet = workbook.sheet_by_index(0)
+            except Exception:
+                raise exceptions.Warning(_("Invalid file!"))
+
+            for row_no in range(sheet.nrows):
+                val = {}
+                if row_no <= 0:
+                    line_fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+                else:
+                    line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
+                    # if self.account_opt == 'default':
+                    #     if len(line) == 13:
+                    a1 = int(float(line[11]))
+                    a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                    date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                    values.update( {'invoice':line[0],
+                                    'customer': line[1],
+                                    'currency': line[2],
+                                    'product': line[3].split('.')[0],
+                                    'account': line[4],                                            
+                                    'quantity': line[5],
+                                    'uom': line[6],
+                                    'description': line[7],
+                                    'price': line[8],
+                                    'salesperson': line[9],
+                                    'tax': line[10],
+                                    'date': date_string,
+                                    'seq_opt':self.sequence_opt,
+                                    'disc':line[12],
+                                    'analytic_account_id' : line[19],
+                                    'Analytic_Tags_ids' : line[20],
+                                    'invoice_origin' : line[16],
+                                    'vehicle_id' : line[17],
+                                    'license_plate' : line[18],
+                                    })
+                    count = 0
+                    for l_fields in line_fields:
+                        if(count > 12):
+                            values.update({l_fields : line[count]})                        
+                        count+=1                     
+                    #     elif len(line) > 13:
+                    #         raise Warning(_('Your File has extra column please refer sample file'))
+                    #     else:
+                    #         raise Warning(_('Your File has less column please refer sample file'))
+                    # else:
+                    #     if len(line) == 13:
+                        #     a1 = int(float(line[11]))
+                        #     a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
+                        #     date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
+                        #     values.update( {'invoice':line[0],
+                        #                     'customer': line[1],
+                        #                     'currency': line[2],
+                        #                     'product': line[3].split('.')[0],
+                        #                     'account': line[4],
+                        #                     'quantity': line[5],
+                        #                     'uom': line[6],
+                        #                     'description': line[7],
+                        #                     'price': line[8],
+                        #                     'salesperson': line[9],
+                        #                     'tax': line[10],
+                        #                     'date': date_string,
+                        #                     'seq_opt':self.sequence_opt,
+                        #                     'disc':line[12]
+                        #                     })
+                        # elif len(line) > 13:
+                        #     raise Warning(_('Your File has extra column please refer sample file'))
                         # else:
-                        #     if len(line) == 13:
-                            #     a1 = int(float(line[11]))
-                            #     a1_as_datetime = datetime(*xlrd.xldate_as_tuple(a1, workbook.datemode))
-                            #     date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
-                            #     values.update( {'invoice':line[0],
-                            #                     'customer': line[1],
-                            #                     'currency': line[2],
-                            #                     'product': line[3].split('.')[0],
-                            #                     'account': line[4],
-                            #                     'quantity': line[5],
-                            #                     'uom': line[6],
-                            #                     'description': line[7],
-                            #                     'price': line[8],
-                            #                     'salesperson': line[9],
-                            #                     'tax': line[10],
-                            #                     'date': date_string,
-                            #                     'seq_opt':self.sequence_opt,
-                            #                     'disc':line[12]
-                            #                     })
-                            # elif len(line) > 13:
-                            #     raise Warning(_('Your File has extra column please refer sample file'))
-                            # else:
-                            #     raise Warning(_('Your File has less column please refer sample file'))
-                        res = self.make_invoice(values)
-                        res._recompute_dynamic_lines()
-                        res._compute_amount()
-                        invoice_ids.append(res)
-                        if self.stage == 'payment':
-                            if line[15] == '':
-                                raise Warning(_('Please assign a payment date'))
-                            else:
-                                a2 = int(float(line[15]))
-                                a2_as_datetime = datetime(*xlrd.xldate_as_tuple(a2, workbook.datemode))
-                                date_string2 = a2_as_datetime.date().strftime('%Y-%m-%d')
-                                if line[13] and line[14]:
-                                    if res in payment:
-                                        if payment[res][0] != line[13]:
-                                            raise Warning(_('Please Use same Journal for Invoice %s' %line[0]))   
-                                        else:
-                                            payment.update({res:[line[13],float(line[14])+float(payment[res][1]),date_string2 ]})
+                        #     raise Warning(_('Your File has less column please refer sample file'))
+                    res = self.make_invoice(values)
+                    res._recompute_dynamic_lines()
+                    res._compute_amount()
+                    invoice_ids.append(res)
+
+                    if self.stage == 'payment':
+                        if line[15] == '':
+                            raise Warning(_('Please assign a payment date'))
+                        else:
+                            a2 = int(float(line[15]))
+                            a2_as_datetime = datetime(*xlrd.xldate_as_tuple(a2, workbook.datemode))
+                            date_string2 = a2_as_datetime.date().strftime('%Y-%m-%d')
+                            if line[13] and line[14]:
+                                if res in payment:
+                                    if payment[res][0] != line[13]:
+                                        raise Warning(_('Please Use same Journal for Invoice %s' %line[0]))   
                                     else:
-                                        payment.update({res:[line[13],line[14],date_string2 ]})
+                                        payment.update({res:[line[13],float(line[14])+float(payment[res][1]),date_string2 ]})
                                 else:
-                                    raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %line[0]))
-                if self.stage == 'confirm':
-                    for res in invoice_ids: 
-                        if res.state in ['draft']:
-                            res.action_post()
-    
-                if self.stage == 'payment':
+                                    payment.update({res:[line[13],line[14],date_string2 ]})
+                            else:
+                                raise Warning(_('Please Specify Payment Journal and Amount for Invoice %s' %line[0]))
+
+            if self.stage == 'confirm':
+                for res in invoice_ids: 
+                    if res.state in ['draft']:
+                        res.action_post()
+
+            if self.stage == 'payment':
                     self.create_payment(payment,values)
-                return res
+
+            return res
 
