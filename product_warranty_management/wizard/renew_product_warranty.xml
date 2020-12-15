@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_renew_product_warranty_management" model="ir.ui.view">
+            <field name="name">product warranty management</field>
+            <field name="model">renew.product.warranty</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Warranty Management">
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="Running,To_Be_Expire,Renewed,Expired"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="sale_order_id"/>
+                                <field name="partner_id"/>
+                                <field name="warranty_type_id"/>
+                                <field name="sale_order_line_id"/>
+                            </group>
+                            <group>
+                                <field name="sale_product_id"/>
+                                <field name="warranty_start_date"/>
+                                <field name="warranty_end_date"/>
+                                <field name="parent_warranty_id" readonly="1"
+                                       attrs="{'invisible':[('parent_warranty_id','=',False)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="renew_product_warranty"
+                                string="Renew Product Warranty" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_renew_product_warranty"
+                model="ir.actions.act_window">
+            <field name="name">Renew Product Warranty</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">renew.product.warranty</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
