@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="view_form_produc_warranty_info" model="ir.ui.view">
+            <field name="name">view.form.product.warranty.info</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[last()]" position="after">
+                    <page string="Product Warranty Information">
+                        <group>
+                            <group>
+                                <field name="warranty_product_id" domain="[('type','=','service')]"/>
+                                <field name="warranty_type_id" />
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

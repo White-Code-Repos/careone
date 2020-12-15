@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="view_form_sale_order" model="ir.ui.view">
+            <field name="name">view.form.sale.order.info</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[last()]" position="after">
+                    <page string="Product Warranty Information">
+                        <group string="Product Warranty Information" colspan="4">
+                            <field name="product_warrany_ids" nolabel="1" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="sale_product_id"/>
+                                    <field name="warranty_type_id"/>
+                                    <field name="warranty_start_date"/>
+                                    <field name="warranty_end_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

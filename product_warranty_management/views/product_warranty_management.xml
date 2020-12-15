@@ -1,0 +1,121 @@
+<odoo>
+    <data>
+
+        <record id="view_product_warranty_process_tree_view" model="ir.ui.view">
+            <field name="name">Product Warranty Management</field>
+            <field name="model">product.warranty.management</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Warranty Management">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="sale_order_line_id"/>
+                    <field name="warranty_type_id"/>
+                    <field name="warranty_start_date"/>
+                    <field name="warranty_end_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="renew_product_warranty" model="ir.actions.act_window">
+            <field name="name">Renew Warranty</field>
+            <field name="res_model">product.warranty.management</field>
+            <field name="view_mode">form,tree</field>
+            <field name="context">{'default_warranty_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+        <record id="view_form_product_warranty_management" model="ir.ui.view">
+            <field name="name">product warranty management</field>
+            <field name="model">product.warranty.management</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Warranty Management">
+                    <header>
+                        <button string="Renew Warranty" name="%(action_renew_product_warranty)d"
+                                attrs="{'invisible':[('state','in',('Renewed','Running'))]}" class="oe_highlight"
+                                type="action"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="Running,To_Be_Expire,Renewed,Expired"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+
+
+                            <field name="child_warranty_ids" invisible="1"/>
+                            <button type="object"
+                                    name="actionid_product_warranty_type"
+                                    class="oe_stat_button"
+                                    icon="fa-truck"
+                                    attrs="{'invisible': [('warranty_count', '=', 0)]}" groups="base.group_user">
+                                <field name="warranty_count" widget="statinfo" string="Child Warranty"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="sale_order_id"/>
+                                <field name="partner_id"/>
+                                <field name="warranty_type_id"/>
+                                <field name="sale_order_line_id"/>
+                            </group>
+                            <group>
+                                <field name="sale_product_id"/>
+                                <field name="warranty_start_date"/>
+                                <field name="warranty_end_date"/>
+                                <field name="parent_warranty_id" readonly="1"
+                                       attrs="{'invisible':[('parent_warranty_id','=',False)]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="child_warranty_ids" attrs="{'invisible':[('child_warranty_ids','=',False)]}"/>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="actionid_product_warranty_type" model="ir.actions.act_window">
+            <field name="name">Product Warranty Type</field>
+            <field name="res_model">product.warranty.type</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a Product Warranty Type.
+                </p>
+            </field>
+        </record>
+
+        <record id="actionid_product_warranty_management" model="ir.actions.act_window">
+            <field name="name">Product Warranty</field>
+            <field name="res_model">product.warranty.management</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a Product Warranty.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Product Warranty Management " id="product_warranty_management"
+                  parent="sale.menu_sale_config" sequence="5"/>
+
+        <menuitem name="Product Warranty" id="menuitem_product_warranty_management"
+                  parent="product_warranty_management" action="actionid_product_warranty_management"
+                  sequence="2"/>
+
+        <menuitem name="Product Warranty Type" id="menuitem_product_warranty_type"
+                  parent="product_warranty_management" action="actionid_product_warranty_type"
+                  sequence="3"/>
+
+
+    </data>
+</odoo>
+
