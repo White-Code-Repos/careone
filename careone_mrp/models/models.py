@@ -44,7 +44,7 @@ class MrpProduction(models.Model):
     
     location_src_id = fields.Many2one(
         'stock.location', 'Components Location',
-        default=_get_default_location_src_id,
+        #default=_get_default_location_src_id,
         readonly=False, required=True,
         domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         states={'draft': [('readonly', False)]}, check_company=True,
@@ -54,16 +54,6 @@ class MrpProduction(models.Model):
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
 
 
-    @api.model
-    def _get_default_location_src_id(self):
-        location = False
-        company_id = self.env.context.get('default_company_id', self.env.company.id)
-        if self.env.context.get('default_picking_type_id'):
-            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_src_id
-        if not location:
-            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
-        return location and location.id or False
-    
     @api.onchange('sale_order_id','mrp_group_id')
     @api.constrains('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
