@@ -74,7 +74,9 @@ class MrpProduction(models.Model):
         #    mrp_grp_id = self.env['mrp.group'].search([('id','=',1)])
         else:
             mrp_grp_id = self.mrp_group_id
-            raise UserError(mrp_grp_id.location_id)
+            
+            self.location_src_id = mrp_grp_id.location_id
+            raise UserError(self.location_src_id)
         self.location_src_id = mrp_grp_id.location_id
         
         # self.location_dest_id = mrp_grp_id.location_id
