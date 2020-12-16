@@ -53,6 +53,17 @@ class MrpProduction(models.Model):
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="sale_order_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
 
+
+    @api.model
+    def _get_default_location_src_id(self):
+        location = False
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        if self.env.context.get('default_picking_type_id'):
+            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_src_id
+        if not location:
+            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+        return location and location.id or False
+    
     @api.onchange('sale_order_id','mrp_group_id')
     @api.constrains('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
@@ -73,7 +84,7 @@ class MrpProduction(models.Model):
             mrp_grp_id = self.env['mrp.group'].search([('id','=',1)])
         else:
             mrp_grp_id = self.mrp_group_id
-        raise UserError(mrp_grp_id)
+        #raise UserError(mrp_grp_id.location_id)
         self.location_src_id = mrp_grp_id.location_id
         
         # self.location_dest_id = mrp_grp_id.location_id
