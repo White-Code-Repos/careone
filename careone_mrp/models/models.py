@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
     production_count = fields.Integer(compute='_compute_production_count', store=True)
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',)
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
-
+    
     @api.onchange('mrp_group_id')
     def set_mrp_users(self):
         self.user_ids = self.mrp_group_id.user_ids
@@ -41,7 +41,14 @@ class SaleOrder(models.Model):
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
-
+    
+    location_src_id = fields.Many2one(
+        'stock.location', 'Components Location',
+        default=_get_default_location_src_id,
+        readonly=False, required=True,
+        domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        states={'draft': [('readonly', False)]}, check_company=True,
+        help="Location where the system will look for components.")
     sale_order_id = fields.Many2one(comodel_name='sale.order', string='Source Sale Order')
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="sale_order_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
