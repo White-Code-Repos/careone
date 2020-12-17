@@ -138,7 +138,7 @@
                 </xpath>
                 <field name="user_id" position="after">
                     <field name='sale_order_id'/>
-                    <field name='mrp_group_id' attrs="{'readonly':[('sale_order_id','!=',False)]}" required="1"/>
+                    <field name='mrp_group_id' attrs="{'readonly':[('sale_order_id','!=',False)],'required':[('sale_order_id','=',False)]}" />
                     <!-- <field name='user_ids' widget="many2many_tags" domain="[('id','in',mrp_group_id.user_ids.ids)]"/> -->
                     <field name='user_ids' widget="many2many_tags" required="1"/>
                 </field>
