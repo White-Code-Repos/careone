@@ -9,7 +9,7 @@
                 <xpath expr="//button[@name='action_confirm'][1]" position="before">
                     <field name="no_credit_has_ceo_access" invisible="1"/>
                 </xpath>
-                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
                     <attribute name="attrs">{'invisible':[('no_credit_has_ceo_access','=',False),('state', 'in', ['draft'])]}</attribute>
                 </xpath>
 <!--                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">-->
