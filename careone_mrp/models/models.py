@@ -100,7 +100,7 @@ class MrpProduction(models.Model):
                 ])
                 # If so, use the 'sale_order_id' from the parent production
                 values['sale_order_id'] = production_id.sale_order_id.id
-
+        values['mrp_grp_id']= self.env['mrp.group'].search([('id','=',1)])
         return super(MrpProduction, self).create(values)
     
 
