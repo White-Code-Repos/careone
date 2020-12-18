@@ -80,7 +80,8 @@ class SaleOrder(models.Model):
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
                             related='vehicle_id.size')
-    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
+    is_allow_generate_coupon = fields.Boolean(string="")
+                                              #, compute='allow_generate_coupon')
 
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
