@@ -3,7 +3,7 @@
     'name': "Coupon Program",
     'category': 'Coupon',
     'version': '0.1',
-    'depends': ['base','sale'],
+    'depends': ['base','sale','sale_coupon'],
                 #,'sale_coupon','partner_fleet_sale_enhancement','sale_coupons_enhanchment','sale','fleet'],
     # always loaded
     'data': [
