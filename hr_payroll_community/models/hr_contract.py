@@ -20,7 +20,7 @@ class HrContract(models.Model):
         ('weekly', 'Weekly'),
         ('bi-weekly', 'Bi-weekly'),
         ('bi-monthly', 'Bi-monthly'),
-    ], string='Scheduled Pay', index=True, default='monthly',
+    ], string='Scheduled Pay',
         help="Defines the frequency of the wage payment.")
     resource_calendar_id = fields.Many2one(required=True, help="Employee's working schedule.")
     hra = fields.Monetary(string='HRA', tracking=True, help="House rent allowance.")
