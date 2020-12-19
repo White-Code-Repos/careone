@@ -51,7 +51,6 @@ class MrpProduction(models.Model):
         help="Location where the system will look for components.")
     sale_order_id = fields.Many2one(comodel_name='sale.order', string='Source Sale Order')
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',
-                                   related="sale_order_id.mrp_group_id",
                                    readonly=False)
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
 
