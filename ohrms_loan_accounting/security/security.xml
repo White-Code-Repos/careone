@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+
+        <!--<record id="hr_loan_manager_account_rule" model="ir.rule">-->
+            <!--<field name="name">Loan Forms Modification Accounts</field>-->
+            <!--<field name="model_id" ref="model_hr_loan"/>-->
+            <!--<field name="groups" eval="[(4, ref('account.group_account_user'))]"/>-->
+            <!--<field name="perm_write" eval="1"/>-->
+            <!--<field name="perm_read" eval="1"/>-->
+            <!--<field name="perm_create" eval="1"/>-->
+            <!--<field name="perm_unlink" eval="1"/>-->
+        <!--</record>-->
+
+
+        <record id="loan_access_right_categoty" model="ir.module.category">
+            <field name="name">Loan Access Right</field>
+            <field name="sequence" eval="2"/>
+        </record>
+
+        <record id="loan_access_right_group_approve1" model="res.groups">
+            <field name="name">Loan First Approve</field>
+            <field name="category_id" ref="ohrms_loan_accounting.loan_access_right_categoty"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+           <record id="loan_access_right_group_approve2" model="res.groups">
+            <field name="name">Loan Second Approve</field>
+            <field name="category_id" ref="ohrms_loan_accounting.loan_access_right_categoty"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+
+
+    </data>
+</odoo>
