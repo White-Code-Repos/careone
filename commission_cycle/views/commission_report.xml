@@ -19,6 +19,9 @@
                 <field name="commission_item"/>
                 <field name="accomplish"/>
                 <field name="emp_comm"/>
+				<field name="commission_date" />
+				<field name="status" />
+				
             </tree>
         </field>
     </record>
@@ -36,6 +39,8 @@
                         <field name="commission_item"/>
                         <field name="accomplish"/>
                         <field name="emp_comm"/>
+						<field name="commission_date" />
+						<field name="status" />
                         <field name="money_target_ids"
                                attrs="{'invisible': [('commission_type', '!=', 'money')]}">
                             <tree>

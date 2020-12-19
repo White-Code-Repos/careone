@@ -12,6 +12,7 @@ class CouponProgramInherit(models.Model):
         ('nbr_customer', 'Number of Selected Customers'),
         ('nbr_vehicles', 'Number of selected vehicles')
     ], default='nbr_coupon')
+    vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle")
     nbr_coupons = fields.Integer(string="Number of Coupons", help="Number of coupons", default=1)
     partners_domain = fields.Char(string="Customer", default='[]')
     vehicles_domain = fields.Char(string="Vehicle", default='[]')

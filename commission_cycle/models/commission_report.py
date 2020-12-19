@@ -16,6 +16,8 @@ class CommissionReport(models.Model):
     emp_comm = fields.Float(string="Employee Commission", required=False, )
     money_target_ids = fields.One2many(comodel_name="money.target", inverse_name="report_id", string="",
                                        required=False, )
+    commission_date = fields.Date("Commission Date")
+    status=fields.Boolean(string="Paid")
 
 
 class MoneyTarget(models.Model):

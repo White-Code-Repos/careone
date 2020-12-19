@@ -50,7 +50,9 @@ class MrpProduction(models.Model):
         states={'draft': [('readonly', False)]}, check_company=True,
         help="Location where the system will look for components.")
     sale_order_id = fields.Many2one(comodel_name='sale.order', string='Source Sale Order')
-    mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="sale_order_id.mrp_group_id")
+    mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',
+                                   related="sale_order_id.mrp_group_id",
+                                   readonly=False)
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
 
 
@@ -100,7 +102,7 @@ class MrpProduction(models.Model):
                 ])
                 # If so, use the 'sale_order_id' from the parent production
                 values['sale_order_id'] = production_id.sale_order_id.id
-        values['mrp_grp_id']= self.env['mrp.group'].search([('id','=',1)])
+        #values['mrp_grp_id']= self.env['mrp.group'].search([('id','=',1)])
         return super(MrpProduction, self).create(values)
     
 
