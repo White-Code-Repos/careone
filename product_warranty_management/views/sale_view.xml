@@ -17,6 +17,7 @@
                                     <field name="warranty_start_date"/>
                                     <field name="warranty_end_date"/>
                                     <field name="state"/>
+									<button name="action_quotation_send" string="Send by Email" type="object" />
                                 </tree>
                             </field>
                         </group>
@@ -25,7 +26,6 @@
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>
 
