@@ -97,6 +97,7 @@ class InvoiceInherit(models.Model):
                                                                                            order.product_id.name),
                                                                                        'accomplish': order.quantity,
                                                                                        'emp_comm': commission,
+                                                                                       'commission_date':self.invoice_date,
                                                                                        }])
                                         else:
                                             categ_report_line = self.env['commission.report'].search(
@@ -133,6 +134,7 @@ class InvoiceInherit(models.Model):
                                                                                            order.product_id.categ_id.name),
                                                                                        'accomplish': order.price_subtotal,
                                                                                        'emp_comm': commission,
+                                                                                       'commission_date':self.invoice_date,
                                                                                        }])
                                 current_rule = 0
                                 for rule in related_plan.rule_ids:
@@ -179,7 +181,8 @@ class InvoiceInherit(models.Model):
                                                                                'commission_item': 'Money Target',
                                                                                'accomplish': rec.amount_total,
                                                                                'emp_comm': commission,
-                                                                               'money_target_ids': records
+                                                                               'money_target_ids': records,
+                                                                               'commission_date':self.invoice_date,
                                                                                }])
 
     is_commission_paid = fields.Boolean(string="", )
@@ -270,6 +273,7 @@ class InvoiceInherit(models.Model):
                                                                                    order.product_id.name),
                                                                                'accomplish': order.quantity,
                                                                                'emp_comm': commission,
+                                                                               'commission_date':self.invoice_date,
                                                                                }])
                                 else:
                                     categ_report_line = self.env['commission.report'].search(
@@ -305,6 +309,7 @@ class InvoiceInherit(models.Model):
                                                                                    order.product_id.categ_id.name),
                                                                                'accomplish': order.price_subtotal,
                                                                                'emp_comm': commission,
+                                                                               'commission_date':self.invoice_date
                                                                                }])
                         current_rule = 0
                         for rule in related_plan.rule_ids:
@@ -351,6 +356,7 @@ class InvoiceInherit(models.Model):
                                                                        'commission_item': 'Money Target',
                                                                        'accomplish': self.amount_total,
                                                                        'emp_comm': commission,
-                                                                       'money_target_ids': records
+                                                                       'money_target_ids': records,
+                                                                       'commission_date':self.invoice_date,
                                                                        }])
         return super(InvoiceInherit, self).action_post()
