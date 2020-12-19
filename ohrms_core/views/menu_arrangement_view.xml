@@ -17,10 +17,10 @@
                   web_icon="hr_holidays,static/description/icon.png"
                   groups="base.group_user"/>
 
-        <!--menuitem id="hr_timesheet.timesheet_menu_root"
+        <menuitem id="hr_timesheet.timesheet_menu_root"
                   name="Timesheets" sequence="6"
                   groups="base.group_user"
-                  web_icon="hr_timesheet,static/description/icon_timesheet.png"/-->
+                  web_icon="hr_timesheet,static/description/icon_timesheet.png"/>
 
         <menuitem id="hr_payroll_community.menu_hr_payroll_community_root"
                   name="Payroll" sequence="11"
