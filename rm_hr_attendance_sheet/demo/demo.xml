@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="employee_ramadan" model="hr.employee">
+            <field name="name">Ramadan Khalil</field>
+            <field name="department_id" ref="hr.dep_rd"/>
+            <field name="job_id" ref="hr.job_developer"/>
+            <field name="category_ids"
+                   eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
+            <field name="work_location">Building 1, Second Floor</field>
+            <field name="parent_id" ref="hr.employee_al"/>
+            <field name="work_phone">+201143267087</field>
+            <field name="work_email">rkhalil1990@gmail.com</field>
+            <field name="image_1920" type="base64"
+                   file="rm_hr_attendance_sheet/static/img/rkh.jpg"/>
+            <field name="resource_calendar_id"
+                   ref="resource_calendar_attendance_sheet"/>
+        </record>
+
+
+        <!--demo data fro attendance-->
+        <record id="hr_att_sheet_att1" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-01 06:10')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-01 14:15')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att2" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-02 05:50')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-02 14:05')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att3" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-03 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-03 14:55')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att4" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-04 10:20')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-04 12:30')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att5" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-05 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-05 09:55')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att6" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-05 11:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-05 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att7" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-06 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-06 14:10')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att8" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-08 06:35')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-08 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att9" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-09 07:45')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-09 14:10')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att10" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-10 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-10 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att11" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-12 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-12 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att12" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-13 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-13 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att13" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-14 05:40')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-14 14:50')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att14" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-15 07:40')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-15 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att15" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-16 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-16 16:50')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att16" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-19 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-19 10:05')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att17" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-19 11:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-19 14:02')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att18" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-20 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-20 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att19" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-21 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-21 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att20" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-22 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-22 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+        <record id="hr_att_sheet_att21" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-23 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-23 13:10')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+        <record id="hr_att_sheet_att22" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-24 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-24 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+        <record id="hr_att_sheet_att23" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-26 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-26 10:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att24" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-26 11:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-26 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att25" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-27 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-27 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att26" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-28 09:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-28 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att27" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-29 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-29 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att28" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-30 06:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-30 14:00')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+        <record id="hr_att_sheet_att29" model="hr.attendance">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-30 17:00')"
+                   name="check_in"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-30 19:30')"
+                   name="check_out"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+        </record>
+
+
+    </data>
+
+    <data>
+        <!--attendance sheet demo-->
+        <record id="hr_public_holiday1" model="hr.public.holiday">
+            <field eval="time.strftime(time.strftime('%Y')+'-01-28')"
+                   name="date_from"/>
+            <field eval="time.strftime(time.strftime('%Y')+'-01-28')"
+                   name="date_to"/>
+            <field name="state">active</field>
+            <field name="name">Public Holiday</field>
+        </record>
+    </data>
+
+    <data>
+        <!--attendance policy demo data-->
+        <record id="att_policy_late_line_1" model="hr.late.rule.line">
+            <field name="type">rate</field>
+            <field name="time">0.25</field>
+            <field name="rate">1</field>
+        </record>
+
+        <record id="att_policy_late_line_2" model="hr.late.rule.line">
+            <field name="type">rate</field>
+            <field name="time">2</field>
+            <field name="rate">2</field>
+        </record>
+        <record id="att_policy_late_line_3" model="hr.late.rule.line">
+            <field name="type">fix</field>
+            <field name="time">4</field>
+            <field name="amount">8</field>
+        </record>
+
+        <record id="att_policy_late_in" model="hr.late.rule">
+            <field name="name">Late In Rule</field>
+            <field name="line_ids"
+                   eval="[(6, 0, [ref('att_policy_late_line_1'),ref('att_policy_late_line_2'),ref('att_policy_late_line_3')])]"/>
+        </record>
+
+
+        <record id="att_policy_diff_line_1" model="hr.diff.rule.line">
+            <field name="type">rate</field>
+            <field name="time">0.25</field>
+            <field name="rate">1</field>
+        </record>
+
+        <record id="att_policy_diff_line_2" model="hr.diff.rule.line">
+            <field name="type">rate</field>
+            <field name="time">2</field>
+            <field name="rate">2</field>
+        </record>
+        <record id="att_policy_diff_line_3" model="hr.diff.rule.line">
+            <field name="type">fix</field>
+            <field name="time">4</field>
+            <field name="amount">8</field>
+        </record>
+
+        <record id="att_policy_diff_rule" model="hr.diff.rule">
+            <field name="name">Difference Time Rule</field>
+            <field name="line_ids"
+                   eval="[(6, 0, [ref('att_policy_diff_line_1'),ref('att_policy_diff_line_2'),ref('att_policy_diff_line_3')])]"/>
+        </record>
+
+
+        <record id="att_policy_absence_line_1" model="hr.absence.rule.line">
+            <field name="counter">1</field>
+            <field name="rate">1</field>
+        </record>
+
+        <record id="att_policy_absence_line_2" model="hr.absence.rule.line">
+            <field name="counter">2</field>
+            <field name="rate">2</field>
+        </record>
+
+        <record id="att_policy_absence_line_3" model="hr.absence.rule.line">
+            <field name="counter">3</field>
+            <field name="rate">3</field>
+        </record>
+
+        <record id="att_policy_absence_rule" model="hr.absence.rule">
+            <field name="name">Absence Rule</field>
+            <field name="line_ids"
+                   eval="[(6, 0, [ref('att_policy_absence_line_1'),ref('att_policy_absence_line_2'),ref('att_policy_absence_line_3')])]"/>
+        </record>
+
+
+        <record id="policy_overtime_workday" model="hr.overtime.rule">
+            <field name="name">Working Day Overtime</field>
+            <field name="type">workday</field>
+            <field name="active_after">0.25</field>
+            <field name="rate">1.5</field>
+        </record>
+
+        <record id="policy_overtime_weekend" model="hr.overtime.rule">
+            <field name="name">Weekend Overtime</field>
+            <field name="type">weekend</field>
+            <field name="active_after">1</field>
+            <field name="rate">2</field>
+        </record>
+
+        <record id="policy_overtime_ph" model="hr.overtime.rule">
+            <field name="name">Public Holiday Overtime</field>
+            <field name="type">ph</field>
+            <field name="active_after">1</field>
+            <field name="rate">2.5</field>
+        </record>
+
+        <record id="attendance_sheet_policy" model="hr.attendance.policy">
+            <field name="name">Attendance Sheet Policy</field>
+            <field name="overtime_rule_ids"
+                   eval="[(6, 0, [ref('policy_overtime_workday'),ref('policy_overtime_weekend'),ref('policy_overtime_ph')])]"/>
+            <field name="late_rule_id" ref="att_policy_late_in"/>
+            <field name="diff_rule_id" ref="att_policy_diff_rule"/>
+            <field name="absence_rule_id" ref="att_policy_absence_rule"/>
+        </record>
+
+
+        <record id="hr_contract_Ramadan_khalil" model="hr.contract">
+            <field name="name">Contract For Ramadan Khalil</field>
+            <field name="state">open</field>
+            <field name="date_start" eval="time.strftime('%Y')+'-01-01'"/>
+            <field name="date_end" eval="time.strftime('%Y')+'-12-31'"/>
+            <field name="structure_type_id" ref="rm_hr_attendance_sheet.structure_type_attendance_sheet"/>
+            <field name="employee_id" ref="employee_ramadan"/>
+            <field name="notes">Ramadan Khalil's contract</field>
+            <field eval="6000.0" name="wage"/>
+            <field name="resource_calendar_id"
+                   ref="resource_calendar_attendance_sheet"/>
+            <field name="att_policy_id" ref="attendance_sheet_policy"/>
+        </record>
+
+    </data>
+</odoo>

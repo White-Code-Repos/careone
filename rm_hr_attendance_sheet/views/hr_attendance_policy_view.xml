@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_overtime_rule_form_view" model="ir.ui.view">
+        <field name="name">hr.overtime.rule.form.view</field>
+        <field name="model">hr.overtime.rule</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="active_after" widget="float_time"/>
+                        <field name="rate"/>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="hr_overtime_rule_tree_view" model="ir.ui.view">
+        <field name="name">hr.overtime.rule.tree.view</field>
+        <field name="model">hr.overtime.rule</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="active_after" widget="float_time"/>
+                <field name="rate"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_late_rule_form_view" model="ir.ui.view">
+        <field name="name">hr.late.rule.form.view</field>
+        <field name="model">hr.late.rule</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                    </group>
+                    <group string="Late In Periods"/>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="time" widget="float_time"/>
+                            <field name="type"/>
+                            <field name="rate"
+                                   attrs="{'invisible':[('type','!=','rate')]}"/>
+                            <field name="amount"
+                                   attrs="{'invisible':[('type','!=','fix')]}"
+                                   widget="float_time"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="hr_diff_rule_form_view" model="ir.ui.view">
+        <field name="name">hr.diff.rule.form.view</field>
+        <field name="model">hr.diff.rule</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                    </group>
+                    <group string="Difference Time Periods"/>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="time" widget="float_time"/>
+                            <field name="type"/>
+                            <field name="rate"
+                                   attrs="{'invisible':[('type','!=','rate')]}"/>
+                            <field name="amount"
+                                   attrs="{'invisible':[('type','!=','fix')]}"
+                                   widget="float_time"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_absence_rule_form_view" model="ir.ui.view">
+        <field name="name">hr.absence.rule.form.view</field>
+        <field name="model">hr.absence.rule</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                    </group>
+                    <group string="Absence Times"/>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="counter"/>
+                            <field name="rate"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_absence_rule_tree_view" model="ir.ui.view">
+        <field name="name">hr.absence.rule.tree.view</field>
+        <field name="model">hr.absence.rule</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_diff_rule_tree_view" model="ir.ui.view">
+        <field name="name">hr.diff.rule.tree.view</field>
+        <field name="model">hr.diff.rule</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="hr_late_rule_tree_view" model="ir.ui.view">
+        <field name="name">hr.late.rule.tree.view</field>
+        <field name="model">hr.late.rule</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="hr_attendance_policy_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.form.view</field>
+        <field name="model">hr.attendance.policy</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group string="Overtime Rules">
+                        <field name="overtime_rule_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="active_after" widget="float_time"/>
+                                <field name="rate"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Difference Time Rule">
+                        <div colspan="12">
+                            <p class="oe_grey">
+                                The Early Out time or leaving during the working
+                                time period
+                            </p>
+                        </div>
+                        <field name="diff_rule_id" nolabel="1"/>
+                    </group>
+                    <group string="Late In Rule">
+                        <field name="late_rule_id" nolabel="1"/>
+                    </group>
+                    <group string="Absence Rule">
+                        <field name="absence_rule_id" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_attendance_policy_tree_view" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.view</field>
+        <field name="model">hr.attendance.policy</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_hr_attendance_policy" model="ir.actions.act_window">
+        <field name="name">Attendance Policies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.attendance.policy</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new document
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_overtime_rules" model="ir.actions.act_window">
+        <field name="name">OverTime Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.overtime.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new document
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_late_rules" model="ir.actions.act_window">
+        <field name="name">Late In Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.late.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new document
+            </p>
+        </field>
+    </record>
+    <record id="action_diff_rules" model="ir.actions.act_window">
+        <field name="name">Difference Time Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.diff.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new document
+            </p>
+        </field>
+    </record>
+    <record id="action_hr_absence_rule" model="ir.actions.act_window">
+        <field name="name">Absence Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.absence.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new document
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_hr_attendance_sheet_setting"
+              name="Attendance Sheet Setting"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="40"
+              groups="rm_hr_attendance_sheet.group_attendance_sheet_manager"/>
+
+    <menuitem id="menu_hr_attendance_policy_action" name="Attendances Policies"
+              parent="menu_hr_attendance_sheet_setting"
+              action="action_hr_attendance_policy" sequence="40"/>
+
+    <menuitem id="menu_hr_attendance_rules" name="Attendance Rules"
+              parent="menu_hr_attendance_sheet_setting"
+              sequence="50"
+              groups="rm_hr_attendance_sheet.group_attendance_sheet_manager"/>
+
+    <menuitem id="menu_hr_overtime_rules" name="OverTime Rules"
+              parent="menu_hr_attendance_rules" action="action_overtime_rules"
+              sequence="50"/>
+
+    <menuitem id="menu_hr_late_rules" name="Late In Rules"
+              parent="menu_hr_attendance_rules" action="action_late_rules"
+              sequence="50"/>
+    <menuitem id="menu_hr_diff_rules" name="Difference Time Rules"
+              parent="menu_hr_attendance_rules" action="action_diff_rules"
+              sequence="50"/>
+    <menuitem id="menu_hr_absence_rule" name="Absence Rules"
+              parent="menu_hr_attendance_rules" action="action_hr_absence_rule"
+              sequence="50"/>
+
+
+</odoo>
+
