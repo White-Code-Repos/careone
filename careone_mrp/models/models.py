@@ -110,8 +110,10 @@ class MrpWorkorder(models.Model):
         is_lastorder = self.env['mrp.workorder'].search([('state','=','progress'),('production_id','=',self.production_id.id),('id','!=',self.id)])
         #if not is_lastorder:
             #self.env['mrp.production'].search([('id','=',)])
-        self.production_id.write({'state':'to_close'})
-            
+        #self.production_id.write({'state':'to_close'})
+        sql = "update mrp_production set state='to_close where id="+str(self.production_id.id)+" '"
+        self.env.cr.execute(sql)
+        self.env.cr.fetchone()
         return self.write({
             'state': 'done',
             'date_finished': end_date,
