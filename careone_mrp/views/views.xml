@@ -140,7 +140,7 @@
                     <field name='sale_order_id'/>
                     <field name='mrp_group_id' attrs="{'required':[('sale_order_id','=',False),('state','!=','draft')]}" />
                     <!-- <field name='user_ids' widget="many2many_tags" domain="[('id','in',mrp_group_id.user_ids.ids)]"/> -->
-                    <field name='user_ids' widget="many2many_tags" required="1"/>
+                    <field name='user_ids' widget="many2many_tags"  attrs="{'required':[('state','!=','draft')]}"  />
                 </field>
             </field>
         </record>
