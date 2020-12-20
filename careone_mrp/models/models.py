@@ -101,6 +101,21 @@ class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="production_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users', related="production_id.user_ids")
+    
+    def button_finish(self):
+        self.ensure_one()
+        self.end_all()
+        end_date = datetime.now()
+        is_lastorder = self.env['mrp.workorder'].search([('state','=','progress'),('production_id','=',self.production_id),('id','!=',self.id)])
+        if not is_lastorder:
+            #self.env['mrp.production'].search([('id','=',)])
+            self.production_id.write({'state':'to_close'})
+            
+        return self.write({
+            'state': 'done',
+            'date_finished': end_date,
+            'date_planned_finished': end_date
+        })
 
 
 class MrpWorkcenterProductivity(models.Model):
