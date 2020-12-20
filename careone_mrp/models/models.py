@@ -107,7 +107,7 @@ class MrpWorkorder(models.Model):
         self.ensure_one()
         self.end_all()
         end_date = datetime.now()
-        is_lastorder = self.env['mrp.workorder'].search([('state','=','progress'),('production_id','=',self.production_id),('id','!=',self.id)])
+        is_lastorder = self.env['mrp.workorder'].search([('state','=','progress'),('production_id','=',self.production_id.id),('id','!=',self.id)])
         if not is_lastorder:
             #self.env['mrp.production'].search([('id','=',)])
             self.production_id.write({'state':'to_close'})
