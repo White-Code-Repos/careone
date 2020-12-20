@@ -107,18 +107,41 @@ class MrpWorkorder(models.Model):
         self.ensure_one()
         self.end_all()
         end_date = datetime.now()
-        is_lastorder = self.env['mrp.workorder'].search([('state','=','progress'),('production_id','=',self.production_id.id),('id','!=',self.id)])
-        #if not is_lastorder:
+        is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
+        if not is_lastorder:
+            
+            self.qty_producing = self.qty_production
+            self.production_id.button_mark_done()
+            
+            
+            #self.record_production()
+            # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
+            #if self.env.context.get('active_model') == self._name:
+            #    action = self.env.ref('mrp.action_mrp_workorder_production_specific').read()[0]
+            #    action['context'] = {'search_default_production_id': self.production_id.id}
+            #    action['target'] = 'main'
+            #else:
+                # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
+            #    action = self.env.ref('mrp_workorder.mrp_workorder_action_tablet').read()[0]
+            #    action['context'] = {
+            #        'form_view_initial_mode': 'edit',
+            #        'no_breadcrumbs': True,
+            #        'search_default_workcenter_id': self.workcenter_id.id
+            #    }
+            #action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending'])]
+            #return action
+        
             #self.env['mrp.production'].search([('id','=',)])
         #self.production_id.write({'state':'to_close'})
-        sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
-        self.env.cr.execute(sql)
-        #self.env.cr.fetchone()
+        #sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
+        #self.env.cr.execute(sql)
+        
         return self.write({
             'state': 'done',
             'date_finished': end_date,
             'date_planned_finished': end_date
         })
+    
 
 
 class MrpWorkcenterProductivity(models.Model):
