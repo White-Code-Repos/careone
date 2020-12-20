@@ -45,7 +45,7 @@ class MrpProduction(models.Model):
     location_src_id = fields.Many2one(
         'stock.location', 'Components Location',
         #default=_get_default_location_src_id,
-        readonly=False, required=True,
+        readonly=False,
         domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         states={'draft': [('readonly', False)]}, check_company=True,
         help="Location where the system will look for components.")
