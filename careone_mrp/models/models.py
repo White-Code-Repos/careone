@@ -113,7 +113,7 @@ class MrpWorkorder(models.Model):
         #self.production_id.write({'state':'to_close'})
         sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
         self.env.cr.execute(sql)
-        self.env.cr.fetchone()
+        #self.env.cr.fetchone()
         return self.write({
             'state': 'done',
             'date_finished': end_date,
