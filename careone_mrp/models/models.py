@@ -70,9 +70,8 @@ class MrpProduction(models.Model):
             mrp_grp_id = self.mrp_group_id
             
             self.location_src_id = mrp_grp_id.location_id
-            #raise UserError(self.location_src_id)
-        self.location_src_id = mrp_grp_id.location_id
-        self.mrp_grp_id = mrp_grp_id
+            
+        #self.mrp_grp_id = mrp_grp_id
         
         # self.location_dest_id = mrp_grp_id.location_id
 
