@@ -65,7 +65,7 @@ class MrpProduction(models.Model):
                 
                 self.location_src_id = mrp_grp_id.location_id
             else:
-                self.location_src_id = self.mrp_grp_id.location_id
+                self.location_src_id = self.mrp_group_id.location_id
         else:
             mrp_grp_id = self.mrp_group_id
             
