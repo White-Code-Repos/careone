@@ -137,7 +137,7 @@ class SalesOrderInherit(models.Model):
             #     'discount_line_product_id': program.discount_line_product_id.id,
             #     'order_id': self.id,
             # })
-        def _create_new_no_code_promo_reward_lines(self):
+    def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
         self.ensure_one()
         order = self
