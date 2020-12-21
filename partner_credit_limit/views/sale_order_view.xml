@@ -18,7 +18,9 @@
 
             </field>
         </record>
-		<record id="view_quotation_sale_order_tree" model="ir.ui.view">
+		</odoo>
+		<odoo>
+		<record id="view_quotation_sale_order_tree_ext" model="ir.ui.view">
             <field name="name">Sale Order Custom tree view</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_quotation_tree"/>
@@ -30,7 +32,6 @@
 					<field name="color_id" />
 					<field name="model_id" />
                 </xpath>
-
             </field>
         </record>
 </odoo>
