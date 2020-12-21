@@ -184,3 +184,18 @@ class SalesOrderInherit(models.Model):
                 invalid_lines |= order.order_line.filtered(lambda line: line.product_id.id in product_ids_to_remove)
 
         invalid_lines.unlink()
+        
+    def _get_applicable_no_code_promo_program(self):
+        self.ensure_one()
+        programs = self.env['sale.coupon.program'].with_context(
+            no_outdated_coupons=True,
+            applicable_coupon=True,
+        ).search([
+            ('promo_code_usage', '=', 'no_code_needed'),
+            '|', ('rule_date_from', '=', False), ('rule_date_from', '<=', self.date_order),
+            '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
+            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
+        ])._filter_programs_from_common_rules(self)
+        message = {'error': _('Sorry There Is No Available Programms.')}
+        return message
+        return programs
