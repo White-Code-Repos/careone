@@ -3,7 +3,7 @@
 from odoo import models, fields, api, _
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import Warning ,ValidationError
 
 class PromotionProgramInherit(models.Model):
     _inherit = 'sale.coupon.program'
@@ -142,12 +142,11 @@ class SalesOrderInherit(models.Model):
         self.ensure_one()
         order = self
         programs = order._get_applicable_no_code_promo_program()
-        raise ValidationError(_('Sorry There Is No Available Programms.'))
-        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
+        
         if not programs:
-            message = {'error': _('Sorry There Is No Available Programms.')}
-        message = programs
-        return message    
+            raise ValidationError(_('Sorry There Is No Available Programms.'))
+        raise ValidationError(_('Sorry There Is No Available Programms.2'))
+        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program() 
         for program in programs:
             # VFE REF in master _get_applicable_no_code_programs already filters programs
             # why do we need to reapply this bunch of checks in _check_promo_code ????
