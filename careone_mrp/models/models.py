@@ -57,7 +57,7 @@ class MrpProduction(models.Model):
 
 
     @api.onchange('sale_order_id','mrp_group_id')
-    @api.constrains('sale_order_id','mrp_group_id')
+    #@api.constrains('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
         self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
         if self.sale_order_id :
@@ -85,6 +85,7 @@ class MrpProduction(models.Model):
             ], limit=1)
             if sale_id:
                 values['sale_order_id'] = sale_id.id
+                values['mrp_group_id']= sale_id.mrp_group_id
                 if sale_id.client_order_ref:
                     values['origin'] = sale_id.client_order_ref
             else:
@@ -94,7 +95,7 @@ class MrpProduction(models.Model):
                 ])
                 # If so, use the 'sale_order_id' from the parent production
                 values['sale_order_id'] = production_id.sale_order_id.id
-        #values['mrp_grp_id']= self.env['mrp.group'].search([('id','=',1)])
+                
         return super(MrpProduction, self).create(values)
     
 
