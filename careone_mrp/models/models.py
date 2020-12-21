@@ -114,8 +114,8 @@ class MrpWorkorder(models.Model):
             #self.production_id.write({'state':'to_close'})
             #self.qty_producing = self.qty_production
             #self.production_id.post_inventory()
-            self.production_id.button_mark_done()
-            
+            #self.production_id.button_mark_done()
+            self.do_finish()
             
             #self.record_production()
             # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
