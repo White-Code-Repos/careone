@@ -124,7 +124,7 @@ class MrpWorkorder(models.Model):
             #self.production_id.button_mark_done()
             return self.do_finish()
             
-        elif:
+        else:
             return self.write({
             'state': 'done',
             'date_finished': end_date,
