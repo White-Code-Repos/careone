@@ -151,6 +151,9 @@ class SalesOrderInherit(models.Model):
         for program in programs:
             if not program:
                 raise ValidationError(_('Sorry There Is No Available Programms.'))
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
             if today_week_day == 'Saturday' and program.is_str_promotion == True:
