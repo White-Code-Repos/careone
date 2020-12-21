@@ -12,6 +12,7 @@
              'wizard/renew_product_warranty.xml',
              'views/product.xml',
              'views/product_warranty_management.xml',
+             'views/product_warranty_calim.xml',
              'views/product_warranty_process.xml',
              'views/mail_data.xml',
              'views/res_config_setting_view.xml',

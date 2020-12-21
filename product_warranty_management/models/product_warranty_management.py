@@ -36,7 +36,10 @@ class ProductWarrantyManagement(models.Model):
     parent_warranty_id = fields.Many2one("product.warranty.management",string="Warranty",help="Related Warranty ")
 
     child_warranty_ids = fields.One2many("product.warranty.management","parent_warranty_id",string="Warranty",help="Related Warranties")
+    child_claim_ids = fields.One2many("product.warranty.claim","parent_warranty_id",string="Claims",help="Related Claims")
+    
     warranty_count = fields.Integer(string='Child Warranty', compute='_compute_child_warranty_ids')
+    
 
     @api.depends('child_warranty_ids')
     def _compute_child_warranty_ids(self):
@@ -128,3 +131,31 @@ class ProductWarrantyType(models.Model):
                                             string="Unit",default='Days',help="Warranty Period Unit")
     is_default = fields.Boolean("Is Default")
     note = fields.Html("Note", help="Notes related to this warranty.")
+    
+class ProductWarrantyClaim(models.Model):
+    _name = "product.warranty.claim"
+
+    name = fields.Char("Claim Subject", required=True, help="Claim Subject ")
+    date = fields.Date("Claim Date")
+    uid = fields.Many2one('res.users',string = "Responsible")
+    steam = fields.Many2one('crm.team', string ="Sales Team")
+    
+    warrenty_id = fields.Many2one("product.warranty.management", string="Sale Warranty")
+    dead_line = fields.Date("Dead Line")
+    
+    
+    partner_id = fields.Many2one("res.partner", string="Customer")
+
+    phone = fields.Char("Phone")
+    email=fields.Char("email")
+    product_id = fields.Many2one("product.product",string = "Product / Service ")
+    serial_no = fields.Char("Serial No.")
+
+    note = fields.Html("Claim Description", help="Notes related to this warranty.")
+
+    active = fields.Boolean('Active', default=True, help="Check / uncheck to make warranty record active / inacive.")
+
+    state = fields.Selection([('new', 'New'),
+                              ('under_maintenance', 'Under Maintenance'),
+                              ('ready_to_deliver', 'Ready To Deliver'),
+                              ('done', 'Done')], string="Status", default="new")

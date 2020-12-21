@@ -75,6 +75,7 @@
                         <group>
                             <field name="child_warranty_ids" attrs="{'invisible':[('child_warranty_ids','=',False)]}"/>
                             <field name="note"/>
+							<field name="child_claim_ids" />
                         </group>
                     </sheet>
                 </form>
