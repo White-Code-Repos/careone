@@ -110,26 +110,14 @@ class MrpWorkorder(models.Model):
         self.end_all()
         end_date = datetime.now()
         is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
-        if not is_lastorder:
+        #if not is_lastorder:
             #self.production_id.write({'state':'to_close'})
             
-            self.write({'qty_producing':self.qty_production})
-            self.write({
-            'state': 'done',
-            'date_finished': end_date,
-            'date_planned_finished': end_date
-            })
+            #self.write({'qty_producing':self.qty_production})
             #self.qty_producing = self.qty_production
             #self.production_id.post_inventory()
             #self.production_id.button_mark_done()
-            return self.do_finish()
-            
-        else:
-            return self.write({
-            'state': 'done',
-            'date_finished': end_date,
-            'date_planned_finished': end_date
-            })
+            #self.do_finish()
             
             #self.record_production()
             # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
@@ -153,7 +141,11 @@ class MrpWorkorder(models.Model):
         #sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
         #self.env.cr.execute(sql)
         
-        
+        return self.write({
+            'state': 'done',
+            'date_finished': end_date,
+            'date_planned_finished': end_date
+        })
     
 
 
