@@ -146,7 +146,7 @@ class SalesOrderInherit(models.Model):
         
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
         
-        if not programs:
+        if programs != False:
             raise ValidationError(_(programs))
             raise ValidationError(_('Sorry There Is No Available Programms.'))
         for program in programs:
