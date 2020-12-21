@@ -17,6 +17,8 @@
         'bus',
         'base',
         'sale',
+        'contacts',
+        'sale_subscriptions_enhanchment',
     ],
     'data': [
         'views/web_notify.xml'
