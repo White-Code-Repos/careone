@@ -6,6 +6,15 @@ from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
+    _inherit = "sale.order.line"
+    
+    @api.onchange('product_uom_qty')
+    def prevent_zaero(self):
+        if self.product_uom_qty == 0:
+            self.product_uom_qty =1
+    
+
+class SaleOrder(models.Model):
     _inherit = "sale.order"
     
     state = fields.Selection(selection_add=[
