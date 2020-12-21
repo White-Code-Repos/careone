@@ -85,7 +85,7 @@ class MrpProduction(models.Model):
             ], limit=1)
             if sale_id:
                 values['sale_order_id'] = sale_id.id
-                values['mrp_group_id']= sale_id.mrp_group_id
+                values['mrp_group_id']= sale_id.mrp_group_id.id
                 if sale_id.client_order_ref:
                     values['origin'] = sale_id.client_order_ref
             else:
