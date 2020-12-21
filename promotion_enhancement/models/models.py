@@ -196,6 +196,9 @@ class SalesOrderInherit(models.Model):
             '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
             '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
         ])._filter_programs_from_common_rules(self)
-        message = {'error': _('Sorry There Is No Available Programms.')}
-        return message
+        if not programs:
+            message = {'error': _('Sorry There Is No Available Programms.')}
+            return message
+            return false
+        
         return programs
