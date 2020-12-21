@@ -38,38 +38,5 @@
 
             </field>
         </record>
-        <record id="coupon_form_inherit" model="ir.ui.view">
-            <field name="name">coupon_form_inherit</field>
-            <field name="model">sale.coupon.program</field>
-            <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form_common"/>
-            <field name="arch" type="xml">
-              <xpath expr="//group[@name='validity']" position="after">
-                <group>
-                    <group>
-                        <label string="Apply on First" for="maximum_use_number" class="oe_inline"/>
-                        <div>
-                           <!--class="oe_inline"-->
-                            <field name="maximum_use_number"/>
-                            <span>Orders</span>
-                            <span class="oe_grey">if 0, infinite use</span>
-                        </div>
-                        <field name="rule_date_from" class="oe_inline"/>
-                        <field name="rule_date_to" class="oe_inline"/>
-                                                      <field name="start_hour_use_promotion" widget="float_time"/>
-                          <field name="end_hour_use_promotion" widget="float_time"/>
-                    </group>
-                      <group string="Available Days">
-                          <field name="is_str_promotion"/>
-                          <field name="is_sun_promotion"/>
-                          <field name="is_mon_promotion"/>
-                          <field name="is_tus_promotion"/>
-                          <field name="is_wen_promotion"/>
-                          <field name="is_thur_promotion"/>
-                          <field name="is_fri_promotion"/>
-                      </group>
-                </group>
-            </xpath>
-                    </field>
-        </record>
     </data>
 </odoo>
