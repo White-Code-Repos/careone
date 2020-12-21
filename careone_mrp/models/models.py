@@ -114,7 +114,7 @@ class MrpWorkorder(models.Model):
             
             self.qty_producing = self.qty_production
             #self.production_id.post_inventory()
-            #self.production_id.button_mark_done()
+            self.production_id.button_mark_done()
             
             
             #self.record_production()
@@ -139,11 +139,11 @@ class MrpWorkorder(models.Model):
         #sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
         #self.env.cr.execute(sql)
         
-  #      return self.write({
-  #          'state': 'done',
-  #          'date_finished': end_date,
-  #          'date_planned_finished': end_date
-  #      })
+        return self.write({
+            'state': 'done',
+            'date_finished': end_date,
+            'date_planned_finished': end_date
+        })
     
 
 
