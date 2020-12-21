@@ -72,7 +72,7 @@ class MrpProduction(models.Model):
             
             self.location_src_id = mrp_grp_id.location_id
             
-        self.mrp_grp_id = mrp_grp_id
+        self.mrp_group_id = mrp_grp_id
         
         # self.location_dest_id = mrp_grp_id.location_id
 
