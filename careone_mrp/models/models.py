@@ -105,15 +105,16 @@ class MrpWorkorder(models.Model):
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="production_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users', related="production_id.user_ids")
     
-   # def button_finish(self):
-   #     self.ensure_one()
-   #     self.end_all()
-   #     end_date = datetime.now()
-   #     is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
-   #     if not is_lastorder:
+    def button_finish(self):
+        self.ensure_one()
+        self.end_all()
+        end_date = datetime.now()
+        is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
+        if not is_lastorder:
             
             #self.qty_producing = self.qty_production
-   #         self.production_id.button_mark_done()
+            self.production_id.post_inventory()
+            self.production_id.button_mark_done()
             
             
             #self.record_production()
@@ -138,11 +139,11 @@ class MrpWorkorder(models.Model):
         #sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
         #self.env.cr.execute(sql)
         
-   #     return self.write({
-   #         'state': 'done',
-   #         'date_finished': end_date,
-   #         'date_planned_finished': end_date
-   #     })
+        return self.write({
+            'state': 'done',
+            'date_finished': end_date,
+            'date_planned_finished': end_date
+        })
     
 
 
