@@ -34,10 +34,9 @@ class ProductWarrantyManagement(models.Model):
                               ('Expired', 'Expired')], string="Status", default="Running")
     product_uom_qty = fields.Integer(string="Ordered Qty")
     parent_warranty_id = fields.Many2one("product.warranty.management",string="Warranty",help="Related Warranty ")
-
-    child_warranty_ids = fields.One2many("product.warranty.management","parent_warranty_id",string="Warranty",help="Related Warranties")
-    child_claim_ids = fields.One2many("product.warranty.claim","parent_warranty_id",string="Claims",help="Related Claims")
     
+    child_warranty_ids = fields.One2many("product.warranty.management","parent_warranty_id",string="Warranty",help="Related Warranties")
+    child_claim_ids = fields.One2many("product.warranty.claim", "warrenty_id", string="Product Claims")
     warranty_count = fields.Integer(string='Child Warranty', compute='_compute_child_warranty_ids')
     
 
