@@ -113,7 +113,7 @@
                                 <field name="duration" widget="mrp_time_counter" class="oe_inline badge badge-secondary"/>
                                 <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')" attrs="{'invisible': [('production_state', 'in', ('draft', 'done'))]}"/>
                                 <field name="working_state" invisible="1"/>
-                                <button name="button_start" type="object" string="Start" class=" badge btn-success" 
+                                <!---<button name="button_start" type="object" string="Start" class=" badge btn-success" 
                                 style="border-radius:3px !important"
                                 attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
                                 <button name="button_pending" type="object" string="Pause" class=" badge btn-warning" 
@@ -130,7 +130,7 @@
                                 <button name="button_unblock" type="object" string="Unblock" context="{'default_workcenter_id': workcenter_id}" 
                                 class=" badge btn-danger" style="border-radius:3px !important"
                                 attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'done')), ('working_state', '!=', 'blocked')]}"/>
-                                <button name="action_open_wizard" type="object" icon="fa-external-link" class="oe_edit_only" context="{'default_workcenter_id': workcenter_id}"/>
+                                <button name="action_open_wizard" type="object" icon="fa-external-link" class="oe_edit_only" context="{'default_workcenter_id': workcenter_id}"/>-->
                                 <!-- <field name="is_calculated"/> -->
                             </tree>
                         </field>
