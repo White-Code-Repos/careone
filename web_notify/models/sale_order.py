@@ -1,5 +1,19 @@
 from odoo import _, api, exceptions, fields, models
 
+
+
+class SaleSub(models.Model):
+    _inherit = 'sale.subscription'
+
+    def write(self, values):
+        res = super(SaleSub, self).write(values)
+        stop_save = False
+        for line in self.subs_products_ids:
+            if not line.vehicle_id:
+                stop_save = True
+                break
+        if stop_save:
+            raise exceptions.UserError(_('You should add vehicle to each line of subscription products'))
 class SubProducts(models.Model):
     _inherit = 'subscription.product'
 
