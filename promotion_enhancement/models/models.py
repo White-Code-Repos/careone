@@ -137,21 +137,23 @@ class SalesOrderInherit(models.Model):
             #     'discount_line_product_id': program.discount_line_product_id.id,
             #     'order_id': self.id,
             # })
-        
-    def _get_applicable_no_code_promo_program(self):
+        def _create_new_no_code_promo_reward_lines(self):
+        '''Apply new programs that are applicable'''
         self.ensure_one()
-        programs = self.env['sale.coupon.program'].with_context(
-            no_outdated_coupons=True,
-            applicable_coupon=True,
-        ).search([
-            ('promo_code_usage', '=', 'no_code_needed'),
-            '|', ('rule_date_from', '=', False), ('rule_date_from', '<=', self.date_order),
-            '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
-            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
-        ])._filter_programs_from_common_rules(self)
+        order = self
+        programs = order._get_applicable_no_code_promo_program()
+        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
         if not programs:
             message = {'error': _('Sorry There Is No Available Programms.')}
             return message
-            return false
-        
-        return programs
+        for program in programs:
+            # VFE REF in master _get_applicable_no_code_programs already filters programs
+            # why do we need to reapply this bunch of checks in _check_promo_code ????
+            # We should only apply a little part of the checks in _check_promo_code...
+            error_status = program._check_promo_code(order, False)
+            if not error_status.get('error'):
+                if program.promo_applicability == 'on_next_order':
+                    order._create_reward_coupon(program)
+                elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
+                    self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
+                order.no_code_promo_program_ids |= program
