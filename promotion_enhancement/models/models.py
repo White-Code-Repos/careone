@@ -53,7 +53,8 @@ class PromotionProgramInherit(models.Model):
                 self.rule_minimum_amount, self.currency_id.name)}
         elif self.promo_code and self.promo_code == order.promo_code:
             message = {'error': _('The promo code is already applied on this order')}
-        elif not self.promo_code and self in order.no_code_promo_program_ids:
+        elif not self.promo_code and self in order.
+        _promo_program_ids:
             message = {'error': _('The promotional offer is already applied on this order')}
         elif not self.active:
             message = {'error': _('Promo code is invalid')}
@@ -137,4 +138,50 @@ class SalesOrderInherit(models.Model):
             #     'discount_line_product_id': program.discount_line_product_id.id,
             #     'order_id': self.id,
             # })
+    def _remove_invalid_reward_lines(self):
+        """ Find programs & coupons that are not applicable anymore.
+            It will then unlink the related reward order lines.
+            It will also unset the order's fields that are storing
+            the applied coupons & programs.
+            Note: It will also remove a reward line coming from an archive program.
+        """
+        self.ensure_one()
+        order = self
 
+        applied_programs = order._get_applied_programs()
+        applicable_programs = self.env['sale.coupon.program']
+        if applied_programs:
+            applicable_programs = order._get_applicable_programs() + order._get_valid_applied_coupon_program()
+            applicable_programs = applicable_programs._keep_only_most_interesting_auto_applied_global_discount_program()
+        else:
+            message = {'error': _('Sorry There Is No Available Programms.')}
+            return message
+        programs_to_remove = applied_programs - applicable_programs
+
+        reward_product_ids = applied_programs.discount_line_product_id.ids
+        # delete reward line coming from an archived coupon (it will never be updated/removed when recomputing the order)
+        invalid_lines = order.order_line.filtered(lambda line: line.is_reward_line and line.product_id.id not in reward_product_ids)
+
+        if programs_to_remove:
+            product_ids_to_remove = programs_to_remove.discount_line_product_id.ids
+
+            if product_ids_to_remove:
+                # Invalid generated coupon for which we are not eligible anymore ('expired' since it is specific to this SO and we may again met the requirements)
+                self.generated_coupon_ids.filtered(lambda coupon: coupon.program_id.discount_line_product_id.id in product_ids_to_remove).write({'state': 'expired'})
+
+            # Reset applied coupons for which we are not eligible anymore ('valid' so it can be use on another )
+            coupons_to_remove = order.applied_coupon_ids.filtered(lambda coupon: coupon.program_id in programs_to_remove)
+            coupons_to_remove.write({'state': 'new'})
+
+            # Unbind promotion and coupon programs which requirements are not met anymore
+            order.no_code_promo_program_ids -= programs_to_remove
+            order.code_promo_program_id -= programs_to_remove
+
+            if coupons_to_remove:
+                order.applied_coupon_ids -= coupons_to_remove
+
+            # Remove their reward lines
+            if product_ids_to_remove:
+                invalid_lines |= order.order_line.filtered(lambda line: line.product_id.id in product_ids_to_remove)
+
+        invalid_lines.unlink()
