@@ -72,12 +72,16 @@ class InvoiceInherit(models.Model):
                                                 for layer in product_report_line.rule_id.product_rule_info_ids:
                                                     if layer.min_qty <= product_report_line.accomplish <= layer.max_qty:
                                                         if layer.product_calculation_type == 'fixed':
-                                                            product_report_line.write({'emp_comm': layer.commission})
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            product_report_line.write({'emp_comm': layer.commission,'commission_date':self.invoice_date})
                                                         else:
                                                             commission = (
                                                                                  layer.product_id.lst_price * product_report_line.accomplish) * (
                                                                                  layer.commission / 100)
-                                                            product_report_line.write({'emp_comm': commission})
+                                                            product_report_line.write({'emp_comm': commission,'commission_date':self.invoice_date})
                                                         break
                                             else:
                                                 commission = 0
@@ -110,7 +114,7 @@ class InvoiceInherit(models.Model):
                                                 for layer in categ_report_line.rule_id.category_rule_info_ids:
                                                     if layer.min_amount <= categ_report_line.accomplish <= layer.max_amount:
                                                         if layer.product_calculation_type == 'fixed':
-                                                            categ_report_line.write({'emp_comm': layer.commission})
+                                                            categ_report_line.write({'emp_comm': layer.commission,'commission_date':self.invoice_date})
                                                         else:
                                                             new_commission = categ_report_line.accomplish * (
                                                                     layer.commission / 100)
@@ -119,13 +123,23 @@ class InvoiceInherit(models.Model):
                                             else:
                                                 commission = 0
                                                 for layer in order_rule.category_rule_info_ids:
-                                                    if layer.min_amount <= order.price_subtotal <= layer.max_amount:
+                                                    if layer.min_amount <= order.price_subtotal:
                                                         if layer.product_calculation_type == 'fixed':
-                                                            commission = layer.commission
+                                                            if > layer.max_amount:
+                                                                commission += layer.commission
+                                                            else:
+                                                                if commission ==0:
+                                                                    commission = layer.commission
+                                                                else:
+                                                                    commission = commission
                                                         else:
-                                                            new_commission = order.price_subtotal * (
-                                                                    layer.commission / 100)
-                                                            commission = new_commission
+                                                            if > layer.max_amount:
+                                                                commission += order.price_subtotal * (layer.commission / 100)
+                                                            else:
+                                                                if commission ==0:
+                                                                    commission = order.price_subtotal * (layer.commission / 100)
+                                                                else:
+                                                                    commission = commission
                                                         break
                                                 self.env['commission.report'].create([{'employee_id': employee.id,
                                                                                        'rule_id': order_rule.id,
@@ -168,12 +182,25 @@ class InvoiceInherit(models.Model):
                                                        'commission': layer.commission,
                                                        })
                                             records.append(object)
+                                            
                                         for layer in money_target_rule.money_rule_info_ids:
-                                            if layer.min_amount <= rec.amount_total <= layer.max_amount:
+                                            if layer.min_amount <= rec.amount_total:
                                                 if layer.product_calculation_type == 'fixed':
-                                                    commission = layer.commission
+                                                    if > layer.max_amount:
+                                                        commission += layer.commission
+                                                    else:
+                                                        if commission ==0:
+                                                            commission = layer.commission
+                                                        else:
+                                                            commission = commission
                                                 else:
-                                                    commission = rec.amount_total * (layer.commission / 100)
+                                                    if > layer.max_amount:
+                                                        commission += rec.amount_total * (layer.commission / 100)
+                                                    else:
+                                                        if commission ==0:
+                                                            commission = rec.amount_total * (layer.commission / 100)
+                                                        else:
+                                                            commission = commission  
                                                 break
                                         self.env['commission.report'].create([{'employee_id': employee.id,
                                                                                'rule_id': money_target_rule.id,
@@ -286,11 +313,11 @@ class InvoiceInherit(models.Model):
                                         for layer in categ_report_line.rule_id.category_rule_info_ids:
                                             if layer.min_amount <= categ_report_line.accomplish <= layer.max_amount:
                                                 if layer.product_calculation_type == 'fixed':
-                                                    categ_report_line.write({'emp_comm': layer.commission})
+                                                    categ_report_line.write({'emp_comm': layer.commission,'commission_date':self.invoice_date})
                                                 else:
                                                     new_commission = categ_report_line.accomplish * (
                                                             layer.commission / 100)
-                                                    categ_report_line.write({'emp_comm': new_commission})
+                                                    categ_report_line.write({'emp_comm': new_commission,'commission_date':self.invoice_date})
                                                 break
                                     else:
                                         commission = 0
