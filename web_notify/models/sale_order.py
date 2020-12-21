@@ -1,5 +1,14 @@
 from odoo import _, api, exceptions, fields, models
 
+class SubProducts(models.Model):
+    _inherit = 'subscription.product'
+
+    def name_get(self):
+        res = []
+        for this in self:
+            res.append((this.id, '%s - %s' % (this.vehicle_id.model_id.name,this.vehicle_id.license_plate)))
+        return res
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
