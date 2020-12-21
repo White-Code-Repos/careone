@@ -143,10 +143,10 @@ class SalesOrderInherit(models.Model):
         order = self
         programs = order._get_applicable_no_code_promo_program()
         
+        
+        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
         if not programs:
             raise ValidationError(_('Sorry There Is No Available Programms.'))
-        raise ValidationError(_('Sorry There Is No Available Programms.2'))
-        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program() 
         for program in programs:
             # VFE REF in master _get_applicable_no_code_programs already filters programs
             # why do we need to reapply this bunch of checks in _check_promo_code ????
