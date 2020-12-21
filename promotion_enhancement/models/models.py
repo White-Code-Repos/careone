@@ -146,10 +146,11 @@ class SalesOrderInherit(models.Model):
         
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
         
-        if programs != False:
-            raise ValidationError(_('Sorry There Is No Available Programms.'))
+        
         
         for program in programs:
+            if not program:
+                raise ValidationError(_('Sorry There Is No Available Programms.'))
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
             if today_week_day == 'Saturday' and program.is_str_promotion == True:
