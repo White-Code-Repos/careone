@@ -125,7 +125,7 @@ class InvoiceInherit(models.Model):
                                                 for layer in order_rule.category_rule_info_ids:
                                                     if layer.min_amount <= order.price_subtotal:
                                                         if layer.product_calculation_type == 'fixed':
-                                                            if > layer.max_amount:
+                                                            if order.price_subtotal > layer.max_amount:
                                                                 commission += layer.commission
                                                             else:
                                                                 if commission ==0:
@@ -133,7 +133,7 @@ class InvoiceInherit(models.Model):
                                                                 else:
                                                                     commission = commission
                                                         else:
-                                                            if > layer.max_amount:
+                                                            if order.price_subtotal> layer.max_amount:
                                                                 commission += order.price_subtotal * (layer.commission / 100)
                                                             else:
                                                                 if commission ==0:
@@ -186,7 +186,7 @@ class InvoiceInherit(models.Model):
                                         for layer in money_target_rule.money_rule_info_ids:
                                             if layer.min_amount <= rec.amount_total:
                                                 if layer.product_calculation_type == 'fixed':
-                                                    if > layer.max_amount:
+                                                    if rec.amount_total> layer.max_amount:
                                                         commission += layer.commission
                                                     else:
                                                         if commission ==0:
@@ -194,7 +194,7 @@ class InvoiceInherit(models.Model):
                                                         else:
                                                             commission = commission
                                                 else:
-                                                    if > layer.max_amount:
+                                                    if rec.amount_total > layer.max_amount:
                                                         commission += rec.amount_total * (layer.commission / 100)
                                                     else:
                                                         if commission ==0:
