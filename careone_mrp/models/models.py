@@ -110,8 +110,8 @@ class MrpWorkorder(models.Model):
         self.end_all()
         end_date = datetime.now()
         is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
-        #if not is_lastorder:
-            
+        if not is_lastorder:
+            self.production_id.write({'state':'to_close'})
             #self.qty_producing = self.qty_production
             #self.production_id.post_inventory()
             #self.production_id.button_mark_done()
