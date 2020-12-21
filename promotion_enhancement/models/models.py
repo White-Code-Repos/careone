@@ -142,10 +142,10 @@ class SalesOrderInherit(models.Model):
         self.ensure_one()
         order = self
         programs = order._get_applicable_no_code_promo_program()
-        raise ValidationError(_(programs))
+        
         
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
-        
+        raise ValidationError(_(programs))
         if not programs:
             raise ValidationError(_('Sorry There Is No Available Programms.'))
         for program in programs:
