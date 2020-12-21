@@ -147,9 +147,27 @@ class SalesOrderInherit(models.Model):
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
         
         if programs != False:
-            raise ValidationError(_(programs))
             raise ValidationError(_('Sorry There Is No Available Programms.'))
+        
         for program in programs:
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            if today_week_day == 'Saturday' and program.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and program.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and program.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and program.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and program.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and program.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and program.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
             # VFE REF in master _get_applicable_no_code_programs already filters programs
             # why do we need to reapply this bunch of checks in _check_promo_code ????
             # We should only apply a little part of the checks in _check_promo_code...
