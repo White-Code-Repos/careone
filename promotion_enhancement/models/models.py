@@ -142,9 +142,10 @@ class SalesOrderInherit(models.Model):
         self.ensure_one()
         order = self
         programs = order._get_applicable_no_code_promo_program()
-        
+        raise ValidationError(_(programs))
         
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
+        
         if not programs:
             raise ValidationError(_('Sorry There Is No Available Programms.'))
         for program in programs:
@@ -158,3 +159,35 @@ class SalesOrderInherit(models.Model):
                 elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
                     self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
                 order.no_code_promo_program_ids |= program
+                
+    def _get_applicable_no_code_promo_program(self):
+        self.ensure_one()
+        programs = self.env['sale.coupon.program'].with_context(
+            no_outdated_coupons=True,
+            applicable_coupon=True,
+        ).search([
+            ('promo_code_usage', '=', 'no_code_needed'),
+            '|', ('rule_date_from', '=', False), ('rule_date_from', '<=', self.date_order),
+            '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
+            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
+        ])
+        #today_week_day = today.strftime("%A")
+        #is_applicable_programs_today=False
+        #if today_week_day == 'Saturday' and programs.is_str_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Sunday' and programs.is_sun_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Monday' and programs.is_mon_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Tuesday' and programs.is_tus_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Wednesday' and programs.is_wen_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Thursday' and programs.is_thur_promotion == True:
+        #    is_applicable_programs_today = True
+        #elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
+        #    is_applicable_programs_today = True
+        
+        
+        
+        return programs
