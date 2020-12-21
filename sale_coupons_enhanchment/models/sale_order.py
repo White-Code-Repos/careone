@@ -13,13 +13,13 @@ class SaleOrder(models.Model):
             return self._get_reward_values_discount(program)
         elif program.reward_type == 'product':
             return [self._get_reward_values_product(program)]
-        elif program.reward_type == 'product_discount':
-            if program.reward_product_id:
-                product = self.order_line.filtered(lambda line: program.reward_product_id == line.product_id)
-                if product :
-                    return [self._get_reward_values_product(program)]
-            if program.discount_percentage:
-                return self._get_reward_values_discount(program)
+        # elif program.reward_type == 'product_discount':
+        #     if program.reward_product_id:
+        #         product = self.order_line.filtered(lambda line: program.reward_product_id == line.product_id)
+        #         if product :
+        #             return [self._get_reward_values_product(program)]
+        #     if program.discount_percentage:
+        #         return self._get_reward_values_discount(program)
 
 
 class SaleOrderLine(models.Model):

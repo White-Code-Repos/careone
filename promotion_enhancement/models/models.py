@@ -8,6 +8,18 @@ from odoo.exceptions import Warning ,ValidationError
 class PromotionProgramInherit(models.Model):
     _inherit = 'sale.coupon.program'
 
+    def action_view_sales_orders(self):
+        self.ensure_one()
+        orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')
+        return {
+            'name': _('Sales Orders'),
+            'view_mode': 'tree,form',
+            'res_model': 'sale.order',
+            'type': 'ir.actions.act_window',
+            'domain': [('id', 'in', orders.ids)],
+            'context': dict(self._context, create=False)
+        }
+
     rule_date_from = fields.Date(string="Start Date", help="Coupon program start date")
     rule_date_to = fields.Date(string="End Date", help="Coupon program end date")
     start_hour_use_promotion = fields.Float(string="From", required=False, )
@@ -142,12 +154,12 @@ class SalesOrderInherit(models.Model):
         self.ensure_one()
         order = self
         programs = order._get_applicable_no_code_promo_program()
-        
-        
+
+
         programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
-        
-        
-        
+
+
+
         for program in programs:
             if not program:
                 raise ValidationError(_('Sorry There Is No Available Programms.'))
@@ -182,7 +194,7 @@ class SalesOrderInherit(models.Model):
                 elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
                     self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
                 order.no_code_promo_program_ids |= program
-                
+
     def _get_applicable_no_code_promo_program(self):
         self.ensure_one()
         programs = self.env['sale.coupon.program'].with_context(
@@ -210,7 +222,7 @@ class SalesOrderInherit(models.Model):
         #    is_applicable_programs_today = True
         #elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
         #    is_applicable_programs_today = True
-        
-        
-        
+
+
+
         return programs
