@@ -363,6 +363,7 @@ class SalesOrderInherit(models.Model):
         for rec in template.subs_product_ids:
             for record in range(no_of_vehicles):
                 records.append((0, 0, {
+                    'vehicle_id': self.vehicle_id.id,
                     'product_id': rec.product_id.id,
                     'qty': rec.qty,
                     'qty_per_day': rec.qty_per_day,
