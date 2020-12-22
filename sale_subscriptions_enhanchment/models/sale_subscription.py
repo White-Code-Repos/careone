@@ -25,7 +25,7 @@ class SalesSubscription(models.Model):
     un_freez_date = fields.Date()
     is_freez = fields.Boolean(default=False)
     freeze_for = fields.Integer(string="", required=False, related='template_id.freeze_for')
-    # freeze_times = fields.Integer(compute='_get_freeze_times')
+    freeze_times = fields.Integer(compute='_get_freeze_times')
     display_name = fields.Char(related='stage_id.display_name')
     is_without_freeze = fields.Boolean(string="", )
     # show_freez = fields.Boolean(compute="_get_show_freez")
