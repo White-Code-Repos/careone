@@ -314,7 +314,7 @@ class SalesOrderInherit(models.Model):
                 for sub in subscriptions:
                     if sub.in_progress:
                         # raise ValidationError("SUP")
-                        self.subscriper = True
+                        self.write({'subscriper':True}
                         break
 
     @api.onchange('subscription_id')
