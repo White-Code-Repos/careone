@@ -202,6 +202,12 @@ class SalesSubscriptionTemplate(models.Model):
                                        string="",
                                        required=False, )
 
+    @api.model
+    def write(self, values):
+        values['payment_mode'] = 'draft_invoice'
+        res = super(SalesSubscriptionTemplate, self).write(values)
+        return res
+
     @api.onchange('start_hour_use', 'duration')
     def _onchange_start_hour_use(self):
         x = self.start_hour_use + self.duration
