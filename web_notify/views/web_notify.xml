@@ -15,7 +15,7 @@
         <field name="inherit_id" ref="sale_subscriptions_enhanchment.sale_order_form_inherit"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='subscription_id']" position="after">
-                <field name="vehicles_subscreptions_id" attrs="{'invisible': [('subscription_id', '=', False)]}"/>
+                <field name="vehicles_subscreptions_id" widget="many2many_tags" attrs="{'invisible': [('subscription_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>
