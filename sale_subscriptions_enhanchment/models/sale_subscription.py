@@ -244,6 +244,11 @@ class SalesSubscriptionFreeze(models.Model):
     freeze_duration = fields.Integer(string="Duration", required=False, )
     subscription_id = fields.Many2one('sale.subscription', readonly=False)
 
+    @api.onchange('start_date','end_date')
+    def calc_freeze_duration(self):
+        if self.start_date and self.end_date:
+            self.freeze_duration = (self.end_date - self.start_date).days
+    @api.model
     def create(self, values):
         subscription_id = self.env['sale.subscription'].browse(values['subscription_id'])
         start_date = values['start_date']
@@ -262,6 +267,8 @@ class SalesSubscriptionFreeze(models.Model):
             raise ValidationError("This subscription reached freezing duration limit")
         res = super(SalesSubscriptionFreeze, self).create(values)
         return res
+
+    @api.model
     def write(self, values):
         subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
         start_date = self.start_date
