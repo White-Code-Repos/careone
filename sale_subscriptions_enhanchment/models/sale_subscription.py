@@ -268,25 +268,25 @@ class SalesSubscriptionFreeze(models.Model):
         res = super(SalesSubscriptionFreeze, self).create(values)
         return res
 
-    @api.model
-    def write(self, values):
-        subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
-        start_date = self.start_date
-        end_date = self.end_date
-        freeze_duration = self.freeze_duration
-        freeze_duration_limit = subscription_id.template_id.freez_duration
-        freeze_times_limit = subscription_id.template_id.freeze_for
-        old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
-        if len(old_freezes) >= freeze_times_limit:
-            raise ValidationError("This subscription reached freezing times limit")
-        current_freezed_duration = 0
-        for freeze in old_freezes:
-            current_freezed_duration = current_freezed_duration + freeze.freeze_duration
-        current_freezed_duration = current_freezed_duration + freeze_duration
-        if current_freezed_duration >= freeze_duration_limit:
-            raise ValidationError("This subscription reached freezing duration limit")
-        res = super(SalesSubscriptionFreeze, self).write(values)
-        return res
+    # @api.model
+    # def write(self, values):
+    #     subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
+    #     start_date = self.start_date
+    #     end_date = self.end_date
+    #     freeze_duration = self.freeze_duration
+    #     freeze_duration_limit = subscription_id.template_id.freez_duration
+    #     freeze_times_limit = subscription_id.template_id.freeze_for
+    #     old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
+    #     if len(old_freezes) >= freeze_times_limit:
+    #         raise ValidationError("This subscription reached freezing times limit")
+    #     current_freezed_duration = 0
+    #     for freeze in old_freezes:
+    #         current_freezed_duration = current_freezed_duration + freeze.freeze_duration
+    #     current_freezed_duration = current_freezed_duration + freeze_duration
+    #     if current_freezed_duration >= freeze_duration_limit:
+    #         raise ValidationError("This subscription reached freezing duration limit")
+    #     res = super(SalesSubscriptionFreeze, self).write(values)
+    #     return res
 
     # def get_freeze_duration(self):
     #     for record in self:
@@ -311,7 +311,7 @@ class SalesOrderInherit(models.Model):
             now = datetime.now().date()
             already_freezed = False
             for line in freeze_line:
-                if line.start_date < now < line.end_date:
+                if line.start_date <= now <= line.end_date:
                     already_freezed = True
                     break
             if already_freezed:
