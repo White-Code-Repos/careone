@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend_inherit" name="Assets" inherit_id="web.assets_backend">
+        	<xpath expr="." position="inside">
+	            <script type="text/javascript" src="/to_safe_confirm_button/static/src/js/safe_confirm.js"></script>
+	        </xpath>
+        </template>
+    </data>
+</odoo>
