@@ -5,6 +5,11 @@ from odoo import _, api, exceptions, fields, models
 class SaleSub(models.Model):
     _inherit = 'sale.subscription'
 
+    def name_get(self):
+        res = []
+        for this in self:
+            res.append((this.id, '%s - %s' % (this.code,this.template_id.name)))
+        return res
     def write(self, values):
         res = super(SaleSub, self).write(values)
         stop_save = False
@@ -20,7 +25,7 @@ class SubProducts(models.Model):
     def name_get(self):
         res = []
         for this in self:
-            res.append((this.id, '%s - %s' % (this.vehicle_id.model_id.name,this.vehicle_id.license_plate)))
+            res.append((this.id, '%s - %s' % (this.vehicle_id.display_name,this.product_id.display_name)))
         return res
 
 class SaleOrder(models.Model):

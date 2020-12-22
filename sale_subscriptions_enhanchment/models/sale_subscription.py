@@ -25,7 +25,7 @@ class SalesSubscription(models.Model):
     un_freez_date = fields.Date()
     is_freez = fields.Boolean(default=False)
     freeze_for = fields.Integer(string="", required=False, related='template_id.freeze_for')
-    # freeze_times = fields.Integer(compute='_get_freeze_times')
+    freeze_times = fields.Integer(compute='_get_freeze_times')
     display_name = fields.Char(related='stage_id.display_name')
     is_without_freeze = fields.Boolean(string="", )
     # show_freez = fields.Boolean(compute="_get_show_freez")
@@ -167,9 +167,9 @@ class SalesSubscription(models.Model):
     #             'is_freez': False,
     #         })
 
-    # def _get_freeze_times(self):
-    #     operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
-    #     self.freeze_times = len(operations)
+    def _get_freeze_times(self):
+        operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
+        self.freeze_times = len(operations)
 
     def action_subscription_freeze(self):
 
