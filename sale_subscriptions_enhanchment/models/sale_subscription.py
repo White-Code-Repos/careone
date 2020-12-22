@@ -34,6 +34,18 @@ class SalesSubscription(models.Model):
     # def set_domain(self):
     #     print("hena hena hena")
     #     return {'domain': {'subs_products_ids.vehicle_id': [('driver_id', '=', se)]}}
+    @api.onchange('template_id')
+    def get_lines_products(self):
+        for rec in self.template_id.subs_product_ids:
+            records.append((0, 0, {
+                'product_id': rec.product_id.id,
+                'qty': rec.qty,
+                'qty_per_day': rec.qty_per_day,
+                'consumed_qty': 0,
+                'qty_counter': 0,
+                'subs_id': self.id
+            }))
+        self.subs_products_ids = records
 
     # @api.onchange('template_id')
     # def get_products_lines(self):
