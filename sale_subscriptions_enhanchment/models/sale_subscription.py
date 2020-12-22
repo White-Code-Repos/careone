@@ -306,16 +306,15 @@ class SalesSubscriptionFreeze(models.Model):
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
-    subscriper = fields.Boolean(compute="_compute_subscriper_state", default=False)
+    @api.onchange('partner')
     def _compute_subscriper_state(self):
         if self.partner_id:
             if self.partner_id.subscription_count > 0:
                 subscriptions = self.env['sale.subscription'].search([('partner_id','=',self.partner_id.id)])
                 for sub in subscriptions:
                     if sub.in_progress:
-                        # raise ValidationError("SUP")
-                        self.write({'subscriper':True})
-                        break
+                        msg = "This is already a subscriper"
+                        raise UserError(_(msg))
 
     @api.onchange('subscription_id')
     def check_freeze(self):
