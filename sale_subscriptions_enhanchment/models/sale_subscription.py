@@ -254,7 +254,7 @@ class SalesSubscriptionFreeze(models.Model):
         start_date = values['start_date']
         end_date = values['end_date']
         freeze_duration = values['freeze_duration']
-        freeze_duration_limit = subscription_id.template_id.freeze_duration
+        freeze_duration_limit = subscription_id.template_id.freez_duration
         freeze_times_limit = subscription_id.template_id.freeze_for
         old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
         if len(old_freezes) >= freeze_times_limit:
@@ -274,7 +274,7 @@ class SalesSubscriptionFreeze(models.Model):
         start_date = self.start_date
         end_date = self.end_date
         freeze_duration = self.freeze_duration
-        freeze_duration_limit = subscription_id.template_id.freeze_duration
+        freeze_duration_limit = subscription_id.template_id.freez_duration
         freeze_times_limit = subscription_id.template_id.freeze_for
         old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
         if len(old_freezes) >= freeze_times_limit:
