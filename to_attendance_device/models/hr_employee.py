@@ -32,7 +32,7 @@ class HrEmployee(models.Model):
                 })
         return res
 
-    @api.multi
+    
     def write(self, vals):
         if 'barcode' in vals:
             DeviceUser = self.env['attendance.device.user'].sudo()
@@ -67,7 +67,7 @@ class HrEmployee(models.Model):
         if fingers:
             device.setFingerTemplate(uid, name, privilege, password, group_id, user_id, fingers)
     
-    @api.multi
+    
     def action_view_finger_template(self):
         action = self.env.ref('to_attendance_device.action_finger_template')
         result = action.read()[0]

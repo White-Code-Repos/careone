@@ -17,7 +17,7 @@ class gen_suppinfo(models.TransientModel):
     _inherit = "gen.suppinfo"
 
     
-    @api.multi
+    
     def import_fle(self):
         fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
         fp.write(binascii.a2b_base64(self.file))
@@ -40,7 +40,7 @@ class gen_suppinfo(models.TransientModel):
                 res = self._create_product_suppinfo(values)
         return res
 
-    @api.multi
+    
     def _create_product_suppinfo(self,val):
         name = self._find_vendor(val.get('vendor'))
         product_tmpl_id = self._find_product_template(val.get('product'),val.get('create_link_option'))
@@ -63,14 +63,14 @@ class gen_suppinfo(models.TransientModel):
         return res
 
 
-    @api.multi
+    
     def _find_vendor(self,name):
         partner_search = self.env['res.partner'].search([('name','=',name),('supplier','=',True)])
         if not partner_search:
             raise Warning (_("%s Vendor Not Found") % name)
         return partner_search.id
 
-    @api.multi
+    
     def _find_product_template(self,product,create_opt):
         product_tmpl_search = self.env['product.template'].search([('name','=',product)])
         if not product_tmpl_search:
