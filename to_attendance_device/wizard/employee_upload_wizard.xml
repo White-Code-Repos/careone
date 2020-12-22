@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<data>
+		<record model="ir.ui.view" id="wizard_form_view">
+			<field name="name">Employee Upload wizard</field>
+			<field name="model">employee.upload.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Synchronize Data">
+					<div>
+						This wizard will upload selected employees to the selected device.
+						<br />
+						Note: when you change the device, Odoo will attempt to download
+						existing users data and map with existing employees.
+					</div>
+					<group>
+						<group>
+							<field name="device_ids" widget="many2many_tags" />
+						</group>
+					</group>
+					<notebook>
+						<page string="Unmapped Employees">
+							<field name="employee_ids" />
+						</page>
+						<page string="Upload Details">
+							<field name="line_ids">
+								<tree>
+									<field name="employee_id" />
+									<field name="device_id" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+					<footer>
+						<button name="action_employee_upload" type="object"
+							groups="hr_attendance.group_hr_attendance_manager" string="Upload Employees"
+							class="oe_highlight"
+							confirm="This action will upload the selected employees to the selected device. In case you get timeout, try on reducing number of employees to upload. Are you sure to proceed?" />
+						<button special="cancel" string="Cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<act_window id="action_employee_upload" name="Upload to Attendance Machine"
+			src_model="hr.employee" res_model="employee.upload.wizard" view_mode="form"
+			target="new" context="{'employee_ids':active_ids}" key2="client_action_multi" />
+		<!-- <menuitem id="employee_upload_menu" parent="attendace_device_menu" 
+			name="Upload Employees" action="action_employee_upload" /> -->
+
+	</data>
+</odoo>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<!-- Form view -->
+		<record id="attendance_device_user_form_view" model="ir.ui.view">
+			<field name="name">attendance.device.user.form</field>
+			<field name="model">attendance.device.user</field>
+			<field name="arch" type="xml">
+				<form string="Device User" create="false">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button name="action_view_finger_template" type="object"
+								class="oe_stat_button" icon="fa-address-card"
+								help="Show fingerprint templates of this employee">
+								<field name="total_finger_template_records" widget="statinfo" />
+							</button>
+						</div>
+						<group>
+							<group>
+								<field name="name" attrs="{'readonly':[('attendance_ids','!=',[])]}" />
+								<field name="uid" attrs="{'readonly':[('attendance_ids','!=',[])]}" />
+								<field name="user_id" attrs="{'readonly':[('attendance_ids','!=',[])]}" />
+								<field name="device_id" attrs="{'readonly':[('attendance_ids','!=',[])]}" />
+								<field name="employee_id" attrs="{'readonly':[('attendance_ids','!=',[])]}" />
+								<field name="active" groups="base.group_no_one" />
+								<field name="attendance_id" groups="base.group_no_one" />
+							</group>
+							<group>
+								<field name="group_id" />
+								<field name="privilege" />
+								<field name="password" groups="base.group_no_one" />
+								<field name="del_user" groups="base.group_no_one"
+									password="True" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Attendance Data">
+								<field name="attendance_ids">
+									<tree name="attendance_ids" nolabel="1" create="false"
+										delete="false" readonly="1">
+										<field name="timestamp" />
+										<field name="device_id" />
+										<field name="attendance_state_id" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_device_users_tree_view" model="ir.ui.view">
+			<field name="name">attendance.device.user.tree</field>
+			<field name="model">attendance.device.user</field>
+			<field name="arch" type="xml">
+				<tree string="Device Users" create="false">
+					<field name="name" />
+					<field name="uid" />
+					<field name="user_id" />
+					<field name="employee_id" />
+					<field name="device_id" />
+					<field name="group_id" />
+					<field name="del_user" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_device_users_search_view" model="ir.ui.view">
+			<field name="name">attendance.device.user.search</field>
+			<field name="model">attendance.device.user</field>
+			<field name="arch" type="xml">
+				<search string="Device Users">
+					<field name="name" />
+					<field name="uid" />
+					<field name="user_id" />
+					<field name="employee_id" />
+					<field name="device_id" />
+					<filter name="unmapped_users" string="Unmapped Users"
+						domain="[('employee_id','=',False)]" />
+					<separator/>
+					<filter name="no_attendance" string="No Attendance"
+						domain="[('attendance_ids','=',False)]" />
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="device_user_list_action">
+			<field name="name">Devices Users</field>
+			<field name="res_model">attendance.device.user</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="device_users_menu" name="Devices Users" parent="attendace_device_menu"
+			action="device_user_list_action" sequence="100"
+			groups="hr_attendance.group_hr_attendance_user" />
+
+	</data>
+</odoo>

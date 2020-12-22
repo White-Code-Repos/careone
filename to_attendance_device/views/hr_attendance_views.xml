@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  	<data>
+      	<record model="ir.ui.view" id="hr_attendance_view_form">
+		    <field name="name">attendance.form</field>
+		    <field name="model">hr.attendance</field>
+		    <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/> 
+		    <field name="arch" type="xml">
+		    	<field name="check_in" position="after">
+		            <field name="checkin_device_id"/>
+		        </field>
+		        <field name="check_out" position="after">
+		            <field name="checkout_device_id"/>
+		            <field name="activity_id"/>
+		        </field>
+		   </field>
+		</record>
+		
+		<record model="ir.ui.view" id="view_attendance_tree">
+		    <field name="name">hr.attendance.tree</field>
+		    <field name="model">hr.attendance</field>
+		    <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/> 
+		    <field name="arch" type="xml">
+		    	<field name="check_in" position="after">
+		            <field name="checkin_device_id"/>
+		        </field>
+		        <field name="check_out" position="after">
+		            <field name="checkout_device_id"/>
+		            <field name="activity_id"/>
+		        </field>
+		   </field>
+		</record>
+  	</data>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="view_employee_form">
+			<field name="name">employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//notebook[1]/page[3]" position="after">
+					<page string="Unmapped Attendance Devices"
+						attrs="{'invisible': [('unamapped_attendance_device_ids', '=', [])]}">
+						<field name="unamapped_attendance_device_ids">
+							<tree name="unamapped_attendance_device_ids" nolabel="1"
+								create="false" delete="false" edit="false">
+								<field name="name" />
+								<field name="ip" groups="hr_attendance.group_hr_attendance_user" />
+								<field name="port" groups="hr_attendance.group_hr_attendance_user" />
+								<field name="location_id" />
+								<field name="state" invisible="1" />
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<button name="toggle_active" position="after">
+					<button name="action_view_finger_template" type="object"
+						groups="to_attendance_device.group_attendance_devices_manager"
+						class="oe_stat_button" icon="fa-address-card"
+						help="Show fingerprint templates of this employee">
+						<field name="total_finger_template_records" widget="statinfo" />
+					</button>
+				</button>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="view_employee_filter">
+			<field name="name">hr.employee.search</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_filter" />
+			<field name="arch" type="xml">
+				<xpath expr="//filter[@name='inactive']" position="after">
+					<separator />
+					<filter string="Created from an Attendance Device" name="created_from_attendance_device"
+						domain="[('created_from_attendance_device','=',True)]" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

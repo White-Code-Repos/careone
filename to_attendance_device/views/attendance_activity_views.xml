@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="attendance_activity_form_view" model="ir.ui.view">
+			<field name="name">attendance.activity.form</field>
+			<field name="model">attendance.activity</field>
+			<field name="arch" type="xml">
+				<form string="Attendance Activity">
+					<sheet>
+						<group>
+							<field name="name" />
+						</group>
+						<notebook>
+							<page string="Attendance Statuses">
+								<field name="attendance_status_ids">
+									<tree name="attendance_status_ids">
+										<field name="name" />
+										<field name="code" />
+										<field name="type" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="attendance_activity_tree_view" model="ir.ui.view">
+			<field name="name">attendance.activity.tree</field>
+			<field name="model">attendance.activity</field>
+			<field name="arch" type="xml">
+				<tree string="Attendance Activities">
+					<field name="name" />
+					<field name="status_count" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="attendance_activity_tree_action">
+			<field name="name">Attendance Activity</field>
+			<field name="res_model">attendance.activity</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">Create the first attendance status
+				</p>
+			</field>
+		</record>
+
+
+		<menuitem id="attendance_activity_menu" name="Attendance Activity"
+			parent="hr_attendance.menu_hr_attendance_settings" sequence="1100"
+			action="attendance_activity_tree_action" groups="hr_attendance.group_hr_attendance_manager" />
+
+	</data>
+</odoo>

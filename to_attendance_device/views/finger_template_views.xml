@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="view_finger_template_form" model="ir.ui.view">
+			<field name="name">Finger Template Form</field>
+			<field name="model">finger.template</field>
+			<field name="arch" type="xml">
+				<form string="Finger Template">
+					<sheet>
+						<group>
+							<group>
+								<field name="device_user_id" />
+								<field name="employee_id"/>
+								<field name="uid" />
+								<field name="fid"/>
+								<field name="valid" />
+								<field name="device_id" />
+							</group>
+							<group></group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_finger_template_tree" model="ir.ui.view">
+			<field name="name">Finger Template</field>
+			<field name="model">finger.template</field>
+			<field name="arch" type="xml">
+				<tree string="Finger Template" create="false"
+					edit="false">
+					<field name="device_user_id" />
+					<field name="employee_id"/>
+					<field name="uid" />
+					<field name="fid"/>
+					<field name="valid" />
+					<field name="device_id" />
+				</tree>
+			</field>
+		</record>
+		<record id="user_finger_template_search_view" model="ir.ui.view">
+			<field name="name">Finger Template</field>
+			<field name="model">finger.template</field>
+			<field name="arch" type="xml">
+				<search string="Finger Template">
+					<field name="device_user_id" />
+					<field name="employee_id"/>
+					<field name="device_id"/>
+					<field name="uid" />
+					<field name="fid" />
+					<separator />
+					<group expand="0" string="Group By...">
+						<filter string="User" name="device_user_id" context="{'group_by': 'device_user_id'}" />
+						<filter string="Device" name="device_id" context="{'group_by': 'device_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_finger_template">
+			<field name="name">Finger Template</field>
+			<field name="res_model">finger.template</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="context"></field>
+		</record>
+
+		<menuitem id="finger_template_menu" name="Finger Template"
+			parent="attendace_device_menu" sequence="20" action="action_finger_template"
+			groups="hr_attendance.group_hr_attendance_user" />
+
+	</data>
+</odoo>
