@@ -84,7 +84,7 @@
 		<record model="ir.actions.act_window" id="action_user_attendance_data">
 			<field name="name">Attendance Data</field>
 			<field name="res_model">user.attendance</field>
-			<field name="view_type">form</field>
+			<!-- <field name="view_type">form</field> -->
 			<field name="view_mode">tree,pivot</field>
 			<field name="context">{'search_default_valid':1, 'group_by':[]}
 			</field>

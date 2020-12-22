@@ -25,7 +25,7 @@
 				</form>
 			</field>
 		</record>
-		
+
 		<record id="attendance_state_tree_view" model="ir.ui.view">
 			<field name="name">attendance.state.tree</field>
 			<field name="model">attendance.state</field>
@@ -42,7 +42,7 @@
 		<record model="ir.actions.act_window" id="attendance_state_tree_action">
 			<field name="name">Attendance Status</field>
 			<field name="res_model">attendance.state</field>
-			<field name="view_type">form</field>
+			<!-- <field name="view_type">form</field> -->
 			<field name="view_mode">tree,form</field>
 			<field name="help" type="html">
 				<p class="oe_view_nocontent_create">Create the first attendance status
