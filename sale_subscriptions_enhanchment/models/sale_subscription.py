@@ -239,10 +239,10 @@ class SubscriptionProducts(models.Model):
 class SalesSubscriptionFreeze(models.Model):
     _name = "subscription.freeze.line"
     description = 'subscription Freezes'
-    start_date = fields.Date("Start Date", readonly=True)
-    end_date = fields.Date("End Date", readonly=True)
+    start_date = fields.Date("Start Date", readonly=False)
+    end_date = fields.Date("End Date", readonly=False)
     freeze_duration = fields.Integer(string="Duration", required=False, )
-    subscription_id = fields.Many2one('sale.subscription', readonly=True)
+    subscription_id = fields.Many2one('sale.subscription', readonly=False)
 
     def create(self, values):
         subscription_id = self.env['sale.subscription'].browse(values['subscription_id'])
@@ -258,7 +258,7 @@ class SalesSubscriptionFreeze(models.Model):
         for freeze in old_freezes:
             current_freezed_duration = current_freezed_duration + freeze.freeze_duration
         current_freezed_duration = current_freezed_duration + freeze_duration
-        if current_freezed_duration >= freeze_duration_limit:
+        if current_freezed_duration > freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
         res = super(SalesSubscriptionFreeze, self).create(values)
         return res
@@ -296,6 +296,24 @@ class SalesSubscriptionFreeze(models.Model):
 
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
+
+    @api.onchange('subscription_id')
+    def check_freeze(self):
+        if self.subscription_id:
+            freeze_line = self.env['subscription.freeze.line'].search([('subscription_id','=',self.subscription_id.id)])
+            now = datetime.now().date()
+            already_freezed = False
+            for line in freeze_line:
+                if line.start_date < now < line.end_date:
+                    already_freezed = True
+                    break
+            if already_freezed:
+                raise ValidationError("This subscription is already frozen")
+
+
+
+
+
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
                                       domain="[('partner_id', '=', partner_id)]", )
 
