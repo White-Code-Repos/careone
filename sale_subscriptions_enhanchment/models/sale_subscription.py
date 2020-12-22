@@ -167,9 +167,9 @@ class SalesSubscription(models.Model):
     #             'is_freez': False,
     #         })
 
-    # def _get_freeze_times(self):
-    #     operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
-    #     self.freeze_times = len(operations)
+    def _get_freeze_times(self):
+        operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
+        self.freeze_times = len(operations)
 
     def action_subscription_freeze(self):
 
