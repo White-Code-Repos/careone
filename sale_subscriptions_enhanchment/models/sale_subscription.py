@@ -95,8 +95,18 @@ class SalesSubscription(models.Model):
                 'qty_counter': qty_per_day,
                 'subs_id': self.id
             }))
+        print("records")
+        print("records")
+        print("records")
+        print("records")
+        print("records")
         print(records)
-        self.subs_products_ids = records
+        print("records")
+        print("records")
+        print("records")
+        print("records")
+        print("records")
+        self.write({'subs_products_ids' : records})
 
     def _get_show_freez(self):
         if self.end_date:
