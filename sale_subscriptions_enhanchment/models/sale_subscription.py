@@ -266,6 +266,8 @@ class SalesSubscriptionFreeze(models.Model):
         if current_freezed_duration > freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
         res = super(SalesSubscriptionFreeze, self).create(values)
+        # if res:
+        #     res.subscription_id
         return res
 
     # @api.model
@@ -304,25 +306,42 @@ class SalesSubscriptionFreeze(models.Model):
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
+    subscriper = fields.Boolean(compute="_compute_subscriper_state", default=False)
+    def _compute_subscriper_state(self):
+        if self.partner_id:
+            if self.partner_id.subscription_count > 0:
+                subscriptions = self.env['sale.subscription'].search([('partner_id','=',self.partner_id.id)])
+                for sub in subscriptions:
+                    if sub.in_progress:
+                        self.subscriper = True
+                        break
+
     @api.onchange('subscription_id')
     def check_freeze(self):
         if self.subscription_id:
             freeze_line = self.env['subscription.freeze.line'].search([('subscription_id','=',self.subscription_id.id)])
             now = datetime.now().date()
             already_freezed = False
+            total_freeze_days = 0
             for line in freeze_line:
+                total_freeze_days = total_freeze_days + line.freeze_duration
                 if line.start_date <= now <= line.end_date:
                     already_freezed = True
-                    break
             if already_freezed:
                 raise ValidationError("This subscription is already frozen")
+            if self.subscription_id.template_id.recurring_rule_boundary = 'limited':
+                sub_end_data = self.subscription_id.date_start + timedelta(days=30*self.subscription_id.template_id.recurring_rule_count) + timedelta(days=total_freeze_days)
+                if sub_end_data < now:
+                    raise ValidationError("This subscription is already Expired")
+
+
 
 
 
 
 
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
-                                      domain="[('partner_id', '=', partner_id)]", )
+                                      domain="[('partner_id', '=', partner_id),('stage_id.in_progress','=',True)]", )
 
     def _prepare_subscription_data(self, template, no_of_vehicles):
         """Prepare a dictionnary of values to create a subscription from a template."""
