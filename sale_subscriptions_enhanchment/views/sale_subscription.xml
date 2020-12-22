@@ -86,9 +86,12 @@
           <xpath expr="//header" position="inside">
             <field name="subscriper" invisible="1"/>
           </xpath>
-          <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('subscriper', '=', False)]}">
-          This Customer is already subscriper
-          </div>
+          <xpath expr="//header" position="after">
+            <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('subscriper', '=', False)]}">
+            This Customer is already subscriper
+            </div>
+          </xpath>
+
             <xpath expr="//field[@name='pricelist_id']" position="after">
                 <field name="subscription_id"
                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
