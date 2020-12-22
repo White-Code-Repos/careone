@@ -67,7 +67,7 @@ class AttendanceDeviceUser(models.Model):
                                       ' device_id is the same as the existing one\'s (name: %s; device: %s; user_id: %s)')
                                       % (duplicate.name, duplicate.device_id.display_name, duplicate.user_id))
 
-    @api.multi
+    
     def unlink(self):
         force_delete_from_both = self.env.context.get('force_delete_from_both', False)
         for r in self:
@@ -148,7 +148,7 @@ class AttendanceDeviceUser(models.Model):
                     employee_id = employee
         return employee_id       
     
-    @api.multi
+    
     def action_view_finger_template(self):
         action = self.env.ref('to_attendance_device.action_finger_template')
         result = action.read()[0]
@@ -165,7 +165,7 @@ class AttendanceDeviceUser(models.Model):
             result['res_id'] = self.finger_templates_ids.id
         return result
     
-    @api.multi
+    
     def write(self, vals):
         res = super(AttendanceDeviceUser, self).write(vals)
         if 'name' in vals:

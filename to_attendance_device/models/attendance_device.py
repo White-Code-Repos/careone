@@ -133,14 +133,14 @@ class AttendanceDevice(models.Model):
                                                help="The time (in the attendance device's timezone) to clear attendance data after download.")
 
     auto_clear_attendance_dow = fields.Selection([
-        (-1, 'Everyday'),
-        (0, 'Monday'),
-        (1, 'Tuesday'),
-        (2, 'Wednesday'),
-        (3, 'Thursday'),
-        (4, 'Friday'),
-        (5, 'Saturday'),
-        (6, 'Sunday'), ], string='Auto Clear On', default=-1, required=True, track_visibility='onchange')
+        ('-1', 'Everyday'),
+        ('0', 'Monday'),
+        ('1', 'Tuesday'),
+        ('2', 'Wednesday'),
+        ('3', 'Thursday'),
+        ('4', 'Friday'),
+        ('5', 'Saturday'),
+        ('6', 'Sunday'), ], string='Auto Clear On', default=-1, required=True, track_visibility='onchange')
 
     auto_clear_attendance_error_notif = fields.Boolean(string='Auto Clear Attendance Notif.', default=True,
                                                         oldname='auto_clear_atttendance_error_notif', track_visibility='onchange',
@@ -201,7 +201,7 @@ class AttendanceDevice(models.Model):
         """
         This method return a ZK object.
         If an object corresponding to the connection param was created
-        and available in self.zk_cache, it will be return. To avoid it, call it with .with_context(no_zk_cache=True)        
+        and available in self.zk_cache, it will be return. To avoid it, call it with .with_context(no_zk_cache=True)
         """
         force_udp = self.protocol == 'udp'
         password = self.password or 0
@@ -225,7 +225,7 @@ class AttendanceDevice(models.Model):
         if self.location_id and self.location_id.tz:
             self.tz = self.location_id.tz
 
-    @api.multi
+
     def name_get(self):
         """
         name_get that supports displaying location name and model as prefix
@@ -266,14 +266,14 @@ class AttendanceDevice(models.Model):
         for r in self:
             r.device_users_count = mapped_data.get(r.id, 0)
 
-    @api.multi
+
     def _compute_total_finger_template_records(self):
         total_att_data = self.env['finger.template'].read_group([('device_id', 'in', self.ids)], ['device_id'], ['device_id'])
         mapped_data = dict([(dict_data['device_id'][0], dict_data['device_id_count']) for dict_data in total_att_data])
         for r in self:
             r.total_finger_template_records = mapped_data.get(r.id, 0)
 
-    @api.multi
+
     def _compute_total_attendance_records(self):
         total_att_data = self.env['user.attendance'].read_group([('device_id', 'in', self.ids)], ['device_id'], ['device_id'])
         mapped_data = dict([(dict_data['device_id'][0], dict_data['device_id_count']) for dict_data in total_att_data])
@@ -309,7 +309,7 @@ class AttendanceDevice(models.Model):
             vals['ip'] = vals['ip'].strip()
         return super(AttendanceDevice, self).create(vals)
 
-    @api.multi
+
     def write(self, vals):
         if 'ip' in vals:
             vals['ip'] = vals['ip'].strip()
@@ -363,7 +363,7 @@ class AttendanceDevice(models.Model):
         finally:
             return res
 
-    @api.multi
+
     def action_restart(self):
         self.ensure_one()
         self.restartDevice()
@@ -693,7 +693,7 @@ class AttendanceDevice(models.Model):
             self.enableDevice()
             self.disconnect()
 
-    @api.multi
+
     def _download_users_by_uid(self):
         """
         This method download and update all device users into model attendance.device.user using uid as key
@@ -762,7 +762,7 @@ class AttendanceDevice(models.Model):
             if error_msg and r.debug_message:
                 r.message_post(body=error_msg)
 
-    @api.multi
+
     def _download_users_by_user_id(self):
         """
         This method download and update all device users into model attendance.device.user using user_id as key
@@ -810,7 +810,7 @@ class AttendanceDevice(models.Model):
                     if existing:
                         existing.write(vals)
 
-    @api.multi
+
     def action_user_download(self):
         """
         This method download and update all device users into model attendance.device.user
@@ -821,7 +821,7 @@ class AttendanceDevice(models.Model):
             else:
                 r._download_users_by_user_id()
 
-    @api.multi
+
     def action_user_upload(self):
         """
         This method will
@@ -859,7 +859,7 @@ class AttendanceDevice(models.Model):
                 },
             }
 
-    @api.multi
+
     def action_employee_map(self):
         self.action_user_download()
 
@@ -875,7 +875,7 @@ class AttendanceDevice(models.Model):
                 for user in r.device_user_ids.filtered(lambda user: not user.employee_id):
                     user.create_employee()
 
-    @api.multi
+
     def action_attendance_download(self):
         DeviceUserAttendance = self.env['user.attendance']
         AttendanceUser = self.env['attendance.device.user']
@@ -946,12 +946,12 @@ class AttendanceDevice(models.Model):
                 dt_now = self.convert_utc_time_to_tz(datetime.utcnow(), r.tz)
                 float_dt_now = self.time_to_float_hour(dt_now)
 
-                if r.auto_clear_attendance_dow == -1 or dt_now.weekday() == r.auto_clear_attendance_dow:
+                if int(r.auto_clear_attendance_dow) == -1 or dt_now.weekday() == int(r.auto_clear_attendance_dow):
                     delta = r.auto_clear_attendance_hour - float_dt_now
                     if abs(delta) <= 0.5 or abs(delta) >= 23.5:
                         r.action_attendance_clear()
 
-    @api.multi
+
     def action_finger_template_download(self):
         FingerTemplate = self.env['finger.template']
         for r in self:
@@ -1020,7 +1020,7 @@ class AttendanceDevice(models.Model):
                 return False, att
         return True, False
 
-    @api.multi
+
     def action_attendance_clear(self):
         """
         Method to clear all attendance data from the device
@@ -1042,14 +1042,14 @@ class AttendanceDevice(models.Model):
             if error_msg and r.debug_message:
                 r.message_post(body=error_msg)
 
-    @api.multi
+
     def action_check_connection(self):
         self.ensure_one()
         if self.connect():
             self.disconnect()
             raise UserError(_('Connect to the device %s successfully') % (self.display_name,))
 
-    @api.multi
+
     def action_device_information(self):
         for r in self:
             r.firmware_version = r.getFirmwareVersion()
@@ -1067,7 +1067,7 @@ class AttendanceDevice(models.Model):
         if email_template:
             self.message_post_with_template(email_template.id)
 
-    @api.multi
+
     def action_view_users(self):
         action = self.env.ref('to_attendance_device.device_user_list_action')
         result = action.read()[0]
@@ -1084,7 +1084,7 @@ class AttendanceDevice(models.Model):
             result['res_id'] = self.device_user_ids.id
         return result
 
-    @api.multi
+
     def action_view_attendance_data(self):
         self.ensure_one()
         action = self.env.ref('to_attendance_device.action_user_attendance_data')
@@ -1102,7 +1102,7 @@ class AttendanceDevice(models.Model):
             result['res_id'] = self.user_attendance_ids.id
         return result
 
-    @api.multi
+
     def action_view_mapped_employees(self):
         action = self.env.ref('hr.open_view_employee_list_my')
         result = action.read()[0]
@@ -1118,7 +1118,7 @@ class AttendanceDevice(models.Model):
             result['res_id'] = self.mapped_employee_ids.id
         return result
 
-    @api.multi
+
     def action_view_finger_template(self):
         self.ensure_one()
         action = self.env.ref('to_attendance_device.action_finger_template')
@@ -1136,7 +1136,7 @@ class AttendanceDevice(models.Model):
             result['res_id'] = self.finger_templates_ids.id
         return result
 
-    @api.multi
+
     def unlink(self):
         force_delete = self.env.context.get('force_delete', False)
         for r in self:
@@ -1173,4 +1173,3 @@ class AttendanceDeviceStateLine(models.Model):
     @api.onchange('attendance_state_id')
     def onchange_attendance_state_id(self):
         self.type = self.attendance_state_id.type
-

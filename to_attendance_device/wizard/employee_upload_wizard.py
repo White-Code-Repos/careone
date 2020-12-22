@@ -54,7 +54,7 @@ class EmployeeUploadWizard(models.TransientModel):
     def _onchange_devices_and_employees(self):
         self.line_ids = self._prepare_lines()
 
-    @api.multi
+    
     def action_employee_upload(self):
         self.ensure_one()
         for line in self.line_ids:

@@ -60,7 +60,7 @@
 		<record model="ir.actions.act_window" id="action_finger_template">
 			<field name="name">Finger Template</field>
 			<field name="res_model">finger.template</field>
-			<field name="view_type">form</field>
+			<!-- <field name="view_type">form</field> -->
 			<field name="view_mode">tree</field>
 			<field name="context"></field>
 		</record>

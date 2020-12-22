@@ -22,13 +22,13 @@ class AttendanceWizard(models.TransientModel):
     fix_attendance_valid_before_synch = fields.Boolean(string='Fix Attendance Valid', help="If checked, Odoo will recompute all attendance data for their valid"
                                                      " before synchronizing with HR Attendance (upon you hit the 'Synchronize Attendance' button)")
 
-    @api.multi
+    
     def download_attendance_manually(self):
         if not self.device_ids:
             raise UserError(_('You must select at least one device to continue!'))
         self.device_ids.action_attendance_download()
 
-    @api.multi
+    
     def download_device_attendance(self):
         devices = self.env['attendance.device'].search([('state', '=', 'confirmed')])
         devices.action_attendance_download()
@@ -36,7 +36,7 @@ class AttendanceWizard(models.TransientModel):
     def cron_sync_attendance(self):
         self.with_context(synch_ignore_constraints=True).sync_attendance()
 
-    @api.multi
+    
     def sync_attendance(self):
         """
         This method will synchronize all downloaded attendance data with Odoo attendance data.
@@ -127,7 +127,7 @@ class AttendanceWizard(models.TransientModel):
                     continue
                 device.message_post(body=error_msg[device])
 
-    @api.multi
+    
     def clear_attendance(self):
         if not self.device_ids:
             raise (_('You must select at least one device to continue!'))
@@ -137,7 +137,7 @@ class AttendanceWizard(models.TransientModel):
         for device in self.device_ids:
                 device.clearAttendance()
 
-    @api.multi
+    
     def action_fix_user_attendance_valid(self):
         self.ensure_one()
         all_attendances = self.env['user.attendance'].search([])

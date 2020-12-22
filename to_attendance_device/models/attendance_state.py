@@ -27,7 +27,7 @@ class AttendanceState(models.Model):
          "The Activity Type and Activity must be unique! Please recheck if you have previously defined an attendance status with the same Activity Type and Activity"),
     ]
 
-    @api.multi
+    
     def name_get(self):
         """
         name_get that supports displaying tags with their code as prefix
