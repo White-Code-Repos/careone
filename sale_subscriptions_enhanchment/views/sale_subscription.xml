@@ -26,11 +26,11 @@
                 <button string="UN-Freezing" name="action_unfreeze" type="object" class="btn-primary"
                         attrs="{'invisible': [('is_freez', '!=', True)]}"/> -->
             </xpath>
-            <!-- <xpath expr="//button[@name='open_website_url']" position='before'> -->
+            <xpath expr="//button[@name='open_website_url']" position='before'>
                 <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
                     <field name="freeze_times" widget="statinfo" string="Freezes"/>
                 </button>
-            <!-- </xpath> -->
+            </xpath>
             <xpath expr="//page[@id='lines']" position="replace">
                 <page name="subs_product" string="Subscription Products">
                     <field name="subs_products_ids" force_save="1">
