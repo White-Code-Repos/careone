@@ -34,82 +34,68 @@ class SalesSubscription(models.Model):
     # def set_domain(self):
     #     print("hena hena hena")
     #     return {'domain': {'subs_products_ids.vehicle_id': [('driver_id', '=', se)]}}
-    @api.onchange('template_id')
-    def get_lines_products(self):
-        if self.template_id.subs_product_ids:
-            records = []
-            for rec in self.template_id.subs_product_ids:
-                records.append((0, 0, {
-                    'product_id': rec.product_id.id,
-                    'qty': rec.qty,
-                    'qty_per_day': rec.qty_per_day,
-                    'consumed_qty': 0,
-                    'qty_counter': 0,
-                    'subs_id': self.id
-                }))
-            self.subs_products_ids = records
 
-    # @api.onchange('template_id')
-    # def get_products_lines(self):
-    #     orders = self.env['sale.order'].search([('subscription_id', '=', self._origin.id), ('state', '=', 'sale')])
-    #     shift_hours = []
-    #     shift_duration = self.template_id.duration
-    #     now = datetime.now() + timedelta(hours=2)
-    #     x = self.template_id.start_hour_use
-    #     i = 0
-    #     records = []
-    #     if self.subs_products_ids:
-    #         for record in self.subs_products_ids:
-    #             self.write({'subs_products_ids': [(2, record.id)]})
-    #     while True:
-    #         shift_hours.append(int(x))
-    #         x += 1
-    #         i += 1
-    #         if x >= 24:
-    #             x -= 24
-    #         if i > shift_duration:
-    #             break
-    #     current_hour = int(now.strftime("%H"))
-    #     for rec in self.template_id.subs_product_ids:
-    #         qty = 0
-    #         qty_per_day = 0
-    #         if orders:
-    #             for order in orders:
-    #                 confirm_time = order.date_order
-    #                 for line in order.order_line:
-    #                     if rec.product_id == line.product_id and line.price_unit == 0:
-    #                         qty += line.product_uom_qty
-    #                         if current_hour in shift_hours:
-    #                             if 0 in shift_hours and shift_hours[0] != 0:
-    #                                 zer_index = shift_hours.index(0)
-    #                                 current_hour_index = shift_hours.index(current_hour)
-    #                                 if zer_index > current_hour_index:
-    #                                     # this shift is 2 days and this is the first day
-    #                                     today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
-    #                                     if datetime.strptime(today,
-    #                                                          '%Y-%m-%d %H:%M') <= confirm_time <= now:
-    #                                         qty_per_day += line.product_uom_qty
-    #                                 elif zer_index <= current_hour_index:
-    #                                     # second day
-    #                                     yesterday = str((now - timedelta(days=1)).date()) + " " + str(
-    #                                         shift_hours[0]) + ":00"
-    #                                     if datetime.strptime(
-    #                                             yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
-    #                                         qty_per_day += line.product_uom_qty
-    #                             else:
-    #                                 today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
-    #                                 if datetime.strptime(today,
-    #                                                      '%Y-%m-%d %H:%M') <= confirm_time <= now:
-    #                                     qty_per_day += line.product_uom_qty
-    #         records.append((0, 0, {
-    #             'product_id': rec.product_id.id,
-    #             'qty': rec.qty,
-    #             'qty_per_day': rec.qty_per_day,
-    #             'consumed_qty': qty,
-    #             'qty_counter': qty_per_day,
-    #             'subs_id': self.id
-    #         }))
-    #     self.subs_products_ids = records
+    @api.onchange('template_id')
+    def get_products_lines(self):
+        orders = self.env['sale.order'].search([('subscription_id', '=', self._origin.id), ('state', '=', 'sale')])
+        shift_hours = []
+        shift_duration = self.template_id.duration
+        now = datetime.now() + timedelta(hours=2)
+        x = self.template_id.start_hour_use
+        i = 0
+        records = []
+        if self.subs_products_ids:
+            for record in self.subs_products_ids:
+                self.write({'subs_products_ids': [(2, record.id)]})
+        while True:
+            shift_hours.append(int(x))
+            x += 1
+            i += 1
+            if x >= 24:
+                x -= 24
+            if i > shift_duration:
+                break
+        current_hour = int(now.strftime("%H"))
+        for rec in self.template_id.subs_product_ids:
+            qty = 0
+            qty_per_day = 0
+            if orders:
+                for order in orders:
+                    confirm_time = order.date_order
+                    for line in order.order_line:
+                        if rec.product_id == line.product_id and line.price_unit == 0:
+                            qty += line.product_uom_qty
+                            if current_hour in shift_hours:
+                                if 0 in shift_hours and shift_hours[0] != 0:
+                                    zer_index = shift_hours.index(0)
+                                    current_hour_index = shift_hours.index(current_hour)
+                                    if zer_index > current_hour_index:
+                                        # this shift is 2 days and this is the first day
+                                        today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
+                                        if datetime.strptime(today,
+                                                             '%Y-%m-%d %H:%M') <= confirm_time <= now:
+                                            qty_per_day += line.product_uom_qty
+                                    elif zer_index <= current_hour_index:
+                                        # second day
+                                        yesterday = str((now - timedelta(days=1)).date()) + " " + str(
+                                            shift_hours[0]) + ":00"
+                                        if datetime.strptime(
+                                                yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
+                                            qty_per_day += line.product_uom_qty
+                                else:
+                                    today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
+                                    if datetime.strptime(today,
+                                                         '%Y-%m-%d %H:%M') <= confirm_time <= now:
+                                        qty_per_day += line.product_uom_qty
+            records.append((0, 0, {
+                'product_id': rec.product_id.id,
+                'qty': rec.qty,
+                'qty_per_day': rec.qty_per_day,
+                'consumed_qty': qty,
+                'qty_counter': qty_per_day,
+                'subs_id': self.id
+            }))
+        self.subs_products_ids = records
 
     def _get_show_freez(self):
         if self.end_date:
@@ -327,8 +313,14 @@ class SalesOrderInherit(models.Model):
                 subscriptions = self.env['sale.subscription'].search([('partner_id','=',self.partner_id.id)])
                 for sub in subscriptions:
                     if sub.in_progress:
-                        msg = "This is already a subscriper"
-                        raise UserError(_(msg))
+                        return {
+                        'type': 'ir.actions.client',
+                        'tag': 'action_warn',
+                        'name': 'Notice',
+                        'params': {'title': 'Notice','text': 'This is already a subscriper.','sticky': True}
+                        }
+                        # msg = "This is already a subscriper"
+                        # raise UserError(_(msg))
 
     @api.onchange('subscription_id')
     def check_freeze(self):
