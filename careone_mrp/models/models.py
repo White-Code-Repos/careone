@@ -7,7 +7,7 @@ class MrpGroup(models.Model):
     _name = 'mrp.group'
     _description= "MRP Group"
 
-    name = fields.Char(string='Name',)   
+    name = fields.Char(string='Name',)
     location_id = fields.Many2one(string='location',comodel_name='stock.location', domain=[('usage','=','internal')])
     user_ids = fields.Many2many(string='Users', comodel_name='res.users', domain=[('active','in',(True,False)),('id','>',5)])
 
@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
     production_count = fields.Integer(compute='_compute_production_count', store=True)
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',)
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
-    
+
     @api.onchange('mrp_group_id')
     def set_mrp_users(self):
         self.user_ids = self.mrp_group_id.user_ids
@@ -63,22 +63,22 @@ class MrpProduction(models.Model):
         if self.sale_order_id :
             mrp_grp_id = self.sale_order_id.mrp_group_id
             if self.sale_order_id.mrp_group_id:
-                
+
                 self.location_src_id = mrp_grp_id.location_id
             else:
                 mrp_grp_id = self.mrp_group_id
                 self.location_src_id = self.mrp_group_id.location_id
         else:
             mrp_grp_id = self.mrp_group_id
-            
+
             self.location_src_id = mrp_grp_id.location_id
-            
+
         self.mrp_group_id = mrp_grp_id
         self.location_src_id = mrp_grp_id.location_id
         picktype=self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        
+
         self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        moves = self.env['stock.move.line').search([('mrp_id','=',self.id),('location_dest_id','!=',self.location_dest_id)])
+        moves = self.env['stock.move.line'].search([('mrp_id','=',self.id),('location_dest_id','!=',self.location_dest_id)])
         for move in moves:
             move.write({'location_id':mrp_grp_id.location_id})
         #self.write({'picking_type_id':
@@ -109,15 +109,15 @@ class MrpProduction(models.Model):
                 ])
                 # If so, use the 'sale_order_id' from the parent production
                 values['sale_order_id'] = production_id.sale_order_id.id
-                
+
         return super(MrpProduction, self).create(values)
-    
+
 
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="production_id.mrp_group_id")
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users', related="production_id.user_ids")
-    
+
     def button_finish(self):
         self.ensure_one()
         self.end_all()
@@ -125,13 +125,13 @@ class MrpWorkorder(models.Model):
         is_lastorder = self.env['mrp.workorder'].search([('state','!=','done'),('production_id','=',self.production_id.id),('id','!=',self.id)])
         #if not is_lastorder:
             #self.production_id.write({'state':'to_close'})
-            
+
             #self.write({'qty_producing':self.qty_production})
             #self.qty_producing = self.qty_production
             #self.production_id.post_inventory()
             #self.production_id.button_mark_done()
             #self.do_finish()
-            
+
             #self.record_production()
             # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
             #if self.env.context.get('active_model') == self._name:
@@ -148,18 +148,18 @@ class MrpWorkorder(models.Model):
             #    }
             #action['domain'] = [('state', 'not in', ['done', 'cancel', 'pending'])]
             #return action
-        
+
             #self.env['mrp.production'].search([('id','=',)])
         #self.production_id.write({'state':'to_close'})
         #sql = "update mrp_production set state='to_close' where id="+str(self.production_id.id)+" ;"
         #self.env.cr.execute(sql)
-        
+
         return self.write({
             'state': 'done',
             'date_finished': end_date,
             'date_planned_finished': end_date
         })
-    
+
 
 
 class MrpWorkcenterProductivity(models.Model):
