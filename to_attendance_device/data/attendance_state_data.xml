@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="attendance_activity_normal" model="attendance.activity">
+			<field name="name">Normal Attendance</field>
+		</record>
+		<record id="attendance_activity_overtime" model="attendance.activity">
+			<field name="name">Overtime</field>
+		</record>
+	</data>
+	
+	<data noupdate="1">
+		<!-- Normal Attendance -->
+		<record id="attendance_device_state_code_0" model="attendance.state">
+			<field name="name">Check-in</field>
+			<field name="code" eval="0" />
+			<field name="activity_id" ref="attendance_activity_normal" />
+			<field name="type">checkin</field>
+		</record>
+		<record id="attendance_device_state_code_1" model="attendance.state">
+			<field name="name">Check-out</field>
+			<field name="code" eval="1" />
+			<field name="activity_id" ref="attendance_activity_normal" />
+			<field name="type">checkout</field>
+		</record>
+		
+		<!-- Overtime Attendance -->
+		<record id="attendance_device_state_code_4" model="attendance.state">
+			<field name="name">Check-in</field>
+			<field name="code" eval="4" />
+			<field name="activity_id" ref="attendance_activity_overtime" />
+			<field name="type">checkin</field>
+		</record>
+		<record id="attendance_device_state_code_5" model="attendance.state">
+			<field name="name">Check-out</field>
+			<field name="code" eval="5" />
+			<field name="activity_id" ref="attendance_activity_overtime" />
+			<field name="type">checkout</field>
+		</record>
+	</data>
+</odoo>

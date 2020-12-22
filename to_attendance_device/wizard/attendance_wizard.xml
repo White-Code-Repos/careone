@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<data>
+		<record model="ir.ui.view" id="attendance_wizard_form_view">
+			<field name="name">Attendance Device Synchronization wizard</field>
+			<field name="model">attendance.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Synchronize Data">
+					<div>
+						This wizard will synchronize all data from all of your devices
+						into Odoo.
+						<br />
+						Download users into Odoo; Map those with Odoo
+						Employees and create
+						additional Employees from device data; Download attendance data
+						from the devices and create Odoo attendance data from such data
+					</div>
+					<group>
+						<group>
+							<field name="device_ids" widget="many2many_tags" options="{'no_create_edit': True}" />
+						</group>
+						<group>
+							<field name="fix_attendance_valid_before_synch" groups="base.group_no_one" />
+						</group>
+					</group>
+					<footer>
+						<button name="action_download_attendance" type="object"
+							string="Download Attendance" class="oe_highlight" />
+						<button name="sync_attendance" type="object"
+							string="Synchronize Attendance" class="oe_highlight" groups="base.group_no_one" />
+						<button name="action_fix_user_attendance_valid" type="object"
+							string="Fix Attendance Valid" groups="base.group_no_one" />
+						<button name="clear_attendance" type="object" groups="base.group_no_one"
+							string="Clear Attendance Data" class="oe_highlight"
+							confirm="This will clear all attendance data from your device without taking any care about whether or not the data has been downloaded into Odoo. Do you want to proceed?" />
+						<button special="cancel" string="Cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<act_window id="action_sync_device_attendance" name="Synchronize Data"
+			res_model="attendance.wizard" view_mode="form" target="new" />
+
+		<menuitem id="sync_device_attendance_menu" parent="attendace_device_menu"
+			sequence="110" name="Synchronize" action="action_sync_device_attendance" />
+
+	</data>
+</odoo>
