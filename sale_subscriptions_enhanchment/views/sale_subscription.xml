@@ -26,11 +26,11 @@
                 <button string="UN-Freezing" name="action_unfreeze" type="object" class="btn-primary"
                         attrs="{'invisible': [('is_freez', '!=', True)]}"/> -->
             </xpath>
-            <xpath expr="//button[@name='open_website_url']" position='before'>
+            <!-- <xpath expr="//button[@name='open_website_url']" position='before'> -->
                 <!-- <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
                     <field name="freeze_times" widget="statinfo" string="Freezes"/>
                 </button> -->
-            </xpath>
+            <!-- </xpath> -->
             <xpath expr="//page[@id='lines']" position="replace">
                 <page name="subs_product" string="Subscription Products">
                     <field name="subs_products_ids" force_save="1">
@@ -38,11 +38,11 @@
                             <field name="subs_id" invisible="1"/>
                             <field name="partner_id" invisible="1"/>
                             <field name="vehicle_id"/>
-                            <field name="product_id" readonly="1"/>
-                            <field name="qty" readonly="1"/>
-                            <field name="consumed_qty" readonly="1"/>
-                            <field name="qty_per_day" readonly="1"/>
-                            <field name="qty_counter" readonly="1"/>
+                            <field name="product_id" readonly="1" force_save="1"/>
+                            <field name="qty" readonly="1" force_save="1"/>
+                            <field name="consumed_qty" readonly="1" force_save="1"/>
+                            <field name="qty_per_day" readonly="1" force_save="1"/>
+                            <field name="qty_counter" readonly="1" force_save="1"/>
                         </tree>
                     </field>
                 </page>
