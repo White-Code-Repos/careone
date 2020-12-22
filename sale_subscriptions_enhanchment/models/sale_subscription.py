@@ -95,18 +95,8 @@ class SalesSubscription(models.Model):
                 'qty_counter': qty_per_day,
                 'subs_id': self.id
             }))
-        print("records")
-        print("records")
-        print("records")
-        print("records")
-        print("records")
         print(records)
-        print("records")
-        print("records")
-        print("records")
-        print("records")
-        print("records")
-        self.write({'subs_products_ids' : records})
+        self.subs_products_ids = records
 
     def _get_show_freez(self):
         if self.end_date:
@@ -211,12 +201,6 @@ class SalesSubscriptionTemplate(models.Model):
     subs_product_ids = fields.One2many(comodel_name="subscription.product.template", inverse_name="template_id",
                                        string="",
                                        required=False, )
-
-    @api.model
-    def write(self, values):
-        values['payment_mode'] = 'draft_invoice'
-        res = super(SalesSubscriptionTemplate, self).write(values)
-        return res
 
     @api.onchange('start_hour_use', 'duration')
     def _onchange_start_hour_use(self):
