@@ -18,7 +18,7 @@
                 <field name="is_freez" invisible="1"/>
                 <field name="display_name" invisible="1"/>
                 <field name="apper_generate_coupon" invisible="1"/>
-                <field name="show_freez" invisible="1"/>
+                <!-- <field name="show_freez" invisible="1"/> -->
                 <field name="is_without_freeze" invisible="1"/>
                 <!--                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>-->
                 <!-- <button string="Freezing" name="action_freez" type="object" class="btn-primary"
@@ -27,9 +27,9 @@
                         attrs="{'invisible': [('is_freez', '!=', True)]}"/> -->
             </xpath>
             <xpath expr="//button[@name='open_website_url']" position='before'>
-                <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
+                <!-- <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
                     <field name="freeze_times" widget="statinfo" string="Freezes"/>
-                </button>
+                </button> -->
             </xpath>
             <xpath expr="//page[@id='lines']" position="replace">
                 <page name="subs_product" string="Subscription Products">
