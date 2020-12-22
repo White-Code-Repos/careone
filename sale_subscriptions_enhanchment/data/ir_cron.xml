@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <record id="ir_cron_refreezing_subscription_action" model="ir.cron">
+        <!-- <record id="ir_cron_refreezing_subscription_action" model="ir.cron">
             <field name="name">Supscription Refreezing</field>
             <field name="user_id" ref="base.user_root"/>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="model_id" ref="model_sale_subscription"/>
-            <field name="code">model.sale_subscription_cron_fn()</field>
+            <field name="code">model.sale_subscription_cron_fn()</field> -->
 <!--            <field eval="'sale.subscription'" name="model"/>-->
 <!--            <field eval="'sale_subscription_cron_fn'" name="function"/>-->
-        </record>
+        <!-- </record> -->
 </odoo>

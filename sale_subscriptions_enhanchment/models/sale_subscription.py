@@ -98,78 +98,78 @@ class SalesSubscription(models.Model):
         print(records)
         self.subs_products_ids = records
 
-    def _get_show_freez(self):
-        if self.end_date:
-            today = fields.Date.from_string(fields.Date.today())
-            date1 = datetime.strptime(str(self.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d')
-            date2 = datetime.strptime(str(today), '%Y-%m-%d')
-            if date1 > date2:
-                self.show_freez = True
-            else:
-                self.show_freez = False
-        else:
-            self.show_freez = False
+    # def _get_show_freez(self):
+    #     if self.end_date:
+    #         today = fields.Date.from_string(fields.Date.today())
+    #         date1 = datetime.strptime(str(self.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d')
+    #         date2 = datetime.strptime(str(today), '%Y-%m-%d')
+    #         if date1 > date2:
+    #             self.show_freez = True
+    #         else:
+    #             self.show_freez = False
+    #     else:
+    #         self.show_freez = False
 
-    def action_unfreeze(self):
+    # def action_unfreeze(self):
+    #
+    #     freezing_times = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
+    #     duration = 0
+    #     for rec in freezing_times:
+    #         duration += rec.freeze_duration
+    #     if self.freeze_times >= self.freeze_for or duration >= self.template_id.freez_duration:
+    #         self.is_without_freeze = True
+    #
+    #     self.is_freez = False
+    #     freez_time = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)], limit=1,
+    #                                                              order='create_date desc')
+    #     x = (fields.Date.from_string(fields.Date.today()) - freez_time.start_date).days
+    #     if x == 0:
+    #         dur = 1
+    #     else:
+    #         dur = x
+    #     freez_time.update({
+    #         'end_date': fields.Date.from_string(fields.Date.today()),
+    #         'freeze_duration': dur
+    #     })
 
-        freezing_times = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
-        duration = 0
-        for rec in freezing_times:
-            duration += rec.freeze_duration
-        if self.freeze_times >= self.freeze_for or duration >= self.template_id.freez_duration:
-            self.is_without_freeze = True
+    # def action_freez(self):
+    #     print(self.freeze_for)
+    #     print(self.freeze_times)
+    #     freeze_for = self.template_id.freeze_for
+    #     if freeze_for == 0:
+    #         raise UserError('Please Enter Freezing Duration First')
+    #     if freeze_for < 0:
+    #         raise UserError('Wrong Value for Freezing Duration')
+    #     self.last_state = self.stage_id.id
+    #     today = fields.Date.from_string(fields.Date.today())
+    #     self.write({
+    #         'is_freez': True,
+    #         'last_state': self.stage_id.id,
+    #     })
+    #     freez_data = {
+    #         'start_date': today,
+    #         'subscription_id': self.id,
+    #     }
+    #     self.env['subscription.freeze.line'].create(freez_data)
+    #     return True
 
-        self.is_freez = False
-        freez_time = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)], limit=1,
-                                                                 order='create_date desc')
-        x = (fields.Date.from_string(fields.Date.today()) - freez_time.start_date).days
-        if x == 0:
-            dur = 1
-        else:
-            dur = x
-        freez_time.update({
-            'end_date': fields.Date.from_string(fields.Date.today()),
-            'freeze_duration': dur
-        })
+    # @api.model
+    # def sale_subscription_cron_fn(self):
+    #     search = self.env['sale.subscription.stage'].search
+    #     stage = search([('name', '=', 'Freezing')], limit=1)
+    #     records = self.env['sale.subscription'].search(
+    #         [('stage_id', '=', stage.id), ('un_freez_date', '=', fields.Date.from_string(fields.Date.today()))])
+    #     for rec in records:
+    #         stage = search([('in_progress', '=', True)], limit=1)
+    #         rec.write({
+    #             'stage_id': stage.id,
+    #             'end_date': records.new_end_date,
+    #             'is_freez': False,
+    #         })
 
-    def action_freez(self):
-        print(self.freeze_for)
-        print(self.freeze_times)
-        freeze_for = self.template_id.freeze_for
-        if freeze_for == 0:
-            raise UserError('Please Enter Freezing Duration First')
-        if freeze_for < 0:
-            raise UserError('Wrong Value for Freezing Duration')
-        self.last_state = self.stage_id.id
-        today = fields.Date.from_string(fields.Date.today())
-        self.write({
-            'is_freez': True,
-            'last_state': self.stage_id.id,
-        })
-        freez_data = {
-            'start_date': today,
-            'subscription_id': self.id,
-        }
-        self.env['subscription.freeze.line'].create(freez_data)
-        return True
-
-    @api.model
-    def sale_subscription_cron_fn(self):
-        search = self.env['sale.subscription.stage'].search
-        stage = search([('name', '=', 'Freezing')], limit=1)
-        records = self.env['sale.subscription'].search(
-            [('stage_id', '=', stage.id), ('un_freez_date', '=', fields.Date.from_string(fields.Date.today()))])
-        for rec in records:
-            stage = search([('in_progress', '=', True)], limit=1)
-            rec.write({
-                'stage_id': stage.id,
-                'end_date': records.new_end_date,
-                'is_freez': False,
-            })
-
-    def _get_freeze_times(self):
-        operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
-        self.freeze_times = len(operations)
+    # def _get_freeze_times(self):
+    #     operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
+    #     self.freeze_times = len(operations)
 
     def action_subscription_freeze(self):
 
