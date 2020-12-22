@@ -75,7 +75,7 @@ class MrpProduction(models.Model):
             
         self.mrp_group_id = mrp_grp_id
         self.location_src_id = mrp_grp_id.location_id
-        self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')])
+        self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
         # self.location_dest_id = mrp_grp_id.location_id
 
     @api.model
@@ -88,6 +88,9 @@ class MrpProduction(models.Model):
             if sale_id:
                 values['sale_order_id'] = sale_id.id
                 values['mrp_group_id']= sale_id.mrp_group_id.id
+                if sale_id.mrp_group_id:
+                    values['location_src_id'] = sale_id.mrp_group_id.location_id
+                    values['picking_type_id']=self.env['stock.picking.type'].search([('default_location_src_id','=',sale_id.mrp_group_id.location_id.id),('code','=','mrp_operation')],limit=1)
                 values['user_ids']= sale_id.user_ids
                 if sale_id.client_order_ref:
                     values['origin'] = sale_id.client_order_ref
