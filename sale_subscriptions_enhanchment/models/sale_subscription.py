@@ -329,7 +329,7 @@ class SalesOrderInherit(models.Model):
                     already_freezed = True
             if already_freezed:
                 raise ValidationError("This subscription is already frozen")
-            if self.subscription_id.template_id.recurring_rule_boundary = 'limited':
+            if self.subscription_id.template_id.recurring_rule_boundary == 'limited':
                 sub_end_data = self.subscription_id.date_start + timedelta(days=30*self.subscription_id.template_id.recurring_rule_count) + timedelta(days=total_freeze_days)
                 if sub_end_data < now:
                     raise ValidationError("This subscription is already Expired")
