@@ -78,10 +78,10 @@ class MrpProduction(models.Model):
         picktype=self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
 
         self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        moves = self.env['stock.move.line'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+        moves = self.env['stock.move.line'].search([('production_id','=',self.id)])
         for move in moves:
             move.write({'location_id':mrp_grp_id.location_id})
-        moves = self.env['stock.move'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+        moves = self.env['stock.move'].search([('production_id','=',self.id)])
         for move in moves:
             move.write({'location_id':mrp_grp_id.location_id})
         #self.write({'picking_type_id':
