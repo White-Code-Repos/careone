@@ -313,7 +313,7 @@ class SalesOrderInherit(models.Model):
                 subscriptions = self.env['sale.subscription'].search([('partner_id','=',self.partner_id.id)])
                 for sub in subscriptions:
                     if sub.in_progress:
-                        raise ValidationError("SUP")
+                        # raise ValidationError("SUP")
                         self.subscriper = True
                         break
 
