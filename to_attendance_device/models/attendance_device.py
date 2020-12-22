@@ -133,14 +133,14 @@ class AttendanceDevice(models.Model):
                                                help="The time (in the attendance device's timezone) to clear attendance data after download.")
 
     auto_clear_attendance_dow = fields.Selection([
-        (-1, 'Everyday'),
-        (0, 'Monday'),
-        (1, 'Tuesday'),
-        (2, 'Wednesday'),
-        (3, 'Thursday'),
-        (4, 'Friday'),
-        (5, 'Saturday'),
-        (6, 'Sunday'), ], string='Auto Clear On', default=-1, required=True, track_visibility='onchange')
+        ('-1', 'Everyday'),
+        ('0', 'Monday'),
+        ('1', 'Tuesday'),
+        ('2', 'Wednesday'),
+        ('3', 'Thursday'),
+        ('4', 'Friday'),
+        ('5', 'Saturday'),
+        ('6', 'Sunday'), ], string='Auto Clear On', default=-1, required=True, track_visibility='onchange')
 
     auto_clear_attendance_error_notif = fields.Boolean(string='Auto Clear Attendance Notif.', default=True,
                                                         oldname='auto_clear_atttendance_error_notif', track_visibility='onchange',
@@ -946,7 +946,7 @@ class AttendanceDevice(models.Model):
                 dt_now = self.convert_utc_time_to_tz(datetime.utcnow(), r.tz)
                 float_dt_now = self.time_to_float_hour(dt_now)
 
-                if r.auto_clear_attendance_dow == -1 or dt_now.weekday() == r.auto_clear_attendance_dow:
+                if int(r.auto_clear_attendance_dow) == -1 or dt_now.weekday() == int(r.auto_clear_attendance_dow):
                     delta = r.auto_clear_attendance_hour - float_dt_now
                     if abs(delta) <= 0.5 or abs(delta) >= 23.5:
                         r.action_attendance_clear()
