@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="view_attendance_data_form" model="ir.ui.view">
+			<field name="name">Attendance Data Form</field>
+			<field name="model">user.attendance</field>
+			<field name="arch" type="xml">
+				<form string="Attendance Data">
+					<sheet>
+						<group>
+							<group>
+								<field name="user_id" />
+								<field name="timestamp" />
+								<field name="status" groups="base.group_no_one" />
+								<field name="attendance_state_id" />
+								<field name="valid" />
+								<field name="employee_id" />
+								<field name="hr_attendance_id" groups="base.group_no_one" />
+								<field name="device_id" />
+							</group>
+							<group></group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_attendance_data_pivot" model="ir.ui.view">
+			<field name="name">Attendance Data Pivot</field>
+			<field name="model">user.attendance</field>
+			<field name="arch" type="xml">
+				<pivot string="Attendance Data">
+					<field name="timestamp" type="col" />
+					<field name="user_id" type="row" />
+				</pivot>
+			</field>
+		</record>
+
+		<record id="view_attendance_data_tree" model="ir.ui.view">
+			<field name="name">Attendance Data</field>
+			<field name="model">user.attendance</field>
+			<field name="arch" type="xml">
+				<tree string="Attendance Data" create="false"
+					edit="false">
+					<field name="timestamp" />
+					<field name="user_id" />
+					<field name="status" groups="base.group_no_one" />
+					<field name="attendance_state_id" />
+					<field name="valid" />
+					<field name="employee_id" />
+					<field name="hr_attendance_id" groups="base.group_no_one" />
+					<field name="device_id" />
+				</tree>
+			</field>
+		</record>
+		<record id="user_attendance_data_search_view" model="ir.ui.view">
+			<field name="name">Attendance Data</field>
+			<field name="model">user.attendance</field>
+			<field name="arch" type="xml">
+				<search string="Search User Attendance Data">
+					<field name="user_id" />
+					<field name="device_id" />
+					<field name="employee_id" />
+					<separator />
+					<filter string="Valid" name="valid" domain="[('valid','=',True)]"
+						help="Show attendance records that are valid for synchronizing with Odoo's HR Atteandnce" />
+					<separator />
+					<filter name="today" string="Today"
+						domain="[('timestamp', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)),('timestamp', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]" />
+					<separator />
+					<filter string="Not Synchronized" name="not_synch"
+						domain="[('hr_attendance_id','=',False)]"
+						help="Show attendance records that have no link to Odoo's HR Atteandnce" />
+					<group expand="0" string="Group By...">
+						<filter string="User" name="user_id" context="{'group_by': 'user_id'}" />
+						<filter string="Device" name="device_id" context="{'group_by': 'device_id'}" />
+						<filter string="Employee" name="employee_id"
+							context="{'group_by': 'employee_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_user_attendance_data">
+			<field name="name">Attendance Data</field>
+			<field name="res_model">user.attendance</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,pivot</field>
+			<field name="context">{'search_default_valid':1, 'group_by':[]}
+			</field>
+		</record>
+
+		<menuitem id="user_attendance_data_menu" name="Attendance Data"
+			parent="attendace_device_menu" sequence="10" action="action_user_attendance_data"
+			groups="hr_attendance.group_hr_attendance_user" />
+
+	</data>
+</odoo>

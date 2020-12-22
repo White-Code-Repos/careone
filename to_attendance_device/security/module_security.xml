@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>    	
+    	<record id="group_attendance_devices_manager" model="res.groups">
+	        <field name="name">Attendance Device Manager</field>
+	        <field name="category_id" ref="base.module_category_usability" />	        
+	        <field name="comment">The users in this group will have full access rights to attendance devices and their data.</field>
+    	</record>
+
+    	<record id="hr_attendance.group_hr_attendance_manager" model="res.groups">
+	        <field name="implied_ids" eval="[(4, ref('group_attendance_devices_manager'))]"/>
+	    </record>   
+    </data>
+</odoo>
