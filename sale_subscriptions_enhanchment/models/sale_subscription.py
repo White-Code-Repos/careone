@@ -8,7 +8,6 @@ from odoo.tools import safe_eval
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
-_logger = logging.getLogger(__name__)
 
 
 class SalesSubscription(models.Model):
@@ -58,7 +57,6 @@ class SalesSubscription(models.Model):
                 break
         current_hour = int(now.strftime("%H"))
         for rec in self.template_id.subs_product_ids:
-            _logger.debug('LOG %s', rec)
             qty = 0
             qty_per_day = 0
             if orders:
