@@ -528,5 +528,5 @@ class SalesOrderInherit(models.Model):
                         raise ValidationError(
                             "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
                     rec.consumed_qty += line.product_uom_qty
-                    rec.qty_counter += line.product_uom_qty
+                    # rec.qty_counter += line.product_uom_qty
         return super(SalesOrderInherit, self).action_confirm()
