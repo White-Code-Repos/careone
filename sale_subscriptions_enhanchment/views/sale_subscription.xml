@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+  <template id="report_sub_dates" inherit_id="sale.report_saleorder_document">
+    <xpath expr="/t/t/div/[@id='informations']" position="before">
+      <t t-if="doc.subscription_id">
+          <div>
+            Subscription Start Date : <span t-esc="doc.subscription_id.date_start"/>
+            Subscription End Date : <span t-esc="doc.subscription_id.date"/>
+          </div>
+        </t>
+    </xpath>
+  </template>
     <record id="sale_subscription_view_form_inherited_form" model="ir.ui.view">
         <field name="name">sale.subscription.form</field>
         <field name="model">sale.subscription</field>
