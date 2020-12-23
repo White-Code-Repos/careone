@@ -481,11 +481,11 @@ class SalesOrderInherit(models.Model):
                 break
         current_hour = int(now.strftime("%H"))
         for rec in self.subscription_id.subs_products_ids:
-            rec.qty_counter = 0
+            # rec.qty_counter = 0
             for order in orders:
                 confirm_time = order.date_order
                 for line in order.order_line:
-                    if rec.product_id == line.product_id and line.price_unit == 0:
+                    if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
                         if current_hour in shift_hours:
                             if 0 in shift_hours and shift_hours[0] != 0:
                                 zer_index = shift_hours.index(0)
@@ -508,15 +508,19 @@ class SalesOrderInherit(models.Model):
                                 if datetime.strptime(today,
                                                      '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                     rec.qty_counter += line.product_uom_qty
+            # if rec.qty_counter > rec.qty_per_day:
+            #     raise ValidationError(
+            #         "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
+
         for line in self.order_line:
             for rec in self.subscription_id.subs_products_ids:
-                if rec.product_id == line.product_id and line.price_unit == 0:
+                if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
                     if (rec.consumed_qty + line.product_uom_qty) > rec.qty:
                         raise ValidationError(
-                            "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity" % rec.product_id.name)
+                            "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s" % (rec.product_id.display_name,rec.vehicle_id.display_name))
                     if (rec.qty_counter + line.product_uom_qty) > rec.qty_per_day:
                         raise ValidationError(
-                            "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity per day" % rec.product_id.name)
+                            "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
                     rec.consumed_qty += line.product_uom_qty
                     rec.qty_counter += line.product_uom_qty
         return super(SalesOrderInherit, self).action_confirm()
