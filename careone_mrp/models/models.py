@@ -83,14 +83,14 @@ class MrpProduction(models.Model):
                     +"       and (location_dest_id = '15');")
 
         max_idsql =self.env.cr.execute(last_adj_date_sql)
-        max_id = self.env.cr.fetchone()
+        #max_id = self.env.cr.fetchone()
 
         last_adj_date_sql = ("update stock_move_line \n"
                     +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference='"+str(self.name)+"'  \n"
                     +"       and (location_dest_id = '15');")
 
         max_idsql =self.env.cr.execute(last_adj_date_sql)
-        max_id = self.env.cr.fetchone()
+        #max_id = self.env.cr.fetchone()
         
         
        # self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
