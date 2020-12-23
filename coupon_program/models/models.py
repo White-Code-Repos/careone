@@ -167,6 +167,7 @@ class SaleOrder(models.Model):
 
 class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
+    vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle")
     start_hour_use = fields.Float(string="From", required=False, )
     end_hour_use = fields.Float(string="To", required=False, )
     start_date_use = fields.Date(string="From", required=False, )
