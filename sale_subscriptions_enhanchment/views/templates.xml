@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
     <template id="report_sub_dates" inherit_id="sale.report_saleorder_document">
       <xpath expr="/t/t/div/[@id='informations']" position="before">
         <t t-if="doc.subscription_id">
@@ -10,5 +10,4 @@
         </t>
       </xpath>
     </template>
-  </data>
 </odoo>
