@@ -75,8 +75,7 @@ class SaleOrder(models.Model):
                 ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
                 ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
 # domain=coupon_program_onchange
-    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-                                )
+    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,)
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
