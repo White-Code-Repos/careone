@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="commission_worksheet_seq" model="ir.sequence">
+            <field name="name">Commission Worksheet Sequence</field>
+            <field name="code">sale.commission.sheet</field>
+            <field name="prefix">SC/</field>
+            <field name="padding">5</field>
+        </record>
+		
+		<record id="commission_product" model="product.template">
+			<field name="name">Commission Product</field>
+			<field name="is_commission_product">True</field>
+		</record>
+		
+    </data>
+</odoo>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<report 
+			id="report_commission_pdf"
+			string="Sales Commission Worksheet"
+			model="sale.commission.sheet" 
+			report_type="qweb-pdf"
+			file="bi_sales_commission_user_partner.commission_template" 
+			name="bi_sales_commission_user_partner.commission_template"
+		/>
+
+	</data>
+</odoo>

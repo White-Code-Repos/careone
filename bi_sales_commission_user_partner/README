@@ -1,0 +1,12 @@
+
+Version 13.0.0.1 : (21-11-19)
+		- Add group for access right.
+
+Version 13.0.0.2 : (21-05-20)
+		- Add pivot and and graph view in commission lines and commission worksheet.
+
+v = 13.0.0.3: issue fixed with multiple product with commission rate 
+
+Version 13.0.0.4 : (08-06-20)
+		- Fixed the issue of monthly commission worksheet scheduled action.
+

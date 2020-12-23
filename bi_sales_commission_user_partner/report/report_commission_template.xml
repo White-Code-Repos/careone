@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<template id="report_commission_template">
+		<t t-call="web.html_container">
+		<t t-call="web.external_layout">
+			<div class="page">
+				<center>
+				<h3><b>Sales Commission Worksheet Details</b></h3>
+				</center>
+				<br/>
+				<h3><b><span t-esc='doc.name'></span></b></h3><br/>
+				<table style='width:100%; border:2px solid grey'>
+					<tr style='line-height:15px'>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Sales Partner</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.sales_partner.name'></span></td>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Commission Product</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.commission_product_id.name'></span></td>
+					</tr>
+					<tr style='line-height:15px'>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Start Date</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.start_date'></span></td>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>End Date</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.end_date'></span></td>
+					</tr>
+					<tr style='line-height:15px'>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Total Commission Amount</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.total_commission_amt'></span></td>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Company</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.company_id.name'></span></td>
+					</tr>
+					<tr style='line-height:15px'>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Commission Invoice</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'></td>
+						<th style='width:25%; border:2px solid grey; padding: 5px'>Commission Paid</th>
+						<td style='width:25%; border:2px solid grey; padding: 5px'><span t-esc='doc.commission_paid'></span></td>
+					</tr>
+				</table>
+				
+				<br/><h3><b>Sales Commisssion Lines</b></h3><br/>
+				
+				<table style='width:100%; border:2px solid grey'>
+					<thead>
+						<tr style="line-height:15px; border: 2px solid grey;">
+							<th style='width:20%; border:2px solid grey; padding: 5px'>Commission Date</th>
+							<th style='width:20%; border:2px solid grey; padding: 5px'>Sales Partner</th>
+							<th style='width:20%; border:2px solid grey; padding: 5px'>Source Document</th>
+							<th style='width:20%; border:2px solid grey; padding: 5px'>Amount</th>
+							<th style='width:20%; border:2px solid grey; padding: 5px'>Commission Line Paid</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="line-height:15px; border: 2px solid grey;" t-foreach="doc.commission_line_ids" t-as="commission">
+							<td style='width:20%; border:2px solid grey; padding: 5px'>
+								<span t-esc='commission.commission_date'></span>
+							</td>
+							<td style='width:20%; border:2px solid grey; padding: 5px'>
+								<span t-esc='commission.sales_partner.name'></span>
+							</td>
+							<td style='width:20%; border:2px solid grey; padding: 5px'>
+								<span t-esc='commission.source'></span>
+							</td>
+							<td style='width:20%; border:2px solid grey; padding: 5px'>
+								<span t-esc='commission.amount'></span>
+							</td>
+							<td style='width:20%; border:2px solid grey; padding: 5px'>
+								<span t-esc='commission.state'></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</t>
+			</t>
+		</template>
+
+		<template id="commission_template">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="bi_sales_commission_user_partner.report_commission_template" />
+				</t>
+			</t>
+		</template>
+
+	</data>
+</openerp>
