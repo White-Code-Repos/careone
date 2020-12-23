@@ -491,7 +491,7 @@ class SalesOrderInherit(models.Model):
             for order in orders:
                 confirm_time = order.date_order
                 for line in order.order_line:
-                    if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id and not (line.product_uom_qty+rec.qty_counter) > rec.qty_per_day:
+                    if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
                         if current_hour in shift_hours:
                             if 0 in shift_hours and shift_hours[0] != 0:
                                 zer_index = shift_hours.index(0)
