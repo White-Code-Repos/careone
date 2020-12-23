@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sms_compose_wizard_form">
+      <field name="name">sms.compose.form</field>
+      <field name="model">sms.compose</field>
+      <field name="arch" type="xml">
+        <form string="sms">
+          <field name="body_text"/>
+          <group>
+            <group>
+              <field name="sms_to_lead" invisible='1'/>
+              <field name="gatewayurl_id" invisible='1'/>
+            </group>
+            <group>
+              <field name="template_id" widget="selection"/>
+            </group>
+          </group>
+          <footer>
+              <button string="Send" name="send_sms_action"  type="object" class="btn-primary"/>
+              <button string="Cancel" class="btn-default" special="cancel" />
+          </footer>
+          <script>
+            jQuery('footer button:first').click(function() { alert('Message sent Successfully......'); });
+          </script>
+        </form>
+      </field>
+    </record>
+    <record id="action_sms_compose_wizard" model="ir.actions.act_window">
+        <field name="name">Compose SMS</field>
+        <field name="res_model">sms.compose</field>
+        <field name="src_model">sms.compose</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+  </data>
+</odoo>

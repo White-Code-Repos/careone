@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_generate_attendance" model="ir.ui.view">
+			<field name="name">generate.missing.draft.attendance.wizard</field>
+			<field name="model">generate.missing.draft.attendance</field>
+			<field name="arch" type="xml">
+				<form string="Generate Missing Attendance">
+					<group>
+						<field name="time_zone"/>
+					</group>
+					<footer>
+						<button name="generate_attendance" string="Generate Missing Attendance"
+							type="object" class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_generate_time_attendance" model="ir.actions.act_window">
+			<field name="name">Generate Missing Attendance</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">generate.missing.draft.attendance</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem action="action_generate_time_attendance" id="menu_generate_time_attendance"
+			sequence="4" parent="hr_attendance.menu_hr_attendance_manage_attendances" />
+
+	</data>
+</openerp>

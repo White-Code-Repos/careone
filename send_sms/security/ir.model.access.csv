@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_send_sms,access_send_sms,model_send_sms,base.group_user,1,1,1,0
+access_sms_track,access_sms_track,model_sms_track,base.group_user,1,1,1,0
+access_gateway_setup,access_gateway_setup,model_gateway_setup,base.group_user,1,1,1,1

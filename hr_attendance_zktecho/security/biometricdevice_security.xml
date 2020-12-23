@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="group_biometric_device_manager" model="res.groups">
+		<field name="name">Biometric Manager</field>
+		<field name="category_id"
+			ref="hr_attendance_zktecho.module_category_hr_attendance_biometricdevice" />
+		<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+
+	<record id="group_biometric_device_user" model="res.groups">
+		<field name="name">Biometric User</field>
+		<field name="category_id"
+			ref="hr_attendance_zktecho.module_category_hr_attendance_biometricdevice" />
+		<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+</odoo>
