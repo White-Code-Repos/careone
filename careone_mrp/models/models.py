@@ -76,14 +76,30 @@ class MrpProduction(models.Model):
         self.mrp_group_id = mrp_grp_id
         self.location_src_id = mrp_grp_id.location_id
         picktype=self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
+        
+        
+        last_adj_date_sql = ("update stock_move \n"
+                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where production_id='"+str(self.id)+"'  \n"
+                    +"       and (location_dest_id = '15') order by \"date\" desc limit 1 ;")
 
-        self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        moves = self.env['stock.move.line'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
-        for move in moves:
-            move.write({'location_id':mrp_grp_id.location_id.id})
-        moves = self.env['stock.move'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
-        for move in moves:
-            move.write({'location_id':mrp_grp_id.location_id.id})
+        max_idsql =self.env.cr.execute(last_adj_date_sql)
+        max_id = self.env.cr.fetchone()
+
+        last_adj_date_sql = ("update stock_move_line \n"
+                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where production_id='"+str(self.id)+"'  \n"
+                    +"       and (location_dest_id = '15') order by \"date\" desc limit 1 ;")
+
+        max_idsql =self.env.cr.execute(last_adj_date_sql)
+        max_id = self.env.cr.fetchone()
+        
+        
+       # self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
+        #moves = self.env['stock.move.line'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+       #for move in moves:
+       #     move.write({'location_id':mrp_grp_id.location_id.id})
+       # moves = self.env['stock.move'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+       # for move in moves:
+       #     move.write({'location_id':mrp_grp_id.location_id.id})
         #self.write({'picking_type_id':
         #self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
         #,'location_src_id':mrp_grp_id.location_id})
