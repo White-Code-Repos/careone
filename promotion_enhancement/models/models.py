@@ -210,19 +210,19 @@ class SalesOrderInherit(models.Model):
         today_week_day = today.strftime("%A")
         is_applicable_programs_today=False
         if today_week_day == 'Saturday' and programs.is_str_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Sunday' and programs.is_sun_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Monday' and programs.is_mon_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Tuesday' and programs.is_tus_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Wednesday' and programs.is_wen_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Thursday' and programs.is_thur_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
         elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
-           is_applicable_programs_today = True
+            is_applicable_programs_today = True
 
 
 
