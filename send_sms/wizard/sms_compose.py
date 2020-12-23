@@ -25,7 +25,6 @@ class SMSComposer(models.TransientModel):
     sms_to_lead = fields.Char(string='To (Mobile)')
     gatewayurl_id = fields.Many2one('gateway_setup','SMS Gateway')
 
-    @api.multi
     def send_sms_action(self):
         active_ids = self.env.context.get('active_ids')
         for ids in active_ids:
