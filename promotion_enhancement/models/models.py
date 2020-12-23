@@ -138,17 +138,17 @@ class SalesOrderInherit(models.Model):
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
             self.is_generate_coupon = True
-            # coupon = self.env['sale.coupon'].create({
-            #     'program_id': program.id,
-            #     'state': 'reserved',
-            #     'partner_id': self.partner_id.id,
-            #     'start_hour_use': program.coupon_program_id.start_hour_use,
-            #     'end_hour_use': program.coupon_program_id.end_hour_use,
-            #     'start_date_use': program.coupon_program_id.start_date_use,
-            #     'end_date_use': program.coupon_program_id.end_date_use,
-            #     'discount_line_product_id': program.discount_line_product_id.id,
-            #     'order_id': self.id,
-            # })
+            coupon = self.env['sale.coupon'].create({
+                'program_id': program.id,
+                'state': 'reserved',
+                'partner_id': self.partner_id.id,
+                'start_hour_use': program.coupon_program_id.start_hour_use,
+                'end_hour_use': program.coupon_program_id.end_hour_use,
+                'start_date_use': program.coupon_program_id.start_date_use,
+                'end_date_use': program.coupon_program_id.end_date_use,
+                'discount_line_product_id': program.discount_line_product_id.id,
+                'order_id': self.id,
+            })
     def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
         self.ensure_one()
@@ -206,22 +206,23 @@ class SalesOrderInherit(models.Model):
             '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
             '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
         ])
-        #today_week_day = today.strftime("%A")
-        #is_applicable_programs_today=False
-        #if today_week_day == 'Saturday' and programs.is_str_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Sunday' and programs.is_sun_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Monday' and programs.is_mon_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Tuesday' and programs.is_tus_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Wednesday' and programs.is_wen_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Thursday' and programs.is_thur_promotion == True:
-        #    is_applicable_programs_today = True
-        #elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
-        #    is_applicable_programs_today = True
+        today = datetime.now().date()
+        today_week_day = today.strftime("%A")
+        is_applicable_programs_today=False
+        if today_week_day == 'Saturday' and programs.is_str_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Sunday' and programs.is_sun_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Monday' and programs.is_mon_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Tuesday' and programs.is_tus_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Wednesday' and programs.is_wen_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Thursday' and programs.is_thur_promotion == True:
+            is_applicable_programs_today = True
+        elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
+            is_applicable_programs_today = True
 
 
 
