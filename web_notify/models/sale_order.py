@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
             if already_member:
                 self.env.user.notify_success(message='Have Subscription')
 
-    vehicles_subscreptions_id = fields.Many2many('subscription.product','sale_subscription_lines_ids','sale_product','subscription_product', string="Vehicles", domain="[('partner_id','=',partner_id),('subs_id','=',subscription_id)]")
+    vehicles_subscreptions_id = fields.Many2many('subscription.product','sale_subscription_lines_ids','sale_product','subscription_product', string="Vehicles", domain="[('partner_id','=',partner_id),('subs_id','=',subscription_id),('vehicle_id','=',vehicle_id)]")
 
     @api.onchange('vehicles_subscreptions_id')
     def onchange_method(self):
