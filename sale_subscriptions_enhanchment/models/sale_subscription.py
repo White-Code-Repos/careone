@@ -28,6 +28,8 @@ class SalesSubscription(models.Model):
                     total_freeze_days = total_freeze_days + freeze.freeze_duration
                 initial_end_date = initial_end_date + timedelta(days=(30*this.template_id.recurring_rule_count)) + timedelta(days=total_freeze_days)
                 this.date = initial_end_date
+            if not this.date:
+                this.date = False
 
 
     freez_duration = fields.Integer('Freezing Duration', related='template_id.freez_duration')
