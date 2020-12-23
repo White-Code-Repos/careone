@@ -501,28 +501,24 @@ class SalesOrderInherit(models.Model):
                                     today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
                                     if datetime.strptime(today,
                                                          '%Y-%m-%d %H:%M') <= confirm_time <= now:
-                                        # rec.qty_counter += line.product_uom_qty
-                                        rec.write({'qty_counter':rec.qty_counter+line.product_uom_qty})
-                                        # rec.consumed_qty += line.product_uom_qty
-                                        rec.write({'consumed_qty':rec.consumed_qty+line.product_uom_qty})
+                                        rec.qty_counter += line.product_uom_qty
+                                        rec.consumed_qty += line.product_uom_qty
                                 elif zer_index <= current_hour_index:
                                     # second day
                                     yesterday = str((now - timedelta(days=1)).date()) + " " + str(
                                         shift_hours[0]) + ":00"
                                     if datetime.strptime(
                                             yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
-                                        # rec.qty_counter += line.product_uom_qty
-                                        rec.write({'qty_counter':rec.qty_counter+line.product_uom_qty})
-                                        # rec.consumed_qty += line.product_uom_qty
-                                        rec.write({'consumed_qty':rec.consumed_qty+line.product_uom_qty})
+                                        rec.qty_counter += line.product_uom_qty
+                                        rec.consumed_qty += line.product_uom_qty
+
                             else:
                                 today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
                                 if datetime.strptime(today,
                                                      '%Y-%m-%d %H:%M') <= confirm_time <= now:
-                                    # rec.qty_counter += line.product_uom_qty
-                                    rec.write({'qty_counter':rec.qty_counter+line.product_uom_qty})
-                                    # rec.consumed_qty += line.product_uom_qty
-                                    rec.write({'consumed_qty':rec.consumed_qty+line.product_uom_qty})
+                                    rec.qty_counter += line.product_uom_qty
+                                    rec.consumed_qty += line.product_uom_qty
+
             # if rec.qty_counter > rec.qty_per_day:
             #     raise ValidationError(
             #         "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
