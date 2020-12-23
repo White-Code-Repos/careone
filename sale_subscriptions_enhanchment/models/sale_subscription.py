@@ -248,8 +248,9 @@ class SalesSubscriptionFreeze(models.Model):
 
     @api.onchange('start_date','end_date')
     def _calc_freeze_duration(self):
-        if self.start_date and self.end_date:
-            self.freeze_duration = (self.end_date - self.start_date).days + 1
+        for this in self:
+            if this.start_date and this.end_date:
+                this.freeze_duration = (this.end_date - this.start_date).days + 1
     @api.model
     def create(self, values):
         subscription_id = self.env['sale.subscription'].browse(values['subscription_id'])
