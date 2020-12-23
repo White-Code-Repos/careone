@@ -243,20 +243,19 @@ class SalesSubscriptionFreeze(models.Model):
     description = 'subscription Freezes'
     start_date = fields.Date("Start Date", readonly=False)
     end_date = fields.Date("End Date", readonly=False)
-    freeze_duration = fields.Integer(string="Duration", required=False, compute="_calc_freeze_duration" ,stored=True)
+    freeze_duration = fields.Integer(string="Duration", required=False, )
     subscription_id = fields.Many2one('sale.subscription', readonly=False)
 
     @api.onchange('start_date','end_date')
-    def _calc_freeze_duration(self):
-        for this in self:
-            if this.start_date and this.end_date:
-                this.freeze_duration = (this.end_date - this.start_date).days + 1
+    def calc_freeze_duration(self):
+        if self.start_date and self.end_date:
+            self.freeze_duration = (self.end_date - self.start_date).days + 1
     @api.model
     def create(self, values):
         subscription_id = self.env['sale.subscription'].browse(values['subscription_id'])
         start_date = values['start_date']
         end_date = values['end_date']
-        freeze_duration = self.freeze_duration
+        freeze_duration = values['freeze_duration']
         freeze_duration_limit = subscription_id.template_id.freez_duration
         freeze_times_limit = subscription_id.template_id.freeze_for
         old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
@@ -273,25 +272,25 @@ class SalesSubscriptionFreeze(models.Model):
         #     res.subscription_id
         return res
 
-    @api.model
-    def write(self, values):
-        subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
-        start_date = self.start_date
-        end_date = self.end_date
-        freeze_duration = self.freeze_duration
-        freeze_duration_limit = subscription_id.template_id.freez_duration
-        freeze_times_limit = subscription_id.template_id.freeze_for
-        old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
-        if len(old_freezes) >= freeze_times_limit:
-            raise ValidationError("This subscription reached freezing times limit")
-        current_freezed_duration = 0
-        for freeze in old_freezes:
-            current_freezed_duration = current_freezed_duration + freeze.freeze_duration
-        current_freezed_duration = current_freezed_duration + freeze_duration
-        if current_freezed_duration >= freeze_duration_limit:
-            raise ValidationError("This subscription reached freezing duration limit")
-        res = super(SalesSubscriptionFreeze, self).write(values)
-        return res
+    # @api.model
+    # def write(self, values):
+    #     subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
+    #     start_date = self.start_date
+    #     end_date = self.end_date
+    #     freeze_duration = self.freeze_duration
+    #     freeze_duration_limit = subscription_id.template_id.freez_duration
+    #     freeze_times_limit = subscription_id.template_id.freeze_for
+    #     old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
+    #     if len(old_freezes) >= freeze_times_limit:
+    #         raise ValidationError("This subscription reached freezing times limit")
+    #     current_freezed_duration = 0
+    #     for freeze in old_freezes:
+    #         current_freezed_duration = current_freezed_duration + freeze.freeze_duration
+    #     current_freezed_duration = current_freezed_duration + freeze_duration
+    #     if current_freezed_duration >= freeze_duration_limit:
+    #         raise ValidationError("This subscription reached freezing duration limit")
+    #     res = super(SalesSubscriptionFreeze, self).write(values)
+    #     return res
 
     # def get_freeze_duration(self):
     #     for record in self:
