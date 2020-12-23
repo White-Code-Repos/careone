@@ -502,7 +502,6 @@ class SalesOrderInherit(models.Model):
                                     if datetime.strptime(today,
                                                          '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                         rec.qty_counter += line.product_uom_qty
-                                        rec.consumed_qty += line.product_uom_qty
                                 elif zer_index <= current_hour_index:
                                     # second day
                                     yesterday = str((now - timedelta(days=1)).date()) + " " + str(
@@ -510,15 +509,11 @@ class SalesOrderInherit(models.Model):
                                     if datetime.strptime(
                                             yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                         rec.qty_counter += line.product_uom_qty
-                                        rec.consumed_qty += line.product_uom_qty
-
                             else:
                                 today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
                                 if datetime.strptime(today,
                                                      '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                     rec.qty_counter += line.product_uom_qty
-                                    rec.consumed_qty += line.product_uom_qty
-
             # if rec.qty_counter > rec.qty_per_day:
             #     raise ValidationError(
             #         "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
@@ -532,6 +527,6 @@ class SalesOrderInherit(models.Model):
                     if (rec.qty_counter) > rec.qty_per_day:
                         raise ValidationError(
                             "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
-                    # rec.consumed_qty += line.product_uom_qty
-                    # rec.qty_counter += line.product_uom_qty
+                    rec.consumed_qty += line.product_uom_qty
+                    rec.qty_counter += line.product_uom_qty
         return super(SalesOrderInherit, self).action_confirm()
