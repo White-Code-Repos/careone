@@ -11,7 +11,8 @@
         'security/ir.model.access.csv',
         'views/sale_subscription_template.xml',
         'views/sale_subscription.xml',
-        'views/product.xml'
+        'views/product.xml',
+        'views/templates.xml'
     ],
     'installable': True,
     'auto_install': False,
