@@ -285,7 +285,8 @@ class SalesSubscriptionFreeze(models.Model):
             raise ValidationError("This subscription reached freezing times limit")
         current_freezed_duration = 0
         for freeze in old_freezes:
-            current_freezed_duration = current_freezed_duration + freeze.freeze_duration
+            if not freeze == self:
+                current_freezed_duration = current_freezed_duration + freeze.freeze_duration
         current_freezed_duration = current_freezed_duration + freeze_duration
         if current_freezed_duration > freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
