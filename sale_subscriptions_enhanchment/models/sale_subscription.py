@@ -478,8 +478,8 @@ class SalesOrderInherit(models.Model):
             for line in self.order_line:
                 line.price_unit = 0
     def action_confirm(self):
-        orders = self.env['sale.order'].search(
-            [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
+        # orders = self.env['sale.order'].search(
+        #     [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
         shift_hours = []
         shift_duration = self.subscription_id.template_id.duration
         now = datetime.now() + timedelta(hours=2)
@@ -496,7 +496,7 @@ class SalesOrderInherit(models.Model):
         current_hour = int(now.strftime("%H"))
         for rec in self.subscription_id.subs_products_ids:
             # rec.qty_counter = 0
-            for order in orders:
+            for order in self:
                 confirm_time = order.date_order
                 for line in order.order_line:
                     if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
