@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
 
                 max_idsql =self.env.cr.execute(last_adj_date_sql)
             else:
-                raise UserError(_("Sorry You Are Trying To Edit MO that already DONE."))
+                raise UserError("Sorry You Are Trying To Edit MO that already DONE.")
 
     @api.depends("production_ids")
     def _compute_production_count(self):
