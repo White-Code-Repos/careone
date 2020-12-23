@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
                             +" ,picking_type_id='"+str(operation_type.id)+"' \n"
                             +" ,location_src_id='"+str(self.mrp_group_id.location_id.id)+"' \n"
                             
-                            +" ,location_dest_id='"+str(operation_type.default_location_dest_id.id)+"' where reference ='"+str(self.name)+"';")
+                            +" ,location_dest_id='"+str(operation_type.default_location_dest_id.id)+"' where origin ='"+str(self.name)+"';")
                 max_idsql =self.env.cr.execute(last_adj_date_sql)
                 
                 
