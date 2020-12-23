@@ -487,7 +487,7 @@ class SalesOrderInherit(models.Model):
                 break
         current_hour = int(now.strftime("%H"))
         for rec in self.subscription_id.subs_products_ids:
-            rec.qty_counter = 0
+            # rec.qty_counter = 0
             for order in orders:
                 confirm_time = order.date_order
                 for line in order.order_line:
