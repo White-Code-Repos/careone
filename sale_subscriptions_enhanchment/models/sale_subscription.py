@@ -287,7 +287,7 @@ class SalesSubscriptionFreeze(models.Model):
         for freeze in old_freezes:
             current_freezed_duration = current_freezed_duration + freeze.freeze_duration
         current_freezed_duration = current_freezed_duration + freeze_duration
-        if current_freezed_duration >= freeze_duration_limit:
+        if current_freezed_duration > freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
         return res
 
