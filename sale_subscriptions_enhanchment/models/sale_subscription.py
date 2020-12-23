@@ -464,7 +464,11 @@ class SalesOrderInherit(models.Model):
     #                     'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
     #                     'product_uom': rec.product_id.uom_id.id,
     #                 })
-
+    @api.onchange('order_line')
+    def change_price_cancel(self):
+        if self.subscription_id:
+            for line in self.order_line:
+                line.price_unit = 0 
     def action_confirm(self):
         orders = self.env['sale.order'].search(
             [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
