@@ -281,7 +281,7 @@ class SalesSubscriptionFreeze(models.Model):
         freeze_duration_limit = subscription_id.template_id.freez_duration
         freeze_times_limit = subscription_id.template_id.freeze_for
         old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
-        if len(old_freezes) >= freeze_times_limit:
+        if len(old_freezes) > freeze_times_limit:
             raise ValidationError("This subscription reached freezing times limit")
         current_freezed_duration = 0
         for freeze in old_freezes:
