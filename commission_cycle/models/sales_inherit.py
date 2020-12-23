@@ -100,6 +100,7 @@ class SalesOrderInherit(models.Model):
                                             break
                                     self.env['commission.report'].create([{'employee_id': employee.id,
                                                                            'rule_id': order_rule.id,
+                                                                           'commission_date':order.date_order,
                                                                            'plan_id': related_plan.id,
                                                                            'commission_item': str(order.product_id.name),
                                                                            'accomplish': order.product_uom_qty,
@@ -112,7 +113,7 @@ class SalesOrderInherit(models.Model):
                                      ('commission_item', '=', order.product_id.categ_id.name)])
                                 if categ_report_line:
                                     new_acc = categ_report_line.accomplish + order.price_subtotal
-                                    categ_report_line.write({'accomplish': new_acc})
+                                    categ_report_line.write({'accomplish': new_acc,'commission_date':order.date_order})
                                     for layer in categ_report_line.rule_id.category_rule_info_ids:
                                         if layer.min_amount <= categ_report_line.accomplish <= layer.max_amount:
                                             if layer.product_calculation_type == 'fixed':
@@ -134,6 +135,7 @@ class SalesOrderInherit(models.Model):
                                     self.env['commission.report'].create([{'employee_id': employee.id,
                                                                            'rule_id': order_rule.id,
                                                                            'plan_id': related_plan.id,
+                                                                           'commission_date':order.date_order,
                                                                            'commission_item': str(
                                                                                order.product_id.categ_id.name),
                                                                            'accomplish': order.price_subtotal,
