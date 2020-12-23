@@ -23,6 +23,35 @@ class SaleOrder(models.Model):
     @api.onchange('mrp_group_id')
     def set_mrp_users(self):
         self.user_ids = self.mrp_group_id.user_ids
+        con_mrp = self.env['mrp.production'].search([('origin','=',self.name)])
+        if con_mrp:
+            if con_mrp.state !='done':
+                operation_type = self.env['stock.picking.type'].search([('default_location_src_id','=',self.mrp_group_id.location_id.id),('code','=','mrp_operation')],limit=1)
+                last_adj_date_sql = ("update mrp_production \n"
+                            +"   set mrp_group_id ='"+str(self.mrp_group_id.id)+"' \n"
+                            +" ,picking_type_id='"+str(operation_type.id)+"' \n"
+                            +" ,location_src_id='"+str(self.mrp_group_id.location_id.id)+"' \n"
+                            
+                            +" ,location_dest_id='"+str(operation_type.default_location_dest_id.id)+"' where origin ='"+str(self.name)+"';")
+                max_idsql =self.env.cr.execute(last_adj_date_sql)
+                
+                
+                
+                
+                last_adj_date_sql = ("update stock_move \n"
+                            +"   set location_id ="+str(self.mrp_group_id.location_id.id)+" where reference ='"+str(con_mrp.name)+"'  \n"
+                            +"       and (location_dest_id = '15');")
+
+                max_idsql =self.env.cr.execute(last_adj_date_sql)
+                #max_id = self.env.cr.fetchone()
+
+                last_adj_date_sql = ("update stock_move_line \n"
+                            +"   set location_id ="+str(self.mrp_group_id.location_id.id)+" where reference='"+str(con_mrp.name)+"'  \n"
+                            +"       and (location_dest_id = '15');")
+
+                max_idsql =self.env.cr.execute(last_adj_date_sql)
+            else:
+                raise UserError(_("Sorry You Are Trying To Edit MO that already DONE."))
 
     @api.depends("production_ids")
     def _compute_production_count(self):
