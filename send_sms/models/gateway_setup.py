@@ -37,7 +37,6 @@ class GateWaysetup(models.Model):
                 return e
 
 
-    @api.one
     def sms_test_action(self):
         active_model = 'gateway_setup'
         message = self.env['send_sms'].render_template(self.message, active_model, self.id)
