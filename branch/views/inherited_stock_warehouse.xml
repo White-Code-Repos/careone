@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_warehouse_inherit_branch" model="ir.ui.view">
+            <field name="name">view.warehouse.inherit.branch</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="branch_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_picking_type_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.stock.picking.type.inherit.branch</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="warehouse_id" position="after">
+                    <field name="branch_id" invisible="1"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

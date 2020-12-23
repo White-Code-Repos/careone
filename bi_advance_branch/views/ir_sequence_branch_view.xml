@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_branch_ir_sequence_view_" model="ir.ui.view">
+            <field name="name">ir.sequence.view.res.branch</field>
+            <field name="model">res.branch</field>
+            <field name="inherit_id" ref="branch.branch_res_branch_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="replace">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+                        <field name="branch_logo" widget='image' class="oe_avatar" options='{"size": [90, 90]}'/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                                <field name="telephone"/>
+                                <field name="address"/>
+                            </group>
+                            <group>
+                                <field name="apply_prefix"/>
+                                <field name="prefix" attrs="{'invisible':[('apply_prefix','=',False)],'required':[('apply_prefix','=',True)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
