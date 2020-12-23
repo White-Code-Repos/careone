@@ -1,0 +1,245 @@
+<odoo>
+
+	 <template id="customer_profile_frontend" inherit_id="website.assets_frontend" name="Customer profile Frontend">
+       <xpath expr="." position="inside">
+          <link rel='stylesheet' href='/bi_website_warranty_registration/static/src/css/profile_css.css'/>
+          <script type="text/javascript"  src="/bi_website_warranty_registration/static/src/js/custom.js"></script>  
+      </xpath>
+    </template>
+		
+    
+    <template id="bi_warranty_reg" name="Warranty Registration" page="True">
+			<t t-call="website.layout">
+			<form action="/warranty-thankyou" method="post">
+				<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+				<h1 class="well text-center">Warranty Registration Form</h1>
+				<t t-if="website.user_id == user_id"><small> or </small>
+				        <t t-set='connect' t-value="request.env['ir.config_parameter'].sudo().get_param('auth_signup.allow_uninvited') == 'True' and ('signup', 'Sign Up') or ('login', 'Log In')"/>
+				        <a t-attf-href='/web/{{connect[0]}}?redirect=/warranty-registration' class='btn btn-primary' style="margin-top: -11px"><t t-esc='connect[1]'/></a></t>
+		        <br/>
+				<p><h2 class='card' style="text-align:center; background-color:grey; color:white">Product Information</h2></p>
+					
+					<div class="card">
+					<div class="col-md-12 oe_cart">
+					<div class="well row">
+						
+						<t t-if="request.params.get('warranty_exist')">
+						  <div class='alert alert-warning alert-dismissible fade in' role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+							<t t-esc="request.params.get('warranty_exist')"/>
+						  </div>
+						</t>
+						<t t-if="request.params.get('warranty_msg')">
+						  <div class='alert alert-warning alert-dismissible fade in' role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+							<t t-esc="request.params.get('warranty_msg')"/>
+						  </div>
+						</t>
+						
+						
+						<div
+							t-attf-class="form-group #{error and 'product_id' in error and 'has-error' or ''} col-lg-6">
+							<label class="control-label" for="product_id">Product
+							</label>
+
+							<t t-set="product_list" t-value="website.get_product_list()" />
+							<select name="product_id" class="form-control" required="True">
+								<option value="">Choose a Product...</option>
+								<t t-foreach="product_list" t-as="product">
+									<option t-att-value="product.id" t-att-selected="product.id == product_id">
+										<t t-esc="product.name"/>
+										<t t-esc="att.name"/>
+									</option>
+								</t>
+							</select>
+						</div>
+						  
+						  <div
+							class="form-group #{error and 'product_serial_id' in error and 'has-error' or ''} col-lg-6">
+							<label class="control-label" for="product_serial_id">Serial No</label>
+							<input type="text" required="True" name="product_serial_id" class="form-control"/>
+						</div>
+					
+						  <div
+							class="form-group #{error and 'merchant' in error and 'has-error' or ''} col-lg-6">
+							<label class="control-label" for="merchant">Merchant</label>
+							<input type="text" required="True" name="merchant" class="form-control"/>
+						</div>
+						<div
+							t-attf-class="form-group #{error and 'type' in error and 'has-error' or ''} col-lg-6">
+							<label class="control-label" for="type">Warranty Type</label>
+							<select name="type" class="form-control" required="True">
+								<option value=""></option>
+								<option value="free">Free</option>
+								<option value="paid">Paid</option>
+							</select>
+						</div>
+					</div>
+									  
+				<br/>
+				<h2 class='card' style="text-align:center; background-color:grey; color:white">Customer Information</h2><br/>
+
+					<div class="well row">
+						   <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''} col-md-12 div_name">
+                            <label class="control-label" for="name">Name</label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="text" name="name" class="form-control" required="True"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="text" name="name" required="True" class="form-control" t-att-value="user_id.partner_id.name" />
+                            </t>
+                        </div>
+                        <div class="clearfix" />
+                        
+                        <div t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''} col-md-6" id="div_email">
+                            <label class="control-label" for="email">Email</label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="email" name="email" class="form-control" required="True"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="email" name="email" required="True" class="form-control" t-att-value="user_id.partner_id.email" />
+                            </t>
+                        </div>
+                        
+                        <div t-attf-class="form-group #{error and 'phone' in error and 'has-error' or ''} col-md-6" id="div_phone">
+                            <label class="control-label" for="phone">Phone</label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="tel" name="phone" required="True" class="form-control"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="tel" name="phone" required="True" class="form-control" t-att-value="user_id.partner_id.phone" />
+                            </t>
+                        </div>
+                        <div class="clearfix" />
+                        
+                        <div t-attf-class="form-group #{error and 'company_name' in error and 'has-error' or ''} col-md-12">
+                            <label class="control-label" for="company_name">Company Name</label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="text" name="company_name" class="form-control" required="True"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="text" name="company_name" required="True" class="form-control" t-att-value="user_id.partner_id.company_id.name" />
+                            </t>
+                        </div>
+                        
+                        <div class="clearfix" />
+                        <div t-attf-class="form-group #{error and 'street' in error and 'has-error' or ''} col-md-12 div_street">
+                            <label class="control-label" for="street">Street <span class="hidden-xs"> and Number</span></label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="text" name="street" class="form-control" required="True"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="text" name="street" required="True" class="form-control" t-att-value="user_id.partner_id.company_id.street" />
+                            </t>
+                        </div>
+                        <div class="clearfix" />
+                        
+                        
+                            <div t-attf-class="form-group #{error and 'zip' in error and 'has-error' or ''} col-sm-4">
+                                <label class="control-label" for="zip">Zip Code</label>
+                                <t t-if="website.user_id == user_id">
+                                	<input type="text" name="zip" class="form-control" required="True"/>
+                                </t>
+                                <t t-if="website.user_id != user_id">
+                                	<input type="text" name="zip" required="True" class="form-control" t-att-value="user_id.partner_id.company_id.zip" />
+                                </t>
+                            </div>
+                    
+                        <div t-attf-class="form-group #{error and 'city' in error and 'has-error' or ''} col-sm-8 div_city">
+                            <label class="control-label" for="city">City</label>
+                            <t t-if="website.user_id == user_id">
+                            	<input type="text" name="city" class="form-control" required="True"/>
+                            </t>
+                            <t t-if="website.user_id != user_id">
+                            	<input type="text" name="city" required="True" class="form-control" t-att-value="user_id.partner_id.company_id.city" />
+                            </t>
+                        </div>
+                        
+                        <div class="clearfix" />
+		                    <div
+								t-attf-class="form-group #{error and 'country_id' in error and 'has-error' or ''} col-lg-6">
+								<label class="control-label" for="country_id">Country
+								</label>
+
+								<select name="country_id" class="form-control" required="True">
+									<option value="">Select an option</option>
+									<t t-set="country_list" t-value="website.get_country_list()" />
+									<t t-foreach="country_list" t-as="country">
+										<option t-att-value="country.id" t-att-selected="country.id == country_id">
+											<t t-esc="country.name" />
+										</option>
+									
+									</t>
+								</select>
+							</div>
+                        <div
+							t-attf-class="form-group #{error and 'state_id' in error and 'has-error' or ''} col-lg-6">
+							<label class="control-label" for="state_id">State</label>
+							<t t-set="state_list" t-value="website.get_state_list()" />
+							<select name="state_id" class="form-control" required="True">
+								<option value="">Select an option</option>
+								<t t-foreach="state_list or []" t-as="state">
+									<option t-att-value="state.id"
+										t-att-data-country_id="state.country_id.id">
+										<t t-esc="state.name" />
+									</option>
+								</t>
+							
+							</select>
+						</div>
+	  
+				  </div>
+				  
+				  <h2 class='card' style="text-align:center; background-color:grey; color:white">Comment</h2><br/>
+				  	
+					<div class="well row">
+						<div
+							class="form-group #{error and 'comment' in error and 'has-error' or ''} col-lg-12">
+							<label class="control-label" for="comment">Your feedback is important to us. It helps us improve our products and stay successful.</label>
+							<textarea name="comment" required="True" class="form-control"/>
+						</div>
+					</div>
+					<div class="row">
+					
+					   <div class="form-group #{error and 'terms_conditions' in error and 'has-error' or ''} col-lg-12">
+			
+							<input type="checkbox" required="True" name="terms_conditions" id="terms_conditions"/>
+							<label style="cursor:auto"> I Accept the Terms &amp; Conditions </label>
+						</div>
+					</div>
+					
+				  	
+				  </div>
+				  
+				  <p><button type="submit" class="btn btn-primary a-submit">Send</button></p>
+				  </div>
+			</form>	  
+			</t>
+		</template>
+		
+		<template id="reg_thankyou" name="Registration completed Thank You">
+			<t t-call="website.layout">
+				<div id="wrap">
+					<div class="oe_structure" />
+					<div class="container">
+						<h1>Thank you!</h1>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-success">
+									Warranty Registration Completed. Thank you. 
+									<button type="button" class="close" data-dismiss="alert">&amp;times;
+									</button>
+								</div>
+								<div class="alert alert-success">
+									Please Create Invoice for the Warranty. 
+									<button type="button" class="close" data-dismiss="alert">&amp;times;
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="oe_structure" />
+				</div>
+			</t>
+		</template>
+</odoo>

@@ -30,7 +30,7 @@ class gen_journal_entry(models.TransientModel):
     file_to_upload = fields.Binary('File')
     import_option = fields.Selection([('csv', 'CSV File'),('xls', 'XLS File')],string='Select',default='csv')
 
-    
+    @api.multi
     def find_account_id(self, account_code ): 
       if account_code:
         account_ids   = self.env['account.account'].search([('code', '=', account_code )])
@@ -41,14 +41,14 @@ class gen_journal_entry(models.TransientModel):
         raise Warning(_('Wrong Account Code') % account_code)
 
 
-    
+    @api.multi
     def check_desc(self, name): 
       if name:
         return name
       else:
         return  '/' 
 
-    
+    @api.multi
     def find_account_analytic_id(self, analytic_account_name):
       analytic_account_id  = self.env['account.analytic.account'].search([('name', '=',analytic_account_name)])
       if analytic_account_id:
@@ -57,7 +57,7 @@ class gen_journal_entry(models.TransientModel):
       else: 
         raise Warning(_('Wrong Analytic Account Name %s') % analytic_account_name)
 
-    
+    @api.multi
     def find_partner(self, partner_name): 
       partner_ids = self.env['res.partner'].search([('name', '=', partner_name)])
       if partner_ids:
@@ -66,7 +66,7 @@ class gen_journal_entry(models.TransientModel):
       else:
         partner_id = None 
 
-    
+    @api.multi
     def check_currency(self, cur_name): 
       currency_ids = self.env['res.currency'].search([('name', '=', cur_name)])
       if currency_ids:
@@ -76,7 +76,7 @@ class gen_journal_entry(models.TransientModel):
         currency_id= None
         return  currency_id
 
-    
+    @api.multi
     def create_import_move_lines(self, values):
       move_line_obj = self.env['account.move.line']
       move_obj = self.env['account.move']
@@ -144,7 +144,7 @@ class gen_journal_entry(models.TransientModel):
           raise Warning(_('Wrong Account Code %s') % account_anlytic_account)  
       return values
 
-    
+    @api.multi
     def import_move_lines (self):
       if  self.import_option == 'csv':
         try:

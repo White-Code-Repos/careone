@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Sale order Inherit Form View to Modify it -->
+        <record id="view_order_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.order.form.inherit.branch</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_information']" position="inside">
+                    <!-- Add your fields or attributes here -->
+                    <group string="Branch" name="branch">
+                        <group>
+                            <field name="branch_id"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Sale order Inherit search View to Modify it -->
+        <record id="view_sales_order_filter_inherit_branch" model="ir.ui.view">
+            <field name="name">view.sales.order.filter.inherit.branch</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                        <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

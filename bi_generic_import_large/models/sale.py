@@ -73,13 +73,12 @@ class gen_sale(models.TransientModel):
                     else:
                         vehicle_id = False
 
-                    if not vehicle_id:
-                        return sale_search
-                    self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_search.id])
                     if vehicle_id:
-                        vehicle_id.write({
-                            'license_plate' : license_plate
-                        })
+                        self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_search.id])
+                        if vehicle_id:
+                            vehicle_id.write({
+                                'license_plate' : license_plate
+                            })
                     return sale_search
                 else:
                     raise Warning(_('Pricelist is different for "%s" .\n Please define same.') % values.get('order'))
@@ -231,13 +230,12 @@ class gen_sale(models.TransientModel):
             else:
                 vehicle_id = False
 
-            if not vehicle_id:
-                return sale_id
-            self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_id.id])
+            if vehicle_id:
+                self.env.cr.execute("update sale_order set vehicle_id=%s where id=%s", [vehicle_id.id,sale_id.id])
 
-            vehicle_id.write({
-                'license_plate' : license_plate
-            })
+                vehicle_id.write({
+                    'license_plate' : license_plate
+                })
             return sale_id
 
     
@@ -328,8 +326,20 @@ class gen_sale(models.TransientModel):
         #                                     'discount':values.get('disc')
 
         #                                     })
+        if values.get('disc'):
+            disc = values.get('disc')
+        else:
+            disc = 0.0
+        if values.get('quantity'):
+            quantity = values.get('quantity')
+        else:
+            quantity = 0.0
+        if values.get('price'):
+            price = values.get('price')
+        else:
+            price = 0.0
         res = self.env.cr.execute("""INSERT INTO sale_order_line (order_id,product_id,name,product_uom_qty,product_uom,price_unit,company_id,customer_lead,discount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""" , 
-                (sale_id.id,product_id.id,values.get('description'),values.get('quantity'),product_uom.id,values.get('price'),sale_id.company_id.id,0.0,values.get('disc')) )                                        
+                (sale_id.id,product_id.id,values.get('description'),quantity,product_uom.id,price,sale_id.company_id.id,0.0,disc) )                                        
         so_order_lines = order_line_obj.search([],order='id desc', limit=1)
         if tag_ids:
             so_order_lines.write({'analytic_tag_ids' : [(6, 0, tag_ids)]})

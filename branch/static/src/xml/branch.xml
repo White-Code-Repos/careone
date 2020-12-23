@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="default_branch_template" inherit_id="web.template" xml:space="preserve">
+
+    <t t-name="SwitchBranchMenu">
+    <li class="o_switch_branch_menu">
+        <a role="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-expanded="false" href="#" title="Dropdown menu">
+            <span t-attf-class="#{widget.isMobile ? 'fa fa-building-o' : 'oe_topbar_name'}">
+                <t t-if="!widget.isMobile"><t t-esc="widget.current_branch_name"/></t>
+            </span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" role="menu">
+            <t t-foreach="widget.user_branches" t-as="branch">
+                <div class="dropdown-item1 d-flex py-0 px-0" data-menu="branch" t-att-data-branch-id="branch[0]">
+                    <t t-set="is_allowed" t-value="widget.allowed_branch_ids.includes(branch[0])"/>
+                    <t t-set="is_current" t-value="branch[0] === widget.current_branch"/>
+                    <div role="menuitemcheckbox" t-att-aria-checked="is_allowed" t-att-aria-label="branch[1]" tabindex="0" class="ml-auto pl-3 pr-3 border border-top-0 border-left-0 border-bottom-0 toggle_branch o_py">
+                        <span style="height: 2rem;">
+                            <t t-if="is_allowed">
+                                <i class="fa fa-fw fa-check-square pt-2"></i>
+                            </t>
+                            <t t-if="!is_allowed">
+                                <i class="fa fa-fw fa-square-o pt-2"></i>
+                            </t>
+                        </span>
+                    </div>
+                    <div role="button" t-att-aria-pressed="is_current" aria-label="Switch to this branch" tabindex="0" class="d-flex flex-grow-1 align-items-center py-0 log_into1 pl-3 o_py" t-att-style="is_current ? 'background-color: lightgrey;' : ''">
+                        <t t-if="is_allowed">
+                            <span class='mr-3 branch_label'>
+                                <t t-esc="branch[1]"/>
+                            </span>
+                        </t>
+                        <t t-if="!is_allowed">
+                            <span class='mr-3 branch_label text-muted'>
+                                <t t-esc="branch[1]"/>
+                            </span>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </li>
+</t>
+</templates>

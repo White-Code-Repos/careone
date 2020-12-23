@@ -40,7 +40,7 @@ class gen_product_variant(models.TransientModel):
     product_option = fields.Selection([('create','Create Product'),('update','Update Product')],string='Option', required=True,default="create")
     product_search = fields.Selection([('by_code','Search By Code'),('by_barcode','Search By Barcode')],string='Search Product')
 
-    
+    @api.multi
     def create_product_variant(self,values):
         product_tmpl_obj = self.env['product.template']
         # product_obj = self.env['product.product']
@@ -225,7 +225,7 @@ class gen_product_variant(models.TransientModel):
             })
         return res
 
-    
+    @api.multi
     def create_product(self, values):
         product_tmpl_obj = self.env['product.template']
         # product_obj = self.env['product.product']
@@ -437,7 +437,7 @@ class gen_product_variant(models.TransientModel):
             })
         return res
 
-    
+    @api.multi
     def import_product_variant(self):
         lst=[]
         if self.import_option == 'csv':

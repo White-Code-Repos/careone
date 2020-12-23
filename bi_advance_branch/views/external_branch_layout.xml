@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="external_branch_layout">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-elif="o and 'branch_id' in o">
+            <t t-set="branch" t-value="o.branch_id.sudo()"/>
+        </t>
+
+        <t t-if="o.branch_id">
+            <t t-call="bi_advance_branch.external_layout_branch_standard"><t t-raw="0"/></t>
+        </t>
+        <t t-else="">
+             <t t-call="web.external_layout"><t t-raw="0"/></t>
+        </t>     
+
+
+    </template>
+
+    <template id="external_layout_branch_standard">
+        <div class="header">
+            <div class="row">
+                <div class="col-3 mb4">
+                     <img t-if="o.branch_id.branch_logo" t-att-src="image_data_uri(o.branch_id.branch_logo)" style="max-height: 45px;" alt="Logo"/>
+                </div>
+            </div>
+            <div t-if="o.branch_id.branch_logo" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="branch_details">
+                    <div t-field ="o.branch_id"/>
+                    <div t-field ="o.branch_id.address"/>
+                    <div t-field ="o.branch_id.telephone"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <li t-if="o.branch_id" class="list-inline-item">Branch: <span t-field="o.branch_id"/></li>
+                    <li t-if="o.branch_id.telephone" class="list-inline-item">Phone: <span t-field="o.branch_id.telephone"/></li>
+                </ul>
+                
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo> 

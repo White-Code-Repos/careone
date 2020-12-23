@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_invoice_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.account.payment.invoice.form.inherit.branch</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='communication']" position="after">
+                    <!-- Add your fields or attributes here -->
+                        <field name="branch_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_payment_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.account.payment.invoice.form.inherit.branch</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='communication']" position="after">
+                    <!-- Add your fields or attributes here -->
+                        <field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
