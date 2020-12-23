@@ -119,7 +119,7 @@ class SendSMS(models.Model):
             render_result = u""
 
         return render_result
-    @api.multi
+
     def create_action(self):
         action_obj = self.env['ir.actions.act_window'].sudo()
         view = self.env.ref('send_sms.sms_compose_wizard_form')
@@ -141,7 +141,7 @@ class SendSMS(models.Model):
             'ref_ir_act_window': action.id,
         })
         return True
-    @api.multi
+
     def unlink_action(self):
         for template in self:
             if template.ref_ir_act_window:
