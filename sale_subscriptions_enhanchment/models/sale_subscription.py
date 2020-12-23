@@ -22,7 +22,6 @@ class SalesSubscription(models.Model):
 
     subs_products_ids = fields.One2many(comodel_name="subscription.product", inverse_name="subs_id", string="",
                                         required=False, )
-    # coupon_program = fields.Many2one('sale.coupon.program', 'Coupon Program')
     apper_generate_coupon = fields.Boolean(default=False)
 
     date = fields.Date('End Date', compute="_compute_date_end")
