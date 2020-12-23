@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sale_commission_sheet,sale_commission_sheet,bi_sales_commission_user_partner.model_sale_commission_sheet,,1,1,1,1
+sale_commission_line,sale_commission_line,bi_sales_commission_user_partner.model_sale_commission_line,,1,1,1,1
+commission_settings,commission_settings,bi_sales_commission_user_partner.model_commission_settings,,1,1,1,1
+product_commission_level,product_commission_level,bi_sales_commission_user_partner.model_product_commission_level,,1,1,1,1
+commission_level,commission_level,bi_sales_commission_user_partner.model_commission_level,,1,1,1,1
