@@ -243,7 +243,7 @@ class SalesSubscriptionFreeze(models.Model):
     description = 'subscription Freezes'
     start_date = fields.Date("Start Date", readonly=False)
     end_date = fields.Date("End Date", readonly=False)
-    freeze_duration = fields.Integer(string="Duration", required=False, compute="_calc_freeze_duration")
+    freeze_duration = fields.Integer(string="Duration", required=False, compute="_calc_freeze_duration" ,stored=True)
     subscription_id = fields.Many2one('sale.subscription', readonly=False)
 
     @api.onchange('start_date','end_date')
@@ -255,7 +255,7 @@ class SalesSubscriptionFreeze(models.Model):
         subscription_id = self.env['sale.subscription'].browse(values['subscription_id'])
         start_date = values['start_date']
         end_date = values['end_date']
-        freeze_duration = values['freeze_duration']
+        freeze_duration = self.freeze_duration
         freeze_duration_limit = subscription_id.template_id.freez_duration
         freeze_times_limit = subscription_id.template_id.freeze_for
         old_freezes = self.env['subscription.freeze.line'].search([('subscription_id','=',subscription_id.id)])
