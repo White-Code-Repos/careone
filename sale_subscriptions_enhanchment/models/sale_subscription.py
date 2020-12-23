@@ -186,6 +186,7 @@ class SalesSubscription(models.Model):
             'res_model': 'subscription.freeze.line',
             'target': 'current',
             'domain': [('id', 'in', list)],
+            'context': {'default_subscription_id':self.id}
         }
 
 

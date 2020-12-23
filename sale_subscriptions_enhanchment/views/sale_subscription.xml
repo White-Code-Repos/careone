@@ -37,7 +37,7 @@
                         <tree editable="bottom" create="0" delete="0">
                             <field name="subs_id" invisible="1"/>
                             <field name="partner_id" invisible="1"/>
-                            <field name="vehicle_id" context="{'default_driver_id': subs_id.partner_id}"/>
+                            <field name="vehicle_id" context="{'default_driver_id': parent.partner_id}"/>
                             <field name="product_id" readonly="1" force_save="1"/>
                             <field name="qty" readonly="1" force_save="1"/>
                             <field name="consumed_qty" readonly="1" force_save="1"/>
@@ -68,7 +68,7 @@
           <form>
             <sheet>
               <group>
-                  <field name="subscription_id" context="{'default_subscription_id': active_id}"/>
+                  <field name="subscription_id"/>
                   <field name="start_date"/>
                   <field name="end_date"/>
                   <field name="freeze_duration"/>
