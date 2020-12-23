@@ -273,6 +273,7 @@ class SalesSubscriptionFreeze(models.Model):
         return res
 
     def write(self, values):
+        res = super(SalesSubscriptionFreeze, self).write(values)
         subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
         start_date = self.start_date
         end_date = self.end_date
@@ -288,7 +289,6 @@ class SalesSubscriptionFreeze(models.Model):
         current_freezed_duration = current_freezed_duration + freeze_duration
         if current_freezed_duration >= freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
-        res = super(SalesSubscriptionFreeze, self).write(values)
         return res
 
     # def get_freeze_duration(self):
