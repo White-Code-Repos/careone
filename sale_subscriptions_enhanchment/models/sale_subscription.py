@@ -17,10 +17,22 @@ class SalesSubscription(models.Model):
     # coupon_program = fields.Many2one('sale.coupon.program', 'Coupon Program')
     apper_generate_coupon = fields.Boolean(default=False)
 
-    end_date = fields.Date('End Date', )
+    date = fields.Date('End Date', compute="_compute_date_end")
+    def _compute_date_end(self):
+        for this in self:
+            if this.date_start and this.template_id.recurring_rule_boundary == 'limited':
+                initial_end_date = this.date_start
+                freezes = this.env['subscription.freeze.line'].search([('subscription_id','=',this.id)])
+                total_freeze_days = 0
+                for freeze in freezes:
+                    total_freeze_days = total_freeze_days + freeze.freeze_duration
+                initial_end_date = initial_end_date + timedelta(days=(30*this.template_id.recurring_rule_count)) + timedelta(days=total_freeze_days)
+                this.date = initial_end_date
+
+
     freez_duration = fields.Integer('Freezing Duration', related='template_id.freez_duration')
 
-    new_end_date = fields.Date()
+    # new_end_date = fields.Date()
     last_state = fields.Integer()
     un_freez_date = fields.Date()
     is_freez = fields.Boolean(default=False)
