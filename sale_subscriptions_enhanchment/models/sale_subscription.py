@@ -468,7 +468,7 @@ class SalesOrderInherit(models.Model):
     def change_price_cancel(self):
         if self.subscription_id:
             for line in self.order_line:
-                line.price_unit = 0 
+                line.price_unit = 0
     def action_confirm(self):
         orders = self.env['sale.order'].search(
             [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
@@ -521,10 +521,10 @@ class SalesOrderInherit(models.Model):
         for line in self.order_line:
             for rec in self.subscription_id.subs_products_ids:
                 if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
-                    if (rec.consumed_qty + line.product_uom_qty) > rec.qty:
+                    if (rec.consumed_qty) > rec.qty:
                         raise ValidationError(
                             "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s" % (rec.product_id.display_name,rec.vehicle_id.display_name))
-                    if (rec.qty_counter + line.product_uom_qty) > rec.qty_per_day:
+                    if (rec.qty_counter) > rec.qty_per_day:
                         raise ValidationError(
                             "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
                     rec.consumed_qty += line.product_uom_qty
