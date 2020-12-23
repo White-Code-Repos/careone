@@ -7,9 +7,9 @@
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="end_date" invisible="1"/>
+                <!-- <field name="end_date" invisible="1"/> -->
                 <field name="freez_duration" invisible="1"/>
-                <field name="new_end_date" invisible="1"/>
+                <!-- <field name="new_end_date" invisible="1"/> -->
                 <field name="last_state" invisible="1"/>
                 <field name="un_freez_date" invisible="1"/>
             </xpath>
