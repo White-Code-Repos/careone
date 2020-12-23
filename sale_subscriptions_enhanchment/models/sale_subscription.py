@@ -274,7 +274,7 @@ class SalesSubscriptionFreeze(models.Model):
 
     def write(self, values):
         res = super(SalesSubscriptionFreeze, self).write(values)
-        subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
+        subscription_id = self.env['sale.subscription'].browse(self.subscription_id.id)
         start_date = self.start_date
         end_date = self.end_date
         freeze_duration = self.freeze_duration
