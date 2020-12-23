@@ -272,7 +272,6 @@ class SalesSubscriptionFreeze(models.Model):
         #     res.subscription_id
         return res
 
-    @api.model
     def write(self, values):
         subscription_id = self.env['sale.subscription'].browse(self.subscription_id)
         start_date = self.start_date
