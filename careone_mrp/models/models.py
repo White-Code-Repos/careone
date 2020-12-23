@@ -86,7 +86,7 @@ class MrpProduction(models.Model):
         max_id = self.env.cr.fetchone()
 
         last_adj_date_sql = ("update stock_move_line \n"
-                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where production_id='"+str(self.name)+"'  \n"
+                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference='"+str(self.name)+"'  \n"
                     +"       and (location_dest_id = '15');")
 
         max_idsql =self.env.cr.execute(last_adj_date_sql)
