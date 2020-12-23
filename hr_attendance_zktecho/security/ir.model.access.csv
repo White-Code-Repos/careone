@@ -1,0 +1,16 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+
+"access_biometric_device_manager","biometric.device.manager","model_biomteric_device_info","group_biometric_device_manager",1,1,1,1
+"access_biometric_device_user","biometric.device.user","model_biomteric_device_info","group_biometric_device_user",1,0,0,0
+"access_hr_attendance_biometricmanager","hr.attendance.biometricmanager","hr_attendance.model_hr_attendance","group_biometric_device_manager",1,1,1,1
+"access_hr_attendance_biometricuser","hr.attendance.biometricuser","hr_attendance.model_hr_attendance","group_biometric_device_user",1,1,1,0
+"access_hr_draft_attendance_biometricmanager","hr.draft.attendance.biometricmanager","model_hr_draft_attendance","group_biometric_device_manager",1,1,1,1
+"access_hr_draft_attendance_biometricuser","hr.draft.attendance.biometricuser","model_hr_draft_attendance","group_biometric_device_user",1,1,1,0
+"access_generate_missing_draft_attendance_biometricmanager","generate.missing.draft.attendance.biometricmanager","model_generate_missing_draft_attendance","group_biometric_device_manager",1,1,1,1
+"access_generate_missing_draft_attendance_biometricuser","generate.missing.draft.attendance.biometricuser","model_generate_missing_draft_attendance","group_biometric_device_user",1,1,1,0
+"access_move_draft_attendance_wizard_biometricmanager","move.draft.attendance.wizard.biometricmanager","model_move_draft_attendance_wizard","group_biometric_device_manager",1,1,1,1
+"access_move_draft_attendance_wizard_biometricuser","move.draft.attendance.wizard.biometricuser","model_move_draft_attendance_wizard","group_biometric_device_user",1,1,1,0
+"access_hr_employeedevices_biometricmanager","hr.employeedevices.biometricmanager","model_employee_attendance_devices","group_biometric_device_manager",1,1,1,1
+"access_hr_employeedevices_biometricuser","hr.employeedevices.biometricuser","model_employee_attendance_devices","group_biometric_device_user",1,1,1,0
+"access_hr_employee_biometricmanager","hr.employee.biometricmanager","hr.model_hr_employee","group_biometric_device_manager",1,1,1,0
+"access_hr_employee_biometricuser","hr.employee.biometricuser","hr.model_hr_employee","group_biometric_device_user",1,1,1,0

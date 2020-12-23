@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<!-- Device Information -->
+		<record model="ir.ui.view" id="biomtericdeviceinfo_tree">
+			<field name="name">Device Information</field>
+			<field name="model">biomteric.device.info</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="ipaddress" />
+					<field name="portnumber" />
+					<field name="apiversion" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="biomtericdeviceinfo_search">
+			<field name="name">Device Information</field>
+			<field name="model">biomteric.device.info</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name" operator="ilike" />
+					<field name="ipaddress" operator="ilike" />
+					<separator />
+					<filter name="group_name" string="By Name" context="{'group_by': 'name'}" />
+					<filter name="group_ipaddress" string="By IP Address"
+						context="{'group_by': 'ipaddress'}" />
+					<filter name="group_portnumber" string="By Port"
+						context="{'group_by': 'portnumber'}" />
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="biomtericdeviceinfo_form">
+			<field name="name">Device Information</field>
+			<field name="model">biomteric.device.info</field>
+			<field name="arch" type="xml">
+				<form string="Device Configuration">
+					<sheet string="Device Configuration">
+						<div class="oe_button_box" name="buttons">
+							<button icon="fa-sun-o" name="test_connection_device"
+								type="object" string="Test Connection" class="oe_stat_button"
+								help="Test connection to the attendance device" />
+							<button icon="fa-download" name="download_attendance_oldapi"
+								type="object" string="Download Attendance" class="oe_stat_button"
+								help="Download Attendance from device" />
+						</div>
+						<h1>
+							<field name="name" placeholder="Device Name" />
+						</h1>
+						<h2>
+							<field name="ipaddress" placeholder="IP Address" />
+						</h2>
+						<group col="4">
+							<field name="portnumber" placeholder="e.g. 4370"
+								help="Port which allows connection to the device" />
+							<field name="protocol" help="UDP is good for older devices with smaller amounts of data, TCP should be used with devices that have larger amounts of data"/>
+							<field name="password" password="True" placeholder="device password" help="Specify password if the biometric device is password protected"/>
+							<field name="time_zone" />
+							<field name="action"
+								help="Actions Performed on the machine whether sign-in or sign-out or both" />
+							<field name="fetch_days"
+								help="If -1 means all attendances will be fetched otherwise will get the attendance from last number of days specified" />
+							<field name="apiversion" help="API Used by the device for connection" />
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							help="Follow the server to keep track of environments and there services linked to this server"
+							groups="" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<!-- Action for Biometric Device Information -->
+		<record model="ir.actions.act_window" id="biomtericdeviceinfo_action">
+			<field name="name">Device Information</field>
+			<field name="res_model">biomteric.device.info</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Menu Device Information -->
+		<menuitem name="Biometric Device" id="hr_biometric_device_configuration_menu"
+			parent="hr_attendance.menu_hr_attendance_settings" action="biomtericdeviceinfo_action"
+			sequence="2" />
+
+	</data>
+</odoo>

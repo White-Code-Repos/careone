@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="move_attendance_view" model="ir.ui.view">
+			<field name="name">move.draft.attendance.wizard.form</field>
+			<field name="model">move.draft.attendance.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Move Attendances">
+					<p>
+						Move All Draft Attendances to System Attendances .
+					</p>
+					<group col="4">
+						<field name="date1"/>
+						<field name="date2"/>
+					</group>
+					<field name="employee_ids" >
+						<tree>
+                    		<field name="name"/>
+                    		<field name="attendance_devices"/>
+                    	</tree>
+					</field>
+					<footer>
+						<button string="Move" name="move_confirm" type="object" default_focus="1" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_move_draft_attendance" model="ir.actions.act_window">
+			<field name="name">Move Attendances</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">move.draft.attendance.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem action="action_move_draft_attendance" sequence="3" id="menu_move_time_attendance" parent="hr_attendance.menu_hr_attendance_manage_attendances"/>
+
+	</data>
+</openerp>

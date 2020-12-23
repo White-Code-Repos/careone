@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<!-- Employee Inherited View -->
+		<record id="hr_employee_view_attendance" model="ir.ui.view">
+			<field name="name">hr.employee.view.attendance</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<data>
+                    <xpath expr="//page[@name='hr_settings']" position="after">
+                        <page string="Attendance Devices" name="attendance_device">
+							<group>
+								<field name="no_attendance"/>
+							</group>
+							<field name="attendance_devices" nolabel="1" context="{'default_name':active_id}" help="All the attendance devices linked to the employee are to be defined here"/>
+						</page>
+                    </xpath>
+				</data>
+			</field>
+		</record>
+
+		<record id="employee_att_devices_view_form" model="ir.ui.view" >
+			<field name="name">Employees Attendance Devices Form View</field>
+			<field name="model">employee.attendance.devices</field>
+			<field name="arch" type="xml">
+				<form string="Employee Devices">
+					<sheet>
+						<group col="4">
+							<field name="name" help="Employee" readonly="1"/>
+							<field name="attendance_id" help="Linked Attendance device Id for this employee"/>
+							<field name="device_id" help="Associated Device with the employee"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="employee_att_devices_view_tree" model="ir.ui.view">
+			<field name="name">Employees Attendance Devices Tree View</field>
+			<field name="model">employee.attendance.devices</field>
+			<field name="arch" type="xml">
+				<tree editable="top">
+					<field name="name" placeholder="Name ..." invisible="1"/>
+					<field name="attendance_id" />
+					<field name="device_id" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- Draft Attendances -->
+		<record model="ir.ui.view" id="hrdraftattendance_tree">
+			<field name="name">Draft Attendance</field>
+			<field name="model">hr.draft.attendance</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="date" />
+					<field name="attendance_status" />
+					<field name="employee_id" />
+				</tree>
+			</field>
+		</record>
+ 
+		<record model="ir.ui.view" id="hrdraftattendance_search">
+			<field name="name">Draft Attendance</field>
+			<field name="model">hr.draft.attendance</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name" string="Datetime" />
+					<field name="date" string="Date" />
+					<field name="day_name" string="Day Name" />
+					<field name="attendance_status" operator="ilike" widget="selection" />
+					<field name="employee_id" />
+					<separator />
+					<filter icon="terp-go-today" string="Today" name="filter_today"
+						domain="[('name','&gt;=',current_date),('name','&lt;=',current_date)]" />
+					<filter string="Current Month" name="filter_current_month"
+						domain="[('name','&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]" />
+					<separator />
+					<filter icon="terp-stock_align_left_24" string="My Attendance" name="filter_my_attendance"
+						domain="[('employee_id.user_id.id', '=', uid)]" />
+					<separator />
+					<filter icon="terp-stock_align_left_24" string="Sign In" name="filter_sign_in"
+						domain="[('attendance_status', '=', 'sign_in')]" />
+					<filter icon="terp-stock_align_left_24" string="Sign Out" name="filter_sign_out"
+						domain="[('attendance_status', '=', 'sign_out')]" />
+					<filter icon="terp-stock_align_left_24" string="Undefined Sign" name="filter_undefined_sign"
+						domain="[('attendance_status', '=', 'sign_none')]" />
+					<separator />
+					<filter icon="terp-stock_align_left_24" string="Missing Attendance" name="filter_missing_attendance"
+						domain="[('is_missing', '=', True)]" />
+					<separator />
+					<filter name="groupby_name" string="Month" context="{'group_by':'name'}" />
+					<filter name="week_days" string="Week Days" context="{'group_by':'day_name'}" />
+					<separator />
+					<filter name="employee" string="Employee" icon="terp-personal"
+						domain="[]" context="{'group_by':'employee_id'}" />
+					<separator />
+					<filter string="Status" icon="terp-go-today" domain="[]" name="filter_group_status"
+						context="{'group_by':'attendance_status'}" />
+				</search>
+			</field>
+		</record>
+ 
+		<record model="ir.ui.view" id="hrdraftattendance_form">
+			<field name="name">Draft Attendance</field>
+			<field name="model">hr.draft.attendance</field>
+			<field name="arch" type="xml">
+				<form string="Device Configuration">
+					<sheet string="Device Configuration">
+						<group col="4">
+							<field name="name" help="Time at which attendance was punched" />
+							<field name="date" help="Date at which attendance was punched" />
+							<field name="day_name" help="Name of Attendance day" />
+							<field name="attendance_status" help="Attendance type whether Sign-In or Sign-Out" />
+							<field name="employee_id" help="Employee for whose attendance is created" />
+							<field name="lock_attendance"
+								help="After the attendance is locked the record will not be editable" />
+							<field name="biometric_attendance_id" help="Corresponding record ID on attendance Device." />
+							<field name="is_missing" invisible="1" />
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							help="Follow the server to keep track of environments and there services linked to this server"
+							groups="" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<!-- Draft Attendance Action -->
+		<record model="ir.actions.act_window" id="hrdraftattendance_action">
+			<field name="name">Attendances (Draft)</field>
+			<field name="res_model">hr.draft.attendance</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Menu for Draft Attendance -->
+		<menuitem name="Draft Attendances" id="hr_draft_attendance_menu"
+			parent="hr_attendance.menu_hr_attendance_manage_attendances" action="hrdraftattendance_action"
+			sequence="2" />
+
+	</data>
+</odoo>
