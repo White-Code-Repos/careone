@@ -40,7 +40,7 @@
         </record>
 
 
-        <record id="coupon_form_inherit" model="ir.ui.view">
+        <!-- <record id="coupon_form_inherit" model="ir.ui.view">
             <field name="name">coupon_form_inherit</field>
             <field name="model">sale.coupon.program</field>
             <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form_common"/>
@@ -72,11 +72,11 @@
                         </group>
                     </group>
                 </xpath>
-                <!-- <xpath expr="//field[@name='promo_applicability']" position="after">
+                <xpath expr="//field[@name='promo_applicability']" position="after">
                     <field name="coupon_program_id" attrs="{'invisible':[('promo_applicability','!=', 'on_next_order')]}"/>
-                </xpath> -->
+                </xpath>
 
             </field>
-        </record>
+        </record> -->
     </data>
 </odoo>
