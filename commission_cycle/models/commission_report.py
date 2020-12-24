@@ -33,7 +33,7 @@ class CommissionReport(models.Model):
         comm = 0
         for reps in self:
             if reps.status == True:
-                raise UserError(_('These Rows Already Posted.'))
+                raise UserError('These Rows Already Posted.')
             comm += reps.emp_comm
             reps.write({'status':True})
         self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':comm})
