@@ -120,7 +120,10 @@ class SalesOrderInherit(models.Model):
             vals = {'program_id': program_x.id, 'order_id': self.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
-                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
+                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use,
+                    'is_str':program_x.is_str,'is_sun':program_x.is_sun,'is_mon':program_x.is_mon,
+                    'is_tus':program_x.is_tus,'is_wen':program_x.is_wen,'is_thur':program_x.is_thur,
+                    'is_fri':program_x.is_fri,}
             if program_x.generation_type == 'nbr_coupon' and program_x.nbr_coupons > 0:
                 for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
