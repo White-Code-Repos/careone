@@ -167,25 +167,26 @@ class SaleCouponApplyCode(models.TransientModel):
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
             for co in coupon_code:
-                if today_week_day == 'Saturday' and co.is_str_promotion == True:
+                if today_week_day == 'Saturday' and co.is_str == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Sunday' and co.is_sun_promotion == True:
+                elif today_week_day == 'Sunday' and co.is_sun == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Monday' and co.is_mon_promotion == True:
+                elif today_week_day == 'Monday' and co.is_mon == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Tuesday' and co.is_tus_promotion == True:
+                elif today_week_day == 'Tuesday' and co.is_tus == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Wednesday' and co.is_wen_promotion == True:
+                elif today_week_day == 'Wednesday' and co.is_wen == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Thursday' and co.is_thur_promotion == True:
+                elif today_week_day == 'Thursday' and co.is_thur == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Friday' and co.is_fri_promotion == True:
+                elif today_week_day == 'Friday' and co.is_fri == True:
                     is_applicable_programs_today = True
                 if is_applicable_programs_today == False:
                     raise ValidationError(_('Sorry There Is No Available Today.'))
         error_status = {}
         program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
         if program:
+            # raise UserError("TESTTESTTESTTESTTESTTESTTESTTEST %s %s " % (order,coupon_code))
             error_status = program._check_promo_code(order, coupon_code)
             if not error_status:
                 if program.promo_applicability == 'on_next_order':
