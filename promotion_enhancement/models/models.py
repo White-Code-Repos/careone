@@ -208,7 +208,7 @@ class SalesOrderInherit(models.Model):
             '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
             '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
         ])
-        today = datetime.now().date()
+        today = datetime.today() + timedelta(hours=2)
         today_week_day = today.strftime("%A")
         is_applicable_programs_today=False
         if today_week_day == 'Saturday' and programs.is_str_promotion == True:

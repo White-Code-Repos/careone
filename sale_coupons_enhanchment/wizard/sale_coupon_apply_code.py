@@ -47,6 +47,30 @@ class SaleCouponApplyCode(models.TransientModel):
         Apply the entered coupon code if valid, raise an UserError otherwise.
 
         """
+        if self.code_type == 'coupon':
+            coupon = self.env['sale.coupon'].browse(coupon_code)
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            if today_week_day == 'Saturday' and coupon.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and coupon.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and coupon.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and coupon.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and coupon.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and coupon.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and coupon.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
+
         if self.code_type == 'promo':
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             error_status = self.apply_promo(sales_order, self.promo_code)
@@ -98,6 +122,29 @@ class SaleCouponApplyCode(models.TransientModel):
                     raise UserError(error_status.get('not_found', False))
 
     def apply_promo(self, order, coupon_code):
+        if self.code_type == 'coupon':
+            # coupon = self.env['sale.coupon'].browse(coupon_code)
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            if today_week_day == 'Saturday' and coupon_code.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and coupon_code.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and coupon_code.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and coupon_code.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and coupon_code.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and coupon_code.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and coupon_code.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
         error_status = {}
         program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
         if program:
