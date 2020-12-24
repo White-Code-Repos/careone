@@ -816,7 +816,7 @@ class PaymentInherit(models.Model):
                 related_plan = department_plan
             if related_plan:
                 for related_plan in related_plan:
-                    if related_plan.condition == 'invoice':
+                    if related_plan.condition == 'payment':
                         for order in Invoice.invoice_line_ids:
                             current_rule = 0
                             for rule in related_plan.rule_ids:
