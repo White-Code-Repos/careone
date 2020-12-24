@@ -22,7 +22,7 @@ class SaleCouponReward(models.Model):
 class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
 
-    vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
+    # vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
     from_subscription = fields.Boolean()
     expiration_date_2 = fields.Date('Expiration Date')
 
