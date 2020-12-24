@@ -31,6 +31,9 @@
         <field name="arch" type="xml">
             <form string="Commission Report" create='false' edit='false'>
                 <sheet>
+				<header>
+					<button name="post_to_payroll" type="object" string="Post All Month Commissions To Payroll" class="oe_highlight" />
+				</header>
                     <group>
                         <field name="employee_id"/>
                         <field name="rule_id"/>
