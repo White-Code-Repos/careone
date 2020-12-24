@@ -122,7 +122,7 @@ class SalesOrderInherit(models.Model):
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
 
-            if self.coupon_id.generation_type == 'nbr_customer':
+            elif self.coupon_id.generation_type == 'nbr_customer':
                 vals.update({'partner_id': self.partner_id.id})
                 for count in range(0, self.coupon_id.nbr_coupons):
                     coupon = self.env['sale.coupon'].create(vals)
@@ -133,7 +133,7 @@ class SalesOrderInherit(models.Model):
                                            email_values={'email_to': self.partner_id.email,
                                                          'email_from': self.env.user.email or '',
                                                          'subject': subject, })
-            if self.coupon_id.generation_type == 'nbr_vehicles':
+            elif self.coupon_id.generation_type == 'nbr_vehicles':
                 vals.update({'vehicle_id': self.vehicle_id.id})
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
