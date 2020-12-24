@@ -16,9 +16,22 @@ class CommissionReport(models.Model):
     emp_comm = fields.Float(string="Employee Commission", required=False, )
     money_target_ids = fields.One2many(comodel_name="money.target", inverse_name="report_id", string="",
                                        required=False, )
-    commission_date = fields.Date("Commission Date")
+    commission_date = fields.Date("Last update on")
     status=fields.Boolean(string="Posted to Payroll")
 
+    @api.onchange('status')
+    def post_to_payroll(self):
+        empReports = self.env['commission.report'].search([('employee_id','=',self.employee_id.id),('status','=',False)])
+        comm = 0
+        for reps in empReports:
+            comm += reps.emp_comm
+            reps.write({'status':True})
+        self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':comm})
+
+class hrContract(models.Model):
+    _inherit='hr.contract'
+    commission = fields.Float('Sales Commission')
+    
 
 class MoneyTarget(models.Model):
     _name = 'money.target'

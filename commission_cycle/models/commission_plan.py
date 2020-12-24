@@ -23,6 +23,8 @@ class CommissionPlan(models.Model):
                                             ('payment', 'Payment'), ], required=True, default='confirm sales')
     rule_ids = fields.Many2many(comodel_name="commission.rule", string="Commission Rules", )
 
+    
+
     @api.constrains('employee_ids', 'sales_team_ids', 'job_position_ids', 'department_ids')
     def prevent_duplication(self):
         objects = self.env['commission.plan'].search([('id', '!=', self.id)])

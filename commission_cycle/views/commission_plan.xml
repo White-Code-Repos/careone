@@ -22,6 +22,9 @@
         <field name="model">commission.plan</field>
         <field name="arch" type="xml">
             <form string="Commission Plan">
+				<header>
+					<button name="post_to_payroll" type="object" string="Post All Month Commissions To Payroll" class="oe_highlight" />
+				</header>
                 <sheet>
                     <div class="oe_title">
                         <span class="o_form_label">Plan Name</span>
