@@ -27,17 +27,41 @@ class SaleCouponApplyCode(models.TransientModel):
         real_time = datetime.now() + timedelta(hours=2)
         current_time = real_time.time()
         sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        return {'domain': {
-            'coupon_code': [('start_date_use', '<=', today_x.date()),
-                            ('end_date_use', '>=', today_x.date()),
-                            ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                            ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-                            ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-                            # ('program_id', '=', sales_order.coupon_id.id),
-                            ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-                            ('partner_id', '=', False),
-                            '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
-                            ('vehicle_id', '=', False)]}}
+        if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
+            return {'domain': {
+                'coupon_code': [('start_date_use', '<=', today_x.date()),
+                                ('end_date_use', '>=', today_x.date()),
+                                ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+                                ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+                                # ('program_id', '=', sales_order.coupon_id.id),
+                                ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+                                ('partner_id', '=', False),
+                                '|', ('vehicle_id', '=', sales_order.vehicle_id.id),
+                                ('vehicle_id', '=', False)]}}
+        elif self.coupon_code.partner_id and not self.coupon_code.vehicle_id:
+            return {'domain': {
+                'coupon_code': [('start_date_use', '<=', today_x.date()),
+                                ('end_date_use', '>=', today_x.date()),
+                                ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+                                ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+                                # ('program_id', '=', sales_order.coupon_id.id),
+                                ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+                                ('vehicle_id', '=', False),
+                                '|', ('partner_id', '=', sales_order.partner_id.id),
+                                ('partner_id', '=', False)]}}
+        else:
+            return {'domain': {
+                'coupon_code': [('start_date_use', '<=', today_x.date()),
+                                ('end_date_use', '>=', today_x.date()),
+                                ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+                                ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+                                ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+                                # ('program_id', '=', sales_order.coupon_id.id),
+                                ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+                                ('vehicle_id', '=', False),
+                                ('partner_id', '=', False)]}}
 
     # hisham edition
     is_free_order = fields.Boolean(string="Free Order", store=True)
