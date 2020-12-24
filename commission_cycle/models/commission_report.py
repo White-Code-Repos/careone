@@ -31,7 +31,12 @@ class CommissionReport(models.Model):
 class hrContract(models.Model):
     _inherit='hr.contract'
     commission = fields.Float('Sales Commission')
-    
+
+class HRPAYSLIP(models.Model):
+    _inherit ='hr.payslip'
+    def action_payslip_done(self):
+        self.contract_id.write({'commission':0})
+        return super(HRPAYSLIP, self).action_payslip_done()
 
 class MoneyTarget(models.Model):
     _name = 'money.target'
