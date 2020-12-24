@@ -40,20 +40,23 @@ class PromotionProgramInherit(models.Model):
         current_time = real_time.time()
         today_week_day = today.strftime("%A")
         is_applicable_programs_today = False
-        if today_week_day == 'Saturday' and self.is_str_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Sunday' and self.is_sun_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Monday' and self.is_mon_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Tuesday' and self.is_tus_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Wednesday' and self.is_wen_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Thursday' and self.is_thur_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Friday' and self.is_fri_promotion == True:
-            is_applicable_programs_today = True
+        for this in self:
+            if today_week_day == 'Saturday' and this.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and this.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and this.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and this.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and this.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and this.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and this.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
         if self.end_hour_use_promotion < (
                 current_time.hour + current_time.minute / 60) or self.start_hour_use_promotion > (
                 current_time.hour + current_time.minute / 60) or self.rule_date_from > today.date() or self.rule_date_to < today.date() or is_applicable_programs_today != True:
@@ -170,22 +173,23 @@ class SalesOrderInherit(models.Model):
             current_time = real_time.time()
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
-            if today_week_day == 'Saturday' and program.is_str_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Sunday' and program.is_sun_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Monday' and program.is_mon_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Tuesday' and program.is_tus_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Wednesday' and program.is_wen_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Thursday' and program.is_thur_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Friday' and program.is_fri_promotion == True:
-                is_applicable_programs_today = True
-            if is_applicable_programs_today == False:
-                raise ValidationError(_('Sorry There Is No Available Today.'))
+            for pro in program:
+                if today_week_day == 'Saturday' and pro.is_str_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and pro.is_sun_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and pro.is_mon_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and pro.is_tus_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and pro.is_wen_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and pro.is_thur_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and pro.is_fri_promotion == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
             # VFE REF in master _get_applicable_no_code_programs already filters programs
             # why do we need to reapply this bunch of checks in _check_promo_code ????
             # We should only apply a little part of the checks in _check_promo_code...
@@ -211,21 +215,21 @@ class SalesOrderInherit(models.Model):
         today = datetime.today() + timedelta(hours=2)
         today_week_day = today.strftime("%A")
         is_applicable_programs_today=False
-        if today_week_day == 'Saturday' and programs.is_str_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Sunday' and programs.is_sun_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Monday' and programs.is_mon_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Tuesday' and programs.is_tus_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Wednesday' and programs.is_wen_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Thursday' and programs.is_thur_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Friday' and programs.is_fri_promotion == True:
-            is_applicable_programs_today = True
-
-
-
+        for pros in programs:
+            if today_week_day == 'Saturday' and pros.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and pros.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and pros.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and pros.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and pros.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and pros.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and pros.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
         return programs

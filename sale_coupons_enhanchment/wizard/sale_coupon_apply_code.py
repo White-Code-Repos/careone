@@ -54,22 +54,23 @@ class SaleCouponApplyCode(models.TransientModel):
             current_time = real_time.time()
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
-            if today_week_day == 'Saturday' and coupon.program_id.is_str == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Sunday' and coupon.program_id.is_sun == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Monday' and coupon.program_id.is_mon == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Tuesday' and coupon.program_id.is_tus == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Wednesday' and coupon.program_id.is_wen == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Thursday' and coupon.program_id.is_thur == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Friday' and coupon.program_id.is_fri == True:
-                is_applicable_programs_today = True
-            if is_applicable_programs_today == False:
-                raise ValidationError(_('Sorry There Is No Available Today.'))
+            for co in coupon:
+                if today_week_day == 'Saturday' and co.program_id.is_str == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and co.program_id.is_sun == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and co.program_id.is_mon == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and co.program_id.is_tus == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and co.program_id.is_wen == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and co.program_id.is_thur == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and co.program_id.is_fri == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
 
         if self.code_type == 'promo':
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
@@ -129,22 +130,23 @@ class SaleCouponApplyCode(models.TransientModel):
             current_time = real_time.time()
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
-            if today_week_day == 'Saturday' and coupon_code.is_str_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Sunday' and coupon_code.is_sun_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Monday' and coupon_code.is_mon_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Tuesday' and coupon_code.is_tus_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Wednesday' and coupon_code.is_wen_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Thursday' and coupon_code.is_thur_promotion == True:
-                is_applicable_programs_today = True
-            elif today_week_day == 'Friday' and coupon_code.is_fri_promotion == True:
-                is_applicable_programs_today = True
-            if is_applicable_programs_today == False:
-                raise ValidationError(_('Sorry There Is No Available Today.'))
+            for co in coupon_code:
+                if today_week_day == 'Saturday' and co.is_str_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and co.is_sun_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and co.is_mon_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and co.is_tus_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and co.is_wen_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and co.is_thur_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and co.is_fri_promotion == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
         error_status = {}
         program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
         if program:

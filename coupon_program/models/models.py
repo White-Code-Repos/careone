@@ -97,7 +97,7 @@ class SaleOrder(models.Model):
 
     def get_coupons_count(self):
         for quotation in self:
-            quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id)]))
+            quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id),'|',('order_id','=',quotation.id)]))
             print(quotation.coupon_count)
 
     def action_view_coupons(self):
