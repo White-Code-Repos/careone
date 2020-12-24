@@ -19,7 +19,6 @@
             </xpath>
             <xpath expr="//form" position="inside">
                 <widget name="web_ribbon" title="Subscriper" attrs="{'invisible': [('subscriper', '!=', True)]}"/>
-                <field name="vehicles_subscreptions_id" widget="many2many_tags" attrs="{'invisible': [('subscription_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>
