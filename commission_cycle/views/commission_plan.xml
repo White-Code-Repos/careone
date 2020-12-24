@@ -40,15 +40,15 @@
                     </group>
                     <group string="Apply On">
                         <group>
-                            <field name="is_with_employees"/>
+                            <field name="is_with_employees" invisible="1" />
                             <field name="employee_ids" attrs="{'invisible': [('is_with_employees', '!=', True)]}"/>
                             <field name="is_with_sales_team"/>
                             <field name="sales_team_ids" attrs="{'invisible': [('is_with_sales_team', '!=', True)]}"/>
                         </group>
                         <group>
-                            <field name="is_job_position"/>
+                            <field name="is_job_position" invisible="1" />
                             <field name="job_position_ids" attrs="{'invisible': [('is_job_position', '!=', True)]}"/>
-                            <field name="is_with_department"/>
+                            <field name="is_with_department" invisible="1" />
                             <field name="department_ids" attrs="{'invisible': [('is_with_department', '!=', True)]}"/>
                             <field name="is_with_portal"/>
                             <field name="portal_user_ids" attrs="{'invisible': [('is_with_portal', '!=', True)]}"/>
