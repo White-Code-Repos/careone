@@ -25,13 +25,13 @@ class CouponProgramInherit(models.Model):
     start_date_use = fields.Date(string="From", required=False, )
     end_date_use = fields.Date(string="To", required=False, )
     is_free_order = fields.Boolean(string="Allow Free Order", )
-    is_str = fields.Boolean(string="Saturday", )
-    is_sun = fields.Boolean(string="Sunday", )
-    is_mon = fields.Boolean(string="Monday", )
-    is_tus = fields.Boolean(string="Tuesday", )
-    is_wen = fields.Boolean(string="Wednesday", )
-    is_thur = fields.Boolean(string="Thursday", )
-    is_fri = fields.Boolean(string="Friday", )
+    # is_str = fields.Boolean(string="Saturday", )
+    # is_sun = fields.Boolean(string="Sunday", )
+    # is_mon = fields.Boolean(string="Monday", )
+    # is_tus = fields.Boolean(string="Tuesday", )
+    # is_wen = fields.Boolean(string="Wednesday", )
+    # is_thur = fields.Boolean(string="Thursday", )
+    # is_fri = fields.Boolean(string="Friday", )
 
     def generate_coupon(self):
         program = self
@@ -172,6 +172,13 @@ class CouponInherit(models.Model):
     start_date_use = fields.Date(string="From", required=False, )
     end_date_use = fields.Date(string="To", required=False, )
     is_free_order = fields.Boolean(string="Allow Free Order", )
+    is_str = fields.Boolean(string="Saturday", )
+    is_sun = fields.Boolean(string="Sunday", )
+    is_mon = fields.Boolean(string="Monday", )
+    is_tus = fields.Boolean(string="Tuesday", )
+    is_wen = fields.Boolean(string="Wednesday", )
+    is_thur = fields.Boolean(string="Thursday", )
+    is_fri = fields.Boolean(string="Friday", )
     state = fields.Selection([
         ('reserved', 'Reserved'),
         ('new', 'Valid'),
