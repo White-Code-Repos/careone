@@ -48,7 +48,7 @@
                         <field name="end_hour_use" widget="float_time"/>
                     </group>
                 </group>
-                <group string="Available Days">
+                <!-- <group string="Available Days">
                     <field name="is_str"/>
                     <field name="is_sun"/>
                     <field name="is_mon"/>
@@ -56,7 +56,7 @@
                     <field name="is_wen"/>
                     <field name="is_thur"/>
                     <field name="is_fri"/>
-                </group>
+                </group> -->
             </xpath>
             <xpath expr="//field[@name='order_count']/.." position="before">
                 <button class="oe_stat_button" type="action" icon="fa-ticket" name="%(sale_coupon.sale_coupon_action)d">
