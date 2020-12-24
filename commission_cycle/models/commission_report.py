@@ -17,7 +17,7 @@ class CommissionReport(models.Model):
     money_target_ids = fields.One2many(comodel_name="money.target", inverse_name="report_id", string="",
                                        required=False, )
     commission_date = fields.Date("Commission Date")
-    status=fields.Boolean(string="Paid")
+    status=fields.Boolean(string="Posted to Payroll")
 
 
 class MoneyTarget(models.Model):
