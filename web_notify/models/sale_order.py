@@ -44,6 +44,8 @@ class SaleOrder(models.Model):
                 already_member = True
             if already_member:
                 self.subscriper = True
+            else:
+                self.subscriper = True
                 # view = self.env.ref('sh_message.sh_message_wizard')
                 # view_id = view and view.id or False
                 # context = dict(self._context or {})
