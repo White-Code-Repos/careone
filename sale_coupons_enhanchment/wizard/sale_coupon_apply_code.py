@@ -9,6 +9,18 @@ from datetime import timedelta, datetime
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
+    # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
+    # @api.onchange('initial_coupon')
+    # def check_coupon(self):
+    #     if self.initial_coupon:
+    #         coupon = self.env['sale.coupon'].search([('code','=',self.initial_coupon)])
+    #         if coupon:
+    #             if coupon.partner_id:
+    #                 raise UserError('This is a customer coupon')
+    #             elif coupon.vehicle_id:
+    #                 raise UserError('this is a vehicle coupon')
+    #         else:
+    #             raise UserError('There is no such a coupon.')
     code_type = fields.Selection(string="Code Type", selection=[('promo', 'Promotion'), ('coupon', 'Coupon'), ],
                                  required=True, default='coupon')
     promo_code = fields.Char(string="Promo Code", required=False, )
@@ -73,6 +85,8 @@ class SaleCouponApplyCode(models.TransientModel):
         """
         if self.code_type == 'coupon':
             coupon = self.env['sale.coupon'].browse(self.coupon_code.id)
+            if not coupon:
+                raise UserError('There is no coupon')
             today = datetime.today() + timedelta(hours=2)
             real_time = datetime.now() + timedelta(hours=2)
             current_time = real_time.time()
