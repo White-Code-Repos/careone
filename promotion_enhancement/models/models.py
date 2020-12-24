@@ -188,7 +188,7 @@ class SalesOrderInherit(models.Model):
                     is_applicable_programs_today = True
                 elif today_week_day == 'Friday' and pro.is_fri_promotion == True:
                     is_applicable_programs_today = True
-                if is_applicable_programs_today == False:
+                if is_applicable_programs_today == False and self.state != 'sale':
                     raise ValidationError(_('Sorry There Is No Available Today.'))
             # VFE REF in master _get_applicable_no_code_programs already filters programs
             # why do we need to reapply this bunch of checks in _check_promo_code ????
