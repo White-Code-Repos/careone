@@ -114,7 +114,7 @@ class SalesOrderInherit(models.Model):
             return coupon
         else:
             program_x = program.coupon_program_id
-            vals = {'program_id': program_x.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
+            vals = {'program_id': program_x.id, 'order_id': self.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
                     'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
@@ -149,6 +149,7 @@ class SalesOrderInherit(models.Model):
                     'end_date_use': program.coupon_program_id.end_date_use,
                     'discount_line_product_id': program.discount_line_product_id.id,
                     'order_id': self.id,
+                    'sale_order_id': self.id
                 })
     def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
