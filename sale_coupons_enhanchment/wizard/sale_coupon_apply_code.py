@@ -48,7 +48,7 @@ class SaleCouponApplyCode(models.TransientModel):
 
         """
         if self.code_type == 'coupon':
-            coupon = self.env['sale.coupon'].browse(self.coupon_code)
+            coupon = self.env['sale.coupon'].browse(self.coupon_code.id)
             today = datetime.today() + timedelta(hours=2)
             real_time = datetime.now() + timedelta(hours=2)
             current_time = real_time.time()
