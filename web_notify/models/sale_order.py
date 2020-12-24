@@ -31,8 +31,10 @@ class SubProducts(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    subscriper = fields.Boolean(default=False)
-
+    subscriper = fields.Boolean(default=False, compute="_compute_subscriper_state")
+    def _compute_subscriper_state(self):
+        for this in self:
+            this.notify_user_subscreptions()
     @api.onchange('partner_id')
     def notify_user_subscreptions(self):
         if self.partner_id:

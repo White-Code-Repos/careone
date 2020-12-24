@@ -20,7 +20,7 @@
             <xpath expr="//header" position="inside">
               <field name="subscriper" invisible="1"/>
             </xpath>
-            <xpath expr="//form" position="inside">
+            <xpath expr="//div[@name='button_box']" position="after">
                 <widget name="web_ribbon" title="Subscriper" attrs="{'invisible': [('subscriper', '!=', True)]}"/>
             </xpath>
         </field>
