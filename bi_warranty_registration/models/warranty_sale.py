@@ -6,10 +6,10 @@ from odoo import api, fields, models, _
 
 
 
-# class sale_order_line(models.Model):
-#     _inherit = "sale.order.line"
-#
-#     serial_no =  fields.Many2one('stock.production.lot',string='Serial Number')
+class sale_order_line(models.Model):
+    _inherit = "sale.order.line"
+
+    serial_no =  fields.Many2one('stock.production.lot',string='Serial Number')
             
     
 
