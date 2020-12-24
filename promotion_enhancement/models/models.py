@@ -31,7 +31,7 @@ class PromotionProgramInherit(models.Model):
     is_wen_promotion = fields.Boolean(string="Wednesday", )
     is_thur_promotion = fields.Boolean(string="Thursday", )
     is_fri_promotion = fields.Boolean(string="Friday", )
-    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, )
+    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, domain=[('program_type', '=', 'promotion_program')])
     def _check_promo_code(self, order, coupon_code):
         message = {}
         applicable_programs = order._get_applicable_programs()

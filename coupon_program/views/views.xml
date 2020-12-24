@@ -47,15 +47,15 @@
                         <field name="start_hour_use" widget="float_time"/>
                         <field name="end_hour_use" widget="float_time"/>
                     </group>
-                    <group string="Available Days">
-                        <field name="is_str"/>
-                        <field name="is_sun"/>
-                        <field name="is_mon"/>
-                        <field name="is_tus"/>
-                        <field name="is_wen"/>
-                        <field name="is_thur"/>
-                        <field name="is_fri"/>
-                    </group>
+                </group>
+                <group string="Available Days">
+                    <field name="is_str"/>
+                    <field name="is_sun"/>
+                    <field name="is_mon"/>
+                    <field name="is_tus"/>
+                    <field name="is_wen"/>
+                    <field name="is_thur"/>
+                    <field name="is_fri"/>
                 </group>
             </xpath>
             <xpath expr="//field[@name='order_count']/.." position="before">
@@ -200,23 +200,29 @@
             <xpath expr="//sheet" position="replace">
                 <sheet>
                     <group>
-                        <field name="code" readonly="1"/>
-                    </group>
-                    <group>
-                        <field name="expiration_date"/>
-                        <field name="is_expiration_date_changed" attrs="{'invisible':[('state','!=', 'new')]}"/>
-                        <field name="expiration_date_edit"
-                               attrs="{'invisible':['|',('is_expiration_date_changed','=', False),('state','!=', 'new')]}"/>
-                    </group>
-                    <group>
-                        <field name="partner_id"/>
-                        <field name="vehicle_id"/>
-                        <field name="sale_order_id" readonly="1"/>
-                        <field name="sales_order_id" readonly="1"/>
-                    </group>
-                    <group>
-                        <field name="is_have_permission" invisible="1"/>
-                        <field name="is_free_order" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                      <group>
+                        <group>
+                            <field name="code" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="expiration_date"/>
+                            <field name="is_expiration_date_changed" attrs="{'invisible':[('state','!=', 'new')]}"/>
+                            <field name="expiration_date_edit"
+                                   attrs="{'invisible':['|',('is_expiration_date_changed','=', False),('state','!=', 'new')]}"/>
+                        </group>
+                      </group>
+                      <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="vehicle_id"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="sales_order_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="is_have_permission" invisible="1"/>
+                            <field name="is_free_order" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+                        </group>
+                      </group>
                     </group>
                     <group name="use_time" string="Using Time">
                         <group string="Date">
@@ -229,6 +235,15 @@
                             <field name="end_hour_use" widget="float_time"
                                    attrs="{'readonly':[('is_have_permission','=', False)]}"/>
                         </group>
+                          <group string="Available Days">
+                              <field name="is_str"/>
+                              <field name="is_sun"/>
+                              <field name="is_mon"/>
+                              <field name="is_tus"/>
+                              <field name="is_wen"/>
+                              <field name="is_thur"/>
+                              <field name="is_fri"/>
+                          </group>
                     </group>
                 </sheet>
             </xpath>

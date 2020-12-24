@@ -9,6 +9,18 @@ from datetime import timedelta, datetime
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
+    # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
+    # @api.onchange('initial_coupon')
+    # def check_coupon(self):
+    #     if self.initial_coupon:
+    #         coupon = self.env['sale.coupon'].search([('code','=',self.initial_coupon)])
+    #         if coupon:
+    #             if coupon.partner_id:
+    #                 raise UserError('This is a customer coupon')
+    #             elif coupon.vehicle_id:
+    #                 raise UserError('this is a vehicle coupon')
+    #         else:
+    #             raise UserError('There is no such a coupon.')
     code_type = fields.Selection(string="Code Type", selection=[('promo', 'Promotion'), ('coupon', 'Coupon'), ],
                                  required=True, default='coupon')
     promo_code = fields.Char(string="Promo Code", required=False, )
@@ -27,6 +39,31 @@ class SaleCouponApplyCode(models.TransientModel):
         real_time = datetime.now() + timedelta(hours=2)
         current_time = real_time.time()
         sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+        # if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
+        #     return {'domain': {
+        #         'coupon_code': [('start_date_use', '<=', today_x.date()),
+        #                         ('end_date_use', '>=', today_x.date()),
+        #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+        #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+        #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+        #                         # ('program_id', '=', sales_order.coupon_id.id),
+        #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+        #                         ('partner_id', '=', False),
+        #                         '|', ('vehicle_id', '=', sales_order.vehicle_id.id),
+        #                         ('vehicle_id', '=', False)]}}
+        # elif self.coupon_code.partner_id and not self.coupon_code.vehicle_id:
+        #     return {'domain': {
+        #         'coupon_code': [('start_date_use', '<=', today_x.date()),
+        #                         ('end_date_use', '>=', today_x.date()),
+        #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+        #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+        #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+        #                         # ('program_id', '=', sales_order.coupon_id.id),
+        #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+        #                         ('vehicle_id', '=', False),
+        #                         '|', ('partner_id', '=', sales_order.partner_id.id),
+        #                         ('partner_id', '=', False)]}}
+        # else:
         return {'domain': {
             'coupon_code': [('start_date_use', '<=', today_x.date()),
                             ('end_date_use', '>=', today_x.date()),
@@ -35,9 +72,8 @@ class SaleCouponApplyCode(models.TransientModel):
                             ('expiration_date', '>', today.strftime("%Y-%m-%d")),
                             # ('program_id', '=', sales_order.coupon_id.id),
                             ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-                            ('partner_id', '=', False),
-                            '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
-                            ('vehicle_id', '=', False)]}}
+                            '|', ('vehicle_id', '=', sales_order.vehicle_id.id),('vehicle_id', '=', False),
+                            '|', ('partner_id', '=', sales_order.partner_id.id),('partner_id', '=', False),]}}
 
     # hisham edition
     is_free_order = fields.Boolean(string="Free Order", store=True)
@@ -55,19 +91,19 @@ class SaleCouponApplyCode(models.TransientModel):
             today_week_day = today.strftime("%A")
             is_applicable_programs_today=False
             for co in coupon:
-                if today_week_day == 'Saturday' and co.program_id.is_str == True:
+                if today_week_day == 'Saturday' and co.is_str == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Sunday' and co.program_id.is_sun == True:
+                elif today_week_day == 'Sunday' and co.is_sun == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Monday' and co.program_id.is_mon == True:
+                elif today_week_day == 'Monday' and co.is_mon == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Tuesday' and co.program_id.is_tus == True:
+                elif today_week_day == 'Tuesday' and co.is_tus == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Wednesday' and co.program_id.is_wen == True:
+                elif today_week_day == 'Wednesday' and co.is_wen == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Thursday' and co.program_id.is_thur == True:
+                elif today_week_day == 'Thursday' and co.is_thur == True:
                     is_applicable_programs_today = True
-                elif today_week_day == 'Friday' and co.program_id.is_fri == True:
+                elif today_week_day == 'Friday' and co.is_fri == True:
                     is_applicable_programs_today = True
                 if is_applicable_programs_today == False:
                     raise ValidationError(_('Sorry There Is No Available Today.'))
