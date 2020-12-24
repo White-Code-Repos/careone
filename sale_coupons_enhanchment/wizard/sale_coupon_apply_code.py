@@ -40,6 +40,7 @@ class SaleCouponApplyCode(models.TransientModel):
         current_time = real_time.time()
         sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
         if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
+            raise UserError(sales_order.vehicle_id)
             return {'domain': {
                 'coupon_code': [('start_date_use', '<=', today_x.date()),
                                 ('end_date_use', '>=', today_x.date()),
@@ -85,8 +86,6 @@ class SaleCouponApplyCode(models.TransientModel):
         """
         if self.code_type == 'coupon':
             coupon = self.env['sale.coupon'].browse(self.coupon_code.id)
-            if not coupon:
-                raise UserError('There is no coupon')
             today = datetime.today() + timedelta(hours=2)
             real_time = datetime.now() + timedelta(hours=2)
             current_time = real_time.time()
