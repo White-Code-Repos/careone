@@ -141,7 +141,6 @@ class SalesOrderInherit(models.Model):
                 for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
             else:
-                self.is_generate_coupon = True
                 coupon = self.env['sale.coupon'].create({
                     'program_id': program.id,
                     'state': 'reserved',
@@ -154,6 +153,7 @@ class SalesOrderInherit(models.Model):
                     'order_id': self.id,
                     'sale_order_id': self.id
                 })
+            self.is_generate_coupon = True
     def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
         self.ensure_one()
