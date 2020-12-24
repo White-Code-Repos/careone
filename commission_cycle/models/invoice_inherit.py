@@ -777,7 +777,7 @@ class PaymentInherit(models.Model):
 
     def post(self):
         today = fields.Date.today()
-        Invoice = self.env['acoount.move'].search([('name', '=', self.communication)])
+        Invoice = self.env['account.move'].search([('name', '=', self.communication)])
         sale_order = self.env['sale.order'].search([('name', '=', Invoice.invoice_origin)])
         if sale_order:
             employee = self.env['hr.employee'].search([('user_id', '=', sale_order.user_id.id)])
