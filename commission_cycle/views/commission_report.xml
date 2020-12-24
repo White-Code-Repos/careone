@@ -25,6 +25,16 @@
             </tree>
         </field>
     </record>
+	
+	<record id="model_commission_cycle_action_post_payroll" model="ir.actions.server">
+            <field name="name">Post To Payroll</field>
+            <field name="model_id" ref="commission_cycle.model_commission_report"/>
+            <field name="binding_model_id" ref="commission_cycle.model_commission_report"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_post_payroll()</field>
+    </record>
+			
     <record id="commission_report_form_view" model="ir.ui.view">
         <field name="name">commission_report_form_view</field>
         <field name="model">commission.report</field>
