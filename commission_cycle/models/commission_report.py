@@ -38,7 +38,7 @@ class CommissionReport(models.Model):
             reps.write({'status':True})
         cur_comm = self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).commission
         tot=comm+cur_comm
-        self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':tot)})
+        self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':tot})
 
 class hrContract(models.Model):
     _inherit='hr.contract'
