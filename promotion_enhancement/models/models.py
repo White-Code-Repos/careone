@@ -121,13 +121,13 @@ class SalesOrderInherit(models.Model):
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
                     'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
-            if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
-                for count in range(0, self.coupon_id.nbr_coupons):
+            if program_x.generation_type == 'nbr_coupon' and program_x.nbr_coupons > 0:
+                for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
 
-            elif self.coupon_id.generation_type == 'nbr_customer':
+            elif program_x.generation_type == 'nbr_customer':
                 vals.update({'partner_id': self.partner_id.id})
-                for count in range(0, self.coupon_id.nbr_coupons):
+                for count in range(0, program_x.nbr_coupons):
                     coupon = self.env['sale.coupon'].create(vals)
                     subject = '%s, a coupon has been generated for you' % (self.partner_id.name)
                     template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
@@ -136,12 +136,11 @@ class SalesOrderInherit(models.Model):
                                            email_values={'email_to': self.partner_id.email,
                                                          'email_from': self.env.user.email or '',
                                                          'subject': subject, })
-            elif self.coupon_id.generation_type == 'nbr_vehicles':
+            elif program_x.generation_type == 'nbr_vehicles':
                 vals.update({'vehicle_id': self.vehicle_id.id})
-                for count in range(0, self.coupon_id.nbr_coupons):
+                for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
             else:
-                self.is_generate_coupon = True
                 coupon = self.env['sale.coupon'].create({
                     'program_id': program.id,
                     'state': 'reserved',
@@ -154,6 +153,7 @@ class SalesOrderInherit(models.Model):
                     'order_id': self.id,
                     'sale_order_id': self.id
                 })
+            self.is_generate_coupon = True
     def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
         self.ensure_one()
