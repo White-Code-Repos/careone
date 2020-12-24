@@ -564,7 +564,7 @@ class InvoiceInherit(models.Model):
         return super(InvoiceInherit, self).button_draft()
         
 class PaymentInherit(models.Model):
-    _inherit = 'account.paryment'
+    _inherit = 'account.payment'
 
     def commission_payment_condition(self):
         invoices = self.env['account.move'].search([('is_commission_paid', '=', False)])
