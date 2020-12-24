@@ -30,7 +30,7 @@ class SaleCoupon(models.Model):
 
 
     def _check_coupon_code(self, order):
-        if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
+        if self.vehicle_id != order.vehicle_id:
             return  {'error': _('Invalid Vehicle.')}
 
         return super(SaleCoupon, self)._check_coupon_code(order)
