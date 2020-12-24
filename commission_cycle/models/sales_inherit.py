@@ -9,6 +9,7 @@ class SalesOrderInherit(models.Model):
     def get_user_permission(self):
         for order in self:
             users = []
+            
             current_login = self.env.user
             group_security_id = self.env['res.groups'].search([('category_id.name', '=', 'Sales Person Edition')],
                                                               order='id desc',
