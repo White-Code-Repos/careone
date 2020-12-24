@@ -39,7 +39,22 @@ class SaleOrder(models.Model):
             if len(subscription) > 0:
                 already_member = True
             if already_member:
-                self.env.user.notify_success(message='Have Subscription')
+                view = self.env.ref('sh_message.sh_message_wizard')
+                view_id = view and view.id or False
+                context = dict(self._context or {})
+                context['message'] = "Have Subscription"
+                return {
+                'name':'Notice',
+                'type':'ir.actions.act_window',
+                'view_type':'form',
+                # 'view_mode':'form',
+                'res_model':'sh.message.wizard',
+                'views':[(view.id,'form')],
+                'view_id':view.id,
+                'target':'new',
+                'context':context,
+                }
+                # self.env.user.notify_success(message='Have Subscription')
 
     vehicles_subscreptions_id = fields.Many2many('subscription.product','sale_subscription_lines_ids','sale_product','subscription_product', string="Vehicles", domain="[('partner_id','=',partner_id),('subs_id','=',subscription_id),('vehicle_id','=',vehicle_id)]")
 
