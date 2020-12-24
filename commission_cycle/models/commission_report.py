@@ -36,7 +36,9 @@ class CommissionReport(models.Model):
                 raise UserError('These Rows Already Posted.')
             comm += reps.emp_comm
             reps.write({'status':True})
-        self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':comm})
+        cur_comm = self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).commission
+        tot=comm+cur_comm
+        self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':tot)})
 
 class hrContract(models.Model):
     _inherit='hr.contract'
