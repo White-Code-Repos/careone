@@ -137,18 +137,19 @@ class SalesOrderInherit(models.Model):
                 vals.update({'vehicle_id': self.vehicle_id.id})
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
-            self.is_generate_coupon = True
-            coupon = self.env['sale.coupon'].create({
-                'program_id': program.id,
-                'state': 'reserved',
-                'partner_id': self.partner_id.id,
-                'start_hour_use': program.coupon_program_id.start_hour_use,
-                'end_hour_use': program.coupon_program_id.end_hour_use,
-                'start_date_use': program.coupon_program_id.start_date_use,
-                'end_date_use': program.coupon_program_id.end_date_use,
-                'discount_line_product_id': program.discount_line_product_id.id,
-                'order_id': self.id,
-            })
+            else:
+                self.is_generate_coupon = True
+                coupon = self.env['sale.coupon'].create({
+                    'program_id': program.id,
+                    'state': 'reserved',
+                    'partner_id': self.partner_id.id,
+                    'start_hour_use': program.coupon_program_id.start_hour_use,
+                    'end_hour_use': program.coupon_program_id.end_hour_use,
+                    'start_date_use': program.coupon_program_id.start_date_use,
+                    'end_date_use': program.coupon_program_id.end_date_use,
+                    'discount_line_product_id': program.discount_line_product_id.id,
+                    'order_id': self.id,
+                })
     def _create_new_no_code_promo_reward_lines(self):
         '''Apply new programs that are applicable'''
         self.ensure_one()
