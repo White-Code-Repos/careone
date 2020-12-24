@@ -29,11 +29,10 @@ class CommissionReport(models.Model):
         self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':comm})
         
     def action_post_payroll(self):
-        raise UserError(_('These Rows Already Posted.'))
-        if self.filtered(lambda so: so.status == True):
-            raise UserError(_('These Rows Already Posted.'))
         comm = 0
         for reps in self:
+            if reps.status == True:
+                raise UserError(_('These Rows Already Posted.'))
             comm += reps.emp_comm
             reps.write({'status':True})
         self.env['hr.contract'].search([('employee_id','=',self.employee_id.id)]).write({'commission':comm})
