@@ -587,19 +587,19 @@ class PaymentInherit(models.Model):
                     if employee:
                         employee_plan = self.env['commission.plan'].search(
                             [('start_date', '<=', today), ('end_date', '>=', today),
-                             ('condition', '=', 'invoice'), ('employee_ids', '=', employee.id)])
+                             ('condition', '=', 'payment'), ('employee_ids', '=', employee.id)])
                     if employee_team:
                         team_plan = self.env['commission.plan'].search(
                             [('start_date', '<=', today), ('end_date', '>=', today),
-                             ('condition', '=', 'invoice'), ('sales_team_ids', '=', employee_team.id)])
+                             ('condition', '=', 'payment'), ('sales_team_ids', '=', employee_team.id)])
                     if employee_job:
                         job_plan = self.env['commission.plan'].search(
                             [('start_date', '<=', today), ('end_date', '>=', today),
-                             ('condition', '=', 'invoice'),
+                             ('condition', '=', 'payment'),
                              ('job_position_ids', '=', employee_job.id)])
                     if employee_department:
                         department_plan = self.env['commission.plan'].search(
-                            [('start_date', '<=', today), ('end_date', '>=', today), ('condition', '=', 'invoice'),
+                            [('start_date', '<=', today), ('end_date', '>=', today), ('condition', '=', 'payment'),
                              ('department_ids', '=', employee_department.id)])
                     if employee_plan:
                         related_plan = employee_plan
@@ -792,19 +792,19 @@ class PaymentInherit(models.Model):
             if employee:
                 employee_plan = self.env['commission.plan'].search(
                     [('start_date', '<=', today), ('end_date', '>=', today),
-                     ('condition', '=', 'invoice'), ('employee_ids', '=', employee.id)])
+                     ('condition', '=', 'payment'), ('employee_ids', '=', employee.id)])
             if employee_team:
                 team_plan = self.env['commission.plan'].search(
                     [('start_date', '<=', today), ('end_date', '>=', today),
-                     ('condition', '=', 'invoice'), ('sales_team_ids', '=', employee_team.id)])
+                     ('condition', '=', 'payment'), ('sales_team_ids', '=', employee_team.id)])
             if employee_job:
                 job_plan = self.env['commission.plan'].search(
                     [('start_date', '<=', today), ('end_date', '>=', today),
-                     ('condition', '=', 'invoice'),
+                     ('condition', '=', 'payment'),
                      ('job_position_ids', '=', employee_job.id)])
             if employee_department:
                 department_plan = self.env['commission.plan'].search(
-                    [('start_date', '<=', today), ('end_date', '>=', today), ('condition', '=', 'invoice'),
+                    [('start_date', '<=', today), ('end_date', '>=', today), ('condition', '=', 'payment'),
                      ('department_ids', '=', employee_department.id)])
             if employee_plan:
                 related_plan = employee_plan
