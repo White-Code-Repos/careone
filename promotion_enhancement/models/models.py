@@ -121,11 +121,11 @@ class SalesOrderInherit(models.Model):
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
                     'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
-            if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
+            if program_x.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
 
-            elif self.coupon_id.generation_type == 'nbr_customer':
+            elif program_x.generation_type == 'nbr_customer':
                 vals.update({'partner_id': self.partner_id.id})
                 for count in range(0, self.coupon_id.nbr_coupons):
                     coupon = self.env['sale.coupon'].create(vals)
@@ -136,7 +136,7 @@ class SalesOrderInherit(models.Model):
                                            email_values={'email_to': self.partner_id.email,
                                                          'email_from': self.env.user.email or '',
                                                          'subject': subject, })
-            elif self.coupon_id.generation_type == 'nbr_vehicles':
+            elif program_x.generation_type == 'nbr_vehicles':
                 vals.update({'vehicle_id': self.vehicle_id.id})
                 for count in range(0, self.coupon_id.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
