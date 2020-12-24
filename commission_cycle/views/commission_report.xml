@@ -32,7 +32,8 @@
             <field name="binding_model_id" ref="commission_cycle.model_commission_report"/>
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">action = records.action_post_payroll()</field>
+            <field name="code">raise Warning(record.name)</field>
+			<!---cords.action_post_payroll()</field>-->
     </record>
 			
     <record id="commission_report_form_view" model="ir.ui.view">
