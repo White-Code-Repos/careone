@@ -29,11 +29,11 @@ class SaleCoupon(models.Model):
     sub_id = fields.Many2one('sale.subscription')
 
 
-    def _check_coupon_code(self, order):
-        if self.vehicle_id != order.vehicle_id:
-            return  {'error': _('Invalid Vehicle.')}
-
-        return super(SaleCoupon, self)._check_coupon_code(order)
+    # def _check_coupon_code(self, order):
+    #     if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
+    #         return  {'error': _('Invalid Vehicle.')}
+    #
+    #     return super(SaleCoupon, self)._check_coupon_code(order)
 
 
     def _compute_expiration_date(self):

@@ -8,6 +8,21 @@ from odoo.exceptions import Warning ,ValidationError
 class PromotionProgramInherit(models.Model):
     _inherit = 'sale.coupon.program'
 
+    # The api.depends is handled in `def modified` of `sale_coupon/models/sale_order.py`
+    def _compute_order_count(self):
+        product_data = self.env['sale.order.line'].read_group([('product_id', 'in', self.mapped('discount_line_product_id').ids)], ['product_id'], ['product_id'])
+        mapped_data = dict([(m['product_id'][0], m['product_id_count']) for m in product_data])
+        for program in self:
+            program.order_count = mapped_data.get(program.discount_line_product_id.id, 0)
+        for this in self:
+            total_orders = 0
+            if this.program_type == 'promotion_program':
+                prog = self.env['sale.order'].search([('code_promo_program_id','=',this.id)])
+                for pro in prog:
+                    total_orders = total_orders + 1
+
+
+
     def action_view_sales_orders(self):
         self.ensure_one()
         orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')

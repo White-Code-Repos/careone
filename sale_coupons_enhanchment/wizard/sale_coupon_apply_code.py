@@ -35,7 +35,7 @@ class SaleCouponApplyCode(models.TransientModel):
             if self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id):
                 raise ValidationError('The coupon is not applicable by this customer')
             elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
-                raise ValidationError('The coupon is not applicable on this car')
+                raise ValidationError('The coupon is not applicable on this vehicle')
             else:
                 if self.coupon_code.is_free_order == True:
                     self.is_free_order = True
