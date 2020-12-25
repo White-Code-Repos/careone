@@ -128,6 +128,8 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise UserError(error_status.get('error', False))
             if error_status.get('not_found', False):
                 raise UserError(error_status.get('not_found', False))
+            promotion = self.env['sale.coupon.program'].search([('promo_code','=',self.promo_code)])
+            sales_order.promotion_program_id = promotion.id
 
         else:
             if self.is_free_order == True:

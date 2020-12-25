@@ -17,7 +17,7 @@ class PromotionProgramInherit(models.Model):
         for this in self:
             total_orders = 0
             if this.program_type == 'promotion_program':
-                prog = self.env['sale.order'].search([('code_promo_program_id','=',this.id)])
+                prog = self.env['sale.order'].search([('promotion_program_id','=',this.id)])
                 for pro in prog:
                     total_orders = total_orders + 1
 
@@ -116,6 +116,8 @@ class PromotionProgramInherit(models.Model):
 
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
+
+    promotion_program_id = fields.Many2one('sale.coupon.program')
 
     def _create_reward_coupon(self, program):
         # if there is already a coupon that was set as expired, reactivate that one instead of creating a new one
@@ -217,6 +219,8 @@ class SalesOrderInherit(models.Model):
                     order._create_reward_coupon(program)
                 elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
                     self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
+                if program.program_type == 'promotion_program':
+                    self.promotion_program_id = program.id
                 order.no_code_promo_program_ids |= program
 
     def _get_applicable_no_code_promo_program(self):
