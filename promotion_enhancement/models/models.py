@@ -25,7 +25,7 @@ class PromotionProgramInherit(models.Model):
     def action_view_sales_orders(self):
         self.ensure_one()
         orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')
-        if this.program_type == 'promotion_program':
+        if self.program_type == 'promotion_program':
             orders |= self.env['sale.order'].search([('promotion_program_id','=',this.id)])
         return {
             'name': _('Sales Orders'),
