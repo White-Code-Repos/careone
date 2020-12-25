@@ -26,7 +26,7 @@ class PromotionProgramInherit(models.Model):
         self.ensure_one()
         orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')
         if self.program_type == 'promotion_program':
-            orders |= self.env['sale.order'].search([('promotion_program_id','=',this.id)])
+            orders |= self.env['sale.order'].search([('promotion_program_id','=',self.id)])
         return {
             'name': _('Sales Orders'),
             'view_mode': 'tree,form',
