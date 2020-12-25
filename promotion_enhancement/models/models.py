@@ -17,9 +17,8 @@ class PromotionProgramInherit(models.Model):
         for this in self:
             total_orders = 0
             if this.program_type == 'promotion_program':
-                prog = self.env['sale.order'].search([('promotion_program_id','=',this.id)])
-                for pro in prog:
-                    total_orders = total_orders + 1
+                orders = self.env['sale.order'].search([('promotion_program_id','=',this.id)])
+                this.order_count = len(orders)
 
 
 
