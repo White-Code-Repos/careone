@@ -54,7 +54,9 @@ class WarrantyDetails(models.Model):
 
 	so_id = fields.Many2one('sale.order',"Sale Order")
 	company_id = fields.Many2one('res.company', 'Company')
-
+    viechle_id = fields.Many2one('fleet.veichle')
+	size = fields.Char(string="Car Size")
+	model_id = fields.Many2one('fleet.model')
 
 	@api.onchange('partner_id')
 	def customer_details(self):
