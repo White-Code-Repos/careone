@@ -5,7 +5,7 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
-          <field name="wage" position="after">
+          <field name="advantages" position="before">
             <label for="settelment_allowance"/>
             <div class="o_row" name="settelment_allowance">
                 <field name="settelment_allowance" nolabel="1"/>
