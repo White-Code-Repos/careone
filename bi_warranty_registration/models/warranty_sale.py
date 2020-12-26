@@ -40,9 +40,9 @@ class SaleOrder(models.Model):
 					'email' : self.partner_id.email,
 					'product_serial_id' : line.serial_no.id,
 					'so_id' : self.id,
-                    'viechle_id':self.vehicle_id,
+                    'viechle_id':self.vehicle_id.id,
                     'size':self.size,
-                    'model_id':self.model_id,
+                    'model_id':self.model_id.id,
 				})
 
 		return res
