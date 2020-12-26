@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
 	def action_confirm(self):
 		res = super(SaleOrder, self).action_confirm()
 		for line in self.order_line :
-			if line.product_id.create_warranty_with_saleorder == True and line.product_id.under_warranty == True:
+			if line.product_id.create_warranty_with_saleorder == True:
 				self.env['product.warranty'].create({
 					'partner_id' : self.partner_id.id,
 					'product_id' : line.product_id.id,
