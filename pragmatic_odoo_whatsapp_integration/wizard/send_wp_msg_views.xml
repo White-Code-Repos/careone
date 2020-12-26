@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="send_whatsapp_msg_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.msg.form</field>
+        <field name="model">whatsapp.msg</field>
+        <field name="arch" type="xml">
+            <form string="Send a WhatsApp Message">
+                <sheet>
+                    <group>
+
+
+                        <field name="message" style="height='400px';"/>
+                    </group>
+                    <group col="4">
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Send" type="object" class="oe_highlight" name="action_send_msg"/>
+                            <button string="Cancel" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="send_whatsapp_msg_res_partner_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.msg.res.partner.form</field>
+        <field name="model">whatsapp.msg.res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Send a WhatsApp Message">
+                <sheet>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags_mobile" placeholder="Add contacts" />
+
+                        <field name="message" style="height='400px';"/>
+                    </group>
+                    <group col="4">
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Send" type="object" class="oe_highlight" name="action_send_msg_res_partner"/>
+                            <button string="Cancel" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+            <record id="send_whatsapp_msg_send_res_partner_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.msg.send.res.partner.form</field>
+        <field name="model">whatsapp.msg.send.partner</field>
+        <field name="arch" type="xml">
+            <form string="Send a WhatsApp Message">
+                <sheet>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags_mobile" placeholder="Add contacts" domain="[('mobile','!=',False),('country_id','!=',None)]"/>
+
+                        <field name="message" style="height='400px';"/>
+                    </group>
+                    <group col="4">
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Send" type="object" class="oe_highlight" name="action_send_msg_res_partner"/>
+                            <button string="Cancel" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="send_whatsapp_msg_res_partner_form_action" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp Message</field>
+        <field name="res_model">whatsapp.msg.res.partner</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="domain">['|', ('res_model_id', '=', 'res.partner'), ('res_model_id.model', '=', 'sale.order')]</field>
+        <field name="context">{
+            'search_default_team_id':[active_model],
+            'search_default_team_id': [active_id]
+            }</field>
+    </record>
+
+    <record id="send_whatsapp_msg_send_res_partner_form_action" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp Message</field>
+        <field name="res_model">whatsapp.msg.send.partner</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="domain"></field>
+        <field name="context">{
+            'search_default_team_id':['res.partner'],
+            'search_default_team_id': [active_id]
+            }</field>
+    </record>
+
+    <record id="send_whatsapp_msg_send_res_partner_template_action" model="ir.actions.act_window">
+        <field name="name">Send Message via WhatsApp</field>
+        <field name="res_model">whatsapp.msg.send.partner</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'force_mobile':True, 'force_country':True}</field>
+    </record>
+
+    <record id="send_whatsapp_msg_res_partner_template_action" model="ir.actions.act_window">
+        <field name="name">Send Message via WhatsApp</field>
+        <field name="res_model">whatsapp.msg.res.partner</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'force_mobile':True, 'force_country':True}</field>
+    </record>
+
+
+    <record id="whatsapp_qr_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.scan.qr.form</field>
+        <field name="model">whatsapp.scan.qr</field>
+        <field name="arch" type="xml">
+            <form string="Scan WhatsApp QR Code">
+                <h3 class='text-info'>Close the window after few seconds, Once you get logged in signal from your mobile device.</h3>
+
+                <field name="qr_code_img_data" widget="image" readonly="True"/>
+
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Close" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="whatsapp_retry_msg_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.retry.msg.form</field>
+        <field name="model">whatsapp.retry.msg</field>
+        <field name="arch" type="xml">
+            <form string="Retry WhatsApp Message">
+                <h3 class='text-danger ml32'><i class="fa fa-exclamation-triangle" title="Warning" role="img" aria-label="Warning"/> Oops, Something went wrong! please click on Retry to send the message</h3>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Retry" type="object" class="oe_highlight" name="action_retry_send_msg"/>
+                            <button string="Close" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="send_whatsapp_msg_form_action" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp Message</field>
+        <field name="res_model">whatsapp.msg</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="domain">['|', ('res_model_id', '=', 'res.partner'), ('res_model_id.model', '=', 'sale.order')]</field>
+        <field name="context">{
+            'search_default_team_id':[active_model],
+            'search_default_team_id': [active_id]
+            }</field>
+    </record>
+    <record id="send_whatsapp_msg_template_action" model="ir.actions.act_window">
+        <field name="name">Send Message via WhatsApp</field>
+        <field name="res_model">whatsapp.msg</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'force_mobile':True, 'force_country':True}</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="fields" inherit_id="auth_signup.fields"
+              name="Password policy data for auth_signup">
+        <xpath expr="//div[hasclass('field-name')]" position="inside">
+            <div class="form-group field-country_id">
+                <label class="col-form-label" for="countries">Country</label>
+                <select name="country_id">
+                    <option value="">Country...</option>
+                    <t t-foreach="countries or []" t-as="country">
+                        <option t-att-value="country.id">
+                            <t t-esc="country.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+
+
+            <div class="form-group field-mobile">
+                <label for="name">Your Mobile number</label>
+                <input type="text" name="mobile" t-att-value="mobile" id="mobile" class="form-control form-control-sm" placeholder="e.g. 72*******"
+                       t-att-readonly="'readonly' if only_passwords else None"
+                       t-att-autofocus="'autofocus' if login and not only_passwords else None" />
+            </div>
+        </xpath>
+    </template>
+</odoo>

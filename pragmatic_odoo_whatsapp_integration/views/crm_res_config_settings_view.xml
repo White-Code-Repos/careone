@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="view_crm_configuration_inherit" model="ir.ui.view">
+            <field name="name">crm.res.config.settings.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('app_settings_block')][@data-key='crm']/div[2]" position="after">
+                    <h2>Whatsapp Configuration</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="group_crm_enable_signature"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="group_crm_enable_signature"/>
+                                <div class="text-muted">
+                                    Show Signature
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="group_crm_display_chatter_message"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="group_crm_display_chatter_message"/>
+                                <div class="text-muted">
+                                    Display Message in chatter
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="sale_orders_form_inherite" model="ir.ui.view">
+        <field name="name">sale.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button type="action"
+                    name="%(pragmatic_odoo_whatsapp_integration.send_whatsapp_msg_template_action)d"
+                    class="fa fa-whatsapp"
+                    string="Send Whatsapp message"
+                groups="pragmatic_odoo_whatsapp_integration.sales_whatsapp_feature"
+
+
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

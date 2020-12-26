@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data noupdate="0">
+
+		<record id="account_payment_remainder" model="ir.cron">
+			<field name="name">Whatsapp - Payment remainder send message</field>
+			<field name="model_id" ref="model_account_move" />
+			<field name="state">code</field>
+			<field name="code">model._payment_remainder_send_message()</field>
+			<field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False" />
+			<field name="active" eval="False" />
+		</record>
+
+		<record id="assigned_task_done" model="ir.cron">
+			<field name="name">Whatsapp - Assigned task done</field>
+			<field name="model_id" ref="model_project_task" />
+			<field name="state">code</field>
+			<field name="code">model._assigned_task_done()</field>
+			<field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False" />
+			<field name="active" eval="False" />
+		</record>
+
+    </data>
+</odoo>
