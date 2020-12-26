@@ -73,7 +73,8 @@ class crm_claim(models.Model):
 	serial_no = fields.Many2one('stock.production.lot',"Serial No", domain="[('product_id', '=', product_id)]")
 	warranty = fields.Many2one('product.warranty','Related Warranty')
 	stage_match = fields.Selection([('first','first'), ('second','second'), ('third','third'),('fourth','fourth')], 'Stage Match', default='first')
-	
+	viechle_id = fields.Many2one('fleet.veichle')
+    size = fields.Char(string="Car Size")
 
 
 	@api.onchange('partner_id')
