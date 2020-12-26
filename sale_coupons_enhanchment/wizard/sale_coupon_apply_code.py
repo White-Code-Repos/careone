@@ -31,21 +31,26 @@ class SaleCouponApplyCode(models.TransientModel):
     @api.onchange('coupon_code')
     def coupon_code_onchange(self):
         if self.coupon_code:
-            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-            if self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id):
-                raise ValidationError('The coupon is not applicable by this customer')
-            elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
-                raise ValidationError('The coupon is not applicable on this vehicle')
-            else:
-                if self.coupon_code.is_free_order == True:
-                    self.is_free_order = True
-                    self.is_free_order_readonly_x = True
-        else:
             today = datetime.today().date()
             today_x = datetime.today() + timedelta(hours=2)
             real_time = datetime.now() + timedelta(hours=2)
             current_time = real_time.time()
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            if self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id):
+                raise ValidationError('The coupon is not applicable by this customer')
+            elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
+                raise ValidationError('The coupon is not applicable on this vehicle')
+            elif self.coupon_code.start_date_use > today_x.date() or self.coupon_code.end_date_use < today_x.date() or self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60) or self.coupon_code.expiration_date < today.strftime("%Y-%m-%d")
+                raise ValidationError('invalid date')
+            elif self.coupon_code.state != 'new':
+                raise ValidationError('Coupon not valid')
+            else:
+                if self.coupon_code.is_free_order == True:
+                    self.is_free_order = True
+                    self.is_free_order_readonly_x = True
+        # else:
+        #
             # if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
             #     return {'domain': {
             #         'coupon_code': [('start_date_use', '<=', today_x.date()),
@@ -81,13 +86,7 @@ class SaleCouponApplyCode(models.TransientModel):
             #                     ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
             #                     '|', ('vehicle_id', '=', sales_order.vehicle_id.id),('vehicle_id', '=', False),
             #                     '|', ('partner_id', '=', sales_order.partner_id.id),('partner_id', '=', False),]}}
-            return {'domain': {
-                'coupon_code': [('start_date_use', '<=', today_x.date()),
-                                ('end_date_use', '>=', today_x.date()),
-                                ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                                ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-                                ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-                                ('state', '=', 'new'),]}}
+
     # hisham edition
     is_free_order = fields.Boolean(string="Free Order", store=True)
 
