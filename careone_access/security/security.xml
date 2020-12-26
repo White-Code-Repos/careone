@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="careone_manager" model="res.groups">
+    <field name="name">Manager</field>
+  </record>
+  <record id="careone_salesperson" model="res.groups">
+    <field name="name">Salesperson</field>
+  </record>
+  <record id="careone_accountant" model="res.groups">
+    <field name="name">Accountant</field>
+  </record>
+  <record id="careone_worker" model="res.groups">
+    <field name="name">Worker</field>
+  </record>
+  <record id="careone_inventory_responsible" model="res.groups">
+    <field name="name">Inventory Responsible</field>
+  </record>
+</odoo>
