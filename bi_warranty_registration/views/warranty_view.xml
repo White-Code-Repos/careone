@@ -12,6 +12,9 @@
 						<field name="serial_no"/>
 						<field name="product_id"/>
 						<field name="state"/>
+						<field name="viechle_id" />
+						<field name="size" />
+						<field name="model_id" />
 				</tree>
 				</field>
 		</record>
@@ -40,6 +43,9 @@
 								/>
 								<field name="phone" attrs="{'readonly' : [('state','!=','new')]}"/>	
 								<field name="email" attrs="{'readonly' : [('state','!=','new')]}"/>
+								<field name="viechle_id" />
+								<field name="size" />
+								<field name="model_id" />
 								</group>
 								<group>
 									
