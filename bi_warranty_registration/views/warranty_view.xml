@@ -248,7 +248,7 @@
 						</group>
 						<group>
 							<field name="warranty_sale_config" invisible="1"/>
-							<field name="create_warranty_with_saleorder" attrs="{'invisible':[('warranty_sale_config','=', False)]}"/>
+							<field name="create_warranty_with_saleorder" />
 						</group>
 					</group>
 				</page>
