@@ -75,8 +75,8 @@ class crm_claim(models.Model):
 	stage_match = fields.Selection([('first','first'), ('second','second'), ('third','third'),('fourth','fourth')], 'Stage Match', default='first')
 	viechle_id = fields.Many2one('fleet.veichle')
     size = fields.Char(string="Car Size")
-
-
+    model_id = fields.Many2one('fleet.model')
+    
 	@api.onchange('partner_id')
 	def customer_details(self):
 		self.partner_phone = self.partner_id.phone
