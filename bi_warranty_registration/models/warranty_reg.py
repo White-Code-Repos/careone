@@ -41,7 +41,7 @@ class WarrantyDetails(models.Model):
 	merchant = fields.Char('Merchant')
 	renew_no = fields.Integer('No. of Renew', readonly=True)
 	warranty_create_date = fields.Date('Warranty Start Date', default=fields.date.today())
-	product_serial_id = fields.Many2one('stock.production.lot',"Serial No", domain="[('product_id', '=', product_id)]", required=True)
+	product_serial_id = fields.Many2one('stock.production.lot',"Serial No", domain="[('product_id', '=', product_id)]")
 	warranty_history_ids = fields.One2many('warranty.history','warranty_id','Warranty History', readonly=True)
 	warranty_type = fields.Selection([('free','Free'),('paid','Paid')], string="Warranty Type", default='free')
 	warranty_team = fields.Many2one('crm.team', domain="[('use_warranty', '=', True)]", string="Warranty Team")
