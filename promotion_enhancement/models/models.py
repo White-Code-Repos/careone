@@ -3,10 +3,38 @@
 from odoo import models, fields, api, _
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import Warning ,ValidationError
 
 class PromotionProgramInherit(models.Model):
     _inherit = 'sale.coupon.program'
+
+    # The api.depends is handled in `def modified` of `sale_coupon/models/sale_order.py`
+    def _compute_order_count(self):
+        product_data = self.env['sale.order.line'].read_group([('product_id', 'in', self.mapped('discount_line_product_id').ids)], ['product_id'], ['product_id'])
+        mapped_data = dict([(m['product_id'][0], m['product_id_count']) for m in product_data])
+        for program in self:
+            program.order_count = mapped_data.get(program.discount_line_product_id.id, 0)
+        for this in self:
+            total_orders = 0
+            if this.program_type == 'promotion_program':
+                orders = self.env['sale.order'].search([('promotion_program_id','=',this.id)])
+                this.order_count = len(orders)
+
+
+
+    def action_view_sales_orders(self):
+        self.ensure_one()
+        orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')
+        if self.program_type == 'promotion_program':
+            orders |= self.env['sale.order'].search([('promotion_program_id','=',self.id)])
+        return {
+            'name': _('Sales Orders'),
+            'view_mode': 'tree,form',
+            'res_model': 'sale.order',
+            'type': 'ir.actions.act_window',
+            'domain': [('id', 'in', orders.ids)],
+            'context': dict(self._context, create=False)
+        }
 
     rule_date_from = fields.Date(string="Start Date", help="Coupon program start date")
     rule_date_to = fields.Date(string="End Date", help="Coupon program end date")
@@ -19,7 +47,7 @@ class PromotionProgramInherit(models.Model):
     is_wen_promotion = fields.Boolean(string="Wednesday", )
     is_thur_promotion = fields.Boolean(string="Thursday", )
     is_fri_promotion = fields.Boolean(string="Friday", )
-    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, )
+    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, domain=[('program_type', '!=', 'promotion_program')])
     def _check_promo_code(self, order, coupon_code):
         message = {}
         applicable_programs = order._get_applicable_programs()
@@ -28,20 +56,23 @@ class PromotionProgramInherit(models.Model):
         current_time = real_time.time()
         today_week_day = today.strftime("%A")
         is_applicable_programs_today = False
-        if today_week_day == 'Saturday' and self.is_str_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Sunday' and self.is_sun_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Monday' and self.is_mon_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Tuesday' and self.is_tus_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Wednesday' and self.is_wen_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Thursday' and self.is_thur_promotion == True:
-            is_applicable_programs_today = True
-        elif today_week_day == 'Friday' and self.is_fri_promotion == True:
-            is_applicable_programs_today = True
+        for this in self:
+            if today_week_day == 'Saturday' and this.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and this.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and this.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and this.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and this.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and this.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and this.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
         if self.end_hour_use_promotion < (
                 current_time.hour + current_time.minute / 60) or self.start_hour_use_promotion > (
                 current_time.hour + current_time.minute / 60) or self.rule_date_from > today.date() or self.rule_date_to < today.date() or is_applicable_programs_today != True:
@@ -87,6 +118,8 @@ class PromotionProgramInherit(models.Model):
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
+    promotion_program_id = fields.Many2one('sale.coupon.program')
+
     def _create_reward_coupon(self, program):
         # if there is already a coupon that was set as expired, reactivate that one instead of creating a new one
         coupon = self.env['sale.coupon'].search([
@@ -102,17 +135,20 @@ class SalesOrderInherit(models.Model):
             return coupon
         else:
             program_x = program.coupon_program_id
-            vals = {'program_id': program_x.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
+            vals = {'program_id': program_x.id, 'order_id': self.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
-                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
-            if self.coupon_id.generation_type == 'nbr_coupon' and self.coupon_id.nbr_coupons > 0:
-                for count in range(0, self.coupon_id.nbr_coupons):
+                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use,
+                    'is_str':program_x.is_str,'is_sun':program_x.is_sun,'is_mon':program_x.is_mon,
+                    'is_tus':program_x.is_tus,'is_wen':program_x.is_wen,'is_thur':program_x.is_thur,
+                    'is_fri':program_x.is_fri,}
+            if program_x.generation_type == 'nbr_coupon' and program_x.nbr_coupons > 0:
+                for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
 
-            if self.coupon_id.generation_type == 'nbr_customer':
+            elif program_x.generation_type == 'nbr_customer':
                 vals.update({'partner_id': self.partner_id.id})
-                for count in range(0, self.coupon_id.nbr_coupons):
+                for count in range(0, program_x.nbr_coupons):
                     coupon = self.env['sale.coupon'].create(vals)
                     subject = '%s, a coupon has been generated for you' % (self.partner_id.name)
                     template = self.env.ref('sale_coupon.mail_template_sale_coupon', raise_if_not_found=False)
@@ -121,20 +157,102 @@ class SalesOrderInherit(models.Model):
                                            email_values={'email_to': self.partner_id.email,
                                                          'email_from': self.env.user.email or '',
                                                          'subject': subject, })
-            if self.coupon_id.generation_type == 'nbr_vehicles':
+            elif program_x.generation_type == 'nbr_vehicles':
                 vals.update({'vehicle_id': self.vehicle_id.id})
-                for count in range(0, self.coupon_id.nbr_coupons):
+                for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
+            else:
+                coupon = self.env['sale.coupon'].create({
+                    'program_id': program.id,
+                    'state': 'reserved',
+                    'partner_id': self.partner_id.id,
+                    'start_hour_use': program.coupon_program_id.start_hour_use,
+                    'end_hour_use': program.coupon_program_id.end_hour_use,
+                    'start_date_use': program.coupon_program_id.start_date_use,
+                    'end_date_use': program.coupon_program_id.end_date_use,
+                    'discount_line_product_id': program.discount_line_product_id.id,
+                    'order_id': self.id,
+                    'sale_order_id': self.id
+                })
             self.is_generate_coupon = True
-            # coupon = self.env['sale.coupon'].create({
-            #     'program_id': program.id,
-            #     'state': 'reserved',
-            #     'partner_id': self.partner_id.id,
-            #     'start_hour_use': program.coupon_program_id.start_hour_use,
-            #     'end_hour_use': program.coupon_program_id.end_hour_use,
-            #     'start_date_use': program.coupon_program_id.start_date_use,
-            #     'end_date_use': program.coupon_program_id.end_date_use,
-            #     'discount_line_product_id': program.discount_line_product_id.id,
-            #     'order_id': self.id,
-            # })
+    def _create_new_no_code_promo_reward_lines(self):
+        '''Apply new programs that are applicable'''
+        self.ensure_one()
+        order = self
+        programs = order._get_applicable_no_code_promo_program()
 
+
+        programs = programs._keep_only_most_interesting_auto_applied_global_discount_program()
+
+
+
+        for program in programs:
+            if not program:
+                raise ValidationError(_('Sorry There Is No Available Programms.'))
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            for pro in program:
+                if today_week_day == 'Saturday' and pro.is_str_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and pro.is_sun_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and pro.is_mon_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and pro.is_tus_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and pro.is_wen_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and pro.is_thur_promotion == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and pro.is_fri_promotion == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
+            # VFE REF in master _get_applicable_no_code_programs already filters programs
+            # why do we need to reapply this bunch of checks in _check_promo_code ????
+            # We should only apply a little part of the checks in _check_promo_code...
+            error_status = program._check_promo_code(order, False)
+            if not error_status.get('error'):
+                if program.promo_applicability == 'on_next_order':
+                    order._create_reward_coupon(program)
+                elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
+                    self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
+                if program.program_type == 'promotion_program':
+                    self.promotion_program_id = program.id
+                order.no_code_promo_program_ids |= program
+
+    def _get_applicable_no_code_promo_program(self):
+        self.ensure_one()
+        programs = self.env['sale.coupon.program'].with_context(
+            no_outdated_coupons=True,
+            applicable_coupon=True,
+        ).search([
+            ('promo_code_usage', '=', 'no_code_needed'),
+            '|', ('rule_date_from', '=', False), ('rule_date_from', '<=', self.date_order),
+            '|', ('rule_date_to', '=', False), ('rule_date_to', '>=', self.date_order),
+            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False),
+        ])
+        today = datetime.today() + timedelta(hours=2)
+        today_week_day = today.strftime("%A")
+        is_applicable_programs_today=False
+        for pros in programs:
+            if today_week_day == 'Saturday' and pros.is_str_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Sunday' and pros.is_sun_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Monday' and pros.is_mon_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Tuesday' and pros.is_tus_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Wednesday' and pros.is_wen_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Thursday' and pros.is_thur_promotion == True:
+                is_applicable_programs_today = True
+            elif today_week_day == 'Friday' and pros.is_fri_promotion == True:
+                is_applicable_programs_today = True
+            if is_applicable_programs_today == False:
+                raise ValidationError(_('Sorry There Is No Available Today.'))
+        return programs

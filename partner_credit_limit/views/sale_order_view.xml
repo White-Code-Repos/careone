@@ -9,13 +9,28 @@
                 <xpath expr="//button[@name='action_confirm'][1]" position="before">
                     <field name="no_credit_has_ceo_access" invisible="1"/>
                 </xpath>
-                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
-                    <attribute name="attrs">{'invisible':[('no_credit_has_ceo_access','=',False)]}</attribute>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('no_credit_has_ceo_access','=',False),('state', '!=', 'draft')]}</attribute>
                 </xpath>
 <!--                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">-->
 <!--                    <attribute name="attrs">{'invisible':[('no_credit_has_ceo_access','=',False)]}</attribute>-->
 <!--                </xpath>-->
 
+            </field>
+        </record>
+		
+		<record id="view_quotation_sale_order_tree_ext" model="ir.ui.view">
+            <field name="name">Sale Order Custom tree view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="vehicle_id" />
+					<!--<field name="size" />-->
+					<field name="vehicle_state" />
+					<field name="color_id" />
+					<field name="model_id" />
+                </xpath>
             </field>
         </record>
 </odoo>

@@ -8,32 +8,32 @@ class SaleCouponReward(models.Model):
     _inherit = 'sale.coupon.reward'
     _description = "Sales Coupon Reward"
 
-    reward_type = fields.Selection(selection_add=[('product_discount', 'Product Discount')])
-
-    def name_get(self):
-        result = []
-        reward_names = super(SaleCouponReward, self).name_get()
-        free_shipping_reward_ids = self.filtered(lambda reward: reward.reward_type == 'product_discount').ids
-        for res in reward_names:
-            result.append((res[0], res[0] in free_shipping_reward_ids and _("product discount") or res[1]))
-        return result
+    # reward_type = fields.Selection(selection_add=[('product_discount', 'Product Discount')])
+    #
+    # def name_get(self):
+    #     result = []
+    #     reward_names = super(SaleCouponReward, self).name_get()
+    #     free_shipping_reward_ids = self.filtered(lambda reward: reward.reward_type == 'product_discount').ids
+    #     for res in reward_names:
+    #         result.append((res[0], res[0] in free_shipping_reward_ids and _("product discount") or res[1]))
+    #     return result
 
 
 class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
 
-    vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
+    # vehicle_id = fields.Many2one(comodel_name='partner.vehicle', string='For Vehicle')
     from_subscription = fields.Boolean()
     expiration_date_2 = fields.Date('Expiration Date')
 
     sub_id = fields.Many2one('sale.subscription')
 
 
-    def _check_coupon_code(self, order):
-        if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
-            return  {'error': _('Invalid Vehicle.')}
-
-        return super(SaleCoupon, self)._check_coupon_code(order)
+    # def _check_coupon_code(self, order):
+    #     if self.vehicle_id and self.vehicle_id.name != order.vehicle_id.license_plate:
+    #         return  {'error': _('Invalid Vehicle.')}
+    #
+    #     return super(SaleCoupon, self)._check_coupon_code(order)
 
 
     def _compute_expiration_date(self):
@@ -86,5 +86,3 @@ class SaleCouponGenerate(models.TransientModel):
             for vehicle in self.env['partner.vehicle'].search(safe_eval(self.vehicles_domain)):
                 vals.update({'vehicle_id': vehicle.id})
                 self.env['sale.coupon'].create(vals)
-
-

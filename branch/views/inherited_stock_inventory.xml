@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_inventory_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.stock.inventory.form.inherit.branch</field>
+            <field name="model">stock.inventory</field>
+            <field name="inherit_id" ref="stock.view_inventory_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="branch_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<record id="view_warranty_renew" model="ir.ui.view">
+			<field name="name">Warranty Renewal</field>
+			<field name="model">warranty.renew</field>
+			<field name="arch" type="xml">
+				<form string="Warranty Renewal">
+					<group>
+						<group>
+							<field name="product_id"/>
+							<field name="serial_no"/>
+							<field name="partner_id"/>
+							<field name="warranty" invisible='1'/>
+							<field name="renew_amt"/>
+						</group>
+					</group>
+					<footer>
+                        <button name="create_invoices" string="Renew Warranty" type="object"
+                            context="{'open_invoices': True}" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_view_warranty_renew" model="ir.actions.act_window">
+            <field name="name">Warranty Renewal</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">warranty.renew</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+		
+		<menuitem parent="bi_warranty_registration.menu_warranty_sub" name="Warranty Renewal" action="action_view_warranty_renew" id="menu_warranty_renew"/>
+		
+	</data>
+</odoo>

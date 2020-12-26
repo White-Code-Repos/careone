@@ -1,0 +1,75 @@
+<odoo>
+    <record id="commission_report_action" model="ir.actions.act_window">
+        <field name="name">Commission Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="commission_report" name="Commission Report" parent="commission_root" action="commission_report_action"
+              sequence="3"/>
+    <record id="commission_report_tree_view" model="ir.ui.view">
+        <field name="name">commission_report_tree_view</field>
+        <field name="model">commission.report</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Report" create='false' edit='false'>
+                <field name="employee_id"/>
+                <field name="plan_id"/>
+                <field name="rule_id"/>
+                <field name="commission_type"/>
+                <field name="commission_item"/>
+                <field name="accomplish"/>
+                <field name="emp_comm"/>
+				<field name="commission_date" />
+				<field name="status" />
+				
+            </tree>
+        </field>
+    </record>
+	
+	<record id="model_commission_cycle_action_post_payroll" model="ir.actions.server">
+            <field name="name">Post To Payroll</field>
+            <field name="model_id" ref="commission_cycle.model_commission_report"/>
+            <field name="binding_model_id" ref="commission_cycle.model_commission_report"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">records.action_post_payroll()</field>
+			<!---records.action_post_payroll()</field>-->
+    </record>
+			
+    <record id="commission_report_form_view" model="ir.ui.view">
+        <field name="name">commission_report_form_view</field>
+        <field name="model">commission.report</field>
+        <field name="arch" type="xml">
+            <form string="Commission Report" create='false' edit='false'>
+                <sheet>
+				<header>
+					<button name="post_to_payroll" type="object" string="Post All Month Commissions To Payroll" class="oe_highlight" />
+				</header>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="rule_id"/>
+                        <field name="plan_id"/>
+                        <field name="commission_type"/>
+                        <field name="commission_item"/>
+                        <field name="accomplish"/>
+                        <field name="emp_comm"/>
+						<field name="commission_date" />
+						<field name="status" />
+                        <field name="money_target_ids"
+                               attrs="{'invisible': [('commission_type', '!=', 'money')]}">
+                            <tree>
+                                <field name="calculation_type"/>
+                                <field name="min_amount"/>
+                                <field name="max_amount"/>
+                                <field name="commission"/>
+                                <!--                                <field name="accomplish"/>-->
+                                <!--                                <field name="emp_comm"/>-->
+                            </tree>
+                        </field>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

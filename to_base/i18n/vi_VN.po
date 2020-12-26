@@ -1,0 +1,62 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* to_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-17 02:53+0000\n"
+"PO-Revision-Date: 2018-10-17 02:53+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: to_base
+#: model:ir.model.fields,field_description:to_base.field_to_base__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: to_base
+#: model:ir.model.fields,field_description:to_base.field_to_base__id
+msgid "ID"
+msgstr ""
+
+#. module: to_base
+#: code:addons/to_base/models/to_base.py:36
+#, python-format
+msgid "Invalid input base number for EAN13 code"
+msgstr "Số cơ sở để sinh mã EAN13 không hợp lệ"
+
+#. module: to_base
+#: model:ir.model.fields,field_description:to_base.field_to_base____last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối"
+
+#. module: to_base
+#: code:addons/to_base/models/to_base.py:66
+#: code:addons/to_base/models/to_base.py:77
+#, python-format
+msgid "Local time zone is not defined. You may need to set a time zone in your user's Preferences."
+msgstr "Múi giờ địa phương không xác định. Bạn có thể cần chọn múi giờ trong hồ sơ người dùng của bạn (Trình đơn 'Tuỳ chọn' xổ xuống từ `Tên bạn` ở góc phải bên trên)."
+
+#. module: to_base
+#: model:ir.model,name:to_base.model_to_base
+msgid "TVTMA Base Model"
+msgstr ""
+
+#. module: to_base
+#: code:addons/to_base/models/to_base.py:87
+#, python-format
+msgid "Wrong value passed to the argument `period_name` of the method `get_last_date_of_period`. The value for `period_name` should be either 'weekly' or 'monthly' or 'annually'"
+msgstr ""
+
+#. module: to_base
+#: code:addons/to_base/models/to_base.py:155
+#, python-format
+msgid "the method guess_lang has not been implemented yet"
+msgstr ""
+

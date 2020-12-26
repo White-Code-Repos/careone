@@ -3,7 +3,7 @@
 
 {
     "name" : "Odoo all import for Sales, Purchase, Invoice, Inventory, Pricelist, BOM, Payment, Bank Statement, Journal Entry, Picking, Product, Customer, Product Images, Product Variants, Task, Multiple Statement, Attendances, POS Orders, Multiple Journal Entries.",
-    "version" : "13.0.1.2",
+    "version" : "13.0.0.9",
     "category" : "Extra Tools",
     'summary': 'Advance import App for import Invoices import Sales order import Inventory import Purchase order import stock import Picking import Product image import Customer import serial import lot import bom import bank statement import journal entry import payment',
     "description": """
@@ -592,19 +592,15 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
     "website" : "https://www.browseinfo.in",
     "price": 49,
     "currency": 'EUR',
-    "depends" : ['base','hr_attendance','point_of_sale','project','bi_generic_import'],
+    "depends" : ['base','hr_attendance','project','bi_generic_import'],
     "data": [
-        'data/data.xml',
        'views/multiple_account_move.xml',
        'views/attendances.xml',
        'views/import_image_view.xml',
        'views/multiple_bank_statement.xml',
-    #   'views/pos.xml',
-   
+       #'views/pos.xml',
        'views/task.xml',
-       'views/invoice_with_payment.xml',
-       "views/import_dashboard_action.xml",             
-       "views/import_dashboard_inherit.xml",
+       'views/invoice_with_payment.xml'
     ],
     'qweb': [
     ],

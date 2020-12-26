@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+		<!-- set default Warranty confirmation template -->
+        
+		
+	<record id="mail_template_warranty_confirmation" model="mail.template">
+		<field name="name">Warranty Order: Confirmation Email</field>
+		<field name="model_id" ref="product_warranty_management.model_product_warranty_management"/>
+		<field name="subject">$(Ref ${object.name or 'n/a' })</field>
+		<field name="email_from">${(object.create_uid.email_formatted or create_uid.email_formatted) | safe}</field>
+		<field name="partner_to">${object.partner_id.id}</field>
+		<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 12px;">
+						Hello,
+						<br/><br/>
+						Your order <strong>${object.name}</strong> Sale Order Number :  <strong>${object.sale_order_id.name}</strong>
+						Warranty has been confirmed.<br/>
+						Thank you for your trust!
+						
+						<br/><br/>
+						Do not hesitate to contact us if you have any questions.
+						<br/><br/>
+					</p>
+				</div>
+		</field>
+	<!--	<field name="report_template" ref="action_report_saleorder"/>-->
+		<field name="report_name">${(object.name or '').replace('/','_')}</field>
+		<field name="lang">${object.partner_id.lang}</field>
+		<field name="user_signature" eval="False"/>
+		<field name="auto_delete" eval="True"/>
+	</record>
+	<record id="default_confirmation_template" model="ir.config_parameter">
+            <field name="key">product_warranty_management.default_confirmation_template</field>
+            <field name="value" ref="product_warranty_management.mail_template_warranty_confirmation"/>
+        </record>
+    </data>
+</odoo>

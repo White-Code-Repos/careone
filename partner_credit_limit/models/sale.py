@@ -6,9 +6,18 @@ from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
-    _inherit = "sale.order"
+    _inherit = "sale.order.line"
+    
+    @api.onchange('product_uom_qty')
+    def prevent_zaero(self):
+        if self.product_uom_qty == 0:
+            self.product_uom_qty =1
+    
 
-    state = fields.Selection([
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+    
+    state = fields.Selection(selection_add=[
         ('gm_discount', 'GM Discount approve'),
         ('ceo_discount', 'CEO Discount approve'),
         ('draft', 'Quotation'),
@@ -17,7 +26,7 @@ class SaleOrder(models.Model):
         ('sale', 'Sales Order'),
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+    ])
 
     no_credit_has_ceo_access = fields.Boolean(default=True)
 

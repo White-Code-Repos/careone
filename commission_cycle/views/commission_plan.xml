@@ -1,0 +1,61 @@
+<odoo>
+    <record id="commission_plan_action" model="ir.actions.act_window">
+        <field name="name">Commission PLan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.plan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="commission_plan" name="Commission Plan" parent="commission_root" action="commission_plan_action"
+              sequence="2"/>
+    <record id="commission_plan_tree_view" model="ir.ui.view">
+        <field name="name">commission_plan_tree_view</field>
+        <field name="model">commission.plan</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Plan">
+                <field name="name"/>
+                <field name="condition"/>
+            </tree>
+        </field>
+    </record>
+    <record id="commission_plan_form_view" model="ir.ui.view">
+        <field name="name">commission_plan_form_view</field>
+        <field name="model">commission.plan</field>
+        <field name="arch" type="xml">
+            <form string="Commission Plan">
+				
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Plan Name</span>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group>
+                        <field name="condition"/>
+                        <field name="rule_ids"/>
+                    </group>
+                    <group string="Apply On">
+                        <group>
+                            <field name="is_with_employees" invisible="1" />
+                            <field name="employee_ids" attrs="{'invisible': [('is_with_employees', '!=', True)]}"/>
+                            <field name="is_with_sales_team"/>
+                            <field name="sales_team_ids" attrs="{'invisible': [('is_with_sales_team', '!=', True)]}"/>
+                        </group>
+                        <group>
+                            <field name="is_job_position" invisible="1" />
+                            <field name="job_position_ids" attrs="{'invisible': [('is_job_position', '!=', True)]}"/>
+                            <field name="is_with_department" invisible="1" />
+                            <field name="department_ids" attrs="{'invisible': [('is_with_department', '!=', True)]}"/>
+                            <field name="is_with_portal"/>
+                            <field name="portal_user_ids" attrs="{'invisible': [('is_with_portal', '!=', True)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

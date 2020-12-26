@@ -1,0 +1,13 @@
+<odoo>
+    <record id="sales_form_inherit" model="ir.ui.view">
+        <field name="name">sales_form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="is_have_permission" invisible="1"/>
+                <field name="user_id" attrs="{'readonly':[('is_have_permission','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>ou
+</odoo>

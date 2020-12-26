@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_rule,commission_rule,model_commission_rule,,1,1,1,1
+access_rule_information,rule_information,model_rule_information,,1,1,1,1
+access_commission_plan,commission_plan,model_commission_plan,,1,1,1,1
+access_commission_report,commission_report,model_commission_report,,1,1,1,1
+access_money_target,money_target,model_money_target,,1,1,1,1

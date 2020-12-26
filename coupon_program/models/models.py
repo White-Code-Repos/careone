@@ -12,6 +12,7 @@ class CouponProgramInherit(models.Model):
         ('nbr_customer', 'Number of Selected Customers'),
         ('nbr_vehicles', 'Number of selected vehicles')
     ], default='nbr_coupon')
+    vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle")
     nbr_coupons = fields.Integer(string="Number of Coupons", help="Number of coupons", default=1)
     partners_domain = fields.Char(string="Customer", default='[]')
     vehicles_domain = fields.Char(string="Vehicle", default='[]')
@@ -73,14 +74,14 @@ class SaleOrder(models.Model):
                 ('end_date_generate', '>=', today.date()),
                 ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
                 ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-
-    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,
-                                domain=coupon_program_onchange)
+# domain=coupon_program_onchange
+    coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,)
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
                             related='vehicle_id.size')
-    is_allow_generate_coupon = fields.Boolean(string="", compute='allow_generate_coupon')
+    is_allow_generate_coupon = fields.Boolean(string="")
+                                              #, compute='allow_generate_coupon')
 
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
@@ -96,7 +97,7 @@ class SaleOrder(models.Model):
 
     def get_coupons_count(self):
         for quotation in self:
-            quotation.coupon_count = len(self.env['sale.coupon'].search([('sale_order_id', '=', quotation.id)]))
+            quotation.coupon_count = len(self.env['sale.coupon'].search(['|',('sale_order_id', '=', quotation.id),('order_id','=',quotation.id)]))
             print(quotation.coupon_count)
 
     def action_view_coupons(self):
@@ -148,6 +149,7 @@ class SaleOrder(models.Model):
         else:
             raise ValidationError("Your Program Doesn't Contain your any product in that order !")
 
+#
     def allow_generate_coupon(self):
         for order in self:
             order.is_allow_generate_coupon = False
@@ -164,11 +166,19 @@ class SaleOrder(models.Model):
 
 class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
+    vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle")
     start_hour_use = fields.Float(string="From", required=False, )
     end_hour_use = fields.Float(string="To", required=False, )
     start_date_use = fields.Date(string="From", required=False, )
     end_date_use = fields.Date(string="To", required=False, )
     is_free_order = fields.Boolean(string="Allow Free Order", )
+    is_str = fields.Boolean(string="Saturday", )
+    is_sun = fields.Boolean(string="Sunday", )
+    is_mon = fields.Boolean(string="Monday", )
+    is_tus = fields.Boolean(string="Tuesday", )
+    is_wen = fields.Boolean(string="Wednesday", )
+    is_thur = fields.Boolean(string="Thursday", )
+    is_fri = fields.Boolean(string="Friday", )
     state = fields.Selection([
         ('reserved', 'Reserved'),
         ('new', 'Valid'),

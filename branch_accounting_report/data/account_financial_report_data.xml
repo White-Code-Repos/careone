@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="account_branch_reports" inherit_id="web.assets_backend" active="True">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/branch_accounting_report/static/src/js/custom_account_reports.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_form_inherit_branch" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.branch</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="incoterm_id" position="after">
+                        <field name="branch_id"/>
+                </field>
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <attribute name="context">{'branch_id' : branch_id}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_filter_inherit_branch" model="ir.ui.view">
+            <field name="name">view.purchase.order.filter.inherit.branch</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                        <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

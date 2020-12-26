@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_overtime_rule_form_view_inherit" model="ir.ui.view">
+        <field name="name">hr.overtime.rule.form.view</field>
+        <field name="model">hr.overtime.rule</field>
+        <field name="inherit_id" ref="rm_hr_attendance_sheet.hr_overtime_rule_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rate']" position="attributes">
+                <attribute name="attrs">{'invisible':[('type','=', 'workday')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='active_after']" position="after">
+                <field name="up_to_3h_rate" attrs="{'invisible':[('type','!=','workday')]}" />
+                <field name="over_3h_rate" attrs="{'invisible':[('type','!=','workday')]}" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

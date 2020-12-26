@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Picking Inherit Form View to Modify it -->
+        <record id="view_picking_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.picking.form.inherit.branch</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']"
+                       position="after">
+                    <!-- Add your fields or attributes here -->
+                        <field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

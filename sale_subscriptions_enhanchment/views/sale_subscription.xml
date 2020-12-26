@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+  
     <record id="sale_subscription_view_form_inherited_form" model="ir.ui.view">
         <field name="name">sale.subscription.form</field>
         <field name="model">sale.subscription</field>
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="end_date" invisible="1"/>
+                <!-- <field name="end_date" invisible="1"/> -->
                 <field name="freez_duration" invisible="1"/>
-                <field name="new_end_date" invisible="1"/>
+                <!-- <field name="new_end_date" invisible="1"/> -->
                 <field name="last_state" invisible="1"/>
                 <field name="un_freez_date" invisible="1"/>
             </xpath>
@@ -18,14 +18,13 @@
                 <field name="is_freez" invisible="1"/>
                 <field name="display_name" invisible="1"/>
                 <field name="apper_generate_coupon" invisible="1"/>
-                <field name="show_freez" invisible="1"/>
-                <button string="Freezing" name="action_freez" type="object" class="btn-primary"
-                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>
-
-                <button string="UN-Freezing" name="acrion_unfreeze" type="object" class="btn-primary"
-                        attrs="{'invisible': [('is_freez', '!=', True)]}"/>
-
-
+                <!-- <field name="show_freez" invisible="1"/> -->
+                <field name="is_without_freeze" invisible="1"/>
+                <!--                        attrs="{'invisible': ['|','|',('show_freez','=',False),('freez_duration', '=', 0),('display_name','=','Freezing')]}"/>-->
+                <!-- <button string="Freezing" name="action_freez" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|',('is_freez', '=', True),('is_without_freeze', '=', True)]}"/>
+                <button string="UN-Freezing" name="action_unfreeze" type="object" class="btn-primary"
+                        attrs="{'invisible': [('is_freez', '!=', True)]}"/> -->
             </xpath>
             <xpath expr="//button[@name='open_website_url']" position='before'>
                 <button class="oe_stat_button" icon="fa-align-justify" name="action_subscription_freeze" type="object">
@@ -34,13 +33,16 @@
             </xpath>
             <xpath expr="//page[@id='lines']" position="replace">
                 <page name="subs_product" string="Subscription Products">
-                    <field name="subs_products_ids" readonly="1" force_save="1">
-                        <tree editable="bottom">
-                            <field name="product_id"/>
-                            <field name="qty"/>
-                            <field name="consumed_qty"/>
-                            <field name="qty_per_day"/>
-                            <field name="qty_counter"/>
+                    <field name="subs_products_ids" force_save="1">
+                        <tree editable="bottom" create="0" delete="0">
+                            <field name="subs_id" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="vehicle_id" context="{'default_driver_id': parent.partner_id}"/>
+                            <field name="product_id" readonly="1" force_save="1"/>
+                            <field name="qty" readonly="1" force_save="1"/>
+                            <field name="consumed_qty" readonly="1" force_save="1"/>
+                            <field name="qty_per_day" readonly="1" force_save="1"/>
+                            <field name="qty_counter" readonly="1" force_save="1"/>
                         </tree>
                     </field>
                 </page>
@@ -55,7 +57,24 @@
             <tree>
                 <field name="start_date" readonly="1"/>
                 <field name="end_date" readonly="1"/>
+                <field name="freeze_duration"/>
             </tree>
+        </field>
+    </record>
+    <record id="subscription_line_form" model="ir.ui.view">
+        <field name="name">subscription.freeze.line.tree</field>
+        <field name="model">subscription.freeze.line</field>
+        <field name="arch" type="xml">
+          <form>
+            <sheet>
+              <group>
+                  <field name="subscription_id"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <field name="freeze_duration"/>
+              </group>
+            </sheet>
+          </form>
         </field>
     </record>
     <!-- Inherit Form View to Modify it -->
@@ -64,9 +83,29 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+          <!-- <xpath expr="//header" position="inside">
+            <field name="subscriper" invisible="1"/>
+          </xpath>
+          <xpath expr="//header" position="after">
+            <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('subscriper', '=', False)]}">
+            This Customer is already subscriper
+            </div>
+          </xpath> -->
+
             <xpath expr="//field[@name='pricelist_id']" position="after">
-                <field name="subscription_id"/>
+                <field name="subscription_id"
+                       options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
             </xpath>
+        </field>
+    </record>
+    <record id="sale_order_fleet_form_inherit" model="ir.ui.view">
+        <field name="name">sale_order_fleet_form_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sales_fleet_service.view_order_form_extend_sales_fleet_careone"/>
+        <field name="arch" type="xml">
+          <field name="vehicle_id" position="attributes">
+            <attribute name="domain">[('driver_id','=',partner_id)]</attribute>
+          </field>
         </field>
     </record>
 </odoo>

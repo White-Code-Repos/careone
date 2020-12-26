@@ -1,0 +1,82 @@
+<odoo>
+    <data>
+
+        <record id="view_product_warranty_claim_tree_view" model="ir.ui.view">
+            <field name="name">Product Warranty Claim</field>
+            <field name="model">product.warranty.claim</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Warranty Claim">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="uid"/>
+                    <field name="steam"/>
+                    <field name="warrenty_id"/>
+                    <field name="dead_line"/>
+                    <field name="partner_id"/>
+                    <field name="phone"/>
+					<field name="email"/>
+                    <field name="product_id"/>
+                    <field name="serial_no"/>
+					<field name="note"/>
+					<field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="product_warranty_claim" model="ir.actions.act_window">
+			<field name="name">Product Warranty Claim</field>
+            <field name="res_model">product.warranty.claim</field>
+            <field name="view_mode">form,tree</field>
+            <field name="target">new</field>
+        </record>
+        <record id="view_form_product_warranty_claim" model="ir.ui.view">
+            <field name="name">product warranty Claim</field>
+            <field name="model">product.warranty.claim</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Warranty Claim">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+									<field name="name"/>
+									<field name="date"/>
+									<field name="uid"/>
+									<field name="steam"/>
+									<field name="warrenty_id"/>
+									<field name="dead_line"/>
+                            </group>
+                            <group string = "Claim Reporter" >
+                                <field name="partner_id"/>
+								<field name="phone"/>
+								<field name="email"/>
+								<field name="product_id"/>
+								<field name="serial_no"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+		
+        <menuitem name="Product Warranty Claim" id="menuitem_product_warranty_management"
+                  parent="product_warranty_management" action="product_warranty_claim"
+                  sequence="4"/>
+
+        
+
+    </data>
+</odoo>
+

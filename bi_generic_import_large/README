@@ -9,3 +9,6 @@
 3) Version: 13.0.0.3 | Date : 10/12/2020
 -->  Remove journal, amount, payment date for invoice without payment.
 -->  Fixed the issue when import invoice and vehicle is not available.
+
+4) Version: 13.0.0.4 | Date : 22/12/2020
+-->  Fixed the issue, when import sale order and discount is not given on file. 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
@@ -9,6 +9,18 @@ from datetime import timedelta, datetime
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
+    # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
+    # @api.onchange('initial_coupon')
+    # def check_coupon(self):
+    #     if self.initial_coupon:
+    #         coupon = self.env['sale.coupon'].search([('code','=',self.initial_coupon)])
+    #         if coupon:
+    #             if coupon.partner_id:
+    #                 raise UserError('This is a customer coupon')
+    #             elif coupon.vehicle_id:
+    #                 raise UserError('this is a vehicle coupon')
+    #         else:
+    #             raise UserError('There is no such a coupon.')
     code_type = fields.Selection(string="Code Type", selection=[('promo', 'Promotion'), ('coupon', 'Coupon'), ],
                                  required=True, default='coupon')
     promo_code = fields.Char(string="Promo Code", required=False, )
@@ -19,25 +31,65 @@ class SaleCouponApplyCode(models.TransientModel):
     @api.onchange('coupon_code')
     def coupon_code_onchange(self):
         if self.coupon_code:
-            if self.coupon_code.is_free_order == True:
-                self.is_free_order = True
-                self.is_free_order_readonly_x = True
-        today = datetime.today().date()
-        today_x = datetime.today() + timedelta(hours=2)
-        real_time = datetime.now() + timedelta(hours=2)
-        current_time = real_time.time()
-        sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        return {'domain': {
-            'coupon_code': [('start_date_use', '<=', today_x.date()),
-                            ('end_date_use', '>=', today_x.date()),
-                            ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-                            ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-                            ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-                            # ('program_id', '=', sales_order.coupon_id.id),
-                            ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-                            ('partner_id', '=', False),
-                            '|', ('vehicle_id', '=', sales_order.customer_vehicle_id.id),
-                            ('vehicle_id', '=', False)]}}
+            today = datetime.today().date()
+            today_x = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            if self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id):
+                raise ValidationError('%s/%s/%s' % (self.coupon_code.partner_id,sales_order.partner_id,self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id)))
+                raise ValidationError('The coupon is not applicable by this customer')
+            elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
+                raise ValidationError('The coupon is not applicable on this vehicle')
+            elif self.coupon_code.start_date_use > today_x.date() or self.coupon_code.end_date_use < today_x.date():
+                raise ValidationError('Invalid date')
+            elif self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60):
+                raise ValidationError('Invalid time')
+            elif self.coupon_code.expiration_date < today:
+                raise ValidationError('Coupon expired')
+            elif self.coupon_code.state != 'new':
+                raise ValidationError('Coupon not valid')
+            else:
+                if self.coupon_code.is_free_order == True:
+                    self.is_free_order = True
+                    self.is_free_order_readonly_x = True
+        # else:
+        #
+            # if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
+            #     return {'domain': {
+            #         'coupon_code': [('start_date_use', '<=', today_x.date()),
+            #                         ('end_date_use', '>=', today_x.date()),
+            #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+            #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+            #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+            #                         # ('program_id', '=', sales_order.coupon_id.id),
+            #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+            #                         ('partner_id', '=', False),
+            #                         '|', ('vehicle_id', '=', sales_order.vehicle_id.id),
+            #                         ('vehicle_id', '=', False)]}}
+            # elif self.coupon_code.partner_id and not self.coupon_code.vehicle_id:
+            #     return {'domain': {
+            #         'coupon_code': [('start_date_use', '<=', today_x.date()),
+            #                         ('end_date_use', '>=', today_x.date()),
+            #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+            #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+            #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+            #                         # ('program_id', '=', sales_order.coupon_id.id),
+            #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+            #                         ('vehicle_id', '=', False),
+            #                         '|', ('partner_id', '=', sales_order.partner_id.id),
+            #                         ('partner_id', '=', False)]}}
+            # else:
+            # return {'domain': {
+            #     'coupon_code': [('start_date_use', '<=', today_x.date()),
+            #                     ('end_date_use', '>=', today_x.date()),
+            #                     ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
+            #                     ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
+            #                     ('expiration_date', '>', today.strftime("%Y-%m-%d")),
+            #                     # ('program_id', '=', sales_order.coupon_id.id),
+            #                     ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
+            #                     '|', ('vehicle_id', '=', sales_order.vehicle_id.id),('vehicle_id', '=', False),
+            #                     '|', ('partner_id', '=', sales_order.partner_id.id),('partner_id', '=', False),]}}
 
     # hisham edition
     is_free_order = fields.Boolean(string="Free Order", store=True)
@@ -47,6 +99,31 @@ class SaleCouponApplyCode(models.TransientModel):
         Apply the entered coupon code if valid, raise an UserError otherwise.
 
         """
+        if self.code_type == 'coupon':
+            coupon = self.env['sale.coupon'].browse(self.coupon_code.id)
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            for co in coupon:
+                if today_week_day == 'Saturday' and co.is_str == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and co.is_sun == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and co.is_mon == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and co.is_tus == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and co.is_wen == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and co.is_thur == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and co.is_fri == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
+
         if self.code_type == 'promo':
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             error_status = self.apply_promo(sales_order, self.promo_code)
@@ -54,6 +131,8 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise UserError(error_status.get('error', False))
             if error_status.get('not_found', False):
                 raise UserError(error_status.get('not_found', False))
+            promotion = self.env['sale.coupon.program'].search([('promo_code','=',self.promo_code)])
+            sales_order.promotion_program_id = promotion.id
 
         else:
             if self.is_free_order == True:
@@ -98,9 +177,34 @@ class SaleCouponApplyCode(models.TransientModel):
                     raise UserError(error_status.get('not_found', False))
 
     def apply_promo(self, order, coupon_code):
+        if self.code_type == 'coupon':
+            # coupon = self.env['sale.coupon'].browse(coupon_code)
+            today = datetime.today() + timedelta(hours=2)
+            real_time = datetime.now() + timedelta(hours=2)
+            current_time = real_time.time()
+            today_week_day = today.strftime("%A")
+            is_applicable_programs_today=False
+            for co in coupon_code:
+                if today_week_day == 'Saturday' and co.is_str == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Sunday' and co.is_sun == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Monday' and co.is_mon == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Tuesday' and co.is_tus == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Wednesday' and co.is_wen == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Thursday' and co.is_thur == True:
+                    is_applicable_programs_today = True
+                elif today_week_day == 'Friday' and co.is_fri == True:
+                    is_applicable_programs_today = True
+                if is_applicable_programs_today == False:
+                    raise ValidationError(_('Sorry There Is No Available Today.'))
         error_status = {}
         program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
         if program:
+            # raise UserError("TESTTESTTESTTESTTESTTESTTESTTEST %s %s " % (order,coupon_code))
             error_status = program._check_promo_code(order, coupon_code)
             if not error_status:
                 if program.promo_applicability == 'on_next_order':

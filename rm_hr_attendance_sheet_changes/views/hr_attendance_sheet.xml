@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="attendance_sheet_form_view_inherit" model="ir.ui.view">
+        <field name="name">attendance.sheet.form.view</field>
+        <field name="model">attendance.sheet</field>
+        <field name="inherit_id" ref="rm_hr_attendance_sheet.attendance_sheet_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page//field[@name='line_ids']//tree//field[@name='overtime']" position="replace">
+                <field name="overtime_up_to_3" widget="float_time" sum="Total"/>
+                <field name="overtime_after_3" widget="float_time" sum="Total"/>
+                <field name="overtime_weekend" widget="float_time" sum="Total"/>
+            </xpath>
+
+            <xpath expr="//field[@name='tot_overtime']" position="replace">
+                <field name="overtime_up_to_3_total" widget="float_time"/>
+                <field name="overtime_after_3_total" widget="float_time"/>
+                <field name="overtime_weekend_total" widget="float_time"/>
+            </xpath>
+           
+        </field>
+    </record>
+
+</odoo>
+

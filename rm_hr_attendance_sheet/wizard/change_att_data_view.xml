@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="att_data_change_from_view" model="ir.ui.view">
+        <field name="name">att.data.change.from.view</field>
+        <field name="model">attendance.sheet.line.change</field>
+        <field name="arch" type="xml">
+            <form string="Change Attendance data">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="overtime" widget="float_time"/>
+                            <field name="late_in" widget="float_time"/>
+                            <field name="diff_time" widget="float_time"/>
+                        </group>
+
+                    </group>
+                    <field name="note" placeholder="Please Add Note For Changing Attendance Data"/>
+                </sheet>
+                 <footer>
+                      <button name="change_att_data" string="_Apply" type="object" class="btn-primary"/>
+                      <button string="Cancel" class="btn-default" special="cancel" />
+                  </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_att_data_change" model="ir.actions.act_window">
+        <field name="name">Change Attendance Data</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attendance.sheet.line.change</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="att_data_change_from_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

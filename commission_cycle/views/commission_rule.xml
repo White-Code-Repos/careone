@@ -1,0 +1,74 @@
+<odoo>
+    <menuitem id="commission_root" name="Commissions" sequence="100" parent="sale.sale_menu_root"/>
+    <record id="commission_rule_action" model="ir.actions.act_window">
+        <field name="name">Commission Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="commission_rules" name="Commission Rules" parent="commission_root" action="commission_rule_action"
+              sequence="1"/>
+    <record id="commission_tree_view" model="ir.ui.view">
+        <field name="name">commission_tree_view</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Rules">
+                <field name="name"/>
+                <field name="commission_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="commission_form_view" model="ir.ui.view">
+        <field name="name">commission_form_view</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form string="Commission Rules">
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Rule Name</span>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="commission_type"/>
+                    </group>
+                    <group attrs="{'invisible': [('commission_type', '!=', 'product')]}">
+                        <field name="product_id"/>
+                        <field name="product_rule_info_ids" force_save="1">
+                            <tree editable="bottom">
+                                <field name="product_calculation_type"/>
+                                <field name="product_id"/>
+                                <field name="min_qty"/>
+                                <field name="max_qty"/>
+                                <field name="commission"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group attrs="{'invisible': [('commission_type', '!=', 'category')]}">
+                        <field name="category_id"/>
+                        <field name="category_rule_info_ids" force_save="1">
+                            <tree editable="bottom">
+                                <field name="product_calculation_type"/>
+                                <field name="category_id"/>
+                                <field name="min_amount"/>
+                                <field name="max_amount"/>
+                                <field name="commission"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group attrs="{'invisible': [('commission_type', '!=', 'money')]}">
+                        <field name="money_rule_info_ids" force_save="1">
+                            <tree editable="bottom">
+                                <field name="product_calculation_type"/>
+                                <field name="min_amount"/>
+                                <field name="max_amount"/>
+                                <field name="commission"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

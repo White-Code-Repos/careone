@@ -1,0 +1,111 @@
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Send SMS</h2>
+    <ul>
+      <li>This module use for send sms from odoo. You need a sms gateway to setup for trigger sms. You can use multiple gateway for multiple sms template. Also you can send sms manually using wizard.</li>
+      <li>You can find send sms functionality under Settings. You will get that menu in debug mode.</li>
+      <li>After debug mode, you can get send sms in <b>Settings > Technical > Send SMS.</b></li>
+    </ul>
+  </div>
+</section>
+<section class="oe_container oe_dark">
+     <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan" style="color:#2C0091;font-weight: bold;">GateWay Setup</h3>
+        <div class="oe_row oe_spaced">
+          <div class="oe_span12">
+            <p>You can setup your gateway like below.</p>
+            <p>This module support only <b>GET</b> method for integrate sms gateway.</p>
+            <p>For mobile, use <b>{mobile}</b> as a variable and add this variable in url. Some gateway support country code (like 91 for india) or some gateway not support country code. If your gateway support country code use country code before {mobile} (like <b>91{mobile}</b>)</p>
+            <p>For message, use <b>{message}</b> as a variable in url. </p>
+          </div>
+        </div>
+        <div class="oe_row">
+          <div class="oe_span12">
+              <img class="oe_demo oe_picture oe_screenshot" src="gateway_set_up.png">
+          </div>
+        </div>
+     </div>
+</section>
+
+<section class="oe_container">
+        <h3 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Test Gateway</h3>
+        <div class="oe_row oe_spaced">
+          <div class="oe_span6">
+              <p class="oe_mt32">Put mobile no. and message in respective textbox, then click on <b>Send</b> button. If gateway parameters are correct it shows a responce of that message in popup.</p>
+          </div>
+          <div class="oe_span6">
+              <img class="oe_picture oe_screenshot" src="test_gateway.png">
+          </div>
+        </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <h3 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Template Setup</h3>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+          <div class="oe_demo oe_picture oe_screenshot">
+             <img src="sms_template.png">
+          </div>
+        </div>
+        <div class="oe_span6">
+          <p><b>Setup SMS Template</b></p>
+          <ul>
+            <li>Choose gateway.</li>
+            <li>Choose model.</li>
+            <li>put mobile no. as a variable like <b>${object.mobile}</b>.</li>
+            <li>Write message in body field.</li>
+          </ul>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan" style="color:#2C0091;font-weight: bold;">SMS Track</h3>
+        <div class="oe_span6">
+            <p class="oe_mt32">Track History of all message responce. Also that history contain mobile no., message, gateway.</div>
+        <div class="oe_span6">
+            <img class="oe_picture oe_screenshot" src="sms_track.png">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <h3 class="oe_slogan" style="color:#2C0091;font-weight: bold;">SMS Wizard</h3>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <img class="oe_picture oe_screenshot" src="sms_wizard.png">
+        </div>
+        <div class="oe_span6">
+            <p>You can add sms template to Action as a wizard. Also you can modify message content in wizard, but that one not reflect in orginal template.</p>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+      <div class="oe_span6">
+          <h5 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Automated Action</h5>
+          <img class="oe_picture oe_screenshot" src="automated_action.png">
+      </div>
+      <div class="oe_span6">
+          <h5 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Server Action</h5>
+          <img class="oe_picture oe_screenshot" src="server_action.png">
+      </div>
+      <p>You can use SMS Template in Automated Action using Server Action. So that you can trigger SMS automatic as per trigger condition. </p>
+  </div>
+
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+	<h2 class="oe_slogan" style="color:#2C0091;font-weight: bold;">Help & Support</h2>
+	<h3 class="oe_slogan">You will get free support and assistance in case of any issues</h3>
+	<br/>
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg mt8" style="color: rgb(255, 255, 255) !important; position: relative; overflow: hidden;" href="mailto:ddashcool@gmail.com"><span class="o_ripple" style="height: 90px; width: 90px; top: -23.1875px; left: 4.34375px;"></span><i class="fa fa-envelope"></i> Email </a>
+        <a class="btn btn-primary btn-lg mt8" style="color: rgb(255, 255, 255) !important; position: relative; overflow: hidden;" href="https://www.debweb.com/contact/" target="_blank"><span class="o_ripple" style="height: 125px; width: 125px; top: -54.5156px; left: -17.9688px;" target="_blank"></span><i class="fa fa-phone"></i> Contact Us </a>
+        <a class="btn btn-primary btn-lg mt8" style="color: rgb(255, 255, 255) !important; position: relative; overflow: hidden;" href="https://www.debweb.com/contact/proposal/" target="_blank"><i class="fa fa-check-square"></i> Request Customization </a>
+    </div>
+  </div>
+</section>
