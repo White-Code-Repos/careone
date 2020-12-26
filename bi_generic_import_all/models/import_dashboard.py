@@ -16,18 +16,18 @@ class import_dashboard_inheirt(models.Model):
             if count.state == 'project.task':
                 import_count = task_obj.sudo().search_count([('is_import','=',True)])
                 count.import_data = import_count
-            elif count.state == 'pos.order':
-                import_count = pos_obj.sudo().search_count([('is_import','=',True)])
-                count.import_data = import_count                
+            # elif count.state == 'pos.order':
+            #     import_count = pos_obj.sudo().search_count([('is_import','=',True)])
+            #     count.import_data = import_count                
             elif count.state == 'hr.attendance':
                 import_count = attendace_obj.sudo().search_count([('is_import','=',True)])
-                count.import_data = import_count                
+                count.import_data = import_count
             elif count.state == 'account.bank.statement':
                 import_count = statement_obj.sudo().search_count([('is_import','=',True)])
-                count.import_data = import_count 
+                count.import_data = import_count
             elif count.state == 'account.move.journal':
                 import_count = move_obj.sudo().search_count([('is_import','=',True),('type', '=', 'entry')])
-                count.import_data = import_count 
+                count.import_data = import_count
         return res
 
     state = fields.Selection(selection_add=[
