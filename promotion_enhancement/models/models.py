@@ -8,9 +8,25 @@ from odoo.exceptions import Warning ,ValidationError
 class PromotionProgramInherit(models.Model):
     _inherit = 'sale.coupon.program'
 
+    # The api.depends is handled in `def modified` of `sale_coupon/models/sale_order.py`
+    def _compute_order_count(self):
+        product_data = self.env['sale.order.line'].read_group([('product_id', 'in', self.mapped('discount_line_product_id').ids)], ['product_id'], ['product_id'])
+        mapped_data = dict([(m['product_id'][0], m['product_id_count']) for m in product_data])
+        for program in self:
+            program.order_count = mapped_data.get(program.discount_line_product_id.id, 0)
+        for this in self:
+            total_orders = 0
+            if this.program_type == 'promotion_program':
+                orders = self.env['sale.order'].search([('promotion_program_id','=',this.id)])
+                this.order_count = len(orders)
+
+
+
     def action_view_sales_orders(self):
         self.ensure_one()
         orders = self.env['sale.order.line'].search([('product_id', '=', self.discount_line_product_id.id)]).mapped('order_id')
+        if self.program_type == 'promotion_program':
+            orders |= self.env['sale.order'].search([('promotion_program_id','=',self.id)])
         return {
             'name': _('Sales Orders'),
             'view_mode': 'tree,form',
@@ -31,7 +47,7 @@ class PromotionProgramInherit(models.Model):
     is_wen_promotion = fields.Boolean(string="Wednesday", )
     is_thur_promotion = fields.Boolean(string="Thursday", )
     is_fri_promotion = fields.Boolean(string="Friday", )
-    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, domain=[('program_type', '=', 'promotion_program')])
+    coupon_program_id = fields.Many2one(comodel_name="sale.coupon.program", string="", required=False, domain=[('program_type', '!=', 'promotion_program')])
     def _check_promo_code(self, order, coupon_code):
         message = {}
         applicable_programs = order._get_applicable_programs()
@@ -102,6 +118,8 @@ class PromotionProgramInherit(models.Model):
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
+    promotion_program_id = fields.Many2one('sale.coupon.program')
+
     def _create_reward_coupon(self, program):
         # if there is already a coupon that was set as expired, reactivate that one instead of creating a new one
         coupon = self.env['sale.coupon'].search([
@@ -120,7 +138,10 @@ class SalesOrderInherit(models.Model):
             vals = {'program_id': program_x.id, 'order_id': self.id, 'sale_order_id': self.id, 'customer_source_id': self.partner_id.id,
                     'is_free_order': program_x.is_free_order,
                     'start_date_use': program_x.start_date_use, 'end_date_use': program_x.end_date_use,
-                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use}
+                    'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use,
+                    'is_str':program_x.is_str,'is_sun':program_x.is_sun,'is_mon':program_x.is_mon,
+                    'is_tus':program_x.is_tus,'is_wen':program_x.is_wen,'is_thur':program_x.is_thur,
+                    'is_fri':program_x.is_fri,}
             if program_x.generation_type == 'nbr_coupon' and program_x.nbr_coupons > 0:
                 for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)
@@ -199,6 +220,8 @@ class SalesOrderInherit(models.Model):
                     order._create_reward_coupon(program)
                 elif program.discount_line_product_id.id not in self.order_line.mapped('product_id').ids:
                     self.write({'order_line': [(0, False, value) for value in self._get_reward_line_values(program)]})
+                if program.program_type == 'promotion_program':
+                    self.promotion_program_id = program.id
                 order.no_code_promo_program_ids |= program
 
     def _get_applicable_no_code_promo_program(self):
