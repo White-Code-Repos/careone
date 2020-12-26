@@ -15,6 +15,7 @@
         'views/commission_plan.xml',
         'views/commission_report.xml',
         'views/scheduled_action.xml',
+        'views/hr_contract.xml',
     ],
 
 }
