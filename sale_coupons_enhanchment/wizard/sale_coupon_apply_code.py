@@ -36,13 +36,13 @@ class SaleCouponApplyCode(models.TransientModel):
             real_time = datetime.now() + timedelta(hours=2)
             current_time = real_time.time()
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             if self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id):
+                raise ValidationError('%s/%s/%s' % (self.coupon_code.partner_id,self.coupon_code.sales_order,self.coupon_code.partner_id and (self.coupon_code.partner_id != sales_order.partner_id)))
                 raise ValidationError('The coupon is not applicable by this customer')
             elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
                 raise ValidationError('The coupon is not applicable on this vehicle')
             elif self.coupon_code.start_date_use > today_x.date() or self.coupon_code.end_date_use < today_x.date() or self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60) or self.coupon_code.expiration_date < today.strftime("%Y-%m-%d"):
-                raise ValidationError('invalid date')
+                raise ValidationError('Invalid date')
             elif self.coupon_code.state != 'new':
                 raise ValidationError('Coupon not valid')
             else:
