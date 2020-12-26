@@ -41,7 +41,7 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise ValidationError('The coupon is not applicable by this customer')
             elif self.coupon_code.vehicle_id and (self.coupon_code.vehicle_id != sales_order.vehicle_id):
                 raise ValidationError('The coupon is not applicable on this vehicle')
-            elif self.coupon_code.start_date_use > today_x.date() or self.coupon_code.end_date_use < today_x.date() or self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60) or self.coupon_code.expiration_date < today.strftime("%Y-%m-%d")
+            elif self.coupon_code.start_date_use > today_x.date() or self.coupon_code.end_date_use < today_x.date() or self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60) or self.coupon_code.expiration_date < today.strftime("%Y-%m-%d"):
                 raise ValidationError('invalid date')
             elif self.coupon_code.state != 'new':
                 raise ValidationError('Coupon not valid')
