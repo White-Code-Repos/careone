@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+  <record model="ir.module.category" id="system_careone">
+      <field name="name">Careone</field>
+      <field name="sequence">1</field>
+  </record>
   <record id="careone_manager" model="res.groups">
     <field name="name">Manager</field>
+    <field name="category_id" ref="system_careone"/>
   </record>
   <record id="careone_salesperson" model="res.groups">
     <field name="name">Salesperson</field>
+    <field name="category_id" ref="system_careone"/>
   </record>
   <record id="careone_accountant" model="res.groups">
     <field name="name">Accountant</field>
+    <field name="category_id" ref="system_careone"/>
   </record>
   <record id="careone_worker" model="res.groups">
     <field name="name">Worker</field>
+    <field name="category_id" ref="system_careone"/>
   </record>
   <record id="careone_inventory_responsible" model="res.groups">
     <field name="name">Inventory Responsible</field>
+    <field name="category_id" ref="system_careone"/>
   </record>
 </odoo>
