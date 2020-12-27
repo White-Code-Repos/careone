@@ -24,13 +24,13 @@
   <record id="careone_worker" model="res.groups">
     <field name="name">Worker</field>
     <field name="category_id" ref="system_careone"/>
-    <field name="menu_access" eval="[(4, ref('mrp.menu_mrp_root'))]"/>
+    <field name="implied_ids" eval="[(4, ref('mrp.group_mrp_user'))]"/>
   </record>
   <record id="careone_inventory_responsible" model="res.groups">
     <field name="name">Inventory Responsible</field>
     <field name="category_id" ref="system_careone"/>
     <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
     <field name="menu_access" eval="[(4, ref('stock.menu_warehouse_report'))]"/>
-    <field name="menu_ids" eval="[(4, ref('mail.menu_root_discuss')),(4, ref('calendar.mail_menu_calendar')),(4, ref('contacts.menu_contacts')),(4, ref('sale.sale_menu_root')),(4, ref('website.menu_website_configuration')),(4, ref('bi_generic_import.menu_import_root')),(4, ref('hr_resignation.employee_resignation')),(4, ref('repair.menu_repair_order')),(4, ref('quality_control.menu_quality_root')),(4, ref('hr.menu_hr_root')),(4, ref('hr_holidays.menu_hr_holidays_root')),(4, ref('hr_expense.menu_hr_expense_root')),(4, ref('maintenance.menu_maintenance_title')),(4, ref('base.menu_board_root')),]"/>
+    <field name="menu_ids" eval="[(4, ref('mail.menu_root_discuss')),(4, ref('calendar.mail_menu_calendar')),(4, ref('contacts.menu_contacts')),(4, ref('sale.sale_menu_root')),(4, ref('website.menu_website_configuration')),(4, ref('bi_generic_import.menu_import_root')),(4, ref('hr_resignation.employee_resignation')),(4, ref('repair.menu_repair_order')),(4, ref('quality_control.menu_quality_root')),(4, ref('hr.menu_hr_root')),(4, ref('hr_holidays.menu_hr_holidays_root')),(4, ref('hr_expense.menu_hr_expense_root')),(4, ref('maintenance.menu_maintenance_title')),(4, ref('base.menu_board_root')),(4, ref('gtica_whatsapp_template.gtica_whatsapp_template_menu_root')),(4, ref('pragmatic_odoo_whatsapp_integration.menu_send_whatsapp_msg')),(4, ref('bi_warranty_registration.menu_warranty_main')),]"/>
   </record>
 </odoo>
