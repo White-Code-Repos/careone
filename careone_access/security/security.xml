@@ -24,5 +24,6 @@
     <field name="name">Inventory Responsible</field>
     <field name="category_id" ref="system_careone"/>
     <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+    <field name="menu_access" eval="[(4, ref('stock.menu_warehouse_report'))]"/>
   </record>
 </odoo>
