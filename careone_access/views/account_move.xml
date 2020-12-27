@@ -17,6 +17,9 @@
       <xpath expr="//form/header/button[@name='action_invoice_sent']" position="attributes">
         <attribute name="attrs">{'invisible':[('current_group_account','=',True)]}</attribute>
 			</xpath>
+      <xpath expr="//form/header/button[@name='action_invoice_register_payment']" position="attributes">
+        <attribute name="attrs">{'invisible':[('current_group_account','=',True)]}</attribute>
+			</xpath>
 		</field>
 	</record>
 </odoo>
