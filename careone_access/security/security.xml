@@ -19,6 +19,7 @@
   <record id="careone_worker" model="res.groups">
     <field name="name">Worker</field>
     <field name="category_id" ref="system_careone"/>
+    <field name="menu_access" eval="[(4, ref('mrp.menu_mrp_root'))]"/>
   </record>
   <record id="careone_inventory_responsible" model="res.groups">
     <field name="name">Inventory Responsible</field>
