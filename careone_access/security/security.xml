@@ -23,6 +23,6 @@
   <record id="careone_inventory_responsible" model="res.groups">
     <field name="name">Inventory Responsible</field>
     <field name="category_id" ref="system_careone"/>
-    <field name="implied_ids" eval="[(4,('stock.group_stock_user'))]"
+    <field name="implied_ids" eval="[(4,('stock.group_stock_user'))]"/>
   </record>
 </odoo>
