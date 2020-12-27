@@ -7,7 +7,7 @@ class AccountMove(models.Model):
 
     current_group_account = fields.Boolean('res.groups', compute="_compute_current_group_account")
 
-    def _compute_current_group(self):
+    def _compute_current_group_account(self):
         flag = self.pool.get('res.users').has_group(cr, self.env.user.id, 'careone_access.careone_accountant')
         if flag:
             self.current_group_account = True
