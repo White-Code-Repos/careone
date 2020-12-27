@@ -18,5 +18,4 @@ careone_access_i_r_16,CIR,delivery.model_delivery_carrier,careone_access.careone
 careone_access_i_r_17,CIR,stock.model_stock_move,careone_access.careone_inventory_responsible,1,1,1,0
 careone_access_i_r_18,CIR,stock.model_stock_package_level,careone_access.careone_inventory_responsible,1,1,1,1
 careone_access_i_r_19,CIR,stock.model_stock_rule,careone_access.careone_inventory_responsible,1,0,0,0
-careone_access_i_r_20,CIR,stock.model_mrp_production,careone_access.careone_inventory_responsible,1,0,0,0
-mrp.
+careone_access_i_r_20,CIR,mrp.model_mrp_production,careone_access.careone_inventory_responsible,1,0,0,0
