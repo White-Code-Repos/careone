@@ -88,52 +88,53 @@ class MrpProduction(models.Model):
     @api.onchange('sale_order_id','mrp_group_id')
     #@api.constrains('sale_order_id','mrp_group_id')
     def set_mrp_users(self):
-        mrp_grp_id = self.env['mrp.group']
-        self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
-        if self.sale_order_id :
-            mrp_grp_id = self.sale_order_id.mrp_group_id
-            if self.sale_order_id.mrp_group_id:
+        if self.sale_order_id or self.mrp_group_id:
+            mrp_grp_id = self.env['mrp.group']
+            self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
+            if self.sale_order_id :
+                mrp_grp_id = self.sale_order_id.mrp_group_id
+                if self.sale_order_id.mrp_group_id:
 
-                self.location_src_id = mrp_grp_id.location_id
+                    self.location_src_id = mrp_grp_id.location_id
+                else:
+                    mrp_grp_id = self.mrp_group_id
+                    self.location_src_id = self.mrp_group_id.location_id
             else:
                 mrp_grp_id = self.mrp_group_id
-                self.location_src_id = self.mrp_group_id.location_id
-        else:
-            mrp_grp_id = self.mrp_group_id
 
+                self.location_src_id = mrp_grp_id.location_id
+
+            self.mrp_group_id = mrp_grp_id
             self.location_src_id = mrp_grp_id.location_id
-
-        self.mrp_group_id = mrp_grp_id
-        self.location_src_id = mrp_grp_id.location_id
-        picktype=self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
+            picktype=self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
 
 
-        last_adj_date_sql = ("update stock_move \n"
-                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference ='"+str(self.name)+"'  \n"
-                    +"       and (location_dest_id = '15');")
+            last_adj_date_sql = ("update stock_move \n"
+                        +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference ='"+str(self.name)+"'  \n"
+                        +"       and (location_dest_id = '15');")
 
-        max_idsql =self.env.cr.execute(last_adj_date_sql)
-        #max_id = self.env.cr.fetchone()
+            max_idsql =self.env.cr.execute(last_adj_date_sql)
+            #max_id = self.env.cr.fetchone()
 
-        last_adj_date_sql = ("update stock_move_line \n"
-                    +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference='"+str(self.name)+"'  \n"
-                    +"       and (location_dest_id = '15');")
+            last_adj_date_sql = ("update stock_move_line \n"
+                        +"   set location_id ="+str(mrp_grp_id.location_id.id)+" where reference='"+str(self.name)+"'  \n"
+                        +"       and (location_dest_id = '15');")
 
-        max_idsql =self.env.cr.execute(last_adj_date_sql)
-        #max_id = self.env.cr.fetchone()
+            max_idsql =self.env.cr.execute(last_adj_date_sql)
+            #max_id = self.env.cr.fetchone()
 
 
-       # self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        #moves = self.env['stock.move.line'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
-       #for move in moves:
-       #     move.write({'location_id':mrp_grp_id.location_id.id})
-       # moves = self.env['stock.move'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
-       # for move in moves:
-       #     move.write({'location_id':mrp_grp_id.location_id.id})
-        #self.write({'picking_type_id':
-        #self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
-        #,'location_src_id':mrp_grp_id.location_id})
-        # self.location_dest_id = mrp_grp_id.location_id
+           # self.picking_type_id = self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
+            #moves = self.env['stock.move.line'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+           #for move in moves:
+           #     move.write({'location_id':mrp_grp_id.location_id.id})
+           # moves = self.env['stock.move'].search([('production_id','=',self.id),('location_dest_id','!=',self.location_dest_id.id)])
+           # for move in moves:
+           #     move.write({'location_id':mrp_grp_id.location_id.id})
+            #self.write({'picking_type_id':
+            #self.env['stock.picking.type'].search([('default_location_src_id','=',self.location_src_id.id),('code','=','mrp_operation')],limit=1)
+            #,'location_src_id':mrp_grp_id.location_id})
+            # self.location_dest_id = mrp_grp_id.location_id
 
     @api.model
     def create(self, values):
