@@ -4,15 +4,14 @@
 		<field name="name">careone_access.careone_accountant_accesses_ext</field>
 		<field name="model">account.move</field>
 		<field name="inherit_id" ref="account.view_invoice_tree"/>
-		<field name="arch" type="xml">
-      <xpath expr="//tree" position="attributes">
-        <attribute name="attrs">rp_create="current_group_account == True"</attribute>
-      </xpath>
-      <xpath expr="//tree" position="inside">
-        <field name="current_group_account" invisible="1"/>
-      </xpath>
-		</field>
-	</record>
+    <field name="groups_id" eval="[(4, ref('careone_access.careone_accountant')))]"/>
+     <field name="arch" type="xml">
+          <xpath expr="//tree" position="attributes">
+              <attribute name="create">false</attribute>
+         </xpath>
+     </field>
+   </record>
+
   <record model="ir.ui.view" id="careone_access.careone_accountant_accesses">
 		<field name="name">careone_access.careone_accountant_accesses</field>
 		<field name="model">account.move</field>
