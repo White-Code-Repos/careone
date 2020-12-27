@@ -6,9 +6,10 @@
     'description':'''
     Configuring new access rights, rules and groups depending on requierments
     ''',
-    'depends': ['base'],
+    'depends': ['base','account'],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
+        'views/account_move.xml',
     ],
 }
