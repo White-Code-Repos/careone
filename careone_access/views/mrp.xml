@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record model="ir.ui.view" id="careone_access.careone_worker_accesses">
+		<field name="name">careone_access.careone_worker_accesses</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+		<field name="arch" type="xml">
+      <xpath expr="//form/header" position="inside">
+        <field name="current_group_mrp" invisible="1"/>
+      </xpath>
+      <xpath expr="//form" position="attributes">
+          <attribute name="edit">false</attribute>
+     </xpath>
+		</field>
+	</record>
+</odoo>
