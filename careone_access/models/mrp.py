@@ -2,8 +2,8 @@
 
 from odoo import api, fields, models, _
 
-class AccountMove(models.Model):
-    _inherit = 'mrp.production'
+# class AccountMove(models.Model):
+#     _inherit = 'mrp.production'
 
     # current_group_mrp = fields.Boolean(compute="_compute_current_group_mrp")
     #

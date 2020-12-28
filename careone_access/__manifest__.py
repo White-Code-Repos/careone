@@ -12,5 +12,6 @@
         'security/security.xml',
         'views/account_move.xml',
         'views/mrp.xml',
+        'views/sale.xml',
     ],
 }
