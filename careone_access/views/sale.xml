@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <record model="ir.ui.view" id="careone_access.careone_salesperson_access">
-		<field name="name">careone_access.careone_salesperson_access</field>
+  <record model="ir.ui.view" id="careone_access.careone_salesperson_accessat">
+		<field name="name">careone_access.careone_salesperson_accessat</field>
 		<field name="model">mrp.production</field>
 		<field name="inherit_id" ref="mrp.mrp_production_form_view"/>
     <field name="groups_id" eval="[(4, ref('careone_access.careone_salesperson'))]"/>
