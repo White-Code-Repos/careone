@@ -18,8 +18,8 @@
   </record>
   <menuitem id="mrp.menu_mrp_dashboard"
       name="Overview"
-      action="mrp_workcenter_kanban_action"
-      groups="careone_salesperson"
+      action="mrp.mrp_workcenter_kanban_action"
+      groups="careone_access.careone_salesperson"
       parent="mrp.menu_mrp_root"
       sequence="10"/>
   <record id="careone_accountant" model="res.groups">
