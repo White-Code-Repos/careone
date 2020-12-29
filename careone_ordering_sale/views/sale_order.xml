@@ -17,7 +17,7 @@
             <field name="color_id"/>
             <field name="vehicle_state"/>
             <field name="subscription_id"/>
-            <field name="vehicles_subscriptions_id"/>
+            <field name="vehicles_subscreptions_id"/>
           </group>
           <group>
             <field name="service_delivery"/>
