@@ -146,8 +146,8 @@
         </record>
 
         <!-- sale order  -->
-        <!-- <record model="ir.ui.view" id="view_order_form">
-            <field name="name">sale.order.form</field>
+        <record model="ir.ui.view" id="view_order_formah">
+            <field name="name">sale.order.formah</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="coupon_program.sale_order_form_inherit"/>
             <field name="arch" type="xml">
@@ -156,7 +156,7 @@
                     <field name='user_ids' widget="many2many_tags"/>
                 </field>
             </field>
-        </record> -->
+        </record>
 
         <!-- mrp group -->
         <record id="action_mrp_group" model="ir.actions.act_window">
