@@ -113,21 +113,21 @@
                                 <field name="duration" widget="mrp_time_counter" class="oe_inline badge badge-secondary"/>
                                 <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')" attrs="{'invisible': [('production_state', 'in', ('draft', 'done'))]}"/>
                                 <field name="working_state" invisible="1"/>
-                                <!---<button name="button_start" type="object" string="Start" class=" badge btn-success" 
+                                <!---<button name="button_start" type="object" string="Start" class=" badge btn-success"
                                 style="border-radius:3px !important"
                                 attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
-                                <button name="button_pending" type="object" string="Pause" class=" badge btn-warning" 
+                                <button name="button_pending" type="object" string="Pause" class=" badge btn-warning"
                                 attrs="{'invisible': ['|', '|', ('production_state', 'in', ('draft', 'done')),
                                  ('working_state', '=', 'blocked'), ('is_user_working', '=', False)]}"
                                  style="border-radius:3px !important"/>
-                                <button name="button_finish" type="object" string="Done" class=" badge btn-success" 
+                                <button name="button_finish" type="object" string="Done" class=" badge btn-success"
                                 attrs="{'invisible': ['|', '|', ('production_state', 'in', ('draft', 'done')),
                                  ('working_state', '=', 'blocked'), ('is_user_working', '=', False)]}"
                                  style="border-radius:3px !important"/>
                                 <button name="%(mrp.act_mrp_block_workcenter_wo)d" type="action" string="Block" context="{'default_workcenter_id': workcenter_id}"
                                  class=" badge btn-danger" style="border-radius:3px !important"
                                  attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'done')), ('working_state', '=', 'blocked')]}"/>
-                                <button name="button_unblock" type="object" string="Unblock" context="{'default_workcenter_id': workcenter_id}" 
+                                <button name="button_unblock" type="object" string="Unblock" context="{'default_workcenter_id': workcenter_id}"
                                 class=" badge btn-danger" style="border-radius:3px !important"
                                 attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'done')), ('working_state', '!=', 'blocked')]}"/>
                                 <button name="action_open_wizard" type="object" icon="fa-external-link" class="oe_edit_only" context="{'default_workcenter_id': workcenter_id}"/>-->
@@ -151,7 +151,7 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <field name="partner_id" position="after">
+                <field name="company_id" position="after">
                     <field  name="mrp_group_id"/>
                     <field name='user_ids' widget="many2many_tags"/>
                 </field>
