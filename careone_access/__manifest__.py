@@ -6,7 +6,7 @@
     'description':'''
     Configuring new access rights, rules and groups depending on requierments
     ''',
-    'depends': ['base','account'],
+    'depends': ['base','account','sale','mrp','stock'],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
