@@ -11,7 +11,7 @@
              <field name="name">Not Worker Can See Dashboard</field>
              <field name="model_id" ref="">​base.model_ir_actions_act_window</field>
              <field name="groups" eval="[(4,ref('mrp.group_mrp_user'))]"></field>
-             <field name="domain_force">[('manager_id', '=', user.employee_ids[0].id)]</field>
+             <field name="domain_force">[]</field>
      </record>
 
   <record model="ir.module.category" id="system_careone">
