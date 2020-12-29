@@ -149,7 +149,7 @@
         <record model="ir.ui.view" id="view_order_form">
             <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="inherit_id" ref="coupon_program.sale_order_form_inherit"/>
             <field name="arch" type="xml">
                 <field name="coupon_id" position="after">
                     <field  name="mrp_group_id"/>
