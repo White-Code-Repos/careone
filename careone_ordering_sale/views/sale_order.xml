@@ -7,7 +7,7 @@
     <field name="type">form</field>
     <field eval="1" name="priority"/>
     <field name="arch" type="xml">
-      <xpath expr="//form/sheet/group" position="after">
+      <xpath expr="//form/sheet/group" position="replace">
         <group>
           <group>
             <field name="partner_id"/>
