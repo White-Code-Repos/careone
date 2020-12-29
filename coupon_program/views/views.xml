@@ -109,7 +109,7 @@
               action="sale_coupon_program_action_coupon_program_inherit" parent="sale.product_menu_catalog"
               groups="sales_team.group_sale_manager" sequence="5"/>
     <!-- Inherit Form View to Modify it -->
-    <!-- <record id="sale_order_form_inherit" model="ir.ui.view">
+    <record id="sale_order_form_inherit" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
@@ -191,7 +191,7 @@
                 <field name="size"/>
             </xpath>
         </field>
-    </record> -->
+    </record>
     <record id="coupon_form_view_inherit" model="ir.ui.view">
         <field name="name">coupon.form.inherit</field>
         <field name="model">sale.coupon</field>

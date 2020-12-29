@@ -9,7 +9,7 @@
             <script type="text/javascript" src="/web_notify/static/src/js/widgets/notification.js"/>
         </xpath>
     </template>
-    <!-- <record id="vehicles_subscreptions_id_view_inherited_form" model="ir.ui.view">
+    <record id="vehicles_subscreptions_id_view_inherited_form" model="ir.ui.view">
         <field name="name">vehicles_subscreptions_id_view_inherited_form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_subscriptions_enhanchment.sale_order_form_inherit"/>
@@ -24,5 +24,5 @@
                 <widget name="web_ribbon" title="Subscriper" attrs="{'invisible': [('subscriper', '!=', True)]}"/>
             </xpath>
         </field>
-    </record> -->
+    </record>
 </odoo>

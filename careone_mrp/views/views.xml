@@ -146,7 +146,7 @@
         </record>
 
         <!-- sale order  -->
-        <!-- <record model="ir.ui.view" id="view_order_form">
+        <record model="ir.ui.view" id="view_order_form">
             <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
@@ -156,7 +156,7 @@
                     <field name='user_ids' widget="many2many_tags"/>
                 </field>
             </field>
-        </record> -->
+        </record>
 
         <!-- mrp group -->
         <record id="action_mrp_group" model="ir.actions.act_window">
