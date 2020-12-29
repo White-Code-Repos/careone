@@ -173,7 +173,7 @@
                     <field name="coupon_count" string="Coupons" widget="statinfo"/>
                 </button>
             </xpath>
-            <xpath expr="//field[@name='customer_vehicle_id']" position="after">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
                 <field name="coupon_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                 <field name="is_allow_generate_coupon" invisible="1"/>
                 <field name="is_generate_coupon" invisible="1"/>
