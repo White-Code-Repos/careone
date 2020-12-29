@@ -32,6 +32,7 @@
           <group>
             <field name="partner_shipping_id"/>
             <field name="payment_term_id"/>
+            <field name="partner_invoice_id"/>
           </group>
         </group>
       </xpath>
