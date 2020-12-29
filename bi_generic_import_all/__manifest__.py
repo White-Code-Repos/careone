@@ -7,7 +7,7 @@
     "category" : "Extra Tools",
     'summary': 'Advance import App for import Invoices import Sales order import Inventory import Purchase order import stock import Picking import Product image import Customer import serial import lot import bom import bank statement import journal entry import payment',
     "description": """
-    
+
   BrowseInfo developed a new odoo/OpenERP module apps
   This module use for import bulk bom from Excel file. Import bill of material from CSV or Excel file.
     Import bom lines, Import multiple bom lines, Import bill of material using excel, Import BOM from csv.BOM Import, Add BOM from Excel.Add bom form csv.Add CSV file.Import bom data. Import excel file
@@ -22,8 +22,8 @@
     Odoo all import
     import all data
     import all files
-    import data 
-    import files 
+    import data
+    import files
     Import stock with Serial number import
     Import stock with lot number import
     import lot number with stock import
@@ -42,7 +42,7 @@ Odoo import transfer import stock transfer import receipt import odoo import sto
     odoo import tool
     odoo import module
     import Odoo app
-    import tool 
+    import tool
 
   all import app
   This module use for following easy import.
@@ -55,8 +55,8 @@ Odoo import transfer import stock transfer import receipt import odoo import sto
   Import sale order line, import purchase order line, Import data, Import files, Import data from third party software
   Import invoice from CSV, Import Bulk invoices easily.Import warehouse data,Import warehouse stock.Import product stock.
   Invoice import from CSV, Invoice line import from CSV, Sale import, purchase import
-  Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import. 
-  Import product from CSV, Import customer from CSV, Product Import,Customer import, Odoo CSV bridge,Import CSV brige on Odoo.Import csv data on odoo.All import, easy import, Import odoo data, Import CSV files, Import excel files 
+  Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import.
+  Import product from CSV, Import customer from CSV, Product Import,Customer import, Odoo CSV bridge,Import CSV brige on Odoo.Import csv data on odoo.All import, easy import, Import odoo data, Import CSV files, Import excel files
   Import tools Odoo, Import reports, import accounting data, import sales data, import purchase data, import data in odoo, import record, Import inventory.import data on odoo,Import data from Excel, Import data from CSV.Odoo Import Data
 
   -Import product from CSV and Excel file.
@@ -80,14 +80,14 @@ Odoo import transfer import stock transfer import receipt import odoo import sto
   -Import supplier from Excel and CSV file.
 
       odoo import product images import images on product multiple images on product Import bulk images on product.
-    odoo Import product photos Import from product images from link Import images form link 
+    odoo Import product photos Import from product images from link Import images form link
     odoo Import from other website Add product image Update product Image Import picture of product
     odoo import images from CSV Import product images from CSV file Import product data from CSV file
     odoo Set product image from URL Import product images from URL Import product images from CSV file IMport product image from URL
     odoo Multi product images Mutiple images on product website multi images import for product template
 
     odoo import images import images from url import multiple images on product Import bulk image on product variants
-    odoo Import photos from url Import images from link Import product images form link 
+    odoo Import photos from url Import images from link Import product images form link
     odoo Import image from other website Add image Update Image Import picture of prodduct template
     odoo import images from CSV Import product images from CSV file Import product data from CSV file
     odoo Set image from URL Import image from URL Import images from CSV file Import image from URL link
@@ -96,13 +96,13 @@ Odoo import transfer import stock transfer import receipt import odoo import sto
     odoo import product images import images on product multiple images on product Import bulk images on product
     odoo Import product photos Import from product images from link Import images form link
     odoo Import from other website Add product image Update product Image.Import picture of product
-    odoo import images from CSV Import product images from CSV file Import product data from CSV file 
+    odoo import images from CSV Import product images from CSV file Import product data from CSV file
     odoo Set product image from URL Import product images from URL Import product images from CSV file
     odoo Import product image from URL Multi product images import Mutiple images on product website multi images
-    odoo import product image odoo import image Import from product images from path Import images form local system path. 
-    odoo Import images directory Add product image Update product Image Import picture of product 
-    odoo import images from excel Import product images from excel file Import product data from excel file. 
-    odoo Set product image from excel Import product images from excel Import product images from excel file. 
+    odoo import product image odoo import image Import from product images from path Import images form local system path.
+    odoo Import images directory Add product image Update product Image Import picture of product
+    odoo import images from excel Import product images from excel file Import product data from excel file.
+    odoo Set product image from excel Import product images from excel Import product images from excel file.
     odoo IMport product image from excel import image from csv import image from excel import image from zip file
 
 
@@ -155,12 +155,12 @@ Odoo import transfer import stock transfer import receipt import odoo import sto
         -Import Stock inventory from CSV and Excel file.
   -Import inventory adjustment, import stock balance
   -Import opening stock balance from CSV and Excel file.
-  -Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import. Import warehouse stock, Import product stock.Manage Inventory, import inventory with lot number, import inventory with serial number, import inventory adjustment with serial number, import inventory adjustment with lot number. import inventory data, import stock data, import opening stock with lot number, import lot number, import serial number. 
+  -Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import. Import warehouse stock, Import product stock.Manage Inventory, import inventory with lot number, import inventory with serial number, import inventory adjustment with serial number, import inventory adjustment with lot number. import inventory data, import stock data, import opening stock with lot number, import lot number, import serial number.
 
   This module use for import bulk invoice lines from Excel file. Import invoice lines from CSV or Excel file.
   Import invoices, Import invoice line, Import invoice lines, Invoice Import, Add invoice from Excel.Add Excel invoice lines.Add CSV file.Import invoice data. Import excel file.
 
-  Used to import the journal entry from the xls or csv data file. 
+  Used to import the journal entry from the xls or csv data file.
   import accounting transection from CSV, Import journal entry from CSV, import journal item from CSV, import accouting data from CSV, import account move from CSV, import account move line from CSV.
   import accounting transection from Excel, Import journal entry from Excel, import journal item from Excel, import accouting data from Excel, import account move from Excel, import account move line from Excel.
   import accounting transection from XLS, Import journal entry from XLS, import journal item from XLS, import accouting data from XLS, import account move from XLS, import account move line from XLS.
@@ -374,7 +374,7 @@ xls Importe de demonstração de caixa
         - Inventário de inventário de estoque do arquivo CSV e Excel.
 - Ajuste de estoque de importação, saldo de estoque de importação
 - Importe o saldo do estoque inicial do arquivo CSV e Excel.
-- Importação de inventário de CSV, importação de estoque de CSV, importação de ajuste de estoque, importação de estoque de abertura. Estoque de armazém de importação, estoque de estoque de importação. Estoque de inventário, inventário de importação com número de lote, inventário de importação com número de série, importação de inventário com número de série, importação de inventário com número de lote. importar dados de inventário, importar dados de estoque, importar estoque de abertura com número de lote, importar número de lote, importar número 
+- Importação de inventário de CSV, importação de estoque de CSV, importação de ajuste de estoque, importação de estoque de abertura. Estoque de armazém de importação, estoque de estoque de importação. Estoque de inventário, inventário de importação com número de lote, inventário de importação com número de série, importação de inventário com número de série, importação de inventário com número de lote. importar dados de inventário, importar dados de estoque, importar estoque de abertura com número de lote, importar número de lote, importar número
 
 
 خطوط بيان الاستيراد النقدي من XLS
@@ -390,7 +390,7 @@ xls Cash statement import
         -Import Stock inventory from CSV and Excel file.
   -Import inventory adjustment, import stock balance
   -Import opening stock balance from CSV and Excel file.
-  -Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import. Import warehouse stock, Import product stock.Manage Inventory, import inventory with lot number, import inventory with serial number, import inventory adjustment with serial number, import inventory adjustment with lot number. import inventory data, import stock data, import opening stock with lot number, import lot number, import serial number. 
+  -Inventory import from CSV, stock import from CSV, Inventory adjustment import, Opening stock import. Import warehouse stock, Import product stock.Manage Inventory, import inventory with lot number, import inventory with serial number, import inventory adjustment with serial number, import inventory adjustment with lot number. import inventory data, import stock data, import opening stock with lot number, import lot number, import serial number.
 
 هذه الوحدة مفيدة لجرد الاستيراد مع الرقم التسلسلي من ملف Excel و CSV.
          لها أيضا مفيدة لتوازن رصيد فتح الواردات مع الرقم التسلسلي من XLS أو ملف CSV.
@@ -586,7 +586,7 @@ Envio de Importação, Importe o carregamento recebido, Importar Pedidos de Entr
 Este módulo usa para importar imagens de produtos, importar imagens no produto, várias imagens no produto, Importar imagens em massa no produto. Importar fotos de produtos, Importar de imagens de produtos do link, Importar link de formulário de imagens. Importar de outro site. Adicione a imagem do produto. Atualize a imagem do produto. Importe a imagem do produto, importe imagens do CSV, Importe imagens do produto do arquivo CSV, Importe dados do produto do arquivo CSV. Defina a imagem do produto a partir de URL, Importe imagens de produtos de URL, Importe imagens de produtos do arquivo CSV. Importe a imagem do produto a partir de URL, imagens de vários produtos, imagens Mutiple no produto, imagens multi site
 
 Importar imagens do produto do caminho, importar imagens do caminho do sistema local. Importar o diretório de imagens. Adicione a imagem do produto. Atualize a imagem do produto. Importe a imagem do produto, importe imagens do Excel, Importe imagens do produto do arquivo excel, Importe os dados do produto do arquivo excel. Defina a imagem do produto a partir do excel, Importe imagens do produto do Excel, Importe imagens do produto do arquivo excel. IMPORTE a imagem do produto do excel.
-    
+
     """,
     "author": "BrowseInfo",
     "website" : "https://www.browseinfo.in",
