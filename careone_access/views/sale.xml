@@ -10,7 +10,7 @@
         <field name="current_group_mrp" invisible="1"/>
       </xpath> -->
       <xpath expr="//form" position="attributes">
-          <attribute name="edit">false</attribute>
+          <attribute name="create">false</attribute>
      </xpath>
 		</field>
 	</record>
