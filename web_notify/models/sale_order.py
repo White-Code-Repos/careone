@@ -28,8 +28,15 @@ class SubProducts(models.Model):
             res.append((this.id, '%s - %s' % (this.vehicle_id.display_name,this.product_id.display_name)))
         return res
 
+class mrp(models.Model):
+    _inherit = 'mrp.production'
+
+    vehicle_id = fields.Many2one('fleet.vehicle')
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+
+    vehicle_id = fields.Many2one('fleet.vehicle')
 
     subscriper = fields.Boolean(default=False, compute="_compute_subscriper_state")
     def _compute_subscriper_state(self):
