@@ -18,7 +18,6 @@
         'base',
         'sale',
         'contacts',
-        'mrp',
         'sale_subscriptions_enhanchment',
     ],
     'data': [
