@@ -29,6 +29,9 @@
             <field name="mrp_group_id"/>
             <field name="user_ids"/>
           </group>
+          <group>
+            <field name="partner_shipping_id"/>
+          </group>
         </group>
       </xpath>
       <!-- <xpath expr="" position="after">
