@@ -11,8 +11,7 @@ class SaleOrder(models.Model):
 
     color_id = fields.Many2one('fleet.color', string='Vehicle color')
     model_id = fields.Many2one('fleet.model', string='Model year')
-    size = fields.Selection([('small','Small'),('medium','Medium'),('large','Large')])
-    vehicle_state = fields.Selection([('Good','Good'),('Medium','Medium'),('Bad','Bad')])
+
     def _count_vehicle_parts(self):
         for vehicle_parts in self:
             vehicle_parts.count_vehicle_part = self.env['sale.vehicle.parts'].search_count([('order_id', '=', self.id)])

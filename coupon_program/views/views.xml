@@ -167,13 +167,13 @@
                         type="object"
                         attrs="{'invisible': ['|',('is_allow_generate_coupon', '=', False),('is_generate_coupon', '=', True)]}"/>
             </xpath>
-            <xpath expr="//button[@name='action_view_invoice']" position="after">
+            <xpath expr="//button[@name='preview_sale_order']" position="after">
                 <button name="action_view_coupons" type="object" class="oe_stat_button" icon="fa-ticket"
                         attrs="{'invisible': [('coupon_count', '=', 0)]}">
                     <field name="coupon_count" string="Coupons" widget="statinfo"/>
                 </button>
             </xpath>
-            <xpath expr="//field[@name='payment_term_id']" position="after">
+            <xpath expr="//field[@name='customer_vehicle_id']" position="after">
                 <field name="coupon_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                 <field name="is_allow_generate_coupon" invisible="1"/>
                 <field name="is_generate_coupon" invisible="1"/>
