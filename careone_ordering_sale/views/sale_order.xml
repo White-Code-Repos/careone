@@ -7,9 +7,32 @@
     <field name="type">form</field>
     <field eval="1" name="priority"/>
     <field name="arch" type="xml">
-      <field name="name" position="after">
-        <h1>=====================================</h1>
-      </field>
+      <xpath expr="//form/sheet/group" position="after">
+        <group>
+          <group>
+            <field name="partner_id"/>
+            <field name="vehicle_id"/>
+            <field name="size"/>
+            <field name="model_id"/>
+            <field name="color_id"/>
+            <field name="vehicle_state"/>
+            <field name="subscription_id"/>
+            <field name="vehicles_subscriptions_id"/>
+          </group>
+          <group>
+            <field name="service_delivery"/>
+            <field name="planned_date"/>
+            <field name="date_order"/>
+            <field name="pricelist_id"/>
+            <field name="external_coupon"/>
+            <field name="coupon_id"/>
+            <field name="mrp_group_id"/>
+            <field name="user_ids"/>
+          </group>
+        </group>
+      </xpath>
+      <!-- <xpath expr="" position="after">
+      </xpath> -->
     </field>
   </record>
 </odoo>
