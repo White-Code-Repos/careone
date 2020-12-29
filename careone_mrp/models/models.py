@@ -17,7 +17,7 @@ class SaleOrder(models.Model):
 
     production_ids = fields.One2many('mrp.production', 'sale_order_id')
     production_count = fields.Integer(compute='_compute_production_count', store=True)
-    # mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',)
+    mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',)
     user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
 
     @api.onchange('mrp_group_id')
