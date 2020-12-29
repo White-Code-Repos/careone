@@ -146,8 +146,8 @@
         </record>
 
         <!-- sale order  -->
-        <record model="ir.ui.view" id="view_order_formah">
-            <field name="name">sale.order.formah</field>
+        <record model="ir.ui.view" id="view_order_formahat">
+            <field name="name">sale.order.formahat</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="coupon_program.sale_order_form_inherit"/>
             <field name="arch" type="xml">
