@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  
+
     <record id="sale_subscription_view_form_inherited_form" model="ir.ui.view">
         <field name="name">sale.subscription.form</field>
         <field name="model">sale.subscription</field>
@@ -92,7 +92,7 @@
             </div>
           </xpath> -->
 
-            <xpath expr="//field[@name='pricelist_id']" position="after">
+            <xpath expr="//field[@name='vehicle_state']" position="after">
                 <field name="subscription_id"
                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
             </xpath>
