@@ -79,9 +79,9 @@
                 <field name="service_delivery" attrs="{'readonly':[('state','!=','draft')]}"/>
                 <field name="planned_date"/>
             </xpath>
-            <xpath expr="//field[@name='vehicle_id']" position="after">
+            <!-- <xpath expr="//field[@name='vehicle_id']" position="after">
                 <field name="vehicle_state" attrs="{'readonly':[('state','!=','draft')]}"/>
-            </xpath>
+            </xpath> -->
             <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
