@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+  <record id="careone_ordering_sale_extend" model="ir.ui.view">
+    <field name="name">careone_ordering_sale_extend</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form" />
+    <field name="type">form</field>
+    <field eval="1" name="priority"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <h1>=====================================</h1>
+      </field>
+    </field>
+  </record>
+</odoo>
