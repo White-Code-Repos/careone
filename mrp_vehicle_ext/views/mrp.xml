@@ -10,7 +10,7 @@
       </field>
 			<xpath expr="//kanban/templates/t/div/div[2]/h5" position="replace">
         <h5 class="oe_kanban_bottom_left">
-            <span><t t-esc="record.product_id.value"/>, </span> <span><t t-esc="record.vehicle_id.value"/></span>
+            <b style="color: green;"><span><t t-esc="record.product_id.value"/>, </span> <span><t t-esc="record.vehicle_id.value"/></span></b>
         </h5>
 			</xpath>
 		</field>
