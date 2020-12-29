@@ -75,7 +75,7 @@
 
             </xpath>
 
-            <xpath expr="//field[@name='date_order']" position="after">
+            <xpath expr="//field[@name='date_order']" position="before">
                 <field name="service_delivery" attrs="{'readonly':[('state','!=','draft')]}"/>
                 <field name="planned_date"/>
             </xpath>
