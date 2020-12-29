@@ -7,54 +7,126 @@
     <field name="type">form</field>
     <field eval="1" name="priority"/>
     <field name="arch" type="xml">
-      <field name="partner_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="mrp_group_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="user_ids" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="vehicle_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="size" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="color_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="model_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="service_delivery" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="planned_date" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="date_order" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="price_list_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="subscription_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="vehicles_subscreptions_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="payment_term_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="external_coupon" position="attributes"><attribute name="invisible">1</attribute></field>
-      <field name="coupon_id" position="attributes"><attribute name="invisible">1</attribute></field>
-      <xpath expr="//form/sheet/group" position="replace">
-        <group>
-          <group>
-            <field name="partner_id"/>
-            <field name="vehicle_id"/>
-            <field name="size"/>
-            <field name="model_id"/>
-            <field name="color_id"/>
-            <field name="vehicle_state"/>
-            <field name="subscription_id"/>
-            <field name="vehicles_subscreptions_id" widget="many2many_tags"/>
-          </group>
-          <group>
-            <field name="service_delivery"/>
-            <field name="planned_date"/>
-            <field name="date_order"/>
-            <field name="pricelist_id"/>
-            <field name="external_coupon"/>
-            <field name="coupon_id"/>
-            <field name="mrp_group_id"/>
-            <field name="user_ids" widget="many2many_tags"/>
-          </group>
-          <group invisible="1">
-            <field name="partner_shipping_id"/>
-            <field name="payment_term_id"/>
-            <field name="partner_invoice_id"/>
-            <field name="validity_date"/>
-          </group>
-        </group>
+      <field name="partner_id" position="after">
+        <field name="vehicle_id" attrs="{'readonly':[('state','!=','draft')]}" domain="[('driver_id','=',partner_id)]" context="{'default_driver_id': partner_id}"/>
+        <field name="size" />
+        <field name="model_id" />
+        <field name="color_id" />
+        <field name="vehicle_state" attrs="{'readonly':[('state','!=','draft')]}"/>
+        <field name="subscription_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+        <field name="vehicles_subscreptions_id" widget="many2many_tags" attrs="{'invisible': [('subscription_id', '=', False)]}"/>
+      </field>
+      <xpath expr="//field[@name='partner_id']" position="attributes">
+          <attribute name="placeholder">Name, Email, Mobile, or Reference</attribute>
+          <attribute name="context">{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True,
+              'custom_so_search': True}
+          </attribute>
       </xpath>
-      <!-- <xpath expr="" position="after">
-      </xpath> -->
+      <xpath expr="//field[@name='validity_date']" position="attributes">
+          <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='client_order_ref']" position="after">
+          <field name="validity_date" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}"/>
+      </xpath>
+      <xpath expr="//field[@name='date_order']" position="before">
+          <field name="service_delivery" attrs="{'readonly':[('state','!=','draft')]}"/>
+          <field name="planned_date"/>
+      </xpath>
+      <field name="payment_term_id" position="before">
+          <field name="external_coupon" attrs="{'readonly':[('state','!=','draft')]}"/>
+          <field name="category_ids" invisible="1"/>
+      </field>
+      <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name="coupon_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+          <field name="is_allow_generate_coupon" invisible="1"/>
+          <field name="is_generate_coupon" invisible="1"/>
+          <field  name="mrp_group_id"/>
+          <field name='user_ids' widget="many2many_tags"/>
+      </xpath>
+      <xpath expr="//field[@name='order_line']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='payment_term_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='user_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='team_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='company_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='client_order_ref']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='origin']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='campaign_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='medium_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='source_id']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='signed_by']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='signed_on']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//field[@name='signature']" position="attributes">
+          <attribute name="attrs">{'readonly':[('state','!=','draft')]}</attribute>
+      </xpath>
+      <xpath expr="//header" position="inside">
+          <button name="generate_coupon" id="action_generate_coupon" string="Generate Coupon" class="btn-primary"
+                  type="object"
+                  attrs="{'invisible': ['|',('is_allow_generate_coupon', '=', False),('is_generate_coupon', '=', True)]}"/>
+      </xpath>
+      <xpath expr="//button[@name='action_view_invoice']" position="after">
+          <button name="action_view_coupons" type="object" class="oe_stat_button" icon="fa-ticket"
+                  attrs="{'invisible': [('coupon_count', '=', 0)]}">
+              <field name="coupon_count" string="Coupons" widget="statinfo"/>
+          </button>
+      </xpath>
+      <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name="customer_vehicle_id" options="{'no_create': True, 'no_edit': True, 'no_create_edit':True}" invisible="1"/>
+      </xpath>
+      <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+          <field name="vehicle_part_id" invisible="1"/>
+      </xpath>
+      <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
+          <field name="vehicle_part_id" invisible="1"/>
+      </xpath>
+      <xpath expr="//field[@name='picking_policy']" position="after">
+          <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
+                 context="{'default_type':'invoice'}" options='{"always_reload": True}' invisible="1"/>
+          <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
+                 context="{'default_type':'delivery'}" options='{"always_reload": True}' invisible="1"/>
+      </xpath>
+        <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+            <attribute name="domain">[('categ_id', 'child_of', parent.category_ids or [1]), ('sale_ok', '=', True),
+                '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]
+            </attribute>
+        </xpath>
+        <xpath expr="/form/sheet/div[@name='button_box']/button[@name='preview_sale_order']" position="before">
+            <button class="oe_stat_button" type="action" name="%(act_sale_vehicle_parts_all)d" icon="fa-tasks">
+                <field string="Vehicle Parts" name="count_vehicle_part" widget="statinfo"/>
+            </button>
+        </xpath>
+        <xpath expr="//header" position="inside">
+          <field name="subscriper" invisible="1"/>
+        </xpath>
+        <xpath expr="//div[@name='button_box']" position="after">
+            <widget name="web_ribbon" title="Subscriper" attrs="{'invisible': [('subscriper', '!=', True)]}"/>
+        </xpath>
     </field>
   </record>
 </odoo>

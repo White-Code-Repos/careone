@@ -75,7 +75,7 @@
 
             </xpath>
 
-            <xpath expr="//field[@name='date_order']" position="before">
+            <!-- <xpath expr="//field[@name='date_order']" position="before">
                 <field name="service_delivery" attrs="{'readonly':[('state','!=','draft')]}"/>
                 <field name="planned_date"/>
             </xpath>
@@ -99,7 +99,7 @@
             </xpath>
             <xpath expr="//field[@name='client_order_ref']" position="after">
                 <field name="validity_date" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}"/>
-            </xpath>
+            </xpath> -->
 
         </field>
     </record>

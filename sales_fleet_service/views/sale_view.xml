@@ -24,13 +24,13 @@
         <field name="search_view_id" ref="sale_vehicle_parts_search_form_view"/>
     </record>
 
-    <record model="ir.ui.view" id="view_order_form_extend_sales_fleet_careone">
+    <!-- <record model="ir.ui.view" id="view_order_form_extend_sales_fleet_careone">
         <field name="name">sale.order.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
-              <field name="vehicle_id" />
+              <field name="vehicle_id" domain="[('driver_id','=',partner_id)]"/>
     <field name="size" />
     <field name="model_id" />
     <field name="color_id" />
@@ -57,5 +57,5 @@
                 </button>
             </xpath>
         </field>
-    </record>
+    </record> -->
 </odoo>
