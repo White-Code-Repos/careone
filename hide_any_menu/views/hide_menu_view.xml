@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_users_hide_menu_form" model="ir.ui.view">
+	    <field name="name">res.users.hide.menu.form</field>
+	    <field name="model">res.users</field>
+	    <field name="type">form</field>
+	    <field name="inherit_id" ref="base.view_users_form"/>
+	    <field name="arch" type="xml">
+	        <notebook position="inside">
+	            <page string="Hide Specific Menu">
+	                <group colspan="4">
+	                    <field name="menu_ids" nolabel="1"/>
+	                </group>
+	            </page>
+	            <page string="Hide Specific Report">
+	                <group colspan="4">
+	                    <field name="report_ids" nolabel="1">
+	                        <tree>
+	                            <field name="name"/>
+	                            <field name="model"/>
+	                            <field name="report_name"/>
+	                            <field name="report_type"/>
+	                        </tree>
+	                    </field>
+	                </group>
+	            </page>
+	        </notebook>
+	    </field>
+	</record>
+	
+	<record id="view_groups_hide_menu_form" model="ir.ui.view">
+	    <field name="name">res.groups.hide.menu.form</field>
+	    <field name="model">res.groups</field>
+	    <field name="inherit_id" ref="base.view_groups_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//notebook" position="inside">
+	            <page string="Menu To Hide">
+	                <field name="menu_ids"/>
+	            </page>
+	            <page string="Report To Hide">
+	                <field name="report_ids" nolabel="1">
+	                    <tree>
+	                        <field name="name"/>
+	                        <field name="model"/>
+	                        <field name="report_name"/>
+	                        <field name="report_type"/>
+	                    </tree>
+	                </field>
+	            </page>
+	        </xpath>
+	    </field>
+	</record>
+	
+	<record id="edit_menu_access_hide" model="ir.ui.view">
+	    <field name="name">ir.ui.menu.hide.form</field>
+	    <field name="model">ir.ui.menu</field>
+	    <field name="inherit_id" ref="base.edit_menu_access"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//notebook" position="inside">
+	            <page string="Hide From Groups">
+	                <field name="hide_group_ids"/>
+	            </page>
+	            <page string="Hide From Users">
+	                <field name="hide_user_ids">
+	                    <tree>
+	                        <field name="name"/>
+	                    </tree>
+	                </field>
+	            </page>
+	        </xpath>
+	    </field>
+	</record>
+	
+	<record id="generic_security_restriction_model_form" model="ir.ui.view">
+	    <field name="name">ir.model.hide.menu.form</field>
+	    <field name="model">ir.model</field>
+	    <field name="inherit_id" ref="base.view_model_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//notebook" position="inside">
+	            <page string="Field Configuration" name="hide_fields_config">
+	                <div class="mt16 mb16">
+	                    <span>
+	                        <strong>
+	                            NOTE: Select Field that you want to hide/set readonly from specific group
+	                        </strong>
+	                    </span>
+	                </div>
+	                <field name="field_configuration_ids" context="{'default_model_id': active_id}" nolabel="1">
+	                    <form>
+	                        <div class="oe_button_box" name="button_box">
+	                        </div>
+	                        <group>
+	                            <group>
+	                                <field name="model_id" invisible="1"/>
+	                                <field name="field_id" domain="[('model_id','=',model_id)]"/>
+	                                <field name="field_name"/>
+	                                <field name="group_ids" widget="many2many_tags"/>
+	                            </group>
+	                            <group>
+	                                <field name="readonly"/>
+	                                <field name="invisible"/>
+	                            </group>
+	                        </group>
+	                    </form>
+	                    <tree>
+	                        <field name="model_id" invisible="1"/>
+	                        <field name="field_id" domain="[('model_id', '=', model_id)]"/>
+	                        <field name="field_name"/>
+	                        <field name="group_ids" widget="many2many_tags"/>
+	                        <field name="readonly"/>
+	                        <field name="invisible"/>
+	                    </tree>
+	                </field>
+	            </page>
+	        </xpath>
+	    </field>
+	</record>
+	
+	<record id="act_hide_report_view" model="ir.ui.view">
+	    <field name="name">act_report_xml_view.hide</field>
+	    <field name="model">ir.actions.report</field>
+	    <field name="inherit_id" ref="base.act_report_xml_view"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//notebook" position="inside">
+	            <page string="Hide From Groups">
+	                <field name="hide_group_ids"/>
+	            </page>
+	            <page string="Hide From Users">
+	                <field name="hide_user_ids">
+	                    <tree>
+	                        <field name="name"/>
+	                    </tree>
+	                </field>
+	            </page>
+	        </xpath>
+	    </field>
+	</record>
+
+</odoo>

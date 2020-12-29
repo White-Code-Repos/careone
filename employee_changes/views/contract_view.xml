@@ -6,45 +6,45 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
           <field name="advantages" position="before">
-            <label for="settelment_allowance"/>
-            <div class="o_row" name="settelment_allowance">
-                <field name="settelment_allowance" nolabel="1"/>
-                <span>/ month</span>
-            </div>
-            <label for="transportation_allowance"/>
-            <div class="o_row" name="transportation_allowance">
-                <field name="transportation_allowance" nolabel="1"/>
-                <span>/ month</span>
-            </div>
-            <label for="other_allowance"/>
-            <div class="o_row" name="other_allowance">
-                <field name="other_allowance" nolabel="1"/>
-                <span>/ month</span>
-            </div>
-          </field>
-            <xpath expr="//notebook/page[@name='information']" position="after">
-                <page string="Attachment" name="attach">
-                    <field name="attachment_ids">
-                        <tree editable="bottom">
-                            <field name="attachment"/>
-                        </tree>
-                    </field>
-                </page>
-                <page string="GOSI" name="gosi">
+          <label for="settelment_allowance"/>
+          <div class="o_row" name="settelment_allowance">
+              <field name="settelment_allowance" nolabel="1"/>
+              <span>/ month</span>
+          </div>
+          <label for="transportation_allowance"/>
+          <div class="o_row" name="transportation_allowance">
+              <field name="transportation_allowance" nolabel="1"/>
+              <span>/ month</span>
+          </div>
+          <label for="other_allowance"/>
+          <div class="o_row" name="other_allowance">
+              <field name="other_allowance" nolabel="1"/>
+              <span>/ month</span>
+          </div>
+        </field>
+          <xpath expr="//notebook/page[@name='information']" position="after">
+              <page string="Attachment" name="attach">
+                  <field name="attachment_ids">
+                      <tree editable="bottom">
+                          <field name="attachment"/>
+                      </tree>
+                  </field>
+              </page>
+              <page string="GOSI" name="gosi">
+                  <group>
                     <group>
-                      <group>
-                        <field name="gosi_record_number"/>
-                        <field name="gosi_record_date"/>
-                        <field name="gosi_record_type"/>
-                      </group>
-                      <group>
-                        <field name="gosi_record_salary"/>
-                        <field name="gosi_record_end_date"/>
-                      </group>
+                      <field name="gosi_record_number"/>
+                      <field name="gosi_record_date"/>
+                      <field name="gosi_record_type"/>
                     </group>
-                </page>
+                    <group>
+                      <field name="gosi_record_salary"/>
+                      <field name="gosi_record_end_date"/>
+                    </group>
+                  </group>
+              </page>
 
-            </xpath>
+          </xpath>
         </field>
     </record>
 </odoo>

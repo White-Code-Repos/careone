@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="hide edit button assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/rp_hide_edit_btn_v13/static/src/js/hide_edit_btn.js"></script>
+        </xpath>
+    </template>
+</odoo>

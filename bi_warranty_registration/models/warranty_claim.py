@@ -70,12 +70,13 @@ class crm_claim(models.Model):
 	stage_id = fields.Many2one ('warranty.claim.stage', 'Stage', track_visibility='onchange', index=True)
 	cause = fields.Text('Root Cause')
 	product_id = fields.Many2one('product.product', 'Product', domain="[('under_warranty', '=', True)]", required=True)
-	serial_no = fields.Many2one('stock.production.lot',"Serial No", domain="[('product_id', '=', product_id)]", required=True)
+	serial_no = fields.Many2one('stock.production.lot',"Serial No", domain="[('product_id', '=', product_id)]")
 	warranty = fields.Many2one('product.warranty','Related Warranty')
 	stage_match = fields.Selection([('first','first'), ('second','second'), ('third','third'),('fourth','fourth')], 'Stage Match', default='first')
+	viechle_id = fields.Many2one('fleet.veichle')
+	size = fields.Char(string="Car Size")
+	model_id = fields.Many2one('fleet.model')
 	
-
-
 	@api.onchange('partner_id')
 	def customer_details(self):
 		self.partner_phone = self.partner_id.phone

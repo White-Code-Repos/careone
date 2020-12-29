@@ -100,6 +100,9 @@
                 <tree string="Claims">
                     <field name="name"/>
                     <field name="partner_id"/>
+					<field name="viechle_id" />
+					<field name="size" />
+					<field name="model_id" />
                     <field name="user_id"/>
                     <field name="date"/>
                     <field name="stage_id"/>
@@ -140,6 +143,9 @@
                                         />
                                     <field name="partner_phone"/>
                                     <field name="email_from" widget="email"/>
+									<field name="viechle_id" />
+									<field name="size" />
+									<field name="model_id" />
                                 </group>
                                 <group colspan="2" col="2">
                                     <separator colspan="2" string="Responsibilities"/>

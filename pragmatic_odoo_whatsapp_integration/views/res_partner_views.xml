@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.act_window" id="whatsapp_custom_res_partner">
+        <field name="name">Customers</field>
+        <field name="view_mode">tree,form</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('mobile', '!=', False),('country_id', '!=', False)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_send_whatsapp_msg" name="Send Whatsapp message" action="pragmatic_odoo_whatsapp_integration.send_whatsapp_msg_send_res_partner_template_action" />
+    <record id="partner_form_whatsapp_form_view" model="ir.ui.view">
+        <field name="name">res.partner.whatsapp.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority">22</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="replace">
+                <label for="mobile"/>
+                <div class="o_row">
+                    <field name="mobile" widget="phone"/>
+                    <button
+                            type="action"
+                            name="%(pragmatic_odoo_whatsapp_integration.send_whatsapp_msg_res_partner_template_action)d"
+                            class="btn-sm btn-link mb4 fa fa-whatsapp"
+                            aria-label="Send WhatsApp Message"
+                            title="Send WhatsApp Message"
+                            attrs="{'invisible':[('mobile', '=', False)]}"
+                            context="{'field_name': 'mobile'}"
+                    />
+                </div>
+            </xpath>
+            <field name="mobile" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="country_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+        </field>
+    </record>
+
+
+
+    <act_window name="Send whatsapp message"
+                res_model="whatsapp.msg.res.partner"
+                binding_model="res.partner"
+                view_mode="form"
+                target="new"
+                id="action_send_msg"
+    />
+
+
+<!--    <act_window name="Send receipt by email"-->
+<!--            res_model="mail.compose.message"-->
+<!--            binding_model="account.payment"-->
+<!--            view_mode="form"-->
+<!--            target="new"-->
+<!--            id="account_send_payment_receipt_by_email_action"-->
+<!--            context="{-->
+<!--                'default_model': 'account.payment',-->
+<!--                'mail_post_autofollow': True,-->
+<!--                'default_composition_mode': 'comment',-->
+<!--                'default_use_template': True,-->
+<!--                'default_res_id': active_id,-->
+<!--                'default_template_id': ref('account.mail_template_data_payment_receipt'),-->
+<!--                'force_email': True,-->
+<!--                'custom_layout': 'mail.mail_notification_light',-->
+<!--            }"-->
+<!--        />-->
+
+
+
+</odoo>
+

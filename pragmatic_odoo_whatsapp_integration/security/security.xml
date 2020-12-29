@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="sales_whatsapp_feature" model="res.groups">
+            <field name="name">Sales Whatsapp Feature</field>
+        </record>
+        <record id="account_whatsapp_feature" model="res.groups">
+            <field name="name">Account Invoice Whatsapp Feature</field>
+        </record>
+        <record id="stock_whatsapp_feature" model="res.groups">
+            <field name="name">Stock Whatsapp Feature</field>
+        </record>
+        <record id="purchase_whatsapp_feature" model="res.groups">
+            <field name="name">Purchase Whatsapp Feature</field>
+        </record>
+        <record id="account_payment_feature" model="res.groups">
+            <field name="name">Account Payment Whatsapp Feature</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <record id="group_send_report_url_in_message" model="res.groups">-->
+<!--        <field name="name">Send report URL in message?</field>-->
+<!--        <field name="category_id" ref="base.module_category_hidden"/>-->
+<!--    </record>-->
+
+     <record id="group_enable_signature" model="res.groups">
+        <field name="name">Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_display_chatter_message" model="res.groups">
+        <field name="name">Display in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_order_product_details_msg" model="res.groups">
+        <field name="name">Order product details in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_order_info_msg" model="res.groups">
+        <field name="name">Order product information in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+
+
+<!--    <record id="group_purchase_send_report_url_in_message" model="res.groups">-->
+<!--        <field name="name">Purchase order send report URL in message?</field>-->
+<!--        <field name="category_id" ref="base.module_category_hidden"/>-->
+<!--    </record>-->
+
+     <record id="group_purchase_enable_signature" model="res.groups">
+        <field name="name">Purchase order Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_purchase_display_chatter_message" model="res.groups">
+        <field name="name">Purchase order send in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_purchase_order_product_details_msg" model="res.groups">
+        <field name="name">Purchase order product details in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_purchase_order_info_msg" model="res.groups">
+        <field name="name">Purchase order product information in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+
+<!--    <record id="group_stock_send_report_url_in_message" model="res.groups">-->
+<!--        <field name="name">Stock send report URL in message?</field>-->
+<!--        <field name="category_id" ref="base.module_category_hidden"/>-->
+<!--    </record>-->
+
+     <record id="group_stock_enable_signature" model="res.groups">
+        <field name="name">Stock Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_stock_display_chatter_message" model="res.groups">
+        <field name="name">Stock send in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_stock_product_details_msg" model="res.groups">
+        <field name="name">Stock product details in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_stock_info_msg" model="res.groups">
+        <field name="name">Stock product information in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+
+
+<!--    <record id="group_invoice_send_report_url_in_message" model="res.groups">-->
+<!--        <field name="name">Account invoice send report URL in message?</field>-->
+<!--        <field name="category_id" ref="base.module_category_hidden"/>-->
+<!--    </record>-->
+
+     <record id="group_invoice_enable_signature" model="res.groups">
+        <field name="name">Account invoice Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_invoice_display_chatter_message" model="res.groups">
+        <field name="name">Account invoice send in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_invoice_product_details_msg" model="res.groups">
+        <field name="name">Account invoice product details in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_invoice_info_msg" model="res.groups">
+        <field name="name">Account invoice product information in message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+
+    <record id="group_crm_enable_signature" model="res.groups">
+        <field name="name">CRM Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_crm_display_chatter_message" model="res.groups">
+        <field name="name">CRM send in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_project_enable_signature" model="res.groups">
+        <field name="name">Project Signature</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+     <record id="group_project_display_chatter_message" model="res.groups">
+        <field name="name">Project send in chatter message?</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+</odoo>
