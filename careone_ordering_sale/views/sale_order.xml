@@ -17,7 +17,7 @@
             <field name="color_id"/>
             <field name="vehicle_state"/>
             <field name="subscription_id"/>
-            <field name="vehicles_subscreptions_id"/>
+            <field name="vehicles_subscreptions_id" widget="many2many_tags"/>
           </group>
           <group>
             <field name="service_delivery"/>
@@ -27,9 +27,9 @@
             <field name="external_coupon"/>
             <field name="coupon_id"/>
             <field name="mrp_group_id"/>
-            <field name="user_ids"/>
+            <field name="user_ids" widget="many2many_tags"/>
           </group>
-          <group>
+          <group invisible="1">
             <field name="partner_shipping_id"/>
             <field name="payment_term_id"/>
             <field name="partner_invoice_id"/>
