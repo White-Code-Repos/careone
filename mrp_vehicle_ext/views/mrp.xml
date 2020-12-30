@@ -1,2 +1,18 @@
 <odoo>
+
+  <record model="ir.ui.view" id="mrp_vehicle_ext.vehicle_id_in_kanban">
+		<field name="name">mrp_vehicle_ext.vehicle_id_in_kanban</field>
+		<field name="model">mrp.workorder</field>
+		<field name="inherit_id" ref="mrp.workcenter_line_kanban"/>
+		<field name="arch" type="xml">
+      <field name="product_uom_id" position="after">
+        <field name="vehicle_id"/>
+      </field>
+			<xpath expr="//kanban/templates/t/div/div[2]/h5" position="replace">
+        <h5 class="oe_kanban_bottom_left">
+            <b style="color: green;"><span><t t-esc="record.product_id.value"/>, </span> <span><t t-esc="record.vehicle_id.value"/></span></b>
+        </h5>
+			</xpath>
+		</field>
+	</record>
 </odoo>

@@ -7,7 +7,5 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base','mrp','fleet','sale',],
-    'data': [
-        'views/views.xml',
-    ],
+    'data': ['views/mrp.xml',],
 }
