@@ -13,7 +13,8 @@ class MRP_inherit(models.Model):
     date_planned_start = fields.Datetime(
         'Planned Date', default=fields.Datetime.now,
         help="Date at which you plan to start the production.",
-        compute='get_value_from_sale', index=False, required=False, store=False)
+        compute='get_value_from_sale')
+        # , index=False, required=False, store=False
     date_deadline = fields.Datetime(
         'Deadline', compute='get_value_from_sale', index=False, required=False, store=False,
         help="Informative date allowing to define when the manufacturing order should be processed at the latest to fulfill delivery on time.")
