@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record model="ir.ui.view" id="careone_access.journals_restrictions">
+		<field name="name">careone_access.journals_restrictions</field>
+		<field name="model">res.users</field>
+		<field name="inherit_id" ref="base.view_users_form"/>
+		<field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="allowed_journal" widget="many2many_tags"/>
+      </field>
+    </field>
+	</record>
+</odoo>
