@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+  <record model="ir.ui.view" id="careone_access.fleet_extentions_misc">
+		<field name="name">careone_access.fleet_extentions_misc</field>
+		<field name="model">fleet.vehicle</field>
+		<field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+		<field name="arch" type="xml">
+      <field name="model_id" position="attributes">
+        <attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+     </field>
+		</field>
+	</record>
+  <record model="ir.ui.view" id="careone_access.sale_extentions_misc">
+		<field name="name">careone_access.sale_extentions_misc</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+      <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='product_id']" position="attributes">
+        <attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+     </xpath>
+     <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='product_template_id']" position="attributes">
+       <attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+    </xpath>
+		</field>
+	</record>
   <record model="ir.ui.view" id="careone_access.careone_salesperson_accessat">
 		<field name="name">careone_access.careone_salesperson_accessat</field>
 		<field name="model">mrp.production</field>

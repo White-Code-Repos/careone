@@ -13,5 +13,6 @@
         'views/account_move.xml',
         'views/mrp.xml',
         'views/sale.xml',
+        'views/res_users.xml',
     ],
 }
