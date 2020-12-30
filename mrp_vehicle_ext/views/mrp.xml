@@ -7,7 +7,7 @@
       <field name="activity_state" position="after">
         <field name="vehicle_id_sale"/>
       </field>
-			<xpath expr="//kanban/templates/t/div/div[1]/strong" position="replace">
+			<xpath expr="//kanban/templates/t/div/div[1]/div/strong" position="replace">
         <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.product_id.value"/></span></strong>
         <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.vehicle_id_sale.value"/></span></strong>
 			</xpath>
