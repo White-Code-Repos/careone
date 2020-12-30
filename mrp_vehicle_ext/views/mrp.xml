@@ -8,7 +8,7 @@
         <field name="vehicle_id_sale"/>
       </field>
 			<xpath expr="//kanban/templates/t/div/div[1]/div/strong" position="replace">
-        <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.product_id.value"/></span></strong>
+        <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.product_id.value"/></span></strong><br/>
         <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.vehicle_id_sale.value"/></span></strong>
 			</xpath>
 		</field>
@@ -25,6 +25,7 @@
         <h5 class="oe_kanban_bottom_left">
             <b style="color: DarkBlue;"><span><t t-esc="record.product_id.value"/> : </span></b>
         </h5>
+        <br/>
         <h5>
             <b style="color: Chocolate;"><span><t t-esc="record.vehicle_id.value"/></span></b>
         </h5>
