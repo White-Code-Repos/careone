@@ -15,7 +15,7 @@
         <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.vehicle_id_sale.value"/></span></strong>
         <br/>
         <br/>
-        <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.mrp_group_id.value"/></span></strong>
+        <strong class="o_kanban_record_title"><span style="color: DarkSlateGray;"><t t-esc="record.mrp_group_id.value"/></span></strong>
 			</xpath>
 		</field>
 	</record>
