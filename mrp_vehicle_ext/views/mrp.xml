@@ -1,5 +1,18 @@
 <odoo>
-
+  <record model="ir.ui.view" id="mrp_vehicle_ext.vehicle_id_in_kanban_new">
+		<field name="name">mrp_vehicle_ext.vehicle_id_in_kanban_new</field>
+		<field name="model">mrp.production</field>
+		<field name="inherit_id" ref="mrp.mrp_production_kanban_view"/>
+		<field name="arch" type="xml">
+      <field name="activity_state" position="after">
+        <field name="vehicle_id_sale"/>
+      </field>
+			<xpath expr="//kanban/templates/t/div/div[1]/strong" position="replace">
+        <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.product_id.value"/></span></strong>
+        <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.vehicle_id_sale.value"/></span></strong>
+			</xpath>
+		</field>
+	</record>
   <record model="ir.ui.view" id="mrp_vehicle_ext.vehicle_id_in_kanban">
 		<field name="name">mrp_vehicle_ext.vehicle_id_in_kanban</field>
 		<field name="model">mrp.workorder</field>
@@ -10,7 +23,9 @@
       </field>
 			<xpath expr="//kanban/templates/t/div/div[2]/h5" position="replace">
         <h5 class="oe_kanban_bottom_left">
-            <b style="color: Chocolate;"><span><t t-esc="record.product_id.value"/> : </span></b>
+            <b style="color: DarkBlue;"><span><t t-esc="record.product_id.value"/> : </span></b>
+        </h5>
+        <h5>
             <b style="color: Chocolate;"><span><t t-esc="record.vehicle_id.value"/></span></b>
         </h5>
 			</xpath>
