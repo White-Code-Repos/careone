@@ -24,10 +24,13 @@
         <field name="vehicle_id"/>
       </field>
 			<xpath expr="//kanban/templates/t/div/div[2]/h5" position="replace">
+        <div>
         <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.product_id.value"/></span></strong>
         <br/>
         <br/>
-        <strong class="o_kanban_record_title"><span style="color: DarkBlue;"><t t-esc="record.vehicle_id.value"/></span></strong>
+        <strong class="o_kanban_record_title"><span style="color: Chocolate;"><t t-esc="record.vehicle_id.value"/></span></strong>
+        </div>
+
 			</xpath>
 		</field>
 	</record>
