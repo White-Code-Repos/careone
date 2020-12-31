@@ -23,7 +23,7 @@
       <!-- <xpath expr="//form/header" position="inside">
         <field name="current_group_mrp" invisible="1"/>
       </xpath> -->
-      <xpath expr="//form" position="attributes">
+      <xpath expr="//tree" position="attributes">
           <attribute name="create">false</attribute>
      </xpath>
 		</field>
