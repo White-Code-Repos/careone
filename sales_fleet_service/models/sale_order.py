@@ -11,10 +11,10 @@ class FleetVehicle(models.Model):
         _logger.info(res)
         _logger.info(self._context)
         if res:
-            _logger.info(self._context.get('id'))
-            if self._context.get('id'):
-                id = self._context.get('id')
-                sale_order = self.env['sale.order'].browse(id)
+            _logger.info(self._context.get('order_under_popup'))
+            if self._context.get('order_under_popup'):
+                order_under_popup = self._context.get('order_under_popup')
+                sale_order = self.env['sale.order'].browse(order_under_popup)
                 _logger.info(sale_order)
                 if sale_order:
                     _logger.info(self.driver_id.name)
