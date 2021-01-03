@@ -15,10 +15,10 @@ class FleetVehicle(models.Model):
         _logger.info("7777777777777777777777777777777777")
         _logger.info(res)
         if res:
-            _logger.info(self._context.get('active_id'))
-            if self._context.get('active_id'):
-                active_id = self._context.get('active_id')
-                sale_order = self.env['sale.order'].browse(active_id)
+            _logger.info(self._context.get('id'))
+            if self._context.get('id'):
+                id = self._context.get('id')
+                sale_order = self.env['sale.order'].browse(id)
                 _logger.info(sale_order)
                 if sale_order:
                     _logger.info(self.driver_id.name)
