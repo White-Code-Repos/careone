@@ -8,12 +8,8 @@ class FleetVehicle(models.Model):
 
     def write(self, values):
         res = super(FleetVehicle, self).write(values)
-        _logger.info("7777777777777777777777777777777777")
-        _logger.info("7777777777777777777777777777777777")
-        _logger.info("7777777777777777777777777777777777")
-        _logger.info("7777777777777777777777777777777777")
-        _logger.info("7777777777777777777777777777777777")
         _logger.info(res)
+        _logger.info(self._context)
         if res:
             _logger.info(self._context.get('id'))
             if self._context.get('id'):
