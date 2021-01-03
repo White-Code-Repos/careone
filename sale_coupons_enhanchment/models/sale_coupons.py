@@ -3,6 +3,9 @@ from odoo import models, _, fields
 from odoo.tools import safe_eval
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+# import logging
+# _logger = logging.getLogger(__name__)
+# _logger.info(this)
 
 class SaleCouponReward(models.Model):
     _inherit = 'sale.coupon.reward'
@@ -38,20 +41,13 @@ class SaleCoupon(models.Model):
 
     def _compute_expiration_date(self):
         for this in self:
-            if not this.expiration_date:
-                this.expiration_date = 0
-
-                for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
-                    _logger.debug(this)
-                    _logger.debug(coupon.from_subscription)
-                    _logger.debug(coupon.expiration_date_2)
-                    if not coupon.from_subscription or not coupon.expiration_date_2  :
-                        coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
-                        coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
-                    else:
-                        coupon.expiration_date = coupon.expiration_date_2
-            else:
-                pass
+            this.expiration_date = 0
+            for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
+                if not coupon.from_subscription or not coupon.expiration_date_2  :
+                    coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+                    coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+                else:
+                    coupon.expiration_date = coupon.expiration_date_2
 
 
 class SaleCouponProgram(models.Model):
