@@ -19,6 +19,7 @@ class FleetVehicle(models.Model):
                 if sale_order:
                     _logger.info(self.driver_id.name)
                     _logger.info(sale_order.partner_id.name)
+                    sale_order.write({'partner_id':False})
                     sale_order.write({'partner_id':self.driver_id.id})
                     _logger.info(sale_order.partner_id.name)
 
