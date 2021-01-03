@@ -1,16 +1,22 @@
 from odoo import api, fields, models
 
+import logging
+_logger = logging.getLogger(__name__)
 
 class FleetVehicle(models.Model):
     _inherit = 'fleet.vehicle'
 
     def write(self, values):
         res = super(FleetVehicle, self).write(values)
+        _logger.info(res)
         if res:
+            _logger.info(self._context.get('active_id'))
             if self._context.get('active_id'):
                 active_id = self._context.get('active_id')
                 sale_order = self.env['sale.order'].browse(active_id)
+                _logger.info(sale_order)
                 if sale_order:
+                    _logger.info(self.driver_id.name)
                     sale_order.write({'partner_id':self.driver_id.id})
         return res
 
