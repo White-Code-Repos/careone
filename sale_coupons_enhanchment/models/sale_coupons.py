@@ -3,6 +3,7 @@ from odoo import models, _, fields
 from odoo.tools import safe_eval
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import logging
 _logger = logging.getLogger(__name__)
 
 class SaleCouponReward(models.Model):
