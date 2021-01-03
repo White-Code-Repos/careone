@@ -18,9 +18,9 @@ class FleetVehicle(models.Model):
                 _logger.info(sale_order)
                 if sale_order:
                     _logger.info(self.driver_id.name)
-                    _logger.info(sale_order.name)
+                    _logger.info(sale_order.partner_id.name)
                     sale_order.write({'partner_id':self.driver_id.id})
-                    _logger.info(sale_order.name)
+                    _logger.info(sale_order.partner_id.name)
 
         return res
 
