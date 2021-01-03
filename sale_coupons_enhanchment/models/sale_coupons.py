@@ -42,6 +42,9 @@ class SaleCoupon(models.Model):
                 this.expiration_date = 0
 
                 for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
+                    _logger.debug(this)
+                    _logger.debug(coupon.from_subscription)
+                    _logger.debug(coupon.expiration_date_2)
                     if not coupon.from_subscription or not coupon.expiration_date_2  :
                         coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
                         coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
