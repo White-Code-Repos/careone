@@ -3,8 +3,6 @@ from odoo import models, _, fields
 from odoo.tools import safe_eval
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import logging
-_logger = logging.getLogger(__name__)
 
 class SaleCouponReward(models.Model):
     _inherit = 'sale.coupon.reward'
@@ -44,9 +42,9 @@ class SaleCoupon(models.Model):
                 this.expiration_date = 0
 
                 for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
-                    _logger.info(this)
-                    _logger.info(coupon.from_subscription)
-                    _logger.info(coupon.expiration_date_2)
+                    _logger.debug(this)
+                    _logger.debug(coupon.from_subscription)
+                    _logger.debug(coupon.expiration_date_2)
                     if not coupon.from_subscription or not coupon.expiration_date_2  :
                         coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
                         coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
