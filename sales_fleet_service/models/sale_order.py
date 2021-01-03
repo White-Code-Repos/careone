@@ -7,10 +7,11 @@ class FleetVehicle(models.Model):
     def write(self, values):
         res = super(FleetVehicle, self).write(values)
         if res:
-            active_id = self.env.context.get('active_id')
-            sale_order = self.env['sale.order'].browse(active_id)
-            if sale_order:
-                sale_order.write({'partner_id':self.driver_id.id})
+            if self._context.get('active_id'):
+                active_id = self._context.get('active_id')
+                sale_order = self.env['sale.order'].browse(active_id)
+                if sale_order:
+                    sale_order.write({'partner_id':self.driver_id.id})
         return res
 
 
