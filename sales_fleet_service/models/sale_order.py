@@ -1,6 +1,20 @@
 from odoo import api, fields, models
 
 
+class FleetVehicle(models.Model):
+    _inherit = 'fleet.vehicle'
+
+    def write(self, values):
+        res = super(FleetVehicle, self).write(values)
+        if res:
+            active_id = self.env.context.get('active_id')
+            sale_order = self.env['sale.order'].browse(active_id)
+            if sale_order:
+                sale_order.write({'partner_id':self.driver_id.id})
+        return res
+
+
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle', )
