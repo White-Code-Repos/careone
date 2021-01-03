@@ -9,7 +9,7 @@ class MrpGroup(models.Model):
 
     name = fields.Char(string='Name',)
     location_id = fields.Many2one(string='location',comodel_name='stock.location', domain=[('usage','=','internal')])
-    user_ids = fields.Many2many(string='Users', comodel_name='res.users', domain=[('active','in',(True,False)),('id','>',5)])
+    employee_ids = fields.Many2many(string='Users', comodel_name='hr.employee', domain=[('active','in',(True,False)),('id','>',5)])
 
 
 class SaleOrder(models.Model):
@@ -18,11 +18,11 @@ class SaleOrder(models.Model):
     production_ids = fields.One2many('mrp.production', 'sale_order_id')
     production_count = fields.Integer(compute='_compute_production_count', store=True)
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',)
-    user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
+    employee_ids = fields.Many2many(string='mrp group users',comodel_name='hr.employee',)
 
     @api.onchange('mrp_group_id')
     def set_mrp_users(self):
-        self.user_ids = self.mrp_group_id.user_ids
+        self.employee_ids = self.mrp_group_id.employee_ids
         con_mrp = self.env['mrp.production'].search([('origin','=',self.name)])
         if con_mrp:
             if con_mrp.state !='done':
@@ -82,7 +82,7 @@ class MrpProduction(models.Model):
     sale_order_id = fields.Many2one(comodel_name='sale.order', string='Source Sale Order')
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group',
                                    readonly=False)
-    user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users',)
+    employee_ids = fields.Many2many(string='mrp group users',comodel_name='hr.employee',)
 
 
     @api.onchange('sale_order_id','mrp_group_id')
@@ -90,7 +90,7 @@ class MrpProduction(models.Model):
     def set_mrp_users(self):
         if self.sale_order_id or self.mrp_group_id:
             mrp_grp_id = self.env['mrp.group']
-            self.user_ids = self.sale_order_id.user_ids or self.mrp_group_id.user_ids
+            self.employee_ids = self.sale_order_id.employee_ids or self.mrp_group_id.employee_ids
             if self.sale_order_id :
                 mrp_grp_id = self.sale_order_id.mrp_group_id
                 if self.sale_order_id.mrp_group_id:
@@ -149,7 +149,7 @@ class MrpProduction(models.Model):
                 if sale_id.mrp_group_id:
                     values['location_src_id'] = sale_id.mrp_group_id.location_id.id
                     values['picking_type_id']=self.env['stock.picking.type'].search([('default_location_src_id','=',sale_id.mrp_group_id.location_id.id),('code','=','mrp_operation')],limit=1).id
-                values['user_ids']= sale_id.user_ids
+                values['employee_ids']= sale_id.employee_ids
                 if sale_id.client_order_ref:
                     values['origin'] = sale_id.client_order_ref
             else:
@@ -166,7 +166,7 @@ class MrpProduction(models.Model):
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
     mrp_group_id = fields.Many2one(string='MRP Group',comodel_name='mrp.group', related="production_id.mrp_group_id")
-    user_ids = fields.Many2many(string='mrp group users',comodel_name='res.users', related="production_id.user_ids")
+    employee_ids = fields.Many2many(string='mrp group users',comodel_name='hr.employee', related="production_id.employee_ids")
 
     def button_finish(self):
         self.ensure_one()
