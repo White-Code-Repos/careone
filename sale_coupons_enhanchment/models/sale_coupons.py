@@ -3,6 +3,9 @@ from odoo import models, _, fields
 from odoo.tools import safe_eval
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+# import logging
+# _logger = logging.getLogger(__name__)
+# _logger.info(this)
 
 class SaleCouponReward(models.Model):
     _inherit = 'sale.coupon.reward'
@@ -37,13 +40,13 @@ class SaleCoupon(models.Model):
 
 
     def _compute_expiration_date(self):
-        self.expiration_date = 0
-
-        for coupon in self.filtered(lambda x: x.program_id.validity_duration > 0):
-            if not coupon.from_subscription or not coupon.expiration_date_2  :
-                coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
-                coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
-            else:
+        for this in self:
+            this.expiration_date = 0
+            for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
+                # if not coupon.from_subscription or not coupon.expiration_date_2  :
+                #     coupon.expiration_date = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+                #     coupon.expiration_date_2 = (coupon.create_date + relativedelta(days=coupon.program_id.validity_duration)).date()
+                # else:
                 coupon.expiration_date = coupon.expiration_date_2
 
 
@@ -66,7 +69,7 @@ class SaleCouponGenerate(models.TransientModel):
 
     def generate_coupon(self):
         program = self
-        vals = {'program_id': program.id}
+        vals = {'program_id': program.id,'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
