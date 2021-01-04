@@ -3,27 +3,26 @@ from odoo import api, fields, models
 import logging
 _logger = logging.getLogger(__name__)
 
-class FleetVehicle(models.Model):
-    _inherit = 'fleet.vehicle'
-
-    def write(self, values):
-        res = super(FleetVehicle, self).write(values)
-        _logger.info(res)
-        _logger.info(self._context)
-        if res:
-            _logger.info(self._context.get('order_under_popup'))
-            if self._context.get('order_under_popup'):
-                order_under_popup = self._context.get('order_under_popup')
-                sale_order = self.env['sale.order'].browse(order_under_popup)
-                _logger.info(sale_order)
-                if sale_order:
-                    _logger.info(self.driver_id.name)
-                    _logger.info(sale_order.partner_id.name)
-                    sale_order.write({'partner_id':False})
-                    sale_order.write({'partner_id':self.driver_id.id})
-                    _logger.info(sale_order.partner_id.name)
-
-        return res
+# class FleetVehicle(models.Model):
+#     _inherit = 'fleet.vehicle'
+#
+#     def write(self, values):
+#         res = super(FleetVehicle, self).write(values)
+#         _logger.info(res)
+#         _logger.info(self._context)
+#         if res:
+#             _logger.info(self._context.get('order_under_popup'))
+#             if self._context.get('order_under_popup'):
+#                 order_under_popup = self._context.get('order_under_popup')
+#                 sale_order = self.env['sale.order'].browse(order_under_popup)
+#                 _logger.info(sale_order)
+#                 if sale_order:
+#                     _logger.info(self.driver_id.name)
+#                     _logger.info(sale_order.partner_id.name)
+#                     sale_order.write({'partner_id':self.driver_id.id})
+#                     _logger.info(sale_order.partner_id.name)
+#
+#         return res
 
 
 
