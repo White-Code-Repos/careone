@@ -9,8 +9,8 @@
         <div>
               <label for="allowed_journal" string="Allowed Journals"/>
               <field name="allowed_journal" widget="many2many_tags"/>
-            </field>
           </div>
+        </field>
     </field>
 	</record>
 </odoo>
