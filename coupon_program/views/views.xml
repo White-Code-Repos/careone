@@ -185,7 +185,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='vehicle_id']" position="attributes">
-                <attribute name="context">{'default_driver_id': partner_id}</attribute>
+                <attribute name="context">{'default_driver_id': partner_id,'order_under_popup':id}</attribute>
             </xpath>
             <xpath expr="//field[@name='vehicle_id']" position="after">
                 <field name="size"/>
