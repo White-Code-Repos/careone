@@ -13,6 +13,9 @@ from odoo.exceptions import ValidationError
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
+
+    from_sale_order = fields.Many2one('sale.order')
+
     # def check_shift_times(self):
     #     subscriptions = self.env['sale.subscription'].search([])
     #     now = datetime.now()
@@ -430,6 +433,7 @@ class SalesOrderInherit(models.Model):
                 values = order._prepare_subscription_data(template, no_of_vehicles)
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
                 values['stage_id'] = self.env['sale.subscription.stage'].search([('name','=','In Progress'),('in_progress','=',True)]).id
+                values['from_sale_order'] = self.id
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
                 res.append(subscription.id)

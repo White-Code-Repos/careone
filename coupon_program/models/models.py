@@ -94,6 +94,8 @@ class SaleOrder(models.Model):
     def action_cancel(self):
         for coupon in self.env['sale.coupon'].search([('sale_order_id', '=', self.id)]):
             coupon.unlink()
+        for subscription in self.env['sale.subscription'].search([('from_sale_order','=',self.id)]):
+            subscription.unlink()
         super(SaleOrder, self).action_cancel()
 
     def get_coupons_count(self):
