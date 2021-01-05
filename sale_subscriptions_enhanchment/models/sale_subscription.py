@@ -26,7 +26,7 @@ class SalesSubscription(models.Model):
     subs_products_ids = fields.One2many(comodel_name="subscription.product", inverse_name="subs_id", string="",
                                         required=False, )
     apper_generate_coupon = fields.Boolean(default=False)
-    #
+
     date = fields.Date('End Date', compute="_compute_date_end")
     def _compute_date_end(self):
         for this in self:
@@ -36,7 +36,7 @@ class SalesSubscription(models.Model):
                 total_freeze_days = 0
                 for freeze in freezes:
                     total_freeze_days = total_freeze_days + freeze.freeze_duration
-                initial_end_date = initial_end_date + timedelta(days=(30*this.template_id.recurring_rule_count)) + timedelta(days=total_freeze_days)
+                initial_end_date = initial_end_date + timedelta(days=(30*this.template_id.recurring_rule_count) - 1) + timedelta(days=total_freeze_days)
                 this.date = initial_end_date
             if not this.date:
                 this.date = False
