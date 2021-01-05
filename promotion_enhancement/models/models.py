@@ -173,7 +173,7 @@ class SalesOrderInherit(models.Model):
                     'discount_line_product_id': program.discount_line_product_id.id,
                     'order_id': self.id,
                     'sale_order_id': self.id,
-                    # 'expiration_date_2': datetime.now().date() + timedelta(days=program.validity_duration)
+                    'expiration_date_2': datetime.now().date() + timedelta(days=program.validity_duration)
                 })
             self.is_generate_coupon = True
     def _create_new_no_code_promo_reward_lines(self):
