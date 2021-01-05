@@ -6,7 +6,7 @@ class FleetVehicleNumberSearch(models.Model):
 
     _inherit = 'fleet.vehicle'
 
-    @api.multi
+    @api.model
     def name_get(self):
         res = []
         for rec in self:
