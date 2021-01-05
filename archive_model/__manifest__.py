@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Country Default",
+    'name': "Archive Model",
 
-    'summary': """  Set Saudia default country in contacts """,
+    'summary': """  Fleet Vehicle Model Archive  """,
 
     'description': """   """,
 
