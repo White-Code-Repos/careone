@@ -26,7 +26,7 @@ class SalesSubscription(models.Model):
     subs_products_ids = fields.One2many(comodel_name="subscription.product", inverse_name="subs_id", string="",
                                         required=False, )
     apper_generate_coupon = fields.Boolean(default=False)
-
+    #
     date = fields.Date('End Date', compute="_compute_date_end")
     def _compute_date_end(self):
         for this in self:
