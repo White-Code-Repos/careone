@@ -12,3 +12,6 @@
 
 4) Version: 13.0.0.4 | Date : 22/12/2020
 -->  Fixed the issue, when import sale order and discount is not given on file. 
+
+5) Version: 13.0.0.5 | Date : 28/12/2020
+-->  For Import Payment, add selection for "Payment Stage".

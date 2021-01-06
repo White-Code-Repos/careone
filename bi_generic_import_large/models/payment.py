@@ -6,7 +6,7 @@ from datetime import datetime
 import tempfile
 import binascii
 import logging
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, ValidationError
 from odoo import models, fields, api, _,exceptions
 _logger = logging.getLogger(__name__)
 import re
@@ -15,11 +15,13 @@ try:
 except ImportError:
     _logger.debug('Cannot `import xlrd`.')
 
-
 class gen_salereceipt(models.TransientModel):
     _inherit = "gen.salepayment"
     _description = "Gen Sale Payement"
 
+    payment_stage = fields.Selection(
+        [('draft', 'Import Draft Payement'), ('confirm', 'Confirm Payement Automatically With Import'), ('post', 'Import Posted Payment With Reconcile Invoice ')],
+        string="Payment Stage Option", default='draft')
     
     def check_splcharacter(self ,test):
         # Make own character set and pass 
@@ -56,21 +58,41 @@ class gen_salereceipt(models.TransientModel):
                     date_string = a1_as_datetime.date().strftime('%Y-%m-%d')
                 else:
                     raise Warning(_("Please assign a Date"))
-
                 values.update( {'partner_id':line[0],
                                 'amount': line[1],
                                 'journal_id': line[2],
-                                 'payment_date': date_string,
+                                'payment_date': date_string,
                                 'communication': line[4],
-                                'payment_option':self.payment_option
+                                'payment_option':self.payment_option,
+                                
                                 })
                 count = 0
                 for l_fields in line_fields:
                     if(count > 6):
                         values.update({l_fields : line[count]})                        
-                    count+=1                    
+                    count+=1 
                 res = self._create_customer_payment(values)
-                        
+                
+                if self.payment_stage == 'draft':
+                    res.update({'state' : 'draft'})
+                
+                if self.payment_stage == 'confirm':
+                    res.update({'state' : 'draft'})
+                    res.post()
+                
+                if self.payment_stage == 'post':
+                    move = self.env['account.move'].search([('name','=',line[5])])
+
+                    if not move:
+                        raise ValidationError(_('"%s" invoice is not found!')%(line[5]))
+                    if move.invoice_payment_state == 'paid':
+                        raise ValidationError(_('"%s" invoice is already paid!')%(line[5]))
+                    if move.state == 'draft' or move.state == 'cancel':
+                        raise ValidationError(_('"%s" invoice is in "%s" stage!')%(line[5],move.state))                   
+                    
+                    res.update({'state' : 'draft','invoice_ids':[(6,0,[move.id])]})
+                    res.post()
+                    
         return res
 
     
@@ -191,7 +213,6 @@ class gen_salereceipt(models.TransientModel):
                                 })                              
                     else:
                         raise Warning(_('"%s" This custom field is not available in system') % normal_details)        
-        #res = self.env['account.payment'].create(vals)
         tech_tuple= []
         val_tuple = []
         store_tuple = []

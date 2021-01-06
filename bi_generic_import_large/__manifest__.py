@@ -3,7 +3,7 @@
 
 {
     'name': 'Odoo all import large data for Sales, Purchase, Invoice, Inventory, Pricelist, BOM, Payment, Bank Statement, Journal Entry, Picking, Product, Customer.',
-    'version': '13.0.0.4',
+    'version': '13.0.0.5',
     'sequence': 4,
     'summary': 'Easy to import all odoo data i.e Invoice, Sale, Inventory, Purchase,Payment, Picking, Product and Customer.',
     'price': 000,
@@ -19,8 +19,8 @@
     'live_test_url':'https://www.youtube.com/watch?v=bG7ImzFkSfo',
     'depends': ['base', 'sale_management', 'account','mrp', 'purchase', 'stock','product_expiry','bi_generic_import','bi_generic_import_all'],
     'data': [
-    	   
-             ],
+    	    "views/customer_payment.xml",
+            ],
 	'qweb': [
 		],
     'demo': [],
