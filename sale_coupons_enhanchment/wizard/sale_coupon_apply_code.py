@@ -138,6 +138,11 @@ class SaleCouponApplyCode(models.TransientModel):
             if self.is_free_order == True:
 
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+
+                for i in sales_order.order_line:
+
+                    i.display_type = 'line_section'
+
                 my_domain_products = self.env['product.product'].search(
                     safe_eval(self.coupon_code.program_id.rule_products_domain))
                 x = 0
