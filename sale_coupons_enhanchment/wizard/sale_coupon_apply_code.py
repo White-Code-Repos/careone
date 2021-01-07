@@ -123,7 +123,7 @@ class SaleCouponApplyCode(models.TransientModel):
                     is_applicable_programs_today = True
                 if is_applicable_programs_today == False:
                     raise ValidationError(_('Sorry There Is No Available Today.'))
-        raise ValidationError(_('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'))
+
         if self.code_type == 'promo':
             raise ValidationError(_('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'))
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
