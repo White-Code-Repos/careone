@@ -123,8 +123,9 @@ class SaleCouponApplyCode(models.TransientModel):
                     is_applicable_programs_today = True
                 if is_applicable_programs_today == False:
                     raise ValidationError(_('Sorry There Is No Available Today.'))
-
+        raise ValidationError(_('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'))
         if self.code_type == 'promo':
+            raise ValidationError(_('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'))
             sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
             error_status = self.apply_promo(sales_order, self.promo_code)
             if error_status.get('error', False):
@@ -135,7 +136,9 @@ class SaleCouponApplyCode(models.TransientModel):
             sales_order.promotion_program_id = promotion.id
 
         else:
+            raise ValidationError(_('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'))
             if self.is_free_order == True:
+                raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 my_domain_products = self.env['product.product'].search(
                     safe_eval(self.coupon_code.program_id.rule_products_domain))
@@ -169,6 +172,7 @@ class SaleCouponApplyCode(models.TransientModel):
                 else:
                     raise UserError("You Can't Use Free Order With That Program !")
             else:
+                raise ValidationError(_('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ'))
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 error_status = self.apply_coupon(sales_order, self.coupon_code.code)
                 if error_status.get('error', False):

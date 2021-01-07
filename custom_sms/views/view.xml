@@ -1,0 +1,45 @@
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="custom_sms.send_sms_list">
+			<field name="name">Send SMS</field>
+			<field name="model">send.sms</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name"/>
+					<field name="phone"/>
+					<field name="massage"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="custom_sms.send_sms_form">
+			<field name="name">Send SMS</field>
+			<field name="model">send.sms</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<group>
+							<field name="name"/>
+						</group>
+						<group>
+							<field name="phone"/>
+						</group>
+					</group>
+					<group>
+						<field name="massage"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="custom_sms.send_sms_action">
+			<field name="name">Send SMS</field>
+			<field name="res_model">send.sms</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem name="Send SMS" id="custom_sms.send_sms_menu_root" action="custom_sms.send_sms_action" web_icon="custom_sms,static/description/images/icon.png"/>
+
+	</data>
+</odoo>
