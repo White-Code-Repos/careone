@@ -162,8 +162,10 @@ class SaleCouponApplyCode(models.TransientModel):
                     for rec in sales_order.order_line:
                         base_records_ids.append(rec.id)
 
+                    for i in sales_order.order_line:
 
-                    raise ValidationError(sales_order.order_line)
+                        i.display_type = 'section'
+
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
 
 
