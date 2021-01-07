@@ -156,15 +156,20 @@ class SaleCouponApplyCode(models.TransientModel):
                         'product_id': my_free_product.id,
                         'order_id': sales_order.id
                     }
-                    
+
+
+
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
+                    raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
                     base_records_ids = []
                     for rec in sales_order.order_line:
                         base_records_ids.append(rec.id)
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
                     self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
-                    raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
+
+
+
                     if error_status.get('error', False):
                         raise UserError(error_status.get('error', False))
                     if error_status.get('not_found', False):
