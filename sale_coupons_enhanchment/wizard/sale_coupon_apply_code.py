@@ -163,7 +163,7 @@ class SaleCouponApplyCode(models.TransientModel):
                         base_records_ids.append(rec.id)
 
 
-                    raise ValidationError(sales_order)
+                    raise ValidationError(sales_order.order_line)
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
 
 
