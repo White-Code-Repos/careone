@@ -156,7 +156,7 @@ class SaleCouponApplyCode(models.TransientModel):
                         'product_id': my_free_product.id,
                         'order_id': sales_order.id
                     }
-                    raise ValidationError(_('TTTTTTTTTTTMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'))
+                    
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
                     base_records_ids = []
