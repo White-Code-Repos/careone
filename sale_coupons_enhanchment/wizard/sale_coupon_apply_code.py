@@ -7,6 +7,14 @@ from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
 
 
+
+# class SaleOrderLine(models.TransientModel):
+#     _inherit = 'sale.order.line'
+#
+#     display_type = fields.Selection([
+#             ('line_section', "Section"),
+#             ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
+
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
     # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
@@ -164,7 +172,7 @@ class SaleCouponApplyCode(models.TransientModel):
 
                     for i in sales_order.order_line:
 
-                        i.display_type = 'section'
+                        i.display_type = 'line_section'
 
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
 
