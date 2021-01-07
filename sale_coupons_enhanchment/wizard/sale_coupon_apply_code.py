@@ -8,12 +8,12 @@ from datetime import timedelta, datetime
 
 
 
-# class SaleOrderLine(models.TransientModel):
-#     _inherit = 'sale.order.line'
-#
-#     display_type = fields.Selection([
-#             ('line_section', "Section"),
-#             ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
+class SaleOrderLine(models.TransientModel):
+    _inherit = 'sale.order.line'
+
+    display_type = fields.Selection([
+            ('line_section', "Section"),
+            ('line_note', "Note"), ('product', "Product")], default='product', help="Technical field for UX purpose.")
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
