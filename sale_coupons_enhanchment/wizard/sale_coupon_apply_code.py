@@ -7,6 +7,17 @@ from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
 
 
+class SaleOrderLine(models.TransientModel):
+    _inherit = 'sale.order.line'
+
+    _sql_constraints = [
+            ('accountable_required_fields',
+                "CHECK(product_id IS NOT NULL AND product_uom IS NOT NULL)",
+                "Missing required fields on accountable sale order line."),
+            ('non_accountable_null_fields',
+                "CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND product_uom IS NULL AND customer_lead = 0))",
+                "Forbidden values on non-accountable sale order line"),
+        ]
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
     # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
@@ -138,11 +149,6 @@ class SaleCouponApplyCode(models.TransientModel):
             if self.is_free_order == True:
 
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-
-                for i in sales_order.order_line:
-
-                    i.display_type = 'line_section'
-
                 my_domain_products = self.env['product.product'].search(
                     safe_eval(self.coupon_code.program_id.rule_products_domain))
                 x = 0
@@ -167,8 +173,6 @@ class SaleCouponApplyCode(models.TransientModel):
                     for rec in sales_order.order_line:
                         base_records_ids.append(rec.id)
 
-
-                    sales_order.order_line = False
 
 
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
