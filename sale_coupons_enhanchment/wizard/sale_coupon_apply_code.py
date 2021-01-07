@@ -163,13 +163,12 @@ class SaleCouponApplyCode(models.TransientModel):
                         base_records_ids.append(rec.id)
 
 
-
+                    raise ValidationError(sales_order)
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
-                    raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
+
+
+
                     self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
-
-
-
                     if error_status.get('error', False):
                         raise UserError(error_status.get('error', False))
                     if error_status.get('not_found', False):
