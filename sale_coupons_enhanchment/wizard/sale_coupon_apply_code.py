@@ -136,7 +136,7 @@ class SaleCouponApplyCode(models.TransientModel):
 
         else:
             if self.is_free_order == True:
-                raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
+
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 my_domain_products = self.env['product.product'].search(
                     safe_eval(self.coupon_code.program_id.rule_products_domain))
@@ -156,6 +156,7 @@ class SaleCouponApplyCode(models.TransientModel):
                         'product_id': my_free_product.id,
                         'order_id': sales_order.id
                     }
+                    raise ValidationError(_('TTTTTTTTTTTMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'))
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
                     base_records_ids = []
@@ -163,6 +164,7 @@ class SaleCouponApplyCode(models.TransientModel):
                         base_records_ids.append(rec.id)
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
                     self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
+                    raise ValidationError(_('TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'))
                     if error_status.get('error', False):
                         raise UserError(error_status.get('error', False))
                     if error_status.get('not_found', False):
@@ -170,7 +172,6 @@ class SaleCouponApplyCode(models.TransientModel):
                 else:
                     raise UserError("You Can't Use Free Order With That Program !")
             else:
-                raise ValidationError(_('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ'))
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 error_status = self.apply_coupon(sales_order, self.coupon_code.code)
                 if error_status.get('error', False):
