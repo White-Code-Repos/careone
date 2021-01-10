@@ -1,0 +1,24 @@
+<odoo>
+    <record model="ir.ui.view" id ="view_combo_property_form">
+            <field name = "name">product.template.form.combo.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock_account.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <data>
+
+                    <xpath expr="//span[@name='update_cost_price']" position="replace">
+                        <field name="ks_is_combo" invisible="1"/>
+                        <span name="update_cost_price" attrs="{'invisible': [('ks_is_combo','=',True)]}">
+                            <button string="Update Cost" type="action"
+                                name="%(stock_account.action_view_change_standard_price)d"
+                                attrs="{'invisible':['|', ('cost_method', '=', 'fifo'), ('product_variant_count', '>', 1),
+                                                            ('ks_is_combo','=',True)]}"
+                                class="oe_link pt-0 oe_inline"/>
+                        </span>
+                    </xpath>
+
+                </data>
+            </field>
+     </record>
+
+</odoo>
