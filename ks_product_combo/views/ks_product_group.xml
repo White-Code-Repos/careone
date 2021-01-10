@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id ="sale_product_form">
+            <field name = "name">sale.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook" position="inside">
+                        <page name="ks_child_ids" string="Combo Items" attrs="{'invisible': [('ks_is_combo','=',False)]}" >
+                            <field name="ks_product_child_ids" label="1" widget="section_and_note_one2many" mode="tree">
+                                <tree string="Combo Items" editable="bottom">
+                                    <field name="ks_product_id"/>
+                                    <field name="ks_sell_price"/>
+                                    <field name="ks_cost_price"/>
+                                    <field name="ks_item_quantity"/>
+                                    <field name="ks_total_amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </xpath>
+                    <xpath expr="//div[@name='options']" position="replace">
+                        <div name="options" groups="base.group_user">
+                            <div>
+                                <field name="sale_ok"/>
+                                <label for="sale_ok"/>
+                            </div>
+                            <div>
+                                <field name="purchase_ok"/>
+                                <label for="purchase_ok"/>
+                            </div>
+                            <div>
+                                <field name="ks_is_combo"/>
+                                <label for="ks_is_combo"/>
+                            </div>
+                        </div>
+                </xpath>
+                </data>
+            </field>
+     </record>
+
+
+
+
+    <record id="product_group_form_action_id" model="ir.actions.act_window">
+        <field name="name">Grouped Product</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+</odoo>
