@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_sms_integration,sms.integration,model_sms_integration,,1,1,1,1
+access_attr_line_ids,attr.line.ids,model_attr_line_ids,,1,1,1,1

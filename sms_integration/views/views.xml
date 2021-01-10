@@ -1,0 +1,57 @@
+<odoo>
+  <data>
+
+      <record model="ir.ui.view" id="sms_integration.sms_integration_list">
+          <field name="name">SMS Integration list</field>
+          <field name="model">sms.integration</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+                  <field name="state" widget="boolean_toggle"/>
+              </tree>
+          </field>
+      </record>
+
+
+      <record model="ir.ui.view" id="sms_integration.sms_integration_form">
+          <field name="name">SMS Integration Form</field>
+          <field name="model">sms.integration</field>
+          <field name="arch" type="xml">
+              <form>
+                  <header>
+                      <button name="open_wizard" string="Test" type="object" class="oe_highlight"/>
+                  </header>
+                  <sheet>
+                      <widget name="web_ribbon" text="Active"   bg_color="bg-success" attrs="{'invisible': [('state', '!=', True)]}"/>
+                      <widget name="web_ribbon" text="Inactive" bg_color="bg-danger"  attrs="{'invisible': [('state', '!=', False)]}"/>
+                      <group>
+                          <group>
+                              <field name="name"/>
+                          </group>
+                          <group>
+                              <field name="state" widget="boolean_toggle"/>
+                          </group>
+                      </group>
+                      <group>
+                          <field name="attr_ids">
+                              <tree editable="top">
+                                  <field name="name"/>
+                                  <field name="value"/>
+                              </tree>
+                          </field>
+                      </group>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+
+
+      <record model="ir.actions.act_window" id="sms_integration.sms_integration_action">
+          <field name="name">SMS Integration Window</field>
+          <field name="res_model">sms.integration</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem name="SMS API" id="sms_integration.sms_integration_menu_root" parent="base.menu_administration" action="sms_integration_action"/>
+  </data>
+</odoo>

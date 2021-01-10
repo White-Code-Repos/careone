@@ -1,0 +1,109 @@
+<odoo>
+  <data>
+
+    <menuitem name="Car Info" id="car_info.extra_info" parent="stock.menu_stock_config_settings"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+    <record model="ir.ui.view" id="car_info.groups_list">
+      <field name="name">groups</field>
+      <field name="model">groups</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="car_info.groups_action">
+      <field name="name">Groups</field>
+      <field name="res_model">groups</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Groups" id="car_info.groups" action="car_info.groups_action" parent="car_info.extra_info" sequence="1"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+    <record model="ir.ui.view" id="car_info.destinations_list">
+      <field name="name">destinations</field>
+      <field name="model">destinations</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="car_info.destinations_action">
+      <field name="name">Destinations</field>
+      <field name="res_model">destinations</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Destinations" id="car_info.destinations" action="car_info.destinations_action" parent="car_info.extra_info" sequence="2"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+    <record model="ir.ui.view" id="car_info.model_year_list">
+      <field name="name">model_year</field>
+      <field name="model">model_year</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="car_info.model_year_action">
+      <field name="name">Model Year</field>
+      <field name="res_model">model_year</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Model Year" id="car_info.model_year" action="car_info.model_year_action" parent="car_info.extra_info" sequence="3"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+    <record model="ir.ui.view" id="car_info.made_list">
+      <field name="name">made</field>
+      <field name="model">made</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="car_info.made_action">
+      <field name="name">Made</field>
+      <field name="res_model">made</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Made" id="car_info.made" action="car_info.made_action" parent="car_info.extra_info" sequence="4"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+    <record model="ir.ui.view" id="car_info.brand_list">
+      <field name="name">brand</field>
+      <field name="model">brand</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="car_info.brand_action">
+      <field name="name">Brand</field>
+      <field name="res_model">brand</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Brand" id="car_info.brand" action="car_info.brand_action" parent="car_info.extra_info" sequence="5"/>
+
+<!--    *****************************************************************************************************************************************-->
+
+  </data>
+</odoo>
