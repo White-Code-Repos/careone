@@ -7,12 +7,12 @@
                 <data>
 
                     <xpath expr="//span[@name='update_cost_price']" position="replace">
-                        <field name="ks_is_combo" invisible="1"/>
-                        <span name="update_cost_price" attrs="{'invisible': [('ks_is_combo','=',True)]}">
+                        <field name="is_combo" invisible="1"/>
+                        <span name="update_cost_price" attrs="{'invisible': [('is_combo','=',True)]}">
                             <button string="Update Cost" type="action"
                                 name="%(stock_account.action_view_change_standard_price)d"
                                 attrs="{'invisible':['|', ('cost_method', '=', 'fifo'), ('product_variant_count', '>', 1),
-                                                            ('ks_is_combo','=',True)]}"
+                                                            ('is_combo','=',True)]}"
                                 class="oe_link pt-0 oe_inline"/>
                         </span>
                     </xpath>
