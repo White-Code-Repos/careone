@@ -167,7 +167,7 @@ class SaleCouponApplyCode(models.TransientModel):
                     if error_status.get('not_found', False):
                         raise UserError(error_status.get('not_found', False))
                 else:
-                    raise UserError("You Can't Use Free Order With That Program !")
+                    raise UserError("You Can't Use Free Order With This Program !")
             else:
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 error_status = self.apply_coupon(sales_order, self.coupon_code.code)
