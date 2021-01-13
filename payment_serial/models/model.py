@@ -10,7 +10,7 @@ class AccountJournal(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    payment_number = fields.Integer(string="Payment Number")
+    payment_number = fields.Char(string="Payment Number")
     is_online_payment = fields.Boolean(string="Is Online Payment")
 
     @api.onchange('journal_id')
