@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">Account Payment Custom Fields</field>
+            <field name="model">account.payment</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group>
+                        <group>
+                            <field name="is_online_payment" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="payment_number" attrs="{'invisible': [('is_online_payment', '=', False)] , 'required': [('is_online_payment', '=', True)]}"/>
+                        </group>
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_journal_form_inherit" model="ir.ui.view">
+            <field name="name">Account Journal Custom Fields</field>
+            <field name="model">account.journal</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_credit_account_id']" position="after">
+                    <field name="is_online_payment"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

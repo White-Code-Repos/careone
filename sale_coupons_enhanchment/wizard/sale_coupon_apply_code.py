@@ -6,6 +6,7 @@ from datetime import datetime
 from odoo.tools.safe_eval import safe_eval
 from datetime import timedelta, datetime
 
+
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
     # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
@@ -135,7 +136,6 @@ class SaleCouponApplyCode(models.TransientModel):
 
         else:
             if self.is_free_order == True:
-
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 my_domain_products = self.env['product.product'].search(
                     safe_eval(self.coupon_code.program_id.rule_products_domain))
@@ -160,20 +160,14 @@ class SaleCouponApplyCode(models.TransientModel):
                     base_records_ids = []
                     for rec in sales_order.order_line:
                         base_records_ids.append(rec.id)
-
-
-
                     error_status = self.apply_coupon(sales_order, self.coupon_code.code)
-
-
-
                     self.env['sale.order.line'].search([('id', '=', base_records_ids[0])]).unlink()
                     if error_status.get('error', False):
                         raise UserError(error_status.get('error', False))
                     if error_status.get('not_found', False):
                         raise UserError(error_status.get('not_found', False))
                 else:
-                    raise UserError("You Can't Use Free Order With That Program !")
+                    raise UserError("You Can't Use Free Order With This Program !")
             else:
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 error_status = self.apply_coupon(sales_order, self.coupon_code.code)
