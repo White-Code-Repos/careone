@@ -95,8 +95,8 @@ class WarrantyDetails(models.Model):
 			'warranty_invoice': True,
 			'warranty_reg_id': self.id,
 			'invoice_line_ids': [(0, 0, {
-				'name': 'Warranty of '+ str(self.product_id.display_name),
-				'price_unit': self.warranty_cost,
+			'name': 'Warranty of '+ str(self.product_id.display_name),
+			'price_unit': self.warranty_cost,
 
 			})],
 

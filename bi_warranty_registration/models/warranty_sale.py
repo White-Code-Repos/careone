@@ -55,6 +55,5 @@ class SaleOrder(models.Model):
 			'res_model': 'product.warranty',
 			'view_id': False,
 			'type': 'ir.actions.act_window',
-		   'domain': [('so_id', '=',self.id )],
-
+		    'domain': [('so_id', '=',self.id )],
 		}

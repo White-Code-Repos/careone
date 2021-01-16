@@ -12,7 +12,7 @@ class AccountInvoice(models.Model):
     
     size = fields.Selection(
         string='size',
-        selection=[('small', 'small'), ('medium', 'medium'), ('larg', 'larg')],
+        selection=[('small', 'small'), ('medium', 'medium'), ('large', 'Large')],
         readonly=True
     )
     vehicle_state = fields.Selection(

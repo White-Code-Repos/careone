@@ -26,7 +26,7 @@
                         <field name="code" readonly="1"/>
                         <field name="expiration_date" readonly="1"/>
                         <field name="partner_id"/>
-                        <field name="vehicle_id" context="{'default_license_plate': vehicle_id}"/>
+                        <field name="vehicle_id"/>
                         <field name="order_id" readonly="1"/>
                         <field name="sales_order_id" readonly="1"/>
                     </group>
