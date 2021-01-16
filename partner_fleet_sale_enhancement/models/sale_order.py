@@ -1,5 +1,8 @@
 from odoo import api, fields, models
 
+class SaleOrder(models.Model):
+    _inherit = 'fleet.vehicle'
+    _rec_name = 'license_plate'
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -42,4 +45,3 @@ class SaleOrder(models.Model):
 
         if self.vehicle_id.driver_id:
             self.partner_id = self.vehicle_id.driver_id
-        
