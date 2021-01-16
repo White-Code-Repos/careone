@@ -39,3 +39,7 @@ class SaleOrder(models.Model):
     def vehicle_onchange(self):
         if not self.partner_id:
             self.partner_id = self.vehicle_id.driver_id
+
+        if self.vehicle_id.driver_id:
+            self.partner_id = self.vehicle_id.driver_id
+        
