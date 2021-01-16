@@ -10,6 +10,7 @@ class FleetVehicleNumberSearch(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append(('%s  -  %s' %(rec.model_id.name , rec.license_plate)))
+            if rec.id and rec.model_id.name and rec.license_plate:
+                res.append((rec.id, '%s  -  %s' %(rec.model_id.name , rec.license_plate)))
         return res
 
