@@ -281,7 +281,7 @@ class SalesOrderInherit(models.Model):
         if default_stage:
             values['stage_id'] = default_stage.id
 
-            raise ValidationError(values['stage_id'])
+            # raise ValidationError(values['stage_id'])
         return values
 
     def create_subscriptions(self):
