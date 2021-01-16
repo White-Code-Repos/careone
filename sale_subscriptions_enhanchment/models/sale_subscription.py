@@ -16,13 +16,6 @@ class SalesSubscription(models.Model):
 
     from_sale_order = fields.Many2one('sale.order')
 
-    # def check_shift_times(self):
-    #     subscriptions = self.env['sale.subscription'].search([])
-    #     now = datetime.now()
-    #     time = now.strftime("%H:%M")
-    #     for sub in subscriptions:
-    #         if sub.template_id.
-
     subs_products_ids = fields.One2many(comodel_name="subscription.product", inverse_name="subs_id", string="",
                                         required=False, )
     apper_generate_coupon = fields.Boolean(default=False)
@@ -43,8 +36,6 @@ class SalesSubscription(models.Model):
 
 
     freez_duration = fields.Integer('Freezing Duration', related='template_id.freez_duration')
-
-    # new_end_date = fields.Date()
     last_state = fields.Integer()
     un_freez_date = fields.Date()
     is_freez = fields.Boolean(default=False)
@@ -52,12 +43,6 @@ class SalesSubscription(models.Model):
     freeze_times = fields.Integer(compute='_get_freeze_times')
     display_name = fields.Char(related='stage_id.display_name')
     is_without_freeze = fields.Boolean(string="", )
-    # show_freez = fields.Boolean(compute="_get_show_freez")
-
-    # @api.onchange('subs_products_ids')
-    # def set_domain(self):
-    #     print("hena hena hena")
-    #     return {'domain': {'subs_products_ids.vehicle_id': [('driver_id', '=', se)]}}
 
     @api.onchange('template_id')
     def get_products_lines(self):
@@ -83,34 +68,7 @@ class SalesSubscription(models.Model):
         for rec in self.template_id.subs_product_ids:
             qty = 0
             qty_per_day = 0
-            # if orders:
-            #     for order in orders:
-            #         confirm_time = order.date_order
-            #         for line in order.order_line:
-            #             if rec.product_id == line.product_id and line.price_unit == 0:
-            #                 qty += line.product_uom_qty
-            #                 if current_hour in shift_hours:
-            #                     if 0 in shift_hours and shift_hours[0] != 0:
-            #                         zer_index = shift_hours.index(0)
-            #                         current_hour_index = shift_hours.index(current_hour)
-            #                         if zer_index > current_hour_index:
-            #                             # this shift is 2 days and this is the first day
-            #                             today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
-            #                             if datetime.strptime(today,
-            #                                                  '%Y-%m-%d %H:%M') <= confirm_time <= now:
-            #                                 qty_per_day += line.product_uom_qty
-            #                         elif zer_index <= current_hour_index:
-            #                             # second day
-            #                             yesterday = str((now - timedelta(days=1)).date()) + " " + str(
-            #                                 shift_hours[0]) + ":00"
-            #                             if datetime.strptime(
-            #                                     yesterday, '%Y-%m-%d %H:%M') <= confirm_time <= now:
-            #                                 qty_per_day += line.product_uom_qty
-            #                     else:
-            #                         today = str((now).date()) + " " + str(shift_hours[0]) + ":00"
-            #                         if datetime.strptime(today,
-            #                                              '%Y-%m-%d %H:%M') <= confirm_time <= now:
-            #                             qty_per_day += line.product_uom_qty
+
             records.append((0, 0, {
                 'product_id': rec.product_id.id,
                 'qty': rec.qty,
@@ -119,77 +77,7 @@ class SalesSubscription(models.Model):
                 'qty_counter': qty_per_day,
                 'subs_id': self.id
             }))
-        print(records)
         self.subs_products_ids = records
-
-    # def _get_show_freez(self):
-    #     if self.end_date:
-    #         today = fields.Date.from_string(fields.Date.today())
-    #         date1 = datetime.strptime(str(self.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d')
-    #         date2 = datetime.strptime(str(today), '%Y-%m-%d')
-    #         if date1 > date2:
-    #             self.show_freez = True
-    #         else:
-    #             self.show_freez = False
-    #     else:
-    #         self.show_freez = False
-
-    # def action_unfreeze(self):
-    #
-    #     freezing_times = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
-    #     duration = 0
-    #     for rec in freezing_times:
-    #         duration += rec.freeze_duration
-    #     if self.freeze_times >= self.freeze_for or duration >= self.template_id.freez_duration:
-    #         self.is_without_freeze = True
-    #
-    #     self.is_freez = False
-    #     freez_time = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)], limit=1,
-    #                                                              order='create_date desc')
-    #     x = (fields.Date.from_string(fields.Date.today()) - freez_time.start_date).days
-    #     if x == 0:
-    #         dur = 1
-    #     else:
-    #         dur = x
-    #     freez_time.update({
-    #         'end_date': fields.Date.from_string(fields.Date.today()),
-    #         'freeze_duration': dur
-    #     })
-
-    # def action_freez(self):
-    #     print(self.freeze_for)
-    #     print(self.freeze_times)
-    #     freeze_for = self.template_id.freeze_for
-    #     if freeze_for == 0:
-    #         raise UserError('Please Enter Freezing Duration First')
-    #     if freeze_for < 0:
-    #         raise UserError('Wrong Value for Freezing Duration')
-    #     self.last_state = self.stage_id.id
-    #     today = fields.Date.from_string(fields.Date.today())
-    #     self.write({
-    #         'is_freez': True,
-    #         'last_state': self.stage_id.id,
-    #     })
-    #     freez_data = {
-    #         'start_date': today,
-    #         'subscription_id': self.id,
-    #     }
-    #     self.env['subscription.freeze.line'].create(freez_data)
-    #     return True
-
-    # @api.model
-    # def sale_subscription_cron_fn(self):
-    #     search = self.env['sale.subscription.stage'].search
-    #     stage = search([('name', '=', 'Freezing')], limit=1)
-    #     records = self.env['sale.subscription'].search(
-    #         [('stage_id', '=', stage.id), ('un_freez_date', '=', fields.Date.from_string(fields.Date.today()))])
-    #     for rec in records:
-    #         stage = search([('in_progress', '=', True)], limit=1)
-    #         rec.write({
-    #             'stage_id': stage.id,
-    #             'end_date': records.new_end_date,
-    #             'is_freez': False,
-    #         })
 
     def _get_freeze_times(self):
         operations = self.env['subscription.freeze.line'].search([('subscription_id', '=', self.id)])
@@ -206,7 +94,6 @@ class SalesSubscription(models.Model):
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'tree,form',
-            # 'field_parent': 'child_ids',
             'res_model': 'subscription.freeze.line',
             'target': 'current',
             'domain': [('id', 'in', list)],
@@ -292,8 +179,6 @@ class SalesSubscriptionFreeze(models.Model):
         if current_freezed_duration > freeze_duration_limit:
             raise ValidationError("This subscription reached freezing duration limit")
         res = super(SalesSubscriptionFreeze, self).create(values)
-        # if res:
-        #     res.subscription_id
         return res
 
     def write(self, values):
@@ -316,19 +201,6 @@ class SalesSubscriptionFreeze(models.Model):
             raise ValidationError("This subscription reached freezing duration limit")
         return res
 
-    # def get_freeze_duration(self):
-    #     for record in self:
-    #         x = 0
-    #         if record.start_date and record.end_date:
-    #             x = (record.end_date - record.end_date).days
-    #             if x == 0:
-    #                 self.freeze_duration = 1
-    #             else:
-    #                 self.freeze_duration = x
-    #         self.freeze_duration = x
-    #
-
-
 class SalesOrderInherit(models.Model):
     _inherit = 'sale.order'
 
@@ -345,8 +217,6 @@ class SalesOrderInherit(models.Model):
                         'name': 'Notice',
                         'params': {'title': 'Notice','text': 'This is already a subscriper.','sticky': True}
                         }
-                        # msg = "This is already a subscriper"
-                        # raise UserError(_(msg))
 
     @api.onchange('subscription_id')
     def check_freeze(self):
@@ -365,11 +235,6 @@ class SalesOrderInherit(models.Model):
                 sub_end_data = self.subscription_id.date_start + timedelta(days=30*self.subscription_id.template_id.recurring_rule_count) + timedelta(days=total_freeze_days)
                 if sub_end_data < now:
                     raise ValidationError("This subscription is already Expired")
-
-
-
-
-
 
 
     subscription_id = fields.Many2one(comodel_name="sale.subscription", string="Subscription", required=False,
@@ -415,6 +280,8 @@ class SalesOrderInherit(models.Model):
         default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
         if default_stage:
             values['stage_id'] = default_stage.id
+
+            raise ValidationError(values['stage_id'])
         return values
 
     def create_subscriptions(self):
@@ -444,45 +311,12 @@ class SalesOrderInherit(models.Model):
                 )
         return res
 
-    # @api.onchange('subscription_id')
-    # def onchange_method(self):
-    #     if self.subscription_id:
-    #         print(self.id)
-    #         records = []
-    #         sub = self.env['sale.subscription'].search([('id', '=', self.subscription_id.id)])
-    #         if self.order_line:
-    #             for record in self.order_line:
-    #                 if record.price_unit == 0:
-    #                     self.write({'order_line': [(2, record.id)]})
-    #         for rec in sub.subs_products_ids:
-    #             if not self.customer_vehicle_id:
-    #                 self.order_line |= self.env['sale.order.line'].new({
-    #                     'product_id': rec.product_id.id,
-    #                     'name': self.env['sale.order.line'].get_sale_order_line_multiline_description_sale(
-    #                         rec.product_id),
-    #                     'product_uom_qty': rec.qty_per_day,
-    #                     'price_unit': 0,
-    #                     'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
-    #                     'product_uom': rec.product_id.uom_id.id,
-    #                 })
-    #             elif rec.vehicle_id == self.customer_vehicle_id:
-    #                 self.order_line |= self.env['sale.order.line'].new({
-    #                     'product_id': rec.product_id.id,
-    #                     'name': self.env['sale.order.line'].get_sale_order_line_multiline_description_sale(
-    #                         rec.product_id),
-    #                     'product_uom_qty': rec.qty_per_day,
-    #                     'price_unit': 0,
-    #                     'display_type': self.env['sale.order.line'].default_get(['display_type'])['display_type'],
-    #                     'product_uom': rec.product_id.uom_id.id,
-    #                 })
     @api.onchange('order_line')
     def change_price_cancel(self):
         if self.subscription_id:
             for line in self.order_line:
                 line.price_unit = 0
     def action_confirm(self):
-        # orders = self.env['sale.order'].search(
-        #     [('subscription_id', '=', self.subscription_id.id), ('state', '=', 'sale')])
         shift_hours = []
         shift_duration = self.subscription_id.template_id.duration
         now = datetime.now() + timedelta(hours=2)
@@ -498,7 +332,6 @@ class SalesOrderInherit(models.Model):
                 break
         current_hour = int(now.strftime("%H"))
         for rec in self.subscription_id.subs_products_ids:
-            # rec.qty_counter = 0
             for order in self:
                 confirm_time = order.date_order
                 for line in order.order_line:
@@ -528,10 +361,6 @@ class SalesOrderInherit(models.Model):
                                                      '%Y-%m-%d %H:%M') <= confirm_time <= now:
                                     rec.qty_counter += line.product_uom_qty
                                     rec.consumed_qty += line.product_uom_qty
-            # if rec.qty_counter > rec.qty_per_day:
-            #     raise ValidationError(
-            #         "Your Product : %s consumed quantity Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
-
         for line in self.order_line:
             for rec in self.subscription_id.subs_products_ids:
                 if rec.product_id == line.product_id and line.price_unit == 0 and rec.vehicle_id == line.order_id.vehicle_id:
@@ -541,6 +370,4 @@ class SalesOrderInherit(models.Model):
                     if (rec.qty_counter) > rec.qty_per_day:
                         raise ValidationError(
                             "Your Product : %s consumed quantity per day Mustn't Exceed the subscription Quantity for the vehicle %s per day" % (rec.product_id.display_name,rec.vehicle_id.display_name))
-                    # rec.consumed_qty += line.product_uom_qty
-                    # rec.qty_counter += line.product_uom_qty
         return super(SalesOrderInherit, self).action_confirm()
