@@ -8,7 +8,10 @@ class KsProductGroup(models.Model):
     _name = 'ks.product.group'
     _description = 'Grouped Products'
 
+
     ks_product_id = fields.Many2one('product.template', string="Products", domain=[('ks_is_combo', '=', False)],
+=======
+    ks_product_id = fields.Many2one('product.template', string="Products", domain=[('is_combo', '=', False)],
                                     required=True)
     ks_sell_price = fields.Float('Selling Price', related='ks_product_id.list_price', readonly=1, store=True)
     ks_cost_price = fields.Float('Cost Price', compute='_ks_compute_cost', readonly=1, store=True)
@@ -35,28 +38,46 @@ class KsProductGroup(models.Model):
 class KsproductTemplate(models.Model):
     _inherit = ['product.template']
 
+<<<<<<< HEAD
     ks_is_combo = fields.Boolean('Combo Product', default=False, store=True)
+=======
+    is_combo = fields.Boolean('Combo Product', default=False, store=True)
+>>>>>>> development
     type = fields.Selection(selection_add=[('product', 'Storable Product'),
                                            ('combo', 'Combo Product')
                                            ], )
     ks_product_child_ids = fields.Many2many('ks.product.group', string="Associated Products", required=1)
 
+<<<<<<< HEAD
     @api.onchange('ks_is_combo', 'type')
     def _check_ks_is_combo(self):
         """
         Manage product type: if product is combo, then product type must also be combo product
         """
         if self.ks_is_combo:
+=======
+    @api.onchange('is_combo', 'type')
+    def _check_is_combo(self):
+        """
+        Manage product type: if product is combo, then product type must also be combo product
+        """
+        if self.is_combo:
+>>>>>>> development
             self.type = 'combo'
             self.purchase_ok = False
             if not self.invoice_policy:
                 self.invoice_policy = 'order'
             self.service_type = 'manual'
+<<<<<<< HEAD
         if (not self.ks_is_combo) and self.type == 'combo':
+=======
+        if (not self.is_combo) and self.type == 'combo':
+>>>>>>> development
             self.type = 'product'
 
         return
 
+<<<<<<< HEAD
     @api.constrains('type', 'ks_is_combo', 'purchase_ok')
     def _check_product_type(self):
         # Check Product Type: Combo Product or not
@@ -69,6 +90,20 @@ class KsproductTemplate(models.Model):
             self.type = 'combo'
 
         if self.ks_is_combo and not self.ks_product_child_ids:
+=======
+    @api.constrains('type', 'is_combo', 'purchase_ok')
+    def _check_product_type(self):
+        # Check Product Type: Combo Product or not
+
+        if self.is_combo and self.purchase_ok:
+            raise ValidationError('Cannot Purchase a combo product')
+        if self.type == 'combo' and (not self.is_combo):
+            raise ValidationError('Please tick the combo product or select another product type')
+        if (not self.type == 'combo') and self.is_combo:
+            self.type = 'combo'
+
+        if self.is_combo and not self.ks_product_child_ids:
+>>>>>>> development
             raise ValidationError('Please add some combo items in the combo product')
         return
 
@@ -77,7 +112,11 @@ class KsproductTemplate(models.Model):
 
         #Check valid combo items and their quantity in combo product
 
+<<<<<<< HEAD
         if self.ks_is_combo:
+=======
+        if self.is_combo:
+>>>>>>> development
             for child_product in self.ks_product_child_ids:
                 if child_product.ks_product_id.type in ['product']:
                     if (child_product.ks_product_id.qty_available < child_product.ks_item_quantity):
@@ -95,7 +134,11 @@ class KsproductTemplate(models.Model):
         """"
             Validate Sales Price and the items in combo for Combo Product
         """
+<<<<<<< HEAD
         if self.ks_is_combo and (self.list_price <= 1.00):
+=======
+        if self.is_combo and (self.list_price <= 1.00):
+>>>>>>> development
             self.list_price = sum(self.ks_product_child_ids.mapped('ks_total_amount'))
 
     standard_price = fields.Float(
@@ -111,7 +154,11 @@ class KsproductTemplate(models.Model):
     def _compute_standard_price(self):
         # Do not Update cost price of Combo Products
         for product in self:
+<<<<<<< HEAD
             if product.ks_is_combo:
+=======
+            if product.is_combo:
+>>>>>>> development
                 cost_price = 0.00
                 for child_product in product.ks_product_child_ids:
                     cost_price = cost_price + child_product.ks_cost_price * child_product.ks_item_quantity
@@ -172,7 +219,11 @@ class KsStockRule(models.Model):
 
             #Create move lines for the combo items of the combo products
 
+<<<<<<< HEAD
             if procurement.product_id.ks_is_combo:
+=======
+            if procurement.product_id.is_combo:
+>>>>>>> development
                 for child in procurement.product_id.ks_product_child_ids.filtered\
                             (lambda x: x.ks_product_id.product_variant_id.type not in ['service', 'combo']):
                     ks_move_values = move_values.copy()
@@ -207,7 +258,11 @@ class KsSaleOrderLine(models.Model):
     @api.constrains('product_id')
     def ks_check_combo_item(self):
         for ks_product in self:
+<<<<<<< HEAD
             if ks_product.product_id.ks_is_combo and not ks_product.product_id.ks_product_child_ids:
+=======
+            if ks_product.product_id.is_combo and not ks_product.product_id.ks_product_child_ids:
+>>>>>>> development
                 raise ValueError('%s do not have any combo items' % ks_product.product_id.name)
 
     @api.onchange('product_uom_qty')
@@ -252,7 +307,11 @@ class KsSaleOrderLine(models.Model):
         for line in self:
             if line.state != 'sale' or not line.product_id.type in ('consu', 'product', 'combo'):
                 continue
+<<<<<<< HEAD
             if line.product_id.ks_is_combo:
+=======
+            if line.product_id.is_combo:
+>>>>>>> development
                 qty = line.ks_previous_product_qty
             else:
                 qty = line._get_qty_procurement()
@@ -295,7 +354,11 @@ class KsSaleOrderLine(models.Model):
         """
         ks_check_combo = False
         for ks_prod in self:
+<<<<<<< HEAD
             if ks_prod.product_id.ks_is_combo:
+=======
+            if ks_prod.product_id.is_combo:
+>>>>>>> development
                 ks_check_combo = True
 
         if ks_check_combo:
@@ -329,7 +392,11 @@ class KsSaleOrderLine(models.Model):
         for line in self:
             if line.qty_delivered_method == 'stock_move':
                 qty = 0.0
+<<<<<<< HEAD
                 if line.product_id.ks_is_combo and line.product_id.ks_product_child_ids:
+=======
+                if line.product_id.is_combo and line.product_id.ks_product_child_ids:
+>>>>>>> development
                     ks_total_child_qty = 0.0
                     for ks_product_child in line.product_id.ks_product_child_ids:
                         if ks_product_child.ks_product_id.product_variant_id.type in ['product', 'consu']:

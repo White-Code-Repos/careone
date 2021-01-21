@@ -7,7 +7,12 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//notebook" position="inside">
+
                         <page name="ks_child_ids" string="Combo Items" attrs="{'invisible': [('ks_is_combo','=',False)]}" >
+
+                        <field name="is_combo" invisible="1"/>
+                        <page name="ks_child_ids" string="Combo Items" attrs="{'invisible': [('is_combo','=',False)]}" >
+
                             <field name="ks_product_child_ids" label="1" widget="section_and_note_one2many" mode="tree">
                                 <tree string="Combo Items" editable="bottom">
                                     <field name="ks_product_id"/>
@@ -30,8 +35,13 @@
                                 <label for="purchase_ok"/>
                             </div>
                             <div>
+
                                 <field name="ks_is_combo"/>
                                 <label for="ks_is_combo"/>
+
+                                <field name="is_combo"/>
+                                <label for="is_combo"/>
+
                             </div>
                         </div>
                 </xpath>

@@ -35,9 +35,11 @@ class CouponProgramInherit(models.Model):
 
     def generate_coupon(self):
         program = self
+
         vals = {'program_id': program.id, 'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use,
+                # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
                 'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
@@ -118,6 +120,7 @@ class SaleOrder(models.Model):
                 'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use,
+                # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
                 'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
         order_products = []
         program_products = []
