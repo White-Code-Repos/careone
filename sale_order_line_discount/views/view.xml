@@ -1,5 +1,15 @@
 <odoo>
     <data>
-
+        <record id="view_sale_order_line_form_inherit" model="ir.ui.view">
+        <field name="name">Sale Order Line Custom Fields</field>
+        <field name="model">sale.order.line</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="after">
+                    <field name="fixed_discount"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
