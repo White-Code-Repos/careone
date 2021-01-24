@@ -22,9 +22,20 @@ class SalesSubscription(models.Model):
             # mins, hours = math.modf(temp.end_hour_use)
             # _logger.info(str(int(hours)) + ' ' + str(int(mins)))
             hours = str(temp.end_hour_use).split('.')[0]
-            mins = str(int(str(temp.end_hour_use).split('.')[1])*60/10)
-            # _logger.info(hours + ':' + mins)
-            _logger.info(temp.end_hour_use)
+            mins = str(int(int(str(temp.end_hour_use).split('.')[1])*60/10**len(str(temp.end_hour_use).split('.')[1])))
+            today = (datetime.now() + timedelta(hours=2)).replace(second=0, microsecond=0)
+            temp_date = datetime.now().replace(hour=int(hours), minute=int(mins), second=0, microsecond=0)
+            # datetime_str = str(today) + hours + ':' + mins
+            if today > temp_date:
+                subs = self.env['sale.subscription'].search([('template_id','=',temp.id)])
+                for sub in subs:
+                    for line in sub.subs_products_ids:
+                        line.qty_counter = 0
+            # _logger.info(str(today > temp_date))
+
+            # datetime_obj = datetime.strptime(datetime_str, "%d/%m/%Y %H:%M:%S")
+            # _logger.info(temp.end_hour_use)
+            #
 
 
 
