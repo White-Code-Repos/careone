@@ -8,7 +8,7 @@ class SaleOrderLine(models.Model):
 
     fixed_discount = fields.Float(string="Fixed Discount")
 
-    @api.onchange('fixed_discount' , 'discount')
+    @api.depends('fixed_discount' , 'discount')
     def action_calculate_discount(self):
         fixed_discount = self.fixed_discount
         discount = self.discount
