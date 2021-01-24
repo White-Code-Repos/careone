@@ -23,7 +23,7 @@ class SalesSubscription(models.Model):
             # _logger.info(str(int(hours)) + ' ' + str(int(mins)))
             hours = str(temp.end_hour_use).split('.')[0]
             mins = str(int(int(str(temp.end_hour_use).split('.')[1])*60/10**len(str(temp.end_hour_use).split('.')[1])))
-            today = datetime.now() + timedelta(hours=2)
+            today = (datetime.now() + timedelta(hours=2)).replace(second=0, microsecond=0)
             temp_date = datetime.now().replace(hour=int(hours), minute=int(mins), second=0, microsecond=0)
             # datetime_str = str(today) + hours + ':' + mins
             _logger.info(str(today) + '//' + str(temp_date))
