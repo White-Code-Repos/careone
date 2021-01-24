@@ -4,7 +4,7 @@
     'author': 'White-code (Zienab Abd El Nasser)',
     'category': 'Sale',
     'depends': ['sale', 'product',
-                'sale_subscription',
+                'sale_subscription','contacts'
                 ],
     'data': [
         'data/ir_cron.xml',
