@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, _, fields
 from odoo.tools import safe_eval
-from datetime import datetime
+from datetime import datetime , date
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
 
