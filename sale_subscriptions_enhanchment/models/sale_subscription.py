@@ -15,15 +15,14 @@ _logger = logging.getLogger(__name__)
 class Partner(models.Model):
     _inherit = 'res.partner'
 
-    subscriper = fields.Boolean('Subscriper', default=False)
-
-    # def compute_subscripe_state(self):
-    #     for this in self.env['res.partner'].search([]):
-    #         pass
-            # if this.subscription_count > 0 :
-            #     this.subscriper = True
-            # else:
-            #     this.subscriper = False
+    is_subscriper = fields.Boolean(compute="_compute_subscripe_state")
+    subscriper = fields.Boolean(default=False)
+    def compute_subscripe_state(self):
+        for this in self.env['res.partner'].search([]):
+            if this.subscription_count > 0 :
+                this.is_subscriper = True
+            else:
+                this.is_subscriper = False
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
