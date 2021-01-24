@@ -2,7 +2,7 @@
 <odoo>
 
   <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-         <field name="context">{'search_default_my_quotation': 0,'search_default_filter_today': 0}</field>
+         <field name="context">{'search_default_my_quotation': 0,'search_default_filter_today': 1}</field>
  </record>
  <record id="sale_filters_dates" model="ir.ui.view">
    <field name="name">sale_filters_dates</field>
