@@ -16,13 +16,14 @@ class Partner(models.Model):
     _inherit = 'res.partner'
 
     # is_subscriper = fields.Boolean(compute="_compute_subscripe_state")
-    subscriper = fields.Float()
+    sbu_check = fields.Float()
     def compute_subscripe_state(self):
         for this in self.env['res.partner'].search([]):
             if this.subscription_count > 0 :
-                this.subscriper = 1
+                this.sbu_check = 1
             else:
-                this.subscriper = 0
+                this.sbu_check = 0
+
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
