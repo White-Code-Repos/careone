@@ -1,6 +1,18 @@
 <odoo>
     <data>
-        <record model="ir.actions.act_window" id="mrp_kanban_view.mrp_kanban_default_action_window">
+        <record id="view_mrp_kanban_inherit" model="ir.ui.view">
+        <field name="name">MRP Kanban Group</field>
+        <field name="model">mrp.production</field>
+        <field name="type">kanban</field>
+        <field name="inherit_id" ref="mrp.mrp_production_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="default_group_by">{state}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="mrp_kanban_view.mrp_production_action	">
             <field name="name">MRP Kanban Default</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>

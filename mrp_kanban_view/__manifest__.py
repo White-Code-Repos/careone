@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Sale Order Line Fixed Discount",
+    'name': "MRP Kanban View",
 
     'summary': """ """,
 
@@ -14,7 +14,7 @@
 
     'version': '0.1',
 
-    'depends': ['base' , 'sale'],
+    'depends': ['base' , 'mrp'],
 
     'data': ['views/view.xml'],
 }
