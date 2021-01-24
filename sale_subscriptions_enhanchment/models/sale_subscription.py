@@ -15,11 +15,11 @@ _logger = logging.getLogger(__name__)
 class Partner(models.Model):
     _inherit = 'res.partner'
 
-    subscriper = fields.Boolean(default=False)
+    subscriper = fields.Boolean('Subscriper', default=False)
 
-    def compute_subscripe_state(self):
-        for this in self.env['res.partner'].search([]):
-            pass
+    # def compute_subscripe_state(self):
+    #     for this in self.env['res.partner'].search([]):
+    #         pass
             # if this.subscription_count > 0 :
             #     this.subscriper = True
             # else:
