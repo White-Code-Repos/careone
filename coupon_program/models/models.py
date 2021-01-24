@@ -207,7 +207,6 @@ class CouponInherit(models.Model):
     is_expiration_date_changed = fields.Boolean(string="Change Expiration Date", )
     expiration_date_edit = fields.Date(string="New Expiration Date", required=False, )
     is_have_permission = fields.Boolean(string="", compute='get_user_permission')
-    validity_duration = fields.Integer(string="Validity Duration")
 
     @api.onchange('vehicle_id', 'partner_id')
     def vehicle_onchange(self):
