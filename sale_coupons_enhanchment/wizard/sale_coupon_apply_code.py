@@ -45,8 +45,9 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise ValidationError('Invalid date')
             elif self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60):
                 raise ValidationError('Invalid time')
-            elif self.coupon_code.expiration_date < today:
-                raise ValidationError('Coupon expired')
+            elif self.coupon_code.validity_duration != 0:
+                if self.coupon_code.expiration_date < today:
+                    raise ValidationError('Coupon expired')
             elif self.coupon_code.state != 'new':
                 raise ValidationError('Coupon not valid')
             else:
