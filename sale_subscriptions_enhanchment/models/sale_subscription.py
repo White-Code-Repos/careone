@@ -26,7 +26,7 @@ class SalesSubscription(models.Model):
             today = (datetime.now() + timedelta(hours=2)).replace(second=0, microsecond=0)
             temp_date = datetime.now().replace(hour=int(hours), minute=int(mins), second=0, microsecond=0)
             # datetime_str = str(today) + hours + ':' + mins
-            _logger.info(str(today) + '//' + str(temp_date))
+            _logger.info(str(today > temp_date))
 
             # datetime_obj = datetime.strptime(datetime_str, "%d/%m/%Y %H:%M:%S")
             # _logger.info(temp.end_hour_use)
