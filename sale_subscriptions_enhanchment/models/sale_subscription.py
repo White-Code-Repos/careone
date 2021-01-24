@@ -9,6 +9,8 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
 import math
+import logging
+_logger = logging.getLogger(__name__)
 
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
@@ -18,7 +20,7 @@ class SalesSubscription(models.Model):
         text = ""
         for temp in temps:
           mins, hours = math.modf(temp.end_hour_use)
-          log(mins+hours,level='info')
+          _logger.debug(mins+hours)
 
 
 
