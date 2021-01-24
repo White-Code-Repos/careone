@@ -1,5 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
+
+  <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+         <field name="context">{'search_default_my_quotation': 0,'search_default_filter_today': 0}</field>
+ </record>
+ <record id="sale_filters_dates" model="ir.ui.view">
+   <field name="name">sale_filters_dates</field>
+   <field name="model">sale.order</field>
+   <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+   <field name="arch" type="xml">
+    <filter name="my_quotation" position="after"/>
+      <filter name="filter_today" string="Today" domain="[('create_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+      <filter name="flter_last_3days" string="Last 3 Days" domain="[('create_date', '&gt;', (context_today() - datetime.timedelta(3)).strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+    </filter>
+   </field>
+ </record>
   <!-- <record id="careone_ordering_sale_extend" model="ir.ui.view">
     <field name="name">careone_ordering_sale_extend</field>
     <field name="model">sale.order</field>
