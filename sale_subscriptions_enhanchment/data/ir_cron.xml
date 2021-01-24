@@ -13,7 +13,7 @@
         <!-- </record> -->
         <record id='clear_consumed' model='ir.cron'>
             <field name='name'>clear_consumed</field>
-            <field name='model_id' ref='sale.subscription'/>
+            <field name='model_id' ref='model_sale_subscription'/>
             <field name='state'>code</field>
             <field name='code'>model.reset_consumed_daily()</field>
             <field name='interval_number'>35</field>
