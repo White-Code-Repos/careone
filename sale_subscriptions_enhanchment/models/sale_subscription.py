@@ -19,8 +19,8 @@ class SalesSubscription(models.Model):
         temps = self.env['sale.subscription.template'].search([])
         text = ""
         for temp in temps:
-          mins, hours = math.modf(temp.end_hour_use)
-          _logger.info(mins+hours)
+            mins, hours = math.modf(temp.end_hour_use)
+            _logger.info(mins+hours)
 
 
 
