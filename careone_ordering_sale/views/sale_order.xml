@@ -119,14 +119,14 @@
       </xpath>
       <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
           <field name="vehicle_part_id" invisible="1"/>
-      </xpath>
+      </xpath> -->
       <!-- <xpath expr="//field[@name='picking_policy']" position="after">
           <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
                  context="{'default_type':'invoice'}" options='{"always_reload": True}' invisible="1"/>
           <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
                  context="{'default_type':'delivery'}" options='{"always_reload": True}' invisible="1"/>
       </xpath> -->
-        <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+        <!-- <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
             <attribute name="domain">[('categ_id', 'child_of', parent.category_ids or [1]), ('sale_ok', '=', True),
                 '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]
             </attribute>
