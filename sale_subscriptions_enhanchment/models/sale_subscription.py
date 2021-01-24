@@ -16,7 +16,7 @@ class Partner(models.Model):
     _inherit = 'res.partner'
 
     # is_subscriper = fields.Boolean(compute="_compute_subscripe_state")
-    subscriper = fields.Float(default=0)
+    subscriper = fields.Float()
     def compute_subscripe_state(self):
         for this in self.env['res.partner'].search([]):
             if this.subscription_count > 0 :
