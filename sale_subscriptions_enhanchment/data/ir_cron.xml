@@ -11,4 +11,18 @@
 <!--            <field eval="'sale.subscription'" name="model"/>-->
 <!--            <field eval="'sale_subscription_cron_fn'" name="function"/>-->
         <!-- </record> -->
+        <record id='clear_consumed' model='ir.cron'>
+            <field name='name'>clear_consumed</field>
+            <field name='model_id' ref='sale.subscription'/>
+            <field name='state'>code</field>
+            <field name='code'>model.reset_consumed_daily()</field>
+            <field name='interval_number'>35</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="priority">0</field>
+            <field name="doall" eval="True"/>
+            <field name="user_id" ref="base.user_root" />
+            <field name="active" eval="True"/>
+        </record>
+
 </odoo>
