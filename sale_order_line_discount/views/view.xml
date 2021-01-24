@@ -9,6 +9,10 @@
                 <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='discount']" position="after">
                     <field name="fixed_discount"/>
                 </xpath>
+                <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
             </field>
         </record>
     </data>
