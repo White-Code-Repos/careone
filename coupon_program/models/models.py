@@ -43,7 +43,8 @@ class CouponProgramInherit(models.Model):
                 'is_tus': program.is_tus,'is_wen': program.is_wen,'is_thur': program.is_thur,
                 'is_fri': program.is_fri,
                 # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
-                'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
+                'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration),
+                'validity_duration':program.validity_duration}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
@@ -127,7 +128,8 @@ class SaleOrder(models.Model):
                 'is_tus': program.is_tus, 'is_wen': program.is_wen, 'is_thur': program.is_thur,
                 'is_fri': program.is_fri,
                 # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
-                'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
+                'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration),
+                'validity_duration':program.validity_duration}
         order_products = []
         program_products = []
         is_product_ability = False
@@ -205,6 +207,7 @@ class CouponInherit(models.Model):
     is_expiration_date_changed = fields.Boolean(string="Change Expiration Date", )
     expiration_date_edit = fields.Date(string="New Expiration Date", required=False, )
     is_have_permission = fields.Boolean(string="", compute='get_user_permission')
+    validity_duration = fields.Integer(string="Validity Duration")
 
     @api.onchange('vehicle_id', 'partner_id')
     def vehicle_onchange(self):

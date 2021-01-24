@@ -49,7 +49,8 @@ class SaleCouponGenerate(models.TransientModel):
 
     def generate_coupon(self):
         program = self
-        vals = {'program_id': program.id,'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
+        vals = {'program_id': program.id,'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration),
+                'validity_duration':program.validity_duration,}
 
         if self.generation_type == 'nbr_coupon' and self.nbr_coupons > 0:
             for count in range(0, self.nbr_coupons):
