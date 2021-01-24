@@ -21,7 +21,9 @@ class SalesSubscription(models.Model):
         for temp in temps:
             # mins, hours = math.modf(temp.end_hour_use)
             # _logger.info(str(int(hours)) + ' ' + str(int(mins)))
-            _logger.info(str(temp.end_hour_use).split('.'))
+            hours = str(temp.end_hour_use).split('.')[0]
+            mins = str(int(str(temp.end_hour_use).split('.')[0])*60/100)
+            _logger.info(hours + ':' + mins)
 
 
 
