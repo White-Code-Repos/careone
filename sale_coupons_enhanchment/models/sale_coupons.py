@@ -23,9 +23,9 @@ class SaleCoupon(models.Model):
     def _compute_expiration_date(self):
         for this in self:
             if this.validity_duration == 0:
-                coupon.expiration_date = 0
+                this.expiration_date = 0
             else:
-                coupon.expiration_date = coupon.expiration_date_2
+                this.expiration_date = this.expiration_date_2
 
 class SaleCouponProgram(models.Model):
     _inherit = 'sale.coupon.program'
