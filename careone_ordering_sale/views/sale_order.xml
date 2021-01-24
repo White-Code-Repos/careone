@@ -1,5 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
+
+  <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+         <field name="context">{'search_default_my_quotation': 0,'search_default_filter_today': 1}</field>
+ </record>
+ <record id="sale_filters_dates" model="ir.ui.view">
+   <field name="name">sale_filters_dates</field>
+   <field name="model">sale.order</field>
+   <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+   <field name="arch" type="xml">
+    <filter name="my_quotation" position="after">
+      <filter name="filter_today" string="Today" domain="[('create_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+      <filter name="flter_last_3days" string="Last 3 Days" domain="[('create_date', '&gt;', (context_today() - datetime.timedelta(3)).strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+    </filter>
+   </field>
+ </record>
   <!-- <record id="careone_ordering_sale_extend" model="ir.ui.view">
     <field name="name">careone_ordering_sale_extend</field>
     <field name="model">sale.order</field>
@@ -104,14 +119,14 @@
       </xpath>
       <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
           <field name="vehicle_part_id" invisible="1"/>
-      </xpath>
+      </xpath> -->
       <!-- <xpath expr="//field[@name='picking_policy']" position="after">
           <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
                  context="{'default_type':'invoice'}" options='{"always_reload": True}' invisible="1"/>
           <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
                  context="{'default_type':'delivery'}" options='{"always_reload": True}' invisible="1"/>
       </xpath> -->
-        <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+        <!-- <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
             <attribute name="domain">[('categ_id', 'child_of', parent.category_ids or [1]), ('sale_ok', '=', True),
                 '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]
             </attribute>
