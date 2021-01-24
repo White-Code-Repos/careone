@@ -14,7 +14,7 @@ class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
     def reset_consumed_daily(self):
-        temps = model.env['sale.subscription.template'].search([])
+        temps = self.env['sale.subscription.template'].search([])
         text = ""
         for temp in temps:
           mins, hours = math.modf(temp.end_hour_use)
