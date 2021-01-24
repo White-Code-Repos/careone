@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, _, fields
 from odoo.tools import safe_eval
-from datetime import datetime , date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
 
@@ -26,7 +26,7 @@ class SaleCoupon(models.Model):
             for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
                 coupon.expiration_date = coupon.expiration_date_2
             for coupon in this.filtered(lambda y: y.program_id.validity_duration == 0):
-                if not coupon.create_date < datetime.date.today():
+                if not coupon.create_date < datetime.date().today():
                     coupon.expiration_date = 0
 
 class SaleCouponProgram(models.Model):
