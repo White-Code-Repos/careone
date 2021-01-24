@@ -14,7 +14,7 @@
 
     'version': '0.1',
 
-    'depends': ['base' , 'sale'],
+    'depends': ['base'],
 
     'data': ['views/view.xml'],
 }
