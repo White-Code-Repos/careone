@@ -27,7 +27,7 @@ class SaleCoupon(models.Model):
                 if not coupon.create_date.date() < datetime.now().date():
                     coupon.expiration_date = coupon.expiration_date_2
             for coupon in this.filtered(lambda y: y.program_id.validity_duration == 0):
-                if not coupon.create_date < datetime.now():
+                if not coupon.create_date.date() < datetime.now().date():
                     coupon.expiration_date = 0
 
 class SaleCouponProgram(models.Model):
