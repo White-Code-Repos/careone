@@ -230,13 +230,6 @@ class CouponInherit(models.Model):
             else:
                 coupon.is_have_permission = False
 
-    @api.onchange('expiration_date_edit', 'is_expiration_date_changed')
-    def auto_exoiration_date(self):
-        if self.is_expiration_date_changed:
-            self.expiration_date = self.expiration_date_edit
-        else:
-            self.expiration_date = self.expiration_date_2
-
     def _compute_expiration_date(self):
         self.expiration_date = 0
         for coupon in self:

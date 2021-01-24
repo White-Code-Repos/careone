@@ -25,7 +25,10 @@ class SaleCoupon(models.Model):
             if this.validity_duration == 0:
                 this.expiration_date = 0
             else:
-                this.expiration_date = this.expiration_date_2
+                if this.is_expiration_date_changed:
+                    this.expiration_date = this.expiration_date_edit
+                else:
+                    this.expiration_date = this.expiration_date_2
 
 class SaleCouponProgram(models.Model):
     _inherit = 'sale.coupon.program'
