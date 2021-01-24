@@ -8,10 +8,21 @@ from odoo.tools import safe_eval
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
-
+import math
+import logging
+_logger = logging.getLogger(__name__)
 
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
+
+    def reset_consumed_daily(self):
+        temps = self.env['sale.subscription.template'].search([])
+        text = ""
+        for temp in temps:
+            mins, hours = math.modf(temp.end_hour_use)
+            _logger.info(str(int(hours)) + ' ' + str(int(mins)))
+
+
 
 
     from_sale_order = fields.Many2one('sale.order')
