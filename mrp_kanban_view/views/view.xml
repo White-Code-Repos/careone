@@ -13,7 +13,7 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="mrp_kanban_view.mrp_production_action">
+        <record model="ir.actions.act_window" id="mrp.mrp_production_action">
             <field name="name">MRP Kanban Default</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
