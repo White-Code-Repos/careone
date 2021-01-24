@@ -3,7 +3,7 @@ from odoo import models, _, fields
 from odoo.tools import safe_eval
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import warnings
+# from odoo.exceptions import ValidationError
 
 class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
@@ -13,18 +13,18 @@ class SaleCoupon(models.Model):
 
     sub_id = fields.Many2one('sale.subscription')
 
-    # def _compute_expiration_date(self):
-    #     for this in self:
-    #         this.expiration_date = 0
-    #         for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
-    #             coupon.expiration_date = coupon.expiration_date_2
-
     def _compute_expiration_date(self):
         for this in self:
-            this.expiration_date = this.expiration_date_2
-            warnings.warn(datetime.now())
+            this.expiration_date = 0
             for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
                 coupon.expiration_date = coupon.expiration_date_2
+
+    # def _compute_expiration_date(self):
+    #     for this in self:
+    #         this.expiration_date = this.expiration_date_2
+    #         raise ValidationError(datetime.now())
+    #         for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
+    #             coupon.expiration_date = coupon.expiration_date_2
 
 class SaleCouponProgram(models.Model):
     _inherit = 'sale.coupon.program'
