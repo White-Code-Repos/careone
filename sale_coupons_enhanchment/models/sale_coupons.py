@@ -13,6 +13,7 @@ class SaleCoupon(models.Model):
 
     sub_id = fields.Many2one('sale.subscription')
 
+
     def _compute_expiration_date(self):
         for this in self:
             this.expiration_date = 0
