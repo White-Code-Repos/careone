@@ -14,7 +14,7 @@
 
     'version': '0.1',
 
-    'depends': ['base' , 'sale_coupon'],
+    'depends': ['base' , 'sale_coupon' , 'sale'],
 
     'data': [],
 }
