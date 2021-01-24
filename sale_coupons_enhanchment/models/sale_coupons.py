@@ -42,10 +42,10 @@ class SaleCoupon(models.Model):
     def _compute_expiration_date(self):
         for this in self:
             this.expiration_date = 0
-            for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
-                coupon.expiration_date = coupon.expiration_date_2
-            for coupon in this.filtered(lambda x: x.program_id.validity_duration = 0):
-                coupon.expiration_date = 0
+            # for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
+            #     coupon.expiration_date = coupon.expiration_date_2
+            # for coupon in this.filtered(lambda x: x.program_id.validity_duration = 0):
+            #     coupon.expiration_date = 0
 
 
 class SaleCouponProgram(models.Model):
