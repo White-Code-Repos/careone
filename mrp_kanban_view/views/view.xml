@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="mrp.mrp_production_kanban_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="attributes">
-                    <attribute name="default_group_by">{state}</attribute>
+                    <attribute name="default_group_by">"state"</attribute>
                 </xpath>
             </field>
         </record>
