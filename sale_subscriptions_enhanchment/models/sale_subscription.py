@@ -47,7 +47,7 @@ class SalesSubscription(models.Model):
                                         required=False, )
     apper_generate_coupon = fields.Boolean(default=False)
 
-    date = fields.Date('End Date', compute="_compute_date_end")
+    date = fields.Date('End Date', compute="_compute_date_end", stored=True)
     def _compute_date_end(self):
         for this in self:
             if this.date_start and this.template_id.recurring_rule_boundary == 'limited':
