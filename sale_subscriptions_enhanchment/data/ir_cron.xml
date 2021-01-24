@@ -24,7 +24,7 @@
             <field name="user_id" ref="base.user_root" />
             <field name="active" eval="True"/>
         </record>
-        <record id='update_subscriper_state' model='ir.cron'>
+        <!-- <record id='update_subscriper_state' model='ir.cron'>
             <field name='name'>update_subscriper_state</field>
             <field name='model_id' ref='model_res_partner'/>
             <field name='state'>code</field>
@@ -36,5 +36,5 @@
             <field name="doall" eval="True"/>
             <field name="user_id" ref="base.user_root" />
             <field name="active" eval="True"/>
-        </record>
+        </record> -->
 </odoo>
