@@ -8,13 +8,10 @@ class SaleOrderLine(models.Model):
 
     fixed_discount = fields.Float(string="Fixed Discount")
 
-    @api.depends('fixed_discount' , 'discount')
+    @api.depends('fixed_discount')
     def action_calculate_discount(self):
-        fixed_discount = self.fixed_discount
-        discount = self.discount
-        if fixed_discount or discount:
-            self.fixed_discount = (discount / 100) * self.price_unit
-            self.discount = (fixed_discount / self.price_unit) * 100
-        else:
-            self.fixed_discount = 0
-            self.discount = 0
+        self.discount = (self.fixed_discount / self.price_unit) * 100
+
+    @api.depends('discount')
+    def action_calculate_fixed_discount(self):
+        self.fixed_discount = (self.discount / 100) * self.price_unit
