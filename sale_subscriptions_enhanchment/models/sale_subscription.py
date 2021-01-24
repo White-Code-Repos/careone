@@ -25,6 +25,7 @@ class SalesSubscription(models.Model):
             mins = str(int(str(temp.end_hour_use).split('.')[1])*60/10**len(str(temp.end_hour_use).split('.')[1]))
             _logger.info(hours + ':' + mins)
             # _logger.info(temp.end_hour_use)
+            #
 
 
 
