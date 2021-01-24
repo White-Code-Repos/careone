@@ -22,6 +22,7 @@ class SaleCouponReward(models.Model):
     #     return result
 
 
+
 class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
 
