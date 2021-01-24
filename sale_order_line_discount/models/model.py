@@ -12,8 +12,12 @@ class SaleOrderLine(models.Model):
     def action_calculate_discount(self):
         if self.fixed_discount:
             self.discount = (self.fixed_discount / self.price_subtotal) * 100
+        else:
+            self.discount = 0
 
     @api.onchange('discount')
     def action_calculate_fixed_discount(self):
         if self.discount:
             self.fixed_discount = (self.discount / 100) * self.price_subtotal
+        else:
+            self.fixed_discount = 0
