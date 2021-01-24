@@ -23,7 +23,10 @@ class SaleCoupon(models.Model):
     def _compute_expiration_date(self):
         for this in self:
             if this.validity_duration == 0:
-                this.expiration_date = 0
+                if this.is_expiration_date_changed:
+                    this.expiration_date = this.expiration_date_edit
+                else:
+                    this.expiration_date = 0
             else:
                 if this.is_expiration_date_changed:
                     this.expiration_date = this.expiration_date_edit
