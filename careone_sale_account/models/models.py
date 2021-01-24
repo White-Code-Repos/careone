@@ -15,6 +15,7 @@ class AccountInvoice(models.Model):
         selection=[('small', 'small'), ('medium', 'medium'), ('larg', 'larg')],
         readonly=True
     )
+    
     vehicle_state = fields.Selection(
         string='Vehicle state',
         selection=[('Good', 'Good'), ('Medium', 'Medium'), ('Bad', 'Bad')],
