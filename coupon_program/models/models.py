@@ -39,6 +39,9 @@ class CouponProgramInherit(models.Model):
         vals = {'program_id': program.id, 'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use,
+                'is_str': program.is_str,'is_sun': program.is_sun,'is_mon': program.is_mon,
+                'is_tus': program.is_tus,'is_wen': program.is_wen,'is_thur': program.is_thur,
+                'is_fri': program.is_fri,
                 # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
                 'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
 
@@ -120,6 +123,9 @@ class SaleOrder(models.Model):
                 'is_free_order': program.is_free_order,
                 'start_date_use': program.start_date_use, 'end_date_use': program.end_date_use,
                 'start_hour_use': program.start_hour_use, 'end_hour_use': program.end_hour_use,
+                'is_str': program.is_str, 'is_sun': program.is_sun, 'is_mon': program.is_mon,
+                'is_tus': program.is_tus, 'is_wen': program.is_wen, 'is_thur': program.is_thur,
+                'is_fri': program.is_fri,
                 # 'expiration_date': datetime.now().date() + timedelta(days=program.validity_duration,
                 'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}
         order_products = []
