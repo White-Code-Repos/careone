@@ -20,7 +20,7 @@ class SalesSubscription(models.Model):
         text = ""
         for temp in temps:
             mins, hours = math.modf(temp.end_hour_use)
-            _logger.info(mins+hours)
+            _logger.info(str(mins)+str(hours))
 
 
 
