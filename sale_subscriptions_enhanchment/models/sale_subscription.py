@@ -19,7 +19,6 @@ class Partner(models.Model):
     x_subscriber = fields.Boolean('Is Subscriper')
     def _compute_subscripe_state(self):
         for this in self:
-            _logger.info(this.name)
             subs = self.env['sale.subscription'].search([('in_progress','=',True),('partner_id','=',this.id)])
             if len(subs)>0:
                 this.x_subscriber = True
