@@ -281,11 +281,18 @@ class Partner_inherit(models.Model):
 
     def get_coupons_lines(self):
         for rec in self:
+            # coupons = self.env["sale.coupon"].search(
+            #     ['|', ('partner_id', '=', False),
+            #      ('partner_id', '=', rec.id),
+            #      ('state', '=', 'new'),
+            #      ('program_id', '!=', False), ('customer_source_id', '=', rec.id),
+            #      # ('customer_source_id', '=', False)
+            #      ])
             coupons = self.env["sale.coupon"].search(
-                ['|', ('partner_id', '=', False),
-                 ('partner_id', '=', rec.id),
+                ['|',('partner_id', '=', rec.id),
+                 ('customer_source_id', '=', rec.id),
                  ('state', '=', 'new'),
-                 ('program_id', '!=', False), ('customer_source_id', '=', rec.id),
+                 ('program_id', '!=', False),
                  # ('customer_source_id', '=', False)
                  ])
 
