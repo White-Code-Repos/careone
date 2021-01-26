@@ -28,6 +28,7 @@ class SaleOrder(models.Model):
                     [('vehicle_in_partner', '=', self.partner_id.id),
                      ('fleet_model', '=', fleet_vehicle_id.model_id.id)], order='id desc', limit=1)
                 if partner_vehicle_id:
+                    self.partner_id = partner_vehicle_id.id
                     self.customer_vehicle_id = partner_vehicle_id.id
 
     # hisham edition
