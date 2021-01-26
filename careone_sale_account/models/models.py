@@ -50,6 +50,7 @@ class SaleOrder(models.Model):
             'planned_date':self.planned_date,
             'size':self.size,
             'vehicle_state':self.vehicle_state,
+            'used_coupon': self.used_coupon.id,
         })
         return vals
         

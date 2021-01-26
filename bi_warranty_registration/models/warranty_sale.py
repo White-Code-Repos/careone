@@ -36,7 +36,6 @@ class SaleOrder(models.Model):
                     'viechle_id':self.vehicle_id.id,
                     'size':self.size,
                     'model_id':self.model_id.id,
-					'used_coupon':self.used_coupon.id
 				})
 
 		return res

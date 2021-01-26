@@ -17,7 +17,7 @@
         <field name="inherit_id" ref="careone_sale_account.account_invoice"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='size']" position="after">
-                <field name="used_coupon"/>
+                <field name="used_coupon" readonly="1" force_save="1"/>
             </xpath>
         </field>
     </record>

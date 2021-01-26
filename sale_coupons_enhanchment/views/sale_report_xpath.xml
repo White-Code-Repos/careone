@@ -18,3 +18,6 @@
         </xpath>
     </template>
 </odoo>
+
+
+<!--					'used_coupon':self.used_coupon.id-->
