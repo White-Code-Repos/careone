@@ -10,4 +10,15 @@
             </xpath>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="view_invoice_form_used_coupon">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="careone_sale_account.account_invoice"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='size']" position="after">
+                <field name="used_coupon"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

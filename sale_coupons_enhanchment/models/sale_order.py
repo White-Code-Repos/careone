@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
+class AccountMove(models.Model):
+    _inherit = "account.move"
+
+    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon")
+
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 

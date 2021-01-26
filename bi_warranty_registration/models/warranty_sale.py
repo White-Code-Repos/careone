@@ -4,19 +4,14 @@
 
 from odoo import api, fields, models, _
 
-
-
 class sale_order_line(models.Model):
     _inherit = "sale.order.line"
 
     serial_no =  fields.Many2one('stock.production.lot',string='Serial Number')
-            
-    
 
 class SaleOrder(models.Model):
 	_inherit = "sale.order"
-    
-    
+
 	@api.depends('order_line')
 	def _compute_warranty_sale(self):
 
@@ -24,8 +19,6 @@ class SaleOrder(models.Model):
 			count = 0
 			warranty = self.env['product.warranty'].search_count([('so_id','=',res.id)])
 			res.update({'warranty_sale' :warranty})
-			
-
 
 	warranty_sale = fields.Integer(string="warranty",compute="_compute_warranty_sale")
 
@@ -43,6 +36,7 @@ class SaleOrder(models.Model):
                     'viechle_id':self.vehicle_id.id,
                     'size':self.size,
                     'model_id':self.model_id.id,
+					'used_coupon':self.used_coupon.id
 				})
 
 		return res
