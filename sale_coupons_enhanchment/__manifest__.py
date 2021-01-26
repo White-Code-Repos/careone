@@ -9,6 +9,7 @@
     'data': [
         'views/sale_coupons_view.xml',
         'views/sale_xpath.xml',
+        'views/sale_report_xpath.xml',
         'wizard/sale_coupon_apply_code_view.xml',
     ],
     'installable': True,

@@ -10,17 +10,4 @@
             </xpath>
         </field>
     </record>
-
-    <data>
-        <templates>
-            <t t-name="view_order_form_report_used_coupon" t-inherit="sale.report_saleorder_document" t-inherit-mode="primary">
-                <xpath expr="//div/div[2]/div[5]" position="after">
-                    <div t-if="doc.used_coupon.code" class="col-auto mw-100 mb-2">
-                        <strong>Used Coupon:</strong>
-                        <p class="m-0" t-field="doc.used_coupon.code"/>
-                    </div>
-                </xpath>
-            </t>
-        </templates>
-    </data>
 </odoo>
