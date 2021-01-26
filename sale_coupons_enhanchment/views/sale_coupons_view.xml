@@ -34,16 +34,4 @@
             </form>
         </field>
     </record>
-
-<!--    hisham edition-->
-<!--    <record id="sale_coupon_inherited_form" model="ir.ui.view">-->
-<!--        <field name="name">sale.coupon.inherited.form</field>-->
-<!--        <field name="model">sale.coupon</field>-->
-<!--        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <xpath expr="//field[@name='partner_id']" position="after">-->
-<!--                <field name="vehicle_id"/>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
 </odoo>

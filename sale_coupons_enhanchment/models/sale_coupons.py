@@ -47,9 +47,6 @@ class SaleCouponGenerate(models.TransientModel):
     generation_type = fields.Selection(selection_add=[('nbr_vehicles', 'Number of selected vehicles')])
     vehicles_domain = fields.Char(string="Customer", default='[]')
 
-
-
-
     def generate_coupon(self):
         program = self
         vals = {'program_id': program.id,'expiration_date_2': datetime.now().date()+timedelta(days=program.validity_duration)}

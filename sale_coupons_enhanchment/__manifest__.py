@@ -8,6 +8,7 @@
     ],
     'data': [
         'views/sale_coupons_view.xml',
+        'views/sale_xpath.xml',
         'wizard/sale_coupon_apply_code_view.xml',
     ],
     'installable': True,

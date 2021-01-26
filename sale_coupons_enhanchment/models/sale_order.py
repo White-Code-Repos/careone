@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
-
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon")
 
     def _get_reward_line_values(self, program):
         self.ensure_one()
