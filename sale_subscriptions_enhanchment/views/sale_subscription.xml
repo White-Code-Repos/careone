@@ -61,7 +61,7 @@
           <field name="model">sale.subscription</field>
           <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
           <field name="arch" type="xml">
-            <filter name="end_month" position="replace">
+            <filter name="end_month" position="after">
               <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'date_end_filter'}"/>
             </filter>
           </field>
