@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  
+  <record id="res_partner_subscriper_filter_kanban" model="ir.ui.view">
+      <field name="name">res_partner_subscriper_filter_kanban</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+      <field name="arch" type="xml">
+        <field name="id" position="after">
+          <field name="subscriper" invisible="1"/>
+          <field name="x_subscriber" invisible="1"/>
+        </field>
+      </field>
+  </record>
+  <record id="res_partner_subscriper_filter_tree" model="ir.ui.view">
+      <field name="name">res_partner_subscriper_filter_tree</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_tree"/>
+      <field name="arch" type="xml">
+        <field name="display_name" position="after">
+          <field name="subscriper" invisible="1"/>
+          <field name="x_subscriber" invisible="1"/>
+        </field>
+      </field>
+  </record>
+  <record id="res_partner_subscriper_filter_form" model="ir.ui.view">
+      <field name="name">res_partner_subscriper_filter_form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <field name="name" position="after">
+          <field name="subscriper" invisible="1"/>
+          <field name="x_subscriber" invisible="1"/>
+        </field>
+      </field>
+  </record>
+
+  <record id="sale_subscription_view_form_inherited_kanban" model="ir.ui.view">
+      <field name="name">sale.subscription.kanban</field>
+      <field name="model">sale.subscription</field>
+      <field name="inherit_id" ref="sale_subscription.sale_subscription_view_kanban"/>
+      <field name="arch" type="xml">
+        <field name="user_id" position="before">
+          <field name="date" invisible="1"/>
+          <field name="date_end_filter" invisible="1"/>
+        </field>
+      </field>
+    </record>
+    <record id="sale_subscription_view_form_inherited_tree" model="ir.ui.view">
+        <field name="name">sale.subscription.tree</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_list"/>
+        <field name="arch" type="xml">
+          <field name="code" position="before">
+            <field name="date" invisible="1"/>
+            <field name="date_end_filter" invisible="1"/>
+          </field>
+        </field>
+      </record>
+      <record id="sale_subscription_view_form_inherited_search" model="ir.ui.view">
+          <field name="name">sale.subscription.search</field>
+          <field name="model">sale.subscription</field>
+          <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
+          <field name="arch" type="xml">
+            <filter name="end_month" position="after">
+              <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'date_end_filter'}"/>
+            </filter>
+            <filter name="end_month" position="attributes">
+              <attribute name="invisible">1</attribute>
+            </filter>
+          </field>
+        </record>
     <record id="sale_subscription_view_form_inherited_form" model="ir.ui.view">
         <field name="name">sale.subscription.form</field>
         <field name="model">sale.subscription</field>
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
         <field name="arch" type="xml">
+          <field name="date" position="after">
+            <field name="date_end_filter" invisible="1"/>
+          </field>
             <xpath expr="//field[@name='company_id']" position="after">
                 <!-- <field name="end_date" invisible="1"/> -->
                 <field name="freez_duration" invisible="1"/>

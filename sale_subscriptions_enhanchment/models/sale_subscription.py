@@ -12,6 +12,21 @@ import math
 import logging
 _logger = logging.getLogger(__name__)
 
+class Partner(models.Model):
+    _inherit = 'res.partner'
+
+    subscriper = fields.Boolean(compute="_compute_subscripe_state")
+    x_subscriber = fields.Boolean('Is Subscriper')
+    def _compute_subscripe_state(self):
+        for this in self:
+            subs = self.env['sale.subscription'].search([('in_progress','=',True),('partner_id','=',this.id)])
+            if len(subs)>0:
+                this.x_subscriber = True
+                this.subscriper = True
+            else:
+                this.x_subscriber = False
+                this.subscriper = False
+
 class SalesSubscription(models.Model):
     _inherit = 'sale.subscription'
 
@@ -47,7 +62,8 @@ class SalesSubscription(models.Model):
                                         required=False, )
     apper_generate_coupon = fields.Boolean(default=False)
 
-    date = fields.Date('End Date', compute="_compute_date_end")
+    date = fields.Date('End Date', compute="_compute_date_end", stored=True)
+    date_end_filter = fields.Date('End Date')
     def _compute_date_end(self):
         for this in self:
             if this.date_start and this.template_id.recurring_rule_boundary == 'limited':
@@ -58,8 +74,10 @@ class SalesSubscription(models.Model):
                     total_freeze_days = total_freeze_days + freeze.freeze_duration
                 initial_end_date = initial_end_date + timedelta(days=(30*this.template_id.recurring_rule_count)) + timedelta(days=total_freeze_days)
                 this.date = initial_end_date
+                this.date_end_filter = initial_end_date
             if not this.date:
                 this.date = False
+                this.date_end_filter = False
 
 
     freez_duration = fields.Integer('Freezing Duration', related='template_id.freez_duration')
