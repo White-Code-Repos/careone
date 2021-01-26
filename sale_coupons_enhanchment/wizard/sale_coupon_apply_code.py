@@ -54,45 +54,7 @@ class SaleCouponApplyCode(models.TransientModel):
                 if self.coupon_code.is_free_order == True:
                     self.is_free_order = True
                     self.is_free_order_readonly_x = True
-        # else:
-        #
-            # if not self.coupon_code.partner_id and self.coupon_code.vehicle_id:
-            #     return {'domain': {
-            #         'coupon_code': [('start_date_use', '<=', today_x.date()),
-            #                         ('end_date_use', '>=', today_x.date()),
-            #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-            #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-            #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-            #                         # ('program_id', '=', sales_order.coupon_id.id),
-            #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-            #                         ('partner_id', '=', False),
-            #                         '|', ('vehicle_id', '=', sales_order.vehicle_id.id),
-            #                         ('vehicle_id', '=', False)]}}
-            # elif self.coupon_code.partner_id and not self.coupon_code.vehicle_id:
-            #     return {'domain': {
-            #         'coupon_code': [('start_date_use', '<=', today_x.date()),
-            #                         ('end_date_use', '>=', today_x.date()),
-            #                         ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-            #                         ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-            #                         ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-            #                         # ('program_id', '=', sales_order.coupon_id.id),
-            #                         ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-            #                         ('vehicle_id', '=', False),
-            #                         '|', ('partner_id', '=', sales_order.partner_id.id),
-            #                         ('partner_id', '=', False)]}}
-            # else:
-            # return {'domain': {
-            #     'coupon_code': [('start_date_use', '<=', today_x.date()),
-            #                     ('end_date_use', '>=', today_x.date()),
-            #                     ('start_hour_use', '<=', (current_time.hour + current_time.minute / 60)),
-            #                     ('end_hour_use', '>=', (current_time.hour + current_time.minute / 60)),
-            #                     ('expiration_date', '>', today.strftime("%Y-%m-%d")),
-            #                     # ('program_id', '=', sales_order.coupon_id.id),
-            #                     ('state', '=', 'new'), '|', ('partner_id', '=', sales_order.partner_id.id),
-            #                     '|', ('vehicle_id', '=', sales_order.vehicle_id.id),('vehicle_id', '=', False),
-            #                     '|', ('partner_id', '=', sales_order.partner_id.id),('partner_id', '=', False),]}}
 
-    # hisham edition
     is_free_order = fields.Boolean(string="Free Order", store=True)
 
     def process_coupon(self):
@@ -177,6 +139,10 @@ class SaleCouponApplyCode(models.TransientModel):
                 if error_status.get('not_found', False):
                     raise UserError(error_status.get('not_found', False))
 
+        if self.coupon_code:
+            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+            sales_order.used_coupon = self.coupon_code
+
     def apply_promo(self, order, coupon_code):
         if self.code_type == 'coupon':
             # coupon = self.env['sale.coupon'].browse(coupon_code)
@@ -205,7 +171,6 @@ class SaleCouponApplyCode(models.TransientModel):
         error_status = {}
         program = self.env['sale.coupon.program'].search([('promo_code', '=', coupon_code)])
         if program:
-            # raise UserError("TESTTESTTESTTESTTESTTESTTESTTEST %s %s " % (order,coupon_code))
             error_status = program._check_promo_code(order, coupon_code)
             if not error_status:
                 if program.promo_applicability == 'on_next_order':
