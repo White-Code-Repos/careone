@@ -13,29 +13,29 @@ _logger = logging.getLogger(__name__)
 
 class Product(models.Model):
 	_inherit = "product.product"
-	
+
 	def _compute_quantities_dict(self, lot_id, owner_id, package_id, from_date=False, to_date=False):
 		res = super(Product,self)._compute_quantities_dict(lot_id, owner_id, package_id, from_date, to_date)
 
 		for p_id in res:
 			product_variant_id = self.env['product.product'].browse(p_id)
 			product_template_id = product_variant_id.product_tmpl_id
-			
+
 			if product_template_id.is_pack:
 				product_template_id = product_variant_id.product_tmpl_id
 				res[product_variant_id.id].update({
 				'virtual_available':product_template_id.virtual_available,
 				'qty_available':product_template_id.virtual_available
 				})
-						 
+
 		return res
 
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
-	
+
 	def _compute_quantities_dict(self):
 		# TDE FIXME: why not using directly the function fields ?
-		
+
 		variants_available = self.mapped('product_variant_ids')._product_available()
 		prod_available = {}
 		for template in self:
@@ -80,8 +80,8 @@ class ProductTemplate(models.Model):
 
 class SaleOrderLine(models.Model):
 	_inherit = 'sale.order.line'
+
 	
-	@api.multi
 	def _get_delivered_qty(self):
 		res = super(SaleOrderLine, self)._get_delivered_qty()
 		if self.product_id.is_pack:

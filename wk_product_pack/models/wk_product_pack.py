@@ -30,14 +30,14 @@ class ProductTemplate(models.Model):
     is_pack = fields.Boolean(
         string='Is product pack')
     wk_product_pack = fields.One2many(
-        comodel_name='product.pack', 
-        inverse_name='wk_product_template', 
+        comodel_name='product.pack',
+        inverse_name='wk_product_template',
         string='Product pack', copy=True)
     pack_stock_management = fields.Selection(
         [('decrmnt_pack', 'Decrement Pack Only'),
         ('decrmnt_products', 'Decrement Products Only'),
-        ('decrmnt_both', 'Decrement Both')], 
-        string='Pack Stock Management', 
+        ('decrmnt_both', 'Decrement Both')],
+        string='Pack Stock Management',
         default='decrmnt_products')
 
     has_discounted_amount = fields.Boolean(
@@ -116,8 +116,8 @@ class ProductPack(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-   
-    @api.multi
+
+
     def _action_launch_stock_rule(self):
         """
         Launch procurement group run method with required/custom fields genrated by a

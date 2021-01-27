@@ -15,7 +15,7 @@ class ProductPackWizard(models.TransientModel):
     product_name = fields.Many2one('product.product',string='PACK',required=True)
     quantity = fields.Float('Quantity',required=True ,default=1)
 
-    @api.multi
+
     def add_product_button(self):
         product_obj = self.product_name.wk_product_pack
         orderLine = self.env['sale.order.line'].create({
