@@ -15,9 +15,9 @@
 #################################################################################
 {
   "name"                 :  "Product Pack",
-  "summary"              :  """The module allows the customer to create product bundles in the Odoo backend and sell different types of products together in one pack in a sales order line. The product pack can be used to offer discounts and offers to the customers.""",
+  "summary"              :  "The module allows the customer to create product bundles in the Odoo backend and sell different types of products together in one pack in a sales order line. The product pack can be used to offer discounts and offers to the customers.",
   "category"             :  "Sales",
-  "version"              :  "4.1.2",
+  "version"              :  "4.1.0",
   "sequence"             :  1,
   "author"               :  "Webkul Software Pvt. Ltd.",
   "license"              :  "Other proprietary",
@@ -37,7 +37,8 @@ Marketplace Product bundles
 Manage Packages
 Product Package
 Wholesale Product
-Wholesale Management""",
+Wholesale Management
+""",
   "live_test_url"        :  "http://odoodemo.webkul.com/?module=wk_product_pack",
   "depends"              :  ['sale_stock'],
   "data"                 :  [
@@ -51,6 +52,6 @@ Wholesale Management""",
   "installable"          :  True,
   "auto_install"         :  False,
   "price"                :  69,
-  "currency"             :  "USD",
-  # "pre_init_hook"        :  "pre_init_check",
+  "currency"             :  "EUR",
+  "pre_init_hook"        :  "pre_init_check",
 }
