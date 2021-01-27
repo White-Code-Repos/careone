@@ -31,7 +31,7 @@ class HrPayslip(models.Model):
         self.company_id = employee.company_id
 
         if not self.env.context.get('contract') or not self.contract_id:
-            contract_ids = self.get_contract(employee, date_from, date_to)
+            contract_ids = employee._get_contracts( date_from, date_to)
             if not contract_ids:
                 return
             self.contract_id = self.env['hr.contract'].browse(contract_ids[0])
