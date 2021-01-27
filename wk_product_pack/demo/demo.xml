@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2018-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data noupdate="1">
+
+
+        <record id="product_product_pack_1" model="product.product">
+            <field name="name">Purple T shirt</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">800.0</field>
+            <field name="list_price">320.0</field>
+            <field name="type">product</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/3.jpeg"></field>
+        </record>
+        <record id="product_product_pack_2" model="product.product">
+            <field name="name">ladies Shoes</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">500.0</field>
+            <field name="list_price">320.0</field>
+            <field name="type">product</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/1.jpg"></field>
+        </record>
+        <record id="product_product_pack_3" model="product.product">
+            <field name="name">Red Bag</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">300.0</field>
+            <field name="list_price">320.0</field>
+            <field name="type">product</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/2.jpeg"></field>
+        </record>
+        <record id="product_product_pack_4" model="product.product">
+            <field name="name">Gift Item One</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">300.0</field>
+            <field name="type">product</field>
+            <field name="list_price">320.0</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/6.jpeg"></field>
+        </record>
+        <record id="product_product_pack_5" model="product.product">
+            <field name="name">Gift item Two</field>
+            <field name="categ_id" ref="product.product_category_5"/>
+            <field name="standard_price">200.0</field>
+            <field name="list_price">10.0</field>
+            <field name="type">product</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/7.jpg"></field>
+        </record>
+
+     <record id="product_pack_one" model="product.template">
+            <field name="name">Ladies Combo Pack</field>
+            <field name="type">product</field>
+            <field name="pack_stock_management">decrmnt_both</field>
+            <field name="is_pack">True</field>
+            <field name="image" type="base64" file="wk_product_pack/static/description/5.png"></field>
+            <field name="list_price">900.0</field>
+            <field name="wk_product_pack" eval="[(0, 0, {'product_name': ref('wk_product_pack.product_product_pack_1')}),(0, 0,{'product_name': ref('wk_product_pack.product_product_pack_2')}),(0, 0,{'product_name': ref('wk_product_pack.product_product_pack_3')})]"/>
+        </record>
+
+
+        <record id="product_pack_two" model="product.template">
+        <field name="image" type="base64" file="wk_product_pack/static/description/4.jpg"></field>
+            <field name="name">Gift Pack</field>
+            <field name="type">product</field>
+            <field name="pack_stock_management">decrmnt_both</field>
+            <field name="is_pack">True</field>
+            <field name="list_price">280.0</field>
+            <field name="wk_product_pack" eval="[(0, 0, {'product_name': ref('wk_product_pack.product_product_pack_4')}),(0, 0,{'product_name': ref('wk_product_pack.product_product_pack_5')})]"/>
+        </record>
+
+     
+</data>
+</odoo>

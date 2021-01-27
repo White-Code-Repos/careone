@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2018-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data>
+
+        <record id="core_inherited_product_template_form_view_procurement_button" model="ir.ui.view">
+            <field name="name">product.template.pack</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']/button[@name='action_open_quants']" position="after">
+                    <button type="object"
+                            name="action_open_quants"
+                            attrs="{'invisible':['|',('is_pack','=',False),('pack_stock_management','!=','decrmnt_products')]}" class="oe_stat_button" icon="fa-building-o">
+                            <field name="qty_available_pack" widget="statinfo" string="On Hand"/>
+                    </button>
+
+                    <button type="action"
+                            name="%(stock.action_stock_level_forecast_report_template)d"
+                            attrs="{'invisible':['|',('is_pack','=',False),('pack_stock_management','!=','decrmnt_products')]}"
+                            class="oe_stat_button" icon="fa-building-o">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value"><field name="virtual_available_pack" widget="integer"/>
+                                    <span attrs="{'invisible':['|',('is_pack','=',False),('pack_stock_management','!=','decrmnt_products')]}" groups="base.group_no_one">
+                                        (-<field name="outgoing_qty_pack" widget="integer"/>+<field name="incoming_qty_pack" widget="integer"/>)
+                                    </span>
+                                </span>
+                                <span class="o_stat_text">Forecasted</span>
+                            </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>
