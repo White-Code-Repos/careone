@@ -33,7 +33,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.openhrms.com",
     'depends': [
-        'base', 'hr_payroll_community', 'hr', 'account',
+        'base', 'hr_payroll', 'hr', 'account',
     ],
     'data': [
         'security/ir.model.access.csv',
