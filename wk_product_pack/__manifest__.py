@@ -52,5 +52,5 @@ Wholesale Management""",
   "auto_install"         :  False,
   "price"                :  69,
   "currency"             :  "USD",
-  "pre_init_hook"        :  "pre_init_check",
+  # "pre_init_hook"        :  "pre_init_check",
 }
