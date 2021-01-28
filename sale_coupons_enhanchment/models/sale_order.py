@@ -4,9 +4,9 @@ from odoo import api, fields, models, _
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon", compute='_compute_used_coupon', store=True)
+    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon", compute='_compute_used_coupon')
 
-    @api.model
+    # @api.model
     def _compute_used_coupon(self):
         for this in self:
             sale_order = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
