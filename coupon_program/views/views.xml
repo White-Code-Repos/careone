@@ -296,20 +296,6 @@
                         </tree>
                     </field>
                 </page>
-                <page name="consumed_coupons" string="Consumed Coupons">
-                    <field name="consumed_coupons_ids" readonly="1" context="{'group_by':'program_id'}">
-                        <tree>
-                            <field name="code"/>
-                            <field name="expiration_date"/>
-                            <field name="program_id"/>
-                            <field name="partner_id"/>
-                            <field name="customer_source_id" readonly="1"/>
-                            <field name="sale_order_id" readonly="1"/>
-                            <field name="sales_order_id" readonly="1"/>
-                            <field name="state"/>
-                        </tree>
-                    </field>
-                </page>
             </xpath>
         </field>
     </record>
