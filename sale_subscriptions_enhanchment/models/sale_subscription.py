@@ -322,7 +322,7 @@ class SalesOrderInherit(models.Model):
                 'validate_send_payment', 'success_payment'] else False,
             'subs_products_ids': records
         }
-        default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
+        default_stage = self.env['sale.subscription.stage'].sudo().search([('in_progress', '=', True)], limit=1)
         if default_stage:
             values['stage_id'] = default_stage.id
 
@@ -344,11 +344,16 @@ class SalesOrderInherit(models.Model):
                         no_of_vehicles = rec.no_of_vehicles
                 values = order._prepare_subscription_data(template, no_of_vehicles)
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
-                values['stage_id'] = self.env['sale.subscription.stage'].sudo().search([('name','=','In Progress'),('in_progress','=',True)], limit=1).id
+                # values['stage_id'] = self.env['sale.subscription.stage'].sudo().search([('name','=','In Progress'),('in_progress','=',True)], limit=1).id
+                values['stage_id'] = 2
                 values['from_sale_order'] = self.id
                 # _logger.info(values)
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
+                subscription.stage_id = 2
+                subscription.starred = True
+                # _logger.info(subscription.stage_id.name)
+                # _logger.info(subscription.stage_id.in_progress)
                 res.append(subscription.id)
                 to_create[template].write({'subscription_id': subscription.id})
                 subscription.message_post_with_view(
