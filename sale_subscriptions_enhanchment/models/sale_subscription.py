@@ -347,12 +347,13 @@ class SalesOrderInherit(models.Model):
                 # values['stage_id'] = self.env['sale.subscription.stage'].sudo().search([('name','=','In Progress'),('in_progress','=',True)], limit=1).id
                 values['stage_id'] = 2
                 values['from_sale_order'] = self.id
-                _logger.info(values)
+                # _logger.info(values)
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
                 subscription.stage_id = 2
-                _logger.info(subscription.stage_id.name)
-                _logger.info(subscription.stage_id.in_progress)
+                subscription.starred = True
+                # _logger.info(subscription.stage_id.name)
+                # _logger.info(subscription.stage_id.in_progress)
                 res.append(subscription.id)
                 to_create[template].write({'subscription_id': subscription.id})
                 subscription.message_post_with_view(
