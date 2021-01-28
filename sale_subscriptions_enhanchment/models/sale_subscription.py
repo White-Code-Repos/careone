@@ -322,7 +322,7 @@ class SalesOrderInherit(models.Model):
                 'validate_send_payment', 'success_payment'] else False,
             'subs_products_ids': records
         }
-        default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
+        default_stage = self.env['sale.subscription.stage'].sudo().search([('in_progress', '=', True)], limit=1)
         if default_stage:
             values['stage_id'] = default_stage.id
 
