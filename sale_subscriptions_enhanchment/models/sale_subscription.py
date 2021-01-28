@@ -349,6 +349,7 @@ class SalesOrderInherit(models.Model):
                 # _logger.info(values)
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
+                subscription.stage_id = self.env['sale.subscription.stage'].sudo().search([('name','=','In Progress'),('in_progress','=',True)], limit=1).id
                 res.append(subscription.id)
                 to_create[template].write({'subscription_id': subscription.id})
                 subscription.message_post_with_view(
