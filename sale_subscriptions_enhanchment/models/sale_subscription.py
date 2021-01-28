@@ -346,7 +346,7 @@ class SalesOrderInherit(models.Model):
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
                 values['stage_id'] = self.env['sale.subscription.stage'].sudo().search([('name','=','In Progress'),('in_progress','=',True)], limit=1).id
                 values['from_sale_order'] = self.id
-                # _logger.info(values)
+                _logger.info(values)
                 subscription = self.env['sale.subscription'].sudo().create(values)
                 subscription.onchange_date_start()
                 res.append(subscription.id)
