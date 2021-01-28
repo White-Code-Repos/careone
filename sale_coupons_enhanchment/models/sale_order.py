@@ -12,6 +12,8 @@ class AccountMove(models.Model):
             sale_order = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
             if sale_order and sale_order.used_coupon:
                 this.used_coupon = sale_order.used_coupon.id
+            else:
+                this.used_coupon = False
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
