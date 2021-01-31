@@ -3,8 +3,7 @@
 #    A part of OpenHRMS Project <https://www.openhrms.com>
 #
 #    Cybrosys Technologies Pvt. Ltd.
-#    Copyright (C) 2018-TODAY Cybrosys Technologies (<https://www.cybrosys.com>).
-#    Author: Anusha P P (<https://www.cybrosys.com>)
+#    Copyright (C) 2020-TODAY Cybrosys Technologies (<https://www.cybrosys.com>).
 #
 #    This program is free software: you can modify
 #    it under the terms of the GNU Affero General Public License (AGPL) as
@@ -22,7 +21,7 @@
 ###################################################################################
 {
     'name': 'Open HRMS Loan Management',
-    'version': '13.0.1.1.0',
+    'version': '14.0.1.0.0',
     'summary': 'Manage Loan Requests',
     'description': """
         Helps you to manage Loan Requests of your company's staff.
@@ -31,9 +30,10 @@
     'author': "Cybrosys Techno Solutions",
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
+    'live_test_url': 'https://youtu.be/LdUvXDMkd4Q',
     'website': "https://www.openhrms.com",
     'depends': [
-        'base', 'hr_payroll', 'hr', 'account',
+        'base', 'hr_payroll', 'hr', 'account','hr_contract',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -43,8 +43,7 @@
         'views/hr_loan.xml',
         'views/hr_payroll.xml',
     ],
-    'demo': [],
-    'images': ['static/description/banner.jpg'],
+    'images': ['static/description/banner.png'],
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,

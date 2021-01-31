@@ -10,7 +10,7 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.LO and - (inputs.LO.amount)</field>
             <field name="appears_on_payslip" eval="True"/>
-						<field name="sequence" eval="190"/>
+			<field name="sequence" eval="190"/>
             <field name="struct_id" eval="1"/>
         </record>
 
