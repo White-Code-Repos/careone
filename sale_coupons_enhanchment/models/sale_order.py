@@ -72,6 +72,7 @@ class CouponInherit(models.Model):
             ('discount_line_product_id', '=', program.discount_line_product_id.id),
         ], limit=1)
         if coupon:
+            raise ValidationError(program.validity_duration)
             coupon.write({'state': 'reserved'})
         else:
             raise ValidationError(program.validity_duration)
