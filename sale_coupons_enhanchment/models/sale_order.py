@@ -60,7 +60,7 @@ class SaleOrderLine(models.Model):
             })
 
 class CouponInherit(models.Model):
-    _inherit = 'sale.coupon'
+    _inherit = 'sale.order'
 
     def _create_reward_coupon(self, program):
         self.ensure_one()
