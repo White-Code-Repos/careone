@@ -13,8 +13,7 @@ class SaleCoupon(models.Model):
     @api.model
     def create(self, vals):
         rec = super(SaleCoupon, self).create(vals)
-        rec.ensure_one()
-        self.validity_duration = self.program_id.validity_duration
+        raise ValidationError('The coupon is not applicable by this customer')
         return rec
 
     # @api.model
