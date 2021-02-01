@@ -5,8 +5,8 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='pricelist_id']" position="after">
-                <field name="used_coupon"/>
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                <field name="used_coupon" readonly="1" force_save="1"/>
             </xpath>
         </field>
     </record>
@@ -16,7 +16,7 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="careone_sale_account.account_invoice"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='size']" position="after">
+            <xpath expr="//notebook/page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="used_coupon" readonly="1" force_save="1"/>
             </xpath>
         </field>
