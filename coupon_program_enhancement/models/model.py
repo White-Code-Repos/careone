@@ -13,7 +13,7 @@ class SaleCoupon(models.Model):
     @api.model
     def create(self, vals):
         rec = super(SaleCoupon, self).create(vals)
-        print(fffffff)
+        rec.ensure_one()
         return rec
 
     @api.model
