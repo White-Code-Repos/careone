@@ -9,7 +9,7 @@
     </template>
 
     <template id="view_invoice_form_report_used_coupon" inherit_id="account.report_invoice_document">
-        <xpath expr="//table/tbody/tr/t[@name='account_invoice_line_accountable']/td[@name='account_invoice_line_name']" position="after">
+        <xpath expr="//div[@class='page']/table[@name='invoice_line_table']/tbody/t[3]/tr/t[@name='account_invoice_line_accountable']/td[@name='account_invoice_line_name']" position="after">
             <td t-attf-class="text-right">
                 <span class="text-nowrap" t-field="line.used_coupon"/>
             </td>
