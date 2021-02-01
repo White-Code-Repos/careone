@@ -63,6 +63,8 @@ class CouponInherit(models.Model):
     _inherit = 'sale.coupon'
 
     def _create_reward_coupon(self, program):
+        self.ensure_one()
+        raise ValidationError(program.validity_duration)
         # if there is already a coupon that was set as expired, reactivate that one instead of creating a new one
         coupon = self.env['sale.coupon'].search([
             ('program_id', '=', program.id),
