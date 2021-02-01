@@ -7,7 +7,7 @@
 
     'category': 'Sale',
 
-    'depends': ['sale', 'fleet', 'partner_fleet_sale_enhancement', 'sale_coupon', 'careone_sale_account'],
+    'depends': ['sale', 'fleet', 'partner_fleet_sale_enhancement', 'sale_coupon', 'careone_sale_account','account'],
 
     'data': [
         'views/sale_coupons_view.xml',
@@ -17,6 +17,6 @@
     ],
 
     'installable': True,
-    
+
     'auto_install': False,
 }

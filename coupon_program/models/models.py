@@ -268,9 +268,6 @@ class Partner_inherit(models.Model):
     coupons_ids = fields.One2many(comodel_name="sale.coupon", inverse_name="partner_id", string="", required=False,
                                   compute='get_coupons_lines')
 
-    consumed_coupons_ids = fields.One2many(comodel_name="sale.coupon", inverse_name="partner_id", string="", required=False,
-                                  compute='get_consumed_coupons_lines')
-
     def apply_coupon_action(self):
         return {
             'name': 'Coupon Apply',
@@ -282,25 +279,6 @@ class Partner_inherit(models.Model):
                 'default_partner_id': self.id,
             }}
 
-
-    def get_consumed_coupons_lines(self):
-        for rec in self:
-            # coupons = self.env["sale.coupon"].search(
-            #     ['|', ('partner_id', '=', False),
-            #      ('partner_id', '=', rec.id),
-            #      ('state', '=', 'new'),
-            #      ('program_id', '!=', False), ('customer_source_id', '=', rec.id),
-            #      # ('customer_source_id', '=', False)
-            #      ])
-            coupons = self.env["sale.coupon"].search(
-                ['|',('partner_id', '=', rec.id),
-                 ('customer_source_id', '=', rec.id),
-                 ('state', '=', 'used'),
-                 ('program_id', '!=', False),
-                 # ('customer_source_id', '=', False)
-                 ])
-
-            rec.consumed_coupons_ids = coupons
     def get_coupons_lines(self):
         for rec in self:
             # coupons = self.env["sale.coupon"].search(
