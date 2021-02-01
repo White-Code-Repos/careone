@@ -45,9 +45,9 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise ValidationError('Invalid date')
             elif self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60):
                 raise ValidationError('Invalid time')
-            elif self.coupon_code.validity_duration != 0:
-                if self.coupon_code.expiration_date < today:
-                    raise ValidationError('Coupon expired')
+            # elif self.coupon_code.validity_duration != 0:
+            #     if self.coupon_code.expiration_date < today:
+            #         raise ValidationError('Coupon expired')
             elif self.coupon_code.state != 'new':
                 raise ValidationError('Coupon not valid')
             else:
@@ -116,7 +116,8 @@ class SaleCouponApplyCode(models.TransientModel):
                     }
                     my_free_product_line = {
                         'product_id': my_free_product.id,
-                        'order_id': sales_order.id
+                        'order_id': sales_order.id,
+                        'used_coupon': self.coupon_code.id
                     }
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
