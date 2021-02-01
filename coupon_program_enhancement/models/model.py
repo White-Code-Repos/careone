@@ -14,9 +14,9 @@ class SaleCoupon(models.Model):
     def compute_validity_duration(self):
         for this in self:
             if this.validity_duration == 0:
+                this.validity_duration = this.program_id.validity_duration
                 this.validity_duration1 = this.program_id.validity_duration
-                this.validity_duration  = this.validity_duration1
-
+                
     @api.onchange('validity_duration1')
     def action_cal_validity_duration(self):
 
