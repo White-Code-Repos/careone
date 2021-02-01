@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="view_order_form_report_used_coupon" inherit_id="sale.report_saleorder_document">
-        <xpath expr="//table/tbody/tr/t/td[@name='td_priceunit']" position="after">
+        <xpath expr="//table/tbody/t[2]/tr/t/td[@name='td_priceunit']" position="after">
             <td name="td_used_coupon" class="text-right">
                 <span t-field="line.used_coupon"/>
             </td>
