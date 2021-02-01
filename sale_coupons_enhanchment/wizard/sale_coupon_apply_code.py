@@ -107,6 +107,7 @@ class SaleCouponApplyCode(models.TransientModel):
                     my_free_product_line = {
                         'product_id': my_free_product.id,
                         'order_id': sales_order.id,
+                        'used_coupon': self.coupon_code.id
                     }
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
