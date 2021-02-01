@@ -10,10 +10,10 @@ class SaleCoupon(models.Model):
 
     validity_duration = fields.Integer(string="Validity Duration", compute ='_compute_validity_duration', store = True)
 
-    @api.model
     def create(self, vals):
+        self.ensure_one()
         rec = super(SaleCoupon, self).create(vals)
-        rec.ensure_one()
+
         return rec
 
     @api.model
