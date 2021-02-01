@@ -45,7 +45,7 @@ class SaleOrder(models.Model):
         vals = super(SaleOrder, self)._prepare_invoice()
         invoice_line = []
         for i in self.order_line:
-            self.order_line.append(0,0,{
+            invoice_line.append(0,0,{
                 'used_coupon' : i.used_coupon
             })
         vals.update({
