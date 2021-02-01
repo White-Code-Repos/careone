@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from datetime import date
+from datetime import date, datetime
 from odoo.exceptions import ValidationError
 
 class SaleCoupon(models.Model):
@@ -16,9 +16,4 @@ class SaleCoupon(models.Model):
             if this.validity_duration == 0:
                 this.validity_duration = this.program_id.validity_duration
                 this.validity_duration1 = this.program_id.validity_duration
-                
-    @api.onchange('validity_duration1')
-    def action_cal_validity_duration(self):
-
-        if self.validity_duration1:
-            self.validity_duration = self.validity_duration1
+                expiration_date_2 =  datetime.now().date() + timedelta(days=this.program_id.validity_duration)
