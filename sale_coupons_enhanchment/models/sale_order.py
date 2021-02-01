@@ -57,3 +57,29 @@ class SaleOrderLine(models.Model):
                 'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
             })
+
+class CouponInherit(models.Model):
+    _inherit = 'sale.coupon'
+
+    def _create_reward_coupon(self, program):
+        # if there is already a coupon that was set as expired, reactivate that one instead of creating a new one
+        coupon = self.env['sale.coupon'].search([
+            ('program_id', '=', program.id),
+            ('state', '=', 'expired'),
+            ('partner_id', '=', self.partner_id.id),
+            ('order_id', '=', self.id),
+            ('discount_line_product_id', '=', program.discount_line_product_id.id),
+        ], limit=1)
+        if coupon:
+            coupon.write({'state': 'reserved'})
+        else:
+            coupon = self.env['sale.coupon'].sudo().create({
+                'program_id': program.id,
+                'state': 'reserved',
+                'partner_id': self.partner_id.id,
+                'order_id': self.id,
+                'discount_line_product_id': program.discount_line_product_id.id,
+                'validity_duration':program.validity_duration
+            })
+        self.generated_coupon_ids |= coupon
+        return coupon
