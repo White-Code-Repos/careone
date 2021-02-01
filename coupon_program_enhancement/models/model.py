@@ -12,6 +12,7 @@ class SaleCoupon(models.Model):
 
     @api.model
     def create(self, vals):
+        self.ensure_one()
         rec = super(SaleCoupon, self).create(vals)
         self.validity_duration = self.program_id.validity_duration
         return rec
