@@ -6,6 +6,6 @@ class SaleCoupon(models.Model):
 
     _inherit = 'sale.coupon'
 
-    validity_duration = fields.Integer(string="Validity Duration")
+    validity_duration = fields.Integer(string="Validity Duration" )
 
     
