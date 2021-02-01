@@ -140,9 +140,9 @@ class SaleCouponApplyCode(models.TransientModel):
                 if error_status.get('not_found', False):
                     raise UserError(error_status.get('not_found', False))
 
-        if self.coupon_code:
-            sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-            sales_order.used_coupon = self.coupon_code
+        # if self.coupon_code:
+        #     sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
+        #     sales_order.used_coupon = self.coupon_code
 
     def apply_promo(self, order, coupon_code):
         if self.code_type == 'coupon':
