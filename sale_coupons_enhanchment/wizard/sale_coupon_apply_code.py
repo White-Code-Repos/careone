@@ -9,18 +9,7 @@ from datetime import timedelta, datetime
 
 class SaleCouponApplyCode(models.TransientModel):
     _inherit = 'sale.coupon.apply.code'
-    # initial_coupon = fields.Many2one('sale.coupon', string='Initial Coupon For Searching')
-    # @api.onchange('initial_coupon')
-    # def check_coupon(self):
-    #     if self.initial_coupon:
-    #         coupon = self.env['sale.coupon'].search([('code','=',self.initial_coupon)])
-    #         if coupon:
-    #             if coupon.partner_id:
-    #                 raise UserError('This is a customer coupon')
-    #             elif coupon.vehicle_id:
-    #                 raise UserError('this is a vehicle coupon')
-    #         else:
-    #             raise UserError('There is no such a coupon.')
+
     code_type = fields.Selection(string="Code Type", selection=[('promo', 'Promotion'), ('coupon', 'Coupon'), ],
                                  required=True, default='coupon')
     promo_code = fields.Char(string="Promo Code", required=False, )
@@ -45,15 +34,15 @@ class SaleCouponApplyCode(models.TransientModel):
                 raise ValidationError('Invalid date')
             elif self.coupon_code.start_hour_use > (current_time.hour + current_time.minute / 60) or self.coupon_code.end_hour_use < (current_time.hour + current_time.minute / 60):
                 raise ValidationError('Invalid time')
-            # elif self.coupon_code.validity_duration != 0:
-            #     if self.coupon_code.expiration_date < today:
-            #         raise ValidationError('Coupon expired')
+            elif self.coupon_code.validity_duration != 0:
+                if self.coupon_code.expiration_date < today:
+                    raise ValidationError('Coupon expired')
             elif self.coupon_code.state != 'new':
                 raise ValidationError('Coupon not valid')
-            else:
-                if self.coupon_code.is_free_order == True:
-                    self.is_free_order = True
-                    self.is_free_order_readonly_x = True
+
+            if self.coupon_code.is_free_order == True:
+                self.is_free_order = True
+                self.is_free_order_readonly_x = True
 
     is_free_order = fields.Boolean(string="Free Order", store=True)
 
