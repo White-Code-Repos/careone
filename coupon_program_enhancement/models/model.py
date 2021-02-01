@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from datetime import date
+from odoo.exceptions import UserError, ValidationError
 
 class SaleCoupon(models.Model):
 
@@ -12,7 +13,7 @@ class SaleCoupon(models.Model):
     @api.model
     def _compute_validity_duration(self):
         for this in self:
-            if this.validity_duration == 0 and this.create_date.date == date.today():
+            if this.validity_duration == 0:
                 this.validity_duration = this.program_id.validity_duration
 
 
