@@ -13,6 +13,7 @@ class SaleCoupon(models.Model):
     @api.model
     def _compute_validity_duration(self):
         for this in self:
+            raise ValidationError('The coupon is not applicable by this customer')
             # if this.validity_duration == 0:
             this.validity_duration = this.program_id.validity_duration
 
