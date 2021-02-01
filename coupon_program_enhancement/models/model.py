@@ -8,16 +8,9 @@ class SaleCoupon(models.Model):
 
     _inherit = 'sale.coupon'
 
-    validity_duration = fields.Integer(string="Validity Duration", compute ='_compute_validity_duration', store = True)
+    validity_duration = fields.Integer(string="Validity Duration", compute ='compute_validity_duration')
 
-    def create(self, vals):
-        self.ensure_one()
-        rec = super(SaleCoupon, self).create(vals)
-
-        return rec
-
-    @api.model
-    def _compute_validity_duration(self):
+    def compute_validity_duration(self):
         for this in self:
             print(fffffff)
             # if this.validity_duration == 0:
