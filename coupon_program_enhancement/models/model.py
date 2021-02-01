@@ -8,17 +8,17 @@ class SaleCoupon(models.Model):
 
     _inherit = 'sale.coupon'
 
-    validity_duration = fields.Integer(string="Validity Duration", compute = '_compute_validity_duration', store = True)
+    validity_duration = fields.Integer(string="Validity Duration", compute ='_compute_validity_duration', store = True)
 
     @api.model
     def create(self, vals):
         rec = super(SaleCoupon, self).create(vals)
-        raise ValidationError('The coupon is not applicable by this customer')
+        print(fffffff)
         return rec
 
-    # @api.model
-    # def _compute_validity_duration(self):
-    #     for this in self:
-    #         raise ValidationError('The coupon is not applicable by this customer')
-    #         # if this.validity_duration == 0:
-    #         this.validity_duration = this.program_id.validity_duration
+    @api.model
+    def _compute_validity_duration(self):
+        for this in self:
+            print(fffffff)
+            # if this.validity_duration == 0:
+            this.validity_duration = this.program_id.validity_duration
