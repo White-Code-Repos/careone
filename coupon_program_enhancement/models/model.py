@@ -8,7 +8,7 @@ class SaleCoupon(models.Model):
 
     _inherit = 'sale.coupon'
 
-    validity_duration = fields.Integer(string="Validity Duration", compute ='compute_validity_duration')
+    validity_duration = fields.Integer(string="Validity Duration", compute ='compute_validity_duration',store = True)
 
     def compute_validity_duration(self):
         for this in self:
