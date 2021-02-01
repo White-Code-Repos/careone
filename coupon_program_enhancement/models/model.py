@@ -9,7 +9,7 @@ class SaleCoupon(models.Model):
     _inherit = 'sale.coupon'
 
     validity_duration = fields.Integer(string="Validity Duration")
-    validity_duration1 = fields.Integer(string="Validity Duration")
+    # validity_duration1 = fields.Integer(string="Validity Duration")
 
     # def compute_validity_duration(self):
     #     for this in self:
