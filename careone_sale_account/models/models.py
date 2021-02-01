@@ -43,12 +43,6 @@ class SaleOrder(models.Model):
     def _prepare_invoice(self):
         self.ensure_one()
         vals = super(SaleOrder, self)._prepare_invoice()
-        invoice_line = []
-
-        for i in self.order_line:
-            invoice_line.append((0,0,{
-                'used_coupon' : i.used_coupon
-            }))
         vals.update({
             'coupon_id':self.coupon_id.id,
             'vehicle_id':self.vehicle_id.id,
@@ -56,7 +50,6 @@ class SaleOrder(models.Model):
             'planned_date':self.planned_date,
             'size':self.size,
             'vehicle_state':self.vehicle_state,
-            'invoice_line_ids' : invoice_line
         })
         return vals
         
