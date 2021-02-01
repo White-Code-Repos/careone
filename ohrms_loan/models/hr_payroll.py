@@ -24,7 +24,15 @@ class HrPayslipInput(models.Model):
         clause_final = [('employee_id', '=', employee.id), ('state', '=', 'open'), '|',
                         '|'] + clause_1 + clause_2 + clause_3
         return self.env['hr.contract'].search(clause_final).ids
+class HrContract(models.Model):
+    """
+    Employee contract based on the visa, work permits
+    allows to configure different Salary structure
+    """
+    _inherit = 'hr.contract'
+    _description = 'Employee Contract'
 
+    struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
 class HrPayslipInput(models.Model):
     _inherit = 'hr.payslip.input'
 
