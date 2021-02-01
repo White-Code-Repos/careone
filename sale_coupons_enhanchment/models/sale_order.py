@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
@@ -73,6 +74,7 @@ class CouponInherit(models.Model):
         if coupon:
             coupon.write({'state': 'reserved'})
         else:
+            raise ValidationError(program.validity_duration)
             coupon = self.env['sale.coupon'].sudo().create({
                 'program_id': program.id,
                 'state': 'reserved',
