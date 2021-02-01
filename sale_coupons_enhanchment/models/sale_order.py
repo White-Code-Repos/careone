@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
-class AccountMove(models.Model):
+class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     # , compute = '_compute_used_coupon', store = True
