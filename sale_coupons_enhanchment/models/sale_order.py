@@ -4,16 +4,29 @@ from odoo import api, fields, models, _
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    # , compute = '_compute_used_coupon', store = True
-    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon")
+    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon", compute='_compute_used_coupon', store=True)
 
-    # @api.model
-    # def _compute_used_coupon(self):
-    #     for this in self:
-    #         pass
-    #         sale_order = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
-    #         if sale_order and sale_order.used_coupon:
-    #             this.used_coupon = sale_order.used_coupon.id
+    @api.model
+    def _compute_used_coupon(self):
+        for this in self:
+            product = this.env['product.template'].search([('id', '=', this.product_tmpl_id)])
+            invoice = this.env['account.move'].search([('id', '=', this.move_id)])
+            if invoice:
+                sale = this.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
+            else:
+                this.used_coupon = False
+
+            if sale:
+                sale_line = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
+            else:
+                this.used_coupon = False
+
+            if sale_line:
+                for line in sale_line:
+                    if line.product_template_id.id == product.id:
+                        this.used_coupon = line.used_coupon
+            else:
+                this.used_coupon = False
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
