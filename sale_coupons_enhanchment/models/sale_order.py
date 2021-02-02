@@ -23,7 +23,10 @@ class AccountMove(models.Model):
                     'name': line.used_coupon,
                     'invoice_id': this.id,
                 }))
-            self.used_coupon = used_coupon
+            if used_coupon:
+                self.used_coupon = used_coupon
+            else:
+                self.used_coupon = False
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
