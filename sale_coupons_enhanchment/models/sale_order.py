@@ -15,7 +15,7 @@ class AccountMove(models.Model):
 
     def _compute_used_coupon(self):
         for this in self:
-            print(ffffffffffffffffff)
+            print("ffffffffffffffffff")
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
