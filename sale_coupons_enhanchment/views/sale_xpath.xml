@@ -17,7 +17,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='currency_id']" position="after">
-                <field name="used_coupon" widget='many2many_tags'>
+                <field name="used_coupon" widget='many2many_tags' readonly="1" force_save="1">
                     <tree>
                         <field name="name"/>
                     </tree>
