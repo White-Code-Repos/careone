@@ -2,15 +2,16 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-class SaleCoupon(models.Model):
-    _inherit = "sale.coupon"
+class InvoiceUsedCoupon(models.Model):
+    _name = "invoice.used.coupon"
 
+    name = fields.Many2one('sale.coupon', string="Used Coupon")
     invoice_id = fields.Many2one('account.move')
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    used_coupon = fields.One2many('sale.coupon', 'invoice_id', string="Used Coupon", compute='_compute_used_coupon' ,store=True)
+    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon", compute='_compute_used_coupon' ,store=True)
 
     def _compute_used_coupon(self):
         for this in self:
@@ -19,10 +20,9 @@ class AccountMove(models.Model):
             used_coupon = []
             for line in lines:
                 used_coupon.append((0, 0, {
-                    'id': line.used_coupon.id,
+                    'name': line.used_coupon.id,
                     'invoice_id': this.id,
                 }))
-                
 
             if used_coupon:
                 this.used_coupon = used_coupon
