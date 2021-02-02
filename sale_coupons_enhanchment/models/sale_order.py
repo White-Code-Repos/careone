@@ -2,15 +2,15 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-class SaleCoupon(models.Model):
-    _inherit = "sale.coupon"
+class InvoiceUsedCoupon(models.Model):
+    _name = "invoice.used.coupon"
 
+    name = fields.Many2one('sale.coupon', string="Used Coupon")
     invoice_id = fields.Many2one('account.move')
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-
-    used_coupon = fields.One2many('sale.coupon', 'invoice_id', string="Used Coupon")
+    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon")
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
