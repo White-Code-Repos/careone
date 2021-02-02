@@ -19,16 +19,16 @@ class AccountMove(models.Model):
             lines = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
             used_coupon = []
             for line in lines:
-                raise ValidationError(line.used_coupon.code)
                 used_coupon.append((0, 0, {
                     'name': line.used_coupon.id,
                     'invoice_id': this.id,
                 }))
 
             if used_coupon:
-                self.used_coupon = used_coupon
+                this.used_coupon = used_coupon
             else:
-                self.used_coupon = False
+                this.used_coupon = False
+
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
