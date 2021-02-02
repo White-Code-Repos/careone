@@ -22,6 +22,7 @@ class AccountMove(models.Model):
                     'id': line.used_coupon.id,
                     'invoice_id': this.id,
                 }))
+                
 
             if used_coupon:
                 this.used_coupon = used_coupon
