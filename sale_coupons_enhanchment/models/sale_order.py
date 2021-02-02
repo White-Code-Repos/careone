@@ -23,6 +23,7 @@ class AccountMove(models.Model):
                     'name': line.used_coupon,
                     'invoice_id': this.id,
                 }))
+            self.used_coupon = used_coupon
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
