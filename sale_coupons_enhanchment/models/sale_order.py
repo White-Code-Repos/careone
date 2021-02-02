@@ -23,7 +23,6 @@ class AccountMove(models.Model):
                     'name': line.used_coupon.id,
                     'invoice_id': this.id,
                 }))
-            raise ValidationError(used_coupon)
             if used_coupon:
                 self.used_coupon = used_coupon
             else:
