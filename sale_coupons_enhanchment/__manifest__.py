@@ -10,6 +10,7 @@
     'depends': ['sale', 'fleet', 'partner_fleet_sale_enhancement', 'sale_coupon', 'careone_sale_account','account'],
 
     'data': [
+        'security/ir.model.access.csv',
         'views/sale_coupons_view.xml',
         'views/sale_xpath.xml',
         'views/sale_report_xpath.xml',
