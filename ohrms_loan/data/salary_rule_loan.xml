@@ -13,7 +13,7 @@
 			<field name="sequence" eval="190"/>
             <field name="struct_id" eval="1"/>
         </record>
-
+<!--  -->
         <!-- <record id="hr_rule_input_loan" model="hr.payslip.input">
             <field name="code">LO</field>
             <field name="name">Loan</field>
