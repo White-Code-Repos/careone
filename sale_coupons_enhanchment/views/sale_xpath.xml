@@ -14,9 +14,9 @@
     <record model="ir.ui.view" id="view_invoice_form_used_coupon">
         <field name="name">account.move.form</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="careone_sale_account.account_invoice"/>
+        <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+            <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
                 <field name="used_coupon" readonly="1" force_save="1"/>
             </xpath>
         </field>
