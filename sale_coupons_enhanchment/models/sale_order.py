@@ -16,13 +16,16 @@ class AccountMove(models.Model):
     def _compute_used_coupon(self):
         for this in self:
             sale = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
+            raise ValidationError(sale.id)
             lines = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
+            raise ValidationError(lines.id)
             used_coupon = []
             for line in lines:
                 used_coupon.append((0, 0, {
                     'name': line.used_coupon,
                     'invoice_id': this.id,
                 }))
+            raise ValidationError(used_coupon)
             if used_coupon:
                 self.used_coupon = used_coupon
             else:
