@@ -19,9 +19,9 @@ class AccountMove(models.Model):
             lines = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
             used_coupon = []
             for line in lines:
-                raise ValidationError(line.used_coupon.name)
+                raise ValidationError(line.used_coupon.code)
                 used_coupon.append((0, 0, {
-                    'name': line.used_coupon.code,
+                    'name': line.used_coupon.id,
                     'invoice_id': this.id,
                 }))
 
