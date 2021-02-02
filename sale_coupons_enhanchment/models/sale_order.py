@@ -10,7 +10,12 @@ class InvoiceUsedCoupon(models.Model):
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon")
+
+    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon", compute='_compute_used_coupon')
+
+    def _compute_used_coupon(self):
+        for this in self:
+            print(ffffffffffffffffff)
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
