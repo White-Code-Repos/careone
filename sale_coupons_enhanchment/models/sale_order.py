@@ -21,7 +21,7 @@ class AccountMove(models.Model):
             for line in lines:
                 raise ValidationError(line.used_coupon.name)
                 used_coupon.append((0, 0, {
-                    'name': line.used_coupon.id,
+                    'name': line.used_coupon.code,
                     'invoice_id': this.id,
                 }))
 
