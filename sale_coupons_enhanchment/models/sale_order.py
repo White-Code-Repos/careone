@@ -11,15 +11,15 @@ class InvoiceUsedCoupon(models.Model):
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon")
+    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon", compute='_compute_used_coupon')
 
     def _compute_used_coupon(self):
         for this in self:
-            sale  = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
+            sale = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
             lines = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
             used_coupon = []
             for line in lines:
-                used_coupon.append((0,0,{
+                used_coupon.append((0, 0, {
                     'name': line.used_coupon,
                     'invoice_id': this.id,
                 }))
