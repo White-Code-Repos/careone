@@ -83,7 +83,7 @@ class HrPayslip(models.Model):
         for loan in lon_obj:
             for loan_line in loan.loan_lines:
                 if date_from <= loan_line.date <= date_to and not loan_line.paid:
-                    # payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
+                    payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
                     _logger.info("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
                     _logger.info(self.id)
                     _logger.info(self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.code == 'LO'))
