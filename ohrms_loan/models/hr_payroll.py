@@ -67,29 +67,51 @@ class HrPayslip(models.Model):
         # for r in worked_days_line_ids:
         #     worked_days_lines += worked_days_lines.new(r)
         # self.worked_days_line_ids = worked_days_lines
-        if len(contracts) > 0:
-            input_line_ids = self.get_inputs(contracts, date_from, date_to)
-            input_lines = self.input_line_ids.browse([])
-            for r in input_line_ids:
-                input_lines += input_lines.new(r)
-            self.input_line_ids = input_lines
+        # if len(contracts) > 0:
+        #     input_line_ids = self.get_inputs(contracts, date_from, date_to)
+        #     input_lines = self.input_line_ids.browse([])
+        #     for r in input_line_ids:
+        #         input_lines += input_lines.new(r)
+        #     self.input_line_ids = input_lines
+        lon_obj = self.env['hr.loan'].search([('employee_id', '=', employee.id), ('state', '=', 'approve')])
+        # _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
+        # _logger.info(res)
+        # _logger.info(contract_ids)
+        # _logger.info(lon_obj)
+        # _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
+        for loan in lon_obj:
+            for loan_line in loan.loan_lines:
+                if date_from <= loan_line.date <= date_to and not loan_line.paid:
+                    payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
+                    old_inputs = self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.code == 'LO')
+                    if len(old_inputs) > 0:
+                        # self.input_line_ids = [(1,old_inputs[0].id,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount})]
+                        pass
+                    else:
+                        self.input_line_ids = [(0,0,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
+
+                    # for result in res:
+                    #     if result.get('code') == 'LO':
+                    #         result['amount'] = loan_line.amount
+                    #         result['loan_line_id'] = loan_line.id
+
         return
 
     def get_inputs(self, contract_ids, date_from, date_to):
         """This Compute the other inputs to employee payslip.
                            """
         res = super(HrPayslip, self).get_inputs(contract_ids, date_from, date_to)
-        _logger.info("<<<<<<<<<<<<<<<<res>>>>>>>>>>>>>>>>>>")
-        _logger.info(res)
-        _logger.info("<<<<<<<<<<<<<<<<res>>>>>>>>>>>>>>>>>>")
+        # _logger.info("<<<<<<<<<<<<<<<<res>>>>>>>>>>>>>>>>>>")
+        # _logger.info(res)
+        # _logger.info("<<<<<<<<<<<<<<<<res>>>>>>>>>>>>>>>>>>")
         contract_obj = self.env['hr.contract']
         emp_id = contract_obj.browse(contract_ids[0].id).employee_id
         lon_obj = self.env['hr.loan'].search([('employee_id', '=', emp_id.id), ('state', '=', 'approve')])
-        _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
-        _logger.info(res)
-        _logger.info(contract_ids)
-        _logger.info(lon_obj)
-        _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
+        # _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
+        # _logger.info(res)
+        # _logger.info(contract_ids)
+        # _logger.info(lon_obj)
+        # _logger.info("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
         for loan in lon_obj:
             for loan_line in loan.loan_lines:
                 if date_from <= loan_line.date <= date_to and not loan_line.paid:
