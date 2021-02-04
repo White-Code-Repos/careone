@@ -16,6 +16,7 @@ class HrPayslipInput(models.Model):
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
+    changed_get_loan = fields.Boolean(default=False)
 
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def onchange_employee(self):
@@ -84,16 +85,11 @@ class HrPayslip(models.Model):
             for loan_line in loan.loan_lines:
                 if date_from <= loan_line.date <= date_to and not loan_line.paid:
                     payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
-                    _logger.info("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-                    _logger.info(self.id)
-                    _logger.info(self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.code == 'LO'))
-                    _logger.info("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-                    old_inputs = self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.code == 'LO')
-                    if len(old_inputs) > 0:
+                    if self.changed_get_loan:
                         pass
-                        # self.input_line_ids = [(1,old_inputs[0].id,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
                     else:
                         self.input_line_ids = [(0,0,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
+                        self.changed_get_loan = True
 
                     # for result in res:
                     #     if result.get('code') == 'LO':
