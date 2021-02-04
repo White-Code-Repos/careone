@@ -16,7 +16,7 @@ class HrPayslipInput(models.Model):
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    @api.onchange('employee_id', 'date_from', 'date_to')
+    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def onchange_employee(self):
         if (not self.employee_id) or (not self.date_from) or (not self.date_to):
             return
