@@ -83,8 +83,12 @@ class HrPayslip(models.Model):
         for loan in lon_obj:
             for loan_line in loan.loan_lines:
                 if date_from <= loan_line.date <= date_to and not loan_line.paid:
-                    payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
-                    old_inputs = self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.id == payslip_other_input_type.id)
+                    # payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
+                    _logger.info("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+                    _logger.info(self.id)
+                    _logger.info(self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.code == 'LO'))
+                    _logger.info("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+                    old_inputs = self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.input_type_id.code == 'LO')
                     if len(old_inputs) > 0:
                         pass
                         # self.input_line_ids = [(1,old_inputs[0].id,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
