@@ -86,8 +86,7 @@ class HrPayslip(models.Model):
                     payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code','=','LO')], limit=1)
                     old_inputs = self.env['hr.payslip.input'].search([('payslip_id','=',self.id)]).filtered(lambda x:x.code == 'LO')
                     if len(old_inputs) > 0:
-                        # self.input_line_ids = [(1,old_inputs[0].id,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount})]
-                        pass
+                        self.input_line_ids = [(1,old_inputs[0].id,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
                     else:
                         self.input_line_ids = [(0,0,{'input_type_id':payslip_other_input_type.id,'amount':loan_line.amount,'loan_line_id':loan_line.id})]
 
