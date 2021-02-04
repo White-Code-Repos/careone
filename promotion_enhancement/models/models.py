@@ -141,7 +141,10 @@ class SalesOrderInherit(models.Model):
                     'start_hour_use': program_x.start_hour_use, 'end_hour_use': program_x.end_hour_use,
                     'is_str':program_x.is_str,'is_sun':program_x.is_sun,'is_mon':program_x.is_mon,
                     'is_tus':program_x.is_tus,'is_wen':program_x.is_wen,'is_thur':program_x.is_thur,
-                    'is_fri':program_x.is_fri,}
+                    'is_fri':program_x.is_fri,
+                    'expiration_date_2': datetime.now().date() + timedelta(days=program_x.validity_duration),
+                    'validity_duration': program_x.validity_duration,
+                    }
             if program_x.generation_type == 'nbr_coupon' and program_x.nbr_coupons > 0:
                 for count in range(0, program_x.nbr_coupons):
                     self.env['sale.coupon'].create(vals)

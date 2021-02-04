@@ -81,14 +81,13 @@ class SaleOrder(models.Model):
                 ('end_date_generate', '>=', today.date()),
                 ('start_hour_generate', '<=', (current_time.hour + current_time.minute / 60)),
                 ('end_hour_generate', '>=', (current_time.hour + current_time.minute / 60))]
-# domain=coupon_program_onchange
+
     coupon_id = fields.Many2one(comodel_name="sale.coupon.program", string="Coupon Program", required=False,)
     is_generate_coupon = fields.Boolean(string="", )
     coupon_count = fields.Integer(string="", required=False, compute='get_coupons_count')
     size = fields.Selection(selection=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')], string='Size',
                             related='vehicle_id.size')
     is_allow_generate_coupon = fields.Boolean(string="")
-                                              #, compute='allow_generate_coupon')
 
     def write(self, vals):
         """Update the Vehicle Driver when existing Customer are updated."""
