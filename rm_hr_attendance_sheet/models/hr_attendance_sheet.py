@@ -733,7 +733,7 @@ class AttendanceSheet(models.Model):
             from_date = att_sheet.date_from
             to_date = att_sheet.date_to
             employee = att_sheet.employee_id
-            slip_data = self.env['hr.payslip'].onchange_employee_id(from_date,
+            slip_data = self.env['hr.payslip'].onchange_employee(from_date,
                                                                     to_date,
                                                                     employee.id,
                                                                     contract_id=False)
