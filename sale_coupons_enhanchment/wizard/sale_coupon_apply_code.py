@@ -101,12 +101,12 @@ class SaleCouponApplyCode(models.TransientModel):
                     order_obj_id = self.env['sale.order.line']
                     my_domain_product_line = {
                         'product_id': my_domain_product.id,
-                        'order_id': sales_order.id
+                        'order_id': sales_order.id,
+                        'used_coupon': self.coupon_code.id
                     }
                     my_free_product_line = {
                         'product_id': my_free_product.id,
                         'order_id': sales_order.id,
-                        'used_coupon': self.coupon_code.id
                     }
                     order_obj_id.create(my_domain_product_line)
                     order_obj_id.create(my_free_product_line)
@@ -128,10 +128,6 @@ class SaleCouponApplyCode(models.TransientModel):
                     raise UserError(error_status.get('error', False))
                 if error_status.get('not_found', False):
                     raise UserError(error_status.get('not_found', False))
-
-        # if self.coupon_code:
-        #     sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
-        #     sales_order.used_coupon = self.coupon_code
 
     def apply_promo(self, order, coupon_code):
         if self.code_type == 'coupon':

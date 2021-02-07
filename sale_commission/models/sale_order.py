@@ -44,6 +44,7 @@ class SaleOrderLine(models.Model):
             (0, 0, {"agent_id": x.agent_id.id, "commission_id": x.commission_id.id})
             for x in self.agent_ids
         ]
+        
         return vals
 
 

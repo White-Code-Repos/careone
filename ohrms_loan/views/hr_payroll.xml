@@ -8,6 +8,9 @@
             <xpath expr="//field[@name='input_line_ids']//tree//field[@name='sequence']" position="after">
                 <field name="loan_line_id" invisible="1"/>
             </xpath>
+            <field name="name" position="after">
+              <field name="changed_get_loan" invisible="1"/>
+            </field>
         </field>
     </record>
 </odoo>
