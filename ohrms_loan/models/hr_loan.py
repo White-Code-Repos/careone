@@ -16,7 +16,7 @@ class HrLoan(models.Model):
         for line in self.loan_lines:
             total += line.amount
         if total != self.loan_amount:
-            raise ValidationError(_('The total of installments is not equal to the loan amount'))
+            raise ValidationError(_('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
         return super(HrLoan, self).write(values)
 
 
@@ -87,7 +87,7 @@ class HrLoan(models.Model):
             for line in res.loan_lines:
                 total += line.amount
             if total != res.loan_amount:
-                raise ValidationError(_('The total of installments is not equal to the loan amount'))
+                raise ValidationError(_('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
             return res
 
     def compute_installment(self):
