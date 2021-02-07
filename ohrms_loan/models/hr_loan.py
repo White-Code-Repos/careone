@@ -11,6 +11,15 @@ class HrLoan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Loan Request"
 
+    def write(self, values):
+        total = 0.0
+        for line in self.loan_lines:
+            total += line.amount
+        if total != self.loan_amount:
+            raise ValidationError(_('The total of installments is not equal to the loan amount'))
+        return super(HrLoan, self).write(values)
+
+
     @api.model
     def default_get(self, field_list):
         result = super(HrLoan, self).default_get(field_list)
