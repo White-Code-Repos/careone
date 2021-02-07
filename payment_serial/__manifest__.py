@@ -18,5 +18,6 @@
 
     'data': [
         'views/view.xml',
+        'views/payment_serial.xml',
     ],
 }

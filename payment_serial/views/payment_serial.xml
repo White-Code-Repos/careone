@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="view_payment_form_report_serial" inherit_id="account.report_payment_receipt_document">
+        <xpath expr="//div[@class='page']/div[1]" position="after">
+            <div class="row mt64">
+                <div class="col-6">
+                    <strong>Payment Number: </strong> <span t-field="o.payment_number"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <record model="ir.ui.view" id="view_payment_form_payment_number">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[1]/group[3]/field[@name='communication']" position="after">
+                <field name="payment_number"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
