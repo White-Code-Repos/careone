@@ -83,6 +83,11 @@ class HrLoan(models.Model):
         else:
             values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
             res = super(HrLoan, self).create(values)
+            total = 0.0
+            for line in res.loan_lines:
+                total += line.amount
+            if total != res.loan_amount:
+                raise ValidationError(_('The total of installments is not equal to the loan amount'))
             return res
 
     def compute_installment(self):
