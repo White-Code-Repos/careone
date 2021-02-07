@@ -31,7 +31,7 @@ class HrPayslip(models.Model):
                 if line.rule_id.id:
                     rules.append((0, 0, {
                         'salary_rule_id' : line.rule_id.id,
-                        'amount' : line.amount,
+                        'amount' : line.amount * line.rule_id.amount_fix,
                         'code'   : line.rule_id.code,
                         'name'   : line.rule_id.name,
                     }))
