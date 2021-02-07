@@ -13,13 +13,6 @@ class SaleCoupon(models.Model):
 
     sub_id = fields.Many2one('sale.subscription')
 
-
-    # def _compute_expiration_date(self):
-    #     for this in self:
-    #         this.expiration_date = 0
-    #         for coupon in this.filtered(lambda x: x.program_id.validity_duration > 0):
-    #             coupon.expiration_date = coupon.expiration_date_2
-
     def _compute_expiration_date(self):
         for this in self:
             if this.validity_duration == 0:

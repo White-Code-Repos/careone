@@ -102,7 +102,6 @@ class SaleCouponApplyCode(models.TransientModel):
                     my_domain_product_line = {
                         'product_id': my_domain_product.id,
                         'order_id': sales_order.id,
-                        'used_coupon': self.coupon_code.id
                     }
                     my_free_product_line = {
                         'product_id': my_free_product.id,
@@ -119,8 +118,15 @@ class SaleCouponApplyCode(models.TransientModel):
                         raise UserError(error_status.get('error', False))
                     if error_status.get('not_found', False):
                         raise UserError(error_status.get('not_found', False))
+
+                    program = self.env['sale.coupon'].search([('id', '=', self.coupon_code.id)])
+                    product = self.env['sale.coupon.program'].search([('id', '=', program.program_id.id)]).discount_line_product_id
+                    for line in sales_order.order_line:
+                        if line.product_id.id == product.id:
+                            line.used_coupon = self.coupon_code.id
                 else:
                     raise UserError("You Can't Use Free Order With This Program !")
+
             else:
                 sales_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
                 error_status = self.apply_coupon(sales_order, self.coupon_code.code)

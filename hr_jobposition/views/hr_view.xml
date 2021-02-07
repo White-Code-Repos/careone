@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_job_grade_tree" model="ir.ui.view">
+            <field name="name">hr.job.grade.tree</field>
+            <field name="model">hr.job.grade</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_job_grade_form" model="ir.ui.view">
+            <field name="name">hr.job.grade.form</field>
+            <field name="model">hr.job.grade</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="actions_hr_job_grade" model="ir.actions.act_window">
+            <field name="name">Job Grade</field>
+            <field name="res_model">hr.job.grade</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create a new Job Grade.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem
+            id="menu_hr_job_grade"
+            action="actions_hr_job_grade"
+            parent="hr.menu_human_resources_configuration"
+            sequence="2"/>
+
+        <record id="view_hr_job_level_tree" model="ir.ui.view">
+            <field name="name">hr.job.level.tree</field>
+            <field name="model">hr.job.level</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_job_level_form" model="ir.ui.view">
+            <field name="name">hr.job.level.form</field>
+            <field name="model">hr.job.level</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="actions_hr_job_level" model="ir.actions.act_window">
+            <field name="name">Job Level</field>
+            <field name="res_model">hr.job.level</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create a new Job Level.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem
+            id="menu_hr_job_level"
+            action="actions_hr_job_level"
+            parent="hr.menu_human_resources_configuration"
+            sequence="2"/>
+
+        <record id="view_hr_job_form_inherit_jobposition" model="ir.ui.view">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="before">
+                    <field name="code"/>
+                    <field name="job_grade_id"/>
+                    <field name="job_level_id"/>
+                </field>
+                <field name="department_id" position="attributes">
+                    <attribute name="domain">['|', ('company_id', '=', False), ('company_id', '=', company_id), ('department_type','=','section')]</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_department_form_inherit_jobposition" model="ir.ui.view">
+            <field name="name">hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="department_type"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_employee_form_inherit_jobposition" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="sector"/>
+                    <field name="department"/>
+                    <field name="section"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
