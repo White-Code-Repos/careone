@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_job_grade_all,hr.job.grade.all,model_hr_job_grade,,1,1,1,0
+access_hr_job_grade_hr_manager,hr.job.grade.hr_manager,model_hr_job_grade,hr.group_hr_manager,1,1,1,1
+access_hr_job_level_all,hr.job.level.all,model_hr_job_level,,1,1,1,0
+access_hr_job_level_hr_manager,hr.job.level.hr_manager,model_hr_job_level,hr.group_hr_manager,1,1,1,1

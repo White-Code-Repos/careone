@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="hr_salary_rule_form_inherit" model="ir.ui.view">
+            <field name="name">hr.salary.rule.form.inherit</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='appears_on_payslip']" position="after">
+                    <field name="is_need_input"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_form_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[1]/field[@name='input_line_ids']/tree/field[@name='input_type_id']" position="after">
+                    <field name="rule_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

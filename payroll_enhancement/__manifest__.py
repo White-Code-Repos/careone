@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Payment Serial",
+    'name': "Payroll Enhancement",
 
     'summary': """ """,
 
@@ -14,10 +14,10 @@
 
     'version': '0.1',
 
-    'depends': ['base' , 'account_accountant'],
+    'depends': ['base' , 'hr_payroll' , 'hr'],
 
     'data': [
+        # 'security/ir.model.access.csv',
         'views/view.xml',
-        'views/payment_serial.xml',
     ],
 }

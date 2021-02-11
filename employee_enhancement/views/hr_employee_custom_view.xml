@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form_inherit_jobposition_inherit_emp_enhancement" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_jobposition.view_employee_form_inherit_jobposition"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sector']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='department']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='section']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_employee_inherited_form_view" model="ir.ui.view">
+            <field name="name">hr.employee.inherited.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="replace"/>
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="sector_id"/>
+                    <field name="department_id"/>
+                    <field name="section_id"/>
+                </xpath>
+                <xpath expr="//field[@name='km_home_work']" position="after">
+                    <field name="blood_type"/>
+                    <field name="bank_account_1"/>
+                    <field name="bank_account_2"/>
+                </xpath>
+                <xpath expr="//field[@name='work_location']" position="after">
+                    <field name="join_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_contract_inherited_view_form" model="ir.ui.view">
+            <field name="name">hr.contract.inherited.view.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_start']" position="before">
+                    <field name="employee_join_date"/>
+                </xpath>
+
+                <xpath expr="//page[@name='information']/group/group[@name='salary_and_advantages']" position="after">
+                    <group string="Work">
+                        <field name="work_days"/>
+                        <field name="work_hours" widget="float_time"/>
+                        <field name="per_hour_coast"/>
+                    </group>
+                    <group>
+                        <field name="basic_salary"/>
+                        <field name="total_salary"/>
+                    </group>
+                    <group></group>
+                    <group string="Allowance">
+                        <field name="nature_of_work"/>
+                        <field name="nature_of_work_operation"/>
+                        <field name="nature_of_running"/>
+                        <field name="incentives"/>
+                        <field name="rep_allowance"/>
+                        <field name="car_allowances"/>
+                        <field name="special_exemption"/>
+                    </group>
+                    <group string="Deduction">
+                        <field name="social_insurance"/>
+                        <field name="special_exemption_deduction"/>
+                        <field name="mobile_deduction"/>
+                        <field name="meals_drinks"/>
+                        <field name="medical_deduction"/>
+                        <field name="bofeh"/>
+                        <field name="ins_salary_employee"/>
+                        <field name="ins_salary_company"/>
+                        <field name="family_insurance"/>
+                        <field name="income_tax"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

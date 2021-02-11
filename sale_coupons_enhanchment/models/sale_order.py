@@ -2,31 +2,21 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-class InvoiceUsedCoupon(models.Model):
-    _name = "invoice.used.coupon"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
-    name = fields.Many2one('sale.coupon', string="Used Coupon")
-    invoice_id = fields.Many2one('account.move')
-
-class AccountMove(models.Model):
-    _inherit = "account.move"
-
-    used_coupon = fields.One2many('invoice.used.coupon', 'invoice_id', string="Used Coupon")
+    used_coupon = fields.Many2one('sale.coupon', string="Used Coupon", compute='_compute_used_coupon')
 
     def _compute_used_coupon(self):
         for this in self:
-            sale = this.env['sale.order'].search([('name', '=', this.invoice_origin)])
-            lines = this.env['sale.order.line'].search([('order_id', '=', sale.id)])
-            used_coupon = []
-            for line in lines:
-                used_coupon.append((0, 0, {
-                    'name': line.used_coupon,
-                    'invoice_id': this.id,
-                }))
-            if used_coupon:
-                self.used_coupon = used_coupon
+            invoice     = this.env['account.move'].search([('id', '=', this.move_id.id)])
+            sale_order  = this.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
+            order_line  = this.env['sale.order.line'].search([('order_id', '=', sale_order.id),('name', '=', this.name)], limit=1)
+
+            if order_line.invoice_lines.id == this.id and order_line.used_coupon.id:
+                this.used_coupon = order_line.used_coupon.id
             else:
-                self.used_coupon = False
+                this.used_coupon = False
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
