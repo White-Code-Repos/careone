@@ -116,9 +116,10 @@ class AttendanceSheet(models.Model):
 
     def action_confirm(self):
         self.write({'state': 'confirm'})
-
     def action_approve(self):
+        # print("0000000000000000000")
         self.action_create_payslip()
+        # print("111111111111111111111111")
         self.write({'state': 'done'})
 
     def action_draft(self):
@@ -652,16 +653,22 @@ class AttendanceSheet(models.Model):
                 'date_from': sheet.date_from,
                 'date_to': sheet.date_to,
             })
+            print("000000000000000000")
             new_payslip.onchange_employee()
+            print("11111111111111111111111")
             payslip_dict = new_payslip._convert_to_write({
                 name: new_payslip[name] for name in new_payslip._cache})
+            print("7777777777777777777")
             payslip_id = payslip_obj.create(payslip_dict)
+            print("9999999999999999999999999")
 
             worked_day_lines = self._get_workday_lines()
             payslip_id.worked_days_line_ids = [(0, 0, x) for x in
                                                worked_day_lines]
             payslip_id.compute_sheet()
+            print("5555555555555555555555555555555")
             sheet.payslip_id = payslip_id
+            print("88888888888888888888888888888")
 
     def _get_workday_lines(self):
         self.ensure_one()
