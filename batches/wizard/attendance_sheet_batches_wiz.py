@@ -20,18 +20,16 @@ class HrPayslipEmployees(models.TransientModel):
     def compute_sheet(self):
         active_id = self.env.context.get('active_id')
         attendance_sheet_run = self.env['hr.attendance.run'].browse(active_id)
-
         for value in self.employee_ids:
-
             contract = self.env['hr.contract'].search([('employee_id','=',value.id),('state','=','open')],limit=1)
             policy=contract.att_policy_id.id
             x=self.env['attendance.sheet'].create({
-              'employee_id':value.id,
-              'date_from':attendance_sheet_run.date_start,
-              'date_to':attendance_sheet_run.date_end,
-              'att_policy_id':policy,
-              'batattempid':attendance_sheet_run.id
-              })
+            'employee_id':value.id,
+            'date_from':attendance_sheet_run.date_start,
+            'date_to':attendance_sheet_run.date_end,
+            'att_policy_id':policy,
+            'batattempid':attendance_sheet_run.id
+            })
             x.onchange_employee()
             x.get_attendances()
         attendance_sheet_run.state="attendance_sheet"
@@ -39,8 +37,3 @@ class HrPayslipEmployees(models.TransientModel):
 class Batchatt(models.Model):
     _inherit="attendance.sheet"
     batattempid=fields.Many2one('hr.attendance.run')
-
-
-
-
-        # self.ensure_one()
