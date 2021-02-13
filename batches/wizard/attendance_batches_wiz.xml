@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_hr_batches" model="ir.ui.view">
+      <field name="name">view_hr_batches</field>
+      <field name="model">attendance.employees.payslip</field>
+      <field name="arch" type="xml">
+          <form string="Attendance Sheet for Employees">
+              <group>
+                  <span colspan="4" nolabel="1">This wizard will generate attendance sheets for all selected employee(s) based on the dates and credit note specified.</span>
+              </group>
+              <group colspan="4" >
+                  <separator string="Employees" colspan="4"/>
+                  <newline/>
+                  <field name="employee_ids" nolabel="1"/>
+              </group>
+              <footer>
+                  <button icon="fa-cogs" string="Generate" name="compute_sheet" type="object" class="oe_highlight"/>
+                  <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+              </footer>
+         </form>
+      </field>
+  </record>
+
+  <record id="action_att_batch" model="ir.actions.act_window">
+      <field name="name">Generate Attendance Sheet</field>
+      <field name="res_model">attendance.employees.payslip</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_hr_batches"/>
+      <field name="target">new</field>
+  </record>
+
+</odoo>
