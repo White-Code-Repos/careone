@@ -21,7 +21,7 @@
       </field>
   </record>
 
-  <record id="action_att_batch" model="ir.actions.act_window">
+  <record id="batches.action_att_batch" model="ir.actions.act_window">
       <field name="name">Generate Attendance Sheet</field>
       <field name="res_model">attendance.employees.payslip</field>
       <field name="view_mode">tree,form</field>
