@@ -7,8 +7,8 @@
           <form string="Payslips Batches">
           <header>
               <button name="%(batches.action_att_batch)d" type="action" states="draft" string="Generate Attendance Sheet" class="oe_highlight"/>
-              <button string="Generate Payslip" name="generatepayslip" states="attendance_sheet" type="object" states="attendance_sheet"/>
-              <button string="Confirm Payslip" name="confirmpayslip" states="payslip" type="object" states="payslip"/>
+              <button string="Generate Payslip" name="generatepayslip" states="attendance_sheet" type="object"/>
+              <button string="Confirm Payslip" name="confirmpayslip" states="payslip" type="object"/>
               <field name="state" widget="statusbar"/>
           </header>
           <sheet>
