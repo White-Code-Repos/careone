@@ -6,7 +6,7 @@
       <field name="arch" type="xml">
           <form string="Payslips Batches">
           <header>
-              <!-- <button name="%(batches.action_att_batch)d" type="action" string="Generate Attendance Sheet" class="oe_highlight"/> -->
+              <button name="%(batches.action_att_batch_action_wiz)d" type="action" string="Generate Attendance Sheet" class="oe_highlight"/>
               <button string="Generate Payslip" name="generatepayslip" type="object"/>
               <button string="Confirm Payslip" name="confirmpayslip" type="object"/>
               <field name="state" widget="statusbar"/>
