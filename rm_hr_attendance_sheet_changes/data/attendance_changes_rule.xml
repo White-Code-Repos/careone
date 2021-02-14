@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!--Adding a salary rule for loan-->
+	<data noupdate="0">
+
+		<!-- <record id="hr_rule_loan" model="hr.salary.rule">
+            <field name="code">LO</field>
+            <field name="name">Loan</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.LO and - (inputs.LO.amount)</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence" eval="190"/>
+        </record> -->
+
+
+				<!-- <record id="hr_rule_input_loan" model="hr.payslip.input.type">
+            <field name="code">LO</field>
+            <field name="name">Loan</field>
+            <field name="input_id" ref="hr_rule_loan"/>
+        </record> -->
+				<record id="hr_rule_input_3h" model="hr.payslip.input.type">
+            <field name="code">Overtime_1.35</field>
+            <field name="name">vOvertime Adj 1.35</field>
+						<field name="up_to_3h">True</field>
+
+        </record>
+				<record id="hr_rule_input_after3h" model="hr.payslip.input.type">
+            <field name="code">Overtime_1.7</field>
+            <field name="name">Overtime Adj 1.7</field>
+						<field name="after_to_3h">True</field>
+        </record>
+				<record id="hr_rule_input_weekend" model="hr.payslip.input.type">
+            <field name="code">overtime2</field>
+            <field name="name">Overtime Adj 2</field>
+						<field name="weekend">True</field>
+
+        </record>
+
+	</data>
+</odoo>

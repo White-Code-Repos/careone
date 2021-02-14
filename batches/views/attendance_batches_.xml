@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="hr_run_form" model="ir.ui.view">
+      <field name="name">hr.run.form</field>
+      <field name="model">hr.attendance.run</field>
+      <field name="arch" type="xml">
+          <form string="Payslips Batches">
+          <header>
+              <button name="%(batches.action_att_batch_action_wiz)d" type="action" string="Generate Attendance Sheet" class="oe_highlight"/>
+              <button string="Generate Payslip" name="generatepayslip" type="object"/>
+              <button string="Confirm Payslip" name="confirmpayslip" type="object"/>
+              <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+              <div class="oe_button_box" name="button_box">
+                  <button name="action_open_attpay" class="oe_stat_button" icon="fa-book" type="object" help="Generated Payslips" attrs="{'invisible': [('att_count', '=', 0)]}">
+                      <div class="o_field_widget o_stat_info">
+                          <span class="o_stat_value"><field name="att_count"/></span>
+                          <span class="o_stat_text">Attendance Sheets</span>
+                       </div>
+                  </button>
+              </div>
+              <label for="name" class="oe_edit_only"/>
+              <h1>
+                  <field name="name"/>
+              </h1>
+              <group>
+                  <group>
+                      <label for="date_start" string="Period"/>
+                       <div class="o_row">
+                             <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
+                       </div>
+                   </group>
+                   <group>
+                      <field name="credit_note"/>
+                      <field name="company_id" groups="base.group_multi_company"/>
+                  </group>
+              </group>
+          </sheet>
+          </form>
+      </field>
+  </record>
+
+
+  <record id="ac_list_treee" model="ir.ui.view">
+     <field name="name">Attendance Sheets Payslips Batche</field>
+     <field name="model">hr.attendance.run</field>
+     <field name="type">tree</field>
+     <field name="arch" type="xml">
+         <tree string="Payslips Batches">
+             <field name="name"/>
+             <field name="date_start"/>
+             <field name="date_end"/>
+             <field name="credit_note"/>
+             <field name="state"/>
+             <field name="company_id" groups="base.group_multi_company"/>
+         </tree>
+     </field>
+ </record>
+
+ <record model="ir.actions.act_window" id="action_attendance_sheet_batch_e">
+   <field name="name">Attendance Sheets Payslips Batches</field>
+   <field name="res_model">hr.attendance.run</field>
+   <field name="view_mode">tree,form</field>
+</record>
+
+ <menuitem id="menu_attendance_sheet__batches" name="Batches for Attendance Sheet"
+                     parent="hr_attendance.menu_hr_attendance_root"
+                      action="action_attendance_sheet_batch_e"
+                      groups="hr_attendance.group_hr_attendance"/>
+
+
+
+</odoo>

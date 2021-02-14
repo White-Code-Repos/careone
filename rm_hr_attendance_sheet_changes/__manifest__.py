@@ -27,6 +27,7 @@
         'views/over_time_rules.xml',
         'views/hr_attendance_sheet.xml',
         'views/hr_payslip_input_type.xml',
+        'data/attendance_changes_rule.xml',
     ],
 
     'license': 'OPL-1',
