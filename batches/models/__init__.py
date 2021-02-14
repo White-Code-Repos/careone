@@ -1,15 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding:utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-##############################################################################
-#
-#
-#    Copyright (C) 2020-TODAY .
-#    Author: Eng.Ramadan Khalil (<rkhalil1990@gmail.com>)
-#
-#    It is forbidden to publish, distribute, sublicense, or sell copies
-#    of the Software or modified copies of the Software.
-#
-##############################################################################
-
-
-from . import attendance_sheet_batches
+from . import BatchesAtt
