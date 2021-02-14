@@ -15,8 +15,8 @@ from odoo.tools.safe_eval import safe_eval
 
 class AttPayslipRun(models.Model):
     _name = 'hr.attendance.run'
-    _inherit='attendance.sheet'
-    _inherit='hr.payslip'
+    # _inherit='attendance.sheet'
+    # _inherit='hr.payslip'
 
 
     name = fields.Char(required=True, readonly=True, states={'draft': [('readonly', False)]})
