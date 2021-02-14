@@ -13,6 +13,7 @@
         'sale_management',
     ],
     'data': [
+        'security/credit_limit_security_view.xml',
         'views/partner_view.xml',
         'views/sale_order_view.xml'
     ],

@@ -1,0 +1,10 @@
+<odoo>
+    <record model="ir.module.category" id="credit_limit_approval_management">
+        <field name="name">Credit Limit</field>
+        <field name="sequence">100</field>
+    </record>
+    <record id="credit_limit_approval_manager" model="res.groups">
+        <field name="name">Credit Limit Approval Manager</field>
+        <field name="category_id" ref="partner_credit_limit.credit_limit_approval_management"/>
+    </record>
+</odoo>
