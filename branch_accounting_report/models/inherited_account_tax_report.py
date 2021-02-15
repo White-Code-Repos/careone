@@ -157,6 +157,7 @@ class generic_tax_report_inherit(models.AbstractModel):
         else:
             sql = self._sql_net_amt_regular_taxes()
 
+        print(sql, tables, where_clause)
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.fetchall()

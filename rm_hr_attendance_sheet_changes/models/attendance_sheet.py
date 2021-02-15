@@ -54,18 +54,23 @@ class AttendanceSheet(models.Model):
             all_dates = [(from_date + timedelta(days=x)) for x in
                          range((to_date - from_date).days + 1)]
             abs_cnt = 0
+            print('all_dates = ', all_dates)
             for day in all_dates:
                 day_start = datetime(day.year, day.month, day.day)
-                day_end = day_start.replace(hour=23, minute=59,
-                                            second=59)
+                day_end = day_start.replace(hour=23, minute=59, second=59)
+                print(day_start, day_end, '888888888888888888888888')
                 day_str = str(day.weekday())
                 date = day.strftime('%Y-%m-%d')
                 work_intervals = calendar_id.att_get_work_intervals(day_start,
                                                                     day_end, tz)
+                print(work_intervals, '11111111111111111111')
+                print(work_intervals[0], work_intervals[1])
                 attendance_intervals = self.get_attendance_intervals(emp,
                                                                      day_start,
                                                                      day_end,
                                                                      tz)
+                print(attendance_intervals, attendance_intervals[0], attendance_intervals[1], '222222222222222222222222')
+
                 leaves = self._get_emp_leave_intervals(emp, day_start, day_end)
                 public_holiday = self.get_public_holiday(date, emp)
                 reserved_intervals = []
@@ -163,14 +168,16 @@ class AttendanceSheet(models.Model):
                             pl_sign_out = self._get_float_from_time(
                                 pytz.utc.localize(work_interval[1]).astimezone(
                                     tz))
-                            pl_sign_in_time = pytz.utc.localize(
-                                work_interval[0]).astimezone(tz)
-                            pl_sign_out_time = pytz.utc.localize(
-                                work_interval[1]).astimezone(tz)
-                            ac_sign_in = 0
-                            ac_sign_out = 0
+                            print('pl_sign_in = ', pl_sign_in)
+                            print('pl_sign_out = ', pl_sign_out)
+                            # pl_sign_in_time = pytz.utc.localize(
+                            #     work_interval[0]).astimezone(tz)
+                            # pl_sign_out_time = pytz.utc.localize(
+                            #     work_interval[1]).astimezone(tz)
+                            ac_sign_in, ac_sign_out = 0, 0
                             status = ""
-                            note = ""
+                            # note = ""
+                            print(att_work_intervals, len(att_work_intervals), '6666666666666666666666')
                             if att_work_intervals:
                                 if len(att_work_intervals) > 1:
                                     # print("there is more than one interval for that work interval")
@@ -314,7 +321,6 @@ class AttendanceSheet(models.Model):
                                                  overtime_policy[
                                                      'wd_rate']
 
-
                             float_late = late_in.total_seconds() / 3600
                             act_float_late = late_in.total_seconds() / 3600
                             policy_late = policy_id.get_late(float_late)
@@ -330,6 +336,7 @@ class AttendanceSheet(models.Model):
                             else:
                                 act_float_diff = float_diff
                                 float_diff = policy_id.get_diff(float_diff)
+
                             values = {
                                 'date': date,
                                 'day': day_str,
@@ -350,6 +357,7 @@ class AttendanceSheet(models.Model):
                                 'status': status,
                                 'att_sheet_id': self.id
                             }
+                            print('values = ', values)
                             att_line.create(values)
                         out_work_intervals = [x for x in attendance_intervals if
                                               x not in reserved_intervals]
@@ -402,10 +410,10 @@ class AttendanceSheet(models.Model):
                         for attendance_interval in attendance_intervals:
                             overtime = attendance_interval[1] - \
                                        attendance_interval[0]
-                            ac_sign_in = pytz.utc.localize(
-                                attendance_interval[0]).astimezone(tz)
-                            ac_sign_out = pytz.utc.localize(
-                                attendance_interval[1]).astimezone(tz)
+                            # ac_sign_in = pytz.utc.localize(
+                            #     attendance_interval[0]).astimezone(tz)
+                            # ac_sign_out = pytz.utc.localize(
+                            #     attendance_interval[1]).astimezone(tz)
                             float_overtime = overtime.total_seconds() / 3600
                             if float_overtime <= overtime_policy['we_after']:
                                 float_overtime = 0
