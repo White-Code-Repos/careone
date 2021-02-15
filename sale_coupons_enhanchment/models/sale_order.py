@@ -9,18 +9,18 @@ class AccountMoveLine(models.Model):
     used_coupon = fields.Many2one('sale.coupon', string="Used Coupon", compute='_compute_used_coupon')
 
     def _compute_used_coupon(self):
-        for this in self:
-            if this.move_id:
-                invoice = this.env['account.move'].search([('id', '=', this.move_id.id)])
-                sale_order = this.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
-                order_line = this.env['sale.order.line'].search(
-                    [('order_id', '=', sale_order.id), ('name', '=', this.name)], limit=1)
-                if order_line.invoice_lines.id == this.id and order_line.used_coupon.id:
-                    this.used_coupon = order_line.used_coupon.id
+        for rec in self:
+            if isinstance(rec.move_id.id, int):
+                invoice = self.env['account.move'].search([('id', '=', rec.move_id.id)])
+                sale_order = self.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
+                order_line = self.env['sale.order.line'].search(
+                    [('order_id', '=', sale_order.id), ('name', '=', rec.name)], limit=1)
+                if order_line.invoice_lines.id == rec.id and order_line.used_coupon.id:
+                    rec.used_coupon = order_line.used_coupon.id
                 else:
-                    this.used_coupon = False
+                    rec.used_coupon = False
             else:
-                this.used_coupon = False
+                rec.used_coupon = False
 
 
 class SaleOrder(models.Model):
