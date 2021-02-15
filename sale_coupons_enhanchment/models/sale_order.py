@@ -10,17 +10,16 @@ class AccountMoveLine(models.Model):
 
     def _compute_used_coupon(self):
         for this in self:
-            try:
-                if this.move_id:
-                    invoice = this.env['account.move'].search([('id', '=', this.move_id.id)])
-                    sale_order = this.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
-                    order_line = this.env['sale.order.line'].search(
-                        [('order_id', '=', sale_order.id), ('name', '=', this.name)], limit=1)
-                    if order_line.invoice_lines.id == this.id and order_line.used_coupon.id:
-                        this.used_coupon = order_line.used_coupon.id
-                    else:
-                        this.used_coupon = False
-            except:
+            if this.move_id:
+                invoice = this.env['account.move'].search([('id', '=', this.move_id.id)])
+                sale_order = this.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
+                order_line = this.env['sale.order.line'].search(
+                    [('order_id', '=', sale_order.id), ('name', '=', this.name)], limit=1)
+                if order_line.invoice_lines.id == this.id and order_line.used_coupon.id:
+                    this.used_coupon = order_line.used_coupon.id
+                else:
+                    this.used_coupon = False
+            else:
                 this.used_coupon = False
 
 
