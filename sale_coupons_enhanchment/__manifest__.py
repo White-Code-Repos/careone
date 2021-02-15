@@ -16,7 +16,7 @@
         'wizard/sale_coupon_apply_code_view.xml',
     ],
 
-
     'installable': True,
+
     'auto_install': False,
 }

@@ -64,12 +64,11 @@ class AttendanceSheet(models.Model):
                 work_intervals = calendar_id.att_get_work_intervals(day_start,
                                                                     day_end, tz)
                 print(work_intervals, '11111111111111111111')
-                print(work_intervals[0], work_intervals[1])
                 attendance_intervals = self.get_attendance_intervals(emp,
                                                                      day_start,
                                                                      day_end,
                                                                      tz)
-                print(attendance_intervals, attendance_intervals[0], attendance_intervals[1], '222222222222222222222222')
+                print(attendance_intervals, '222222222222222222222222')
 
                 leaves = self._get_emp_leave_intervals(emp, day_start, day_end)
                 public_holiday = self.get_public_holiday(date, emp)
@@ -168,8 +167,8 @@ class AttendanceSheet(models.Model):
                             pl_sign_out = self._get_float_from_time(
                                 pytz.utc.localize(work_interval[1]).astimezone(
                                     tz))
-                            print('pl_sign_in = ', pl_sign_in)
-                            print('pl_sign_out = ', pl_sign_out)
+                            print('pl_sign_in = ', pl_sign_in, work_interval[0])
+                            print('pl_sign_out = ', pl_sign_out, work_interval[1])
                             # pl_sign_in_time = pytz.utc.localize(
                             #     work_interval[0]).astimezone(tz)
                             # pl_sign_out_time = pytz.utc.localize(
