@@ -60,13 +60,19 @@ class AttendanceSheet(models.Model):
                 end_morning_shift = ''
 
                 # Add to get shift from lines according to employee contract and day.
-                for line in emp.contract_id.shift_schedule:
-                    if line.start_date <= day <= line.end_date:
-                        calendar_id = line.hr_shift
-                        for l in line.hr_shift.attendance_ids:
-                            if l.day_period == 'morning':
-                                end_morning_shift = l.hour_to
-
+                if emp.contract_id.shift_schedule:
+                    for line in emp.contract_id.shift_schedule:
+                        if line.start_date <= day <= line.end_date:
+                            calendar_id = line.hr_shift
+                            for l in line.hr_shift.attendance_ids:
+                                if l.day_period == 'morning':
+                                    end_morning_shift = l.hour_to
+                        else:
+                            raise ValidationError(_(
+                                'Please add Shift Schedule to the %s `s contract ' % emp.name))
+                else:
+                    raise ValidationError(_(
+                        'Please add Shift Schedule to the %s `s contract ' % emp.name))
                 work_intervals = calendar_id.att_get_work_intervals(day_start, day_end, tz)
                 attendance_intervals = self.get_attendance_intervals(emp, day_start, day_end, tz)
                 leaves = self._get_emp_leave_intervals(emp, day_start, day_end)
