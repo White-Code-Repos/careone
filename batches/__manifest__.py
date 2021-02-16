@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
@@ -20,10 +20,10 @@
         'rm_hr_attendance_sheet',
     ],
     'data': [
-        'wizard/BatchesAttWizview.xml',
-        'views/BathesAtt_views.xml',
         'security/access.xml',
         'security/ir.model.access.csv',
+        'wizard/BatchesAttWizview.xml',
+        'views/BathesAtt_views.xml',
     ],
 
 }

@@ -85,21 +85,21 @@
                                            sum="Total"/>
                                     <field name="late_in"
                                            widget="float_time"
-                                           sum="Total"/>
+                                           sum="Total" invisible="1"/>
                                     <field name="act_overtime"
                                            groups="base.group_no_one"
                                            widget="float_time"
                                            sum="Total"/>
                                     <field name="overtime"
                                            widget="float_time"
-                                           sum="Total"/>
+                                           sum="Total" invisible="1"/>
                                     <field name="act_diff_time"
                                            groups="base.group_no_one"
                                            widget="float_time"
                                            sum="Total"/>
                                     <field name="diff_time"
                                            widget="float_time"
-                                           sum="Total"/>
+                                           sum="Total" invisible="1"/>
                                     <field name="status"/>
                                     <field name="note"/>
                                     <button name="%(action_att_data_change)d"

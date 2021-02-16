@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="rm_hr_attendance_sheet.attendance_sheet_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook//page//field[@name='line_ids']//tree//field[@name='overtime']" position="replace">
-                <field name="overtime_up_to_3" widget="float_time" sum="Total"/>
-                <field name="overtime_after_3" widget="float_time" sum="Total"/>
+                <field name="overtime_up_to_3" widget="float_time" sum="Total" invisible="1"/>
+                <field name="overtime_after_3" widget="float_time" sum="Total" invisible="1"/>
                 <field name="overtime_weekend" widget="float_time" sum="Total"/>
             </xpath>
 
