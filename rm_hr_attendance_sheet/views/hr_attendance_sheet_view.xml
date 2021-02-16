@@ -99,7 +99,7 @@
                                            sum="Total"/>
                                     <field name="diff_time"
                                            widget="float_time"
-                                           sum="Total" invisible="1"/>
+                                           sum="Total"/>
                                     <field name="status"/>
                                     <field name="note"/>
                                     <button name="%(action_att_data_change)d"
