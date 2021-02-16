@@ -1,28 +1,28 @@
 # See LICENSE file for full copyright and licensing details.
 
 
-from odoo import api, models, _,fields
+from odoo import api, models, _, fields
 from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order.line"
-    
+
     @api.onchange('product_uom_qty')
     def prevent_zaero(self):
         if self.product_uom_qty == 0:
-            self.product_uom_qty =1
-    
+            self.product_uom_qty = 1
+
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-    
+
     state = fields.Selection(selection_add=[
         ('gm_discount', 'GM Discount approve'),
         ('ceo_discount', 'CEO Discount approve'),
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
-        ('approve_credit_limit','Approve Credit Limit'),
+        ('approve_credit_limit', 'Approve Credit Limit'),
         ('sale', 'Sales Order'),
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
@@ -59,7 +59,6 @@ class SaleOrder(models.Model):
 
             if (amount_total - debit) > partner_credit_limit:
                 if not partner.over_credit:
-
                     # STOP THIS STOP __________________________________ STOP
                     # msg = 'Your available credit limit' \
                     #       ' Amount = %s \nCheck "%s" Accounts or Credit ' \
@@ -68,16 +67,19 @@ class SaleOrder(models.Model):
                     # raise UserError(_('You can not confirm Sale '
                     #                   'Order. \n' + msg))
 
-                ####  NEW CODE __________________________________________ NEW
+                    ####  NEW CODE __________________________________________ NEW
                     self.state = 'approve_credit_limit'
-                    if self.user_has_groups('first_grain_custom.group_ceo'):
-                        self.no_credit_has_ceo_access = True
-                    else:
-                        self.no_credit_has_ceo_access = False
+                    # if self.user_has_groups('first_grain_custom.group_ceo'):
+                    #     self.no_credit_has_ceo_access = True
+                    # else:
+                    self.no_credit_has_ceo_access = False
 
                 partner.write(
                     {'credit_limit': credit - debit + self.amount_total})
             return True
+
+    def approve_credit_limit(self):
+        return super(SaleOrder, self).action_confirm()
 
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
