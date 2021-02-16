@@ -48,16 +48,28 @@
         </field>
     </record>
 
+    <record id="payslip_and_att_tree" model="ir.ui.view">
+        <field name="name">payslip.and.att.tree</field>
+        <field name="model">hr.attendance.run</field>
+        <field name="arch" type="xml">
+            <tree string="Payslips Batches">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+            </tree>
+        </field>
+    </record>
 
-    <record model="ir.actions.act_window" id="attendance_sheet_batches">
+
+    <record model="ir.actions.act_window" id="action_attendance_sheet_batches">
         <field name="name">Attendance Sheets Batches</field>
+        <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.attendance.run</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-
-    <menuitem id="attendance_sbatches" name="Attendance Sheet Batches"
+    <menuitem id="attendance_batches_menu"
               parent="hr_attendance.menu_hr_attendance_root"
-              action="attendance_sheet_batches"
+              action="action_attendance_sheet_batches"
               groups="hr_attendance.group_hr_attendance"/>
 </odoo>
