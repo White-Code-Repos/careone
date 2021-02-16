@@ -23,13 +23,13 @@ class generic_tax_report_inherit(models.AbstractModel):
         the report is set to group its line by tax grid.
         """
         tables, where_clause, where_params = self.env['account.move.line']._query_get()
-        
+
         branch_list = []
 
 
         if options.get('branch_ids'):
             branch_list = options.get('branch_ids')
-        
+
         account_query = ''
         if branch_list:
             if len(branch_list) == 1:
@@ -111,7 +111,7 @@ class generic_tax_report_inherit(models.AbstractModel):
             account_query = """ AND "account_move_line".branch_id in %s""" % (str(tuple(branches)))
         sql = """SELECT "account_move_line".tax_line_id, COALESCE(SUM("account_move_line".debit-"account_move_line".credit), 0)
                     FROM account_tax tax, %s
-                    WHERE %s AND tax.tax_exigibility = 'on_invoice' AND tax.id = "account_move_line".tax_line_id """+ account_query +""" 
+                    WHERE %s AND tax.tax_exigibility = 'on_invoice' AND tax.id = "account_move_line".tax_line_id """+ account_query +"""
                     GROUP BY "account_move_line".tax_line_id"""
         return sql
 
@@ -123,11 +123,40 @@ class generic_tax_report_inherit(models.AbstractModel):
         else:
             branches = tuple(list(set(branch_list)))
             account_query = """ AND "account_move_line".branch_id in %s""" % (str(tuple(branches)))
-        sql = """SELECT r.account_tax_id, COALESCE(SUM("account_move_line".debit-"account_move_line".credit), 0)
-                 FROM %s
-                 INNER JOIN account_move_line_account_tax_rel r ON ("account_move_line".id = r.account_move_line_id)
-                 INNER JOIN account_tax t ON (r.account_tax_id = t.id)
-                 WHERE %s AND t.tax_exigibility = 'on_invoice' """+ account_query +""" GROUP BY r.account_tax_id"""
+
+        ######################### COMMENT BY G0o0LD #########################################################
+        # sql = """SELECT r.account_tax_id, COALESCE(SUM("account_move_line".debit-"account_move_line".credit), 0)
+        #          FROM %s
+        #          INNER JOIN account_move_line_account_tax_rel r ON ("account_move_line".id = r.account_move_line_id)
+        #          INNER JOIN account_tax t ON (r.account_tax_id = t.id)
+        #          WHERE %s AND t.tax_exigibility = 'on_invoice' """+ account_query +""" GROUP BY r.account_tax_id"""
+
+            ############################ ADDED BY G0o0LD####################################
+        sql = """SELECT 
+                tax.id,
+                 COALESCE(SUM(account_move_line.balance))
+            FROM %s
+            JOIN account_move_line_account_tax_rel rel ON rel.account_move_line_id = account_move_line.id
+            JOIN account_tax tax ON tax.id = rel.account_tax_id
+            WHERE %s AND tax.tax_exigibility = 'on_invoice' 
+            GROUP BY tax.id
+
+            UNION ALL
+
+            SELECT 
+                child_tax.id,
+                 COALESCE(SUM(account_move_line.balance))
+            FROM %s
+            JOIN account_move_line_account_tax_rel rel ON rel.account_move_line_id = account_move_line.id
+            JOIN account_tax tax ON tax.id = rel.account_tax_id
+            JOIN account_tax_filiation_rel child_rel ON child_rel.parent_tax = tax.id
+            JOIN account_tax child_tax ON child_tax.id = child_rel.child_tax
+            WHERE %s 
+                AND child_tax.tax_exigibility = 'on_invoice' 
+                AND tax.amount_type = 'group' 
+                AND child_tax.amount_type != 'group'
+                """+ account_query +"""
+            GROUP BY child_tax.id"""
         return sql
 
     def _compute_from_amls_taxes(self, options, dict_to_fill, period_number):
@@ -154,17 +183,31 @@ class generic_tax_report_inherit(models.AbstractModel):
         if options.get('branch_ids'):
             branch = options.get('branch_ids')
             sql = self._sql_net_amt_regular_branch_taxes(branch)
+            print('###########################################')
+            print('###########################################')
+            print('###########################################')
+            print('###########################################')
         else:
             sql = self._sql_net_amt_regular_taxes()
+            print('*******************************************')
+            print('*******************************************')
+            print('*******************************************')
+            print('*******************************************')
 
-        print(sql, tables, where_clause)
-        query = sql % (tables, where_clause)
-        self.env.cr.execute(query, where_params)
+            ##################### COMMENT BY G0o0LD ##############################
+        # query = sql % (tables, where_clause)
+        # self.env.cr.execute(query, where_params)
+            #################### ADDED BY G0o0LD ###################################
+        query = sql % (tables, where_clause, tables, where_clause)
+        self.env.cr.execute(query, where_params + where_params)
         results = self.env.cr.fetchall()
 
         for result in results:
             if result[0] in dict_to_fill:
-                dict_to_fill[result[0]]['periods'][period_number]['net'] = result[1]
+                    ################ COMMENT BY G0o0LD #############################
+                #dict_to_fill[result[0]]['periods'][period_number]['net'] = result[1]
+                    ################ ADDED BY G0o0LD  ##############################
+                dict_to_fill[result[0]]['periods'][period_number]['net'] += result[1]
                 dict_to_fill[result[0]]['show'] = True
 
         if options.get('branch_ids'):
