@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hr_attendance_run_add,hr.attendance.run,careone_batches.model_hr_attendance_run,group_hr_attendance_run_add,1,0,1,0
+access_hr_attendance_run_edit,hr.attendance.run,careone_batches.model_hr_attendance_run,group_hr_attendance_run_edit,1,1,1,0
+access_hr_attendance_run_delete,hr.attendance.run,careone_batches.model_hr_attendance_run,group_hr_attendance_run_delete,1,1,1,1

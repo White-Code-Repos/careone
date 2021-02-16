@@ -427,7 +427,12 @@ class AttendanceSheet(models.Model):
             new_payslip._onchange_employee()
             payslip_dict = new_payslip._convert_to_write({
                 name: new_payslip[name] for name in new_payslip._cache})
+            for name in new_payslip._cache:
+                print(new_payslip[name])
+                print(name)
+            print(payslip_dict, '2222222222')
             payslip_id = payslip_obj.create(payslip_dict)
+            print(payslip_id, '555555555')
             worked_day_lines = self._get_workday_lines()
             payslip_id.worked_days_line_ids = [(0, 0, x) for x in
                                                worked_day_lines]
