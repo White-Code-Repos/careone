@@ -215,7 +215,9 @@ class AttendanceSheet(models.Model):
                                                                             0]).total_seconds() / 3600)
                                 else:
                                     late_in_interval = (work_interval[0], att_work_intervals[0][0])
-                                    if ac_sign_in < end_morning_shift:
+                                    
+                                    if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
+                                    # if ac_sign_in < end_morning_shift:
                                         overtime_interval = (
                                             work_interval[1], att_work_intervals[-1][1] - timedelta(hours=1))
                                     else:
@@ -229,7 +231,8 @@ class AttendanceSheet(models.Model):
                                     ac_sign_in = self._get_float_from_time(
                                         pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
 
-                                    if ac_sign_in < end_morning_shift:
+                                    if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
+                                    # if ac_sign_in < end_morning_shift:
                                         ac_sign_out = end_morning_shift
                                         worked_hours = end_morning_shift - self._get_float_from_time(
                                             pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
@@ -256,7 +259,10 @@ class AttendanceSheet(models.Model):
                                             diff_time += diff_clean[1] - \
                                                          diff_clean[0]
                                     else:
-                                        diff_time += diff_in[1] - diff_in[0]
+
+                                        diff_time_final= (pl_sign_out - ac_sign_out)
+                                        result =timedelta(hours=diff_time_final)
+                                        diff_time += result
                             if late_in_interval:
                                 if late_in_interval[1] < late_in_interval[0]:
                                     late_in = timedelta(hours=0, minutes=0,

@@ -13,6 +13,7 @@
         'hr_holidays',
         'hr_attendance',
         'rm_hr_attendance_sheet',
+        'rm_hr_attendance_sheet_changes',
     ],
     'data': [
         'security/access.xml',
