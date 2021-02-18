@@ -92,7 +92,7 @@
                                            sum="Total"/>
                                     <field name="overtime"
                                            widget="float_time"
-                                           sum="Total" invisible="1"/>
+                                           sum="Total"/>
                                     <field name="act_diff_time"
                                            groups="base.group_no_one"
                                            widget="float_time"
