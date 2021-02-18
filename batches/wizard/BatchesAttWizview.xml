@@ -7,14 +7,12 @@
             <field name="arch" type="xml">
                 <form string="Attendance Sheet by Employees">
                     <group>
-                        <span colspan="4" nolabel="1">This wizard will generate Attendance Sheet for all selected employee(s) based on the dates and credit note .</span>
+                      <!-- <field name="type" widget="radio"/> -->
+                      <field name="field1" />
+                      <field name="field2" />
+                      <field name="field3" />
                     </group>
-                    <!-- <group colspan="2">
-                        <separator string="Salary Structure" colspan="2"/>
-                        <newline/>
-                        <span class="text-muted">Set a specific structure if you wish to make an extra payslip (eg: End of the year bonus). If you leave this field empty, a regular payslip will be generated for all the selected employees, based on their contracts configuration.</span>
-                        <field name="structure_id" nolabel="1"/>
-                    </group> -->
+
                     <group colspan="4" >
                         <separator string="Employees" colspan="4"/>
                         <newline/>

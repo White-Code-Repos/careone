@@ -10,18 +10,42 @@ from odoo.exceptions import UserError
 
 class HrAttendanceEmployees(models.TransientModel):
     _name = 'hr.attendance.employees'
-    # _description = 'Generate payslips for all selected employees'
+
+    field1 = fields.Many2one('hr.department',string='Department',track_visibility='onchange')
+    field2 = fields.Many2one('hr.employee.category',string='Tags')
+    field3 = fields.Many2one('res.company',string='Company_id')
 
     def _get_available_contracts_domain(self):
-        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
+        return [('contract_ids.state', 'in', ('open', 'close'))]
+        # , ('company_id', '=', self.env.company.id)
 
     def _get_employees(self):
         # YTI check dates too
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rell', 'payslip_idd', 'employee_idd', 'Employeess',
-                                    default=lambda self: self._get_employees(), required=True)
+                                    default=lambda self: self._get_employees(), required=True )
     structure_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
+
+    @api.onchange('field1' ,'field2','field3')
+    def onchange_supplier(self):
+        selected_lines = []
+        if self.field1 :
+            for rec in self:
+                selected_lines = rec.env['hr.employee'].search([('department_id', '=', rec.field1.id)])
+                self.employee_ids=[(6,0,selected_lines.ids)]
+        if self.field2:
+            for rec in self:
+                selected_lines = rec.env['hr.employee'].search([('category_ids', '=', rec.field2.id)])
+                self.employee_ids=[(6,0,selected_lines.ids)]
+        if self.field3:
+            for rec in self:
+                selected_lines = rec.env['hr.employee'].search([('company_id', '=', rec.field3.id)])
+                self.employee_ids=[(6,0,selected_lines.ids)]
+
+
+
+
 
     def _check_undefined_slots(self, work_entries, payslip_run):
         """
@@ -42,7 +66,7 @@ class HrAttendanceEmployees(models.TransientModel):
         active_id = self.env.context.get('active_id')
         attendance_sheet_run = self.env['hr.attendance.run'].browse(active_id)
         for value in self.employee_ids:
-            contract = self.env['hr.contract'].search([('employee_id','=',value.id),('state','=','open')],limit=1)
+            contract = self.env['hr.contract'].search([('employee_id','=',value.id),('state','=','open')])
             policy=contract.att_policy_id.id
             x=self.env['attendance.sheet'].create({
             'employee_id':value.id,

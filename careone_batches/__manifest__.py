@@ -14,6 +14,7 @@
         'hr_attendance',
         'rm_hr_attendance_sheet',
         'rm_hr_attendance_sheet_changes',
+        'hr_employee_shift',
     ],
     'data': [
         'security/access.xml',
