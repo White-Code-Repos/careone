@@ -107,13 +107,13 @@ class HrContract(models.Model):
     work_days = fields.Integer('Working Days')
     work_hours = fields.Float('Working Hours')
 
-    total_salary = fields.Float("Total Salary",compute="_get_total_salary")
-    per_hour_coast = fields.Float('Coast Per Hours',compute="_get_total_salary")
+    total_salary = fields.Float("Total Salary", compute="_get_total_salary")
+    per_hour_coast = fields.Float('Coast Per Hours', compute="_get_total_salary")
 
-    @api.depends('wage','incentives','nature_of_work','work_days','work_hours')
+    @api.depends('wage', 'incentives', 'nature_of_work', 'work_days', 'work_hours')
     def _get_total_salary(self):
-        self.total_salary = self.wage + self.incentives + self.nature_of_work
-
-        self.per_hour_coast = self.total_salary / (self.work_days*self.work_hours) if self.total_salary >0 and (self.work_days*self.work_hours)>0 else 0
-
-    # ####################### 
+        for i in self:
+            i.total_salary = i.wage + i.incentives + i.nature_of_work
+            i.per_hour_coast = i.total_salary / (i.work_days * i.work_hours) \
+                if i.total_salary > 0 and (i.work_days * i.work_hours) > 0 else 0
+    # #######################
