@@ -67,9 +67,9 @@ class AttendanceSheet(models.Model):
                             for l in line.hr_shift.attendance_ids:
                                 if l.day_period == 'morning':
                                     end_morning_shift = l.hour_to
-                        else:
-                            raise ValidationError(_(
-                                'Please add Shift Schedule to the %s `s contract ' % emp.name))
+                        # else:
+                        #     raise ValidationError(_(
+                        #         'Please add Shift Schedule to the %s `s contract ' % emp.name))
                 else:
                     raise ValidationError(_(
                         'Please add Shift Schedule to the %s `s contract ' % emp.name))
