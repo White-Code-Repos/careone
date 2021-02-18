@@ -7,7 +7,6 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 TIME_FORMAT = "%H:%M:%S"
 
 
-
 class AttendanceSheetLine(models.Model):
     _inherit = 'attendance.sheet.line'
 
@@ -16,20 +15,18 @@ class AttendanceSheetLine(models.Model):
     overtime_weekend = fields.Float("Over weekend", readonly=True)
 
 
-
 class AttendanceSheet(models.Model):
     _inherit = 'attendance.sheet'
 
     overtime_up_to_3_total = fields.Float(compute="_compute_sheet_total",
-                                string="Total Over 3H", readonly=True,
-                                store=True)
+                                          string="Total Over 3H", readonly=True,
+                                          store=True)
     overtime_after_3_total = fields.Float(compute="_compute_sheet_total",
-                                string="Total Over After 3H", readonly=True,
-                                store=True)
+                                          string="Total Over After 3H", readonly=True,
+                                          store=True)
     overtime_weekend_total = fields.Float(compute="_compute_sheet_total",
-                                string="Total Over Weekend", readonly=True,
-                                store=True)
-
+                                          string="Total Over Weekend", readonly=True,
+                                          store=True)
 
     def get_attendances(self):
         for att_sheet in self:
@@ -42,10 +39,11 @@ class AttendanceSheet(models.Model):
             if not tz:
                 raise exceptions.Warning(
                     "Please add time zone for employee : %s" % emp.name)
-            calendar_id = emp.contract_id.resource_calendar_id
-            if not calendar_id:
-                raise ValidationError(_(
-                    'Please add working hours to the %s `s contract ' % emp.name))
+            calendar_id = ''
+            # calendar_id = emp.contract_id.resource_calendar_id
+            # if not calendar_id:
+            #     raise ValidationError(_(
+            #         'Please add working hours to the %s `s contract ' % emp.name))
             policy_id = att_sheet.att_policy_id
             if not policy_id:
                 raise ValidationError(_(
@@ -56,16 +54,27 @@ class AttendanceSheet(models.Model):
             abs_cnt = 0
             for day in all_dates:
                 day_start = datetime(day.year, day.month, day.day)
-                day_end = day_start.replace(hour=23, minute=59,
-                                            second=59)
+                day_end = day_start.replace(hour=23, minute=59, second=59)
                 day_str = str(day.weekday())
                 date = day.strftime('%Y-%m-%d')
-                work_intervals = calendar_id.att_get_work_intervals(day_start,
-                                                                    day_end, tz)
-                attendance_intervals = self.get_attendance_intervals(emp,
-                                                                     day_start,
-                                                                     day_end,
-                                                                     tz)
+                end_morning_shift = ''
+
+                # Add to get shift from lines according to employee contract and day.
+                if emp.contract_id.shift_schedule:
+                    for line in emp.contract_id.shift_schedule:
+                        if line.start_date <= day <= line.end_date:
+                            calendar_id = line.hr_shift
+                            for l in line.hr_shift.attendance_ids:
+                                if l.day_period == 'morning':
+                                    end_morning_shift = l.hour_to
+                        else:
+                            raise ValidationError(_(
+                                'Please add Shift Schedule to the %s `s contract ' % emp.name))
+                else:
+                    raise ValidationError(_(
+                        'Please add Shift Schedule to the %s `s contract ' % emp.name))
+                work_intervals = calendar_id.att_get_work_intervals(day_start, day_end, tz)
+                attendance_intervals = self.get_attendance_intervals(emp, day_start, day_end, tz)
                 leaves = self._get_emp_leave_intervals(emp, day_start, day_end)
                 public_holiday = self.get_public_holiday(date, emp)
                 reserved_intervals = []
@@ -75,22 +84,15 @@ class AttendanceSheet(models.Model):
                     if public_holiday:
                         if attendance_intervals:
                             for attendance_interval in attendance_intervals:
-                                overtime = attendance_interval[1] - \
-                                           attendance_interval[0]
+                                overtime = attendance_interval[1] - attendance_interval[0]
                                 float_overtime = overtime.total_seconds() / 3600
-                                if float_overtime <= overtime_policy[
-                                    'ph_after']:
+                                if float_overtime <= overtime_policy['ph_after']:
                                     act_float_overtime = float_overtime = 0
                                 else:
-                                    act_float_overtime = (float_overtime -
-                                                          overtime_policy[
-                                                              'ph_after'])
-                                    float_overtime = (float_overtime -
-                                                      overtime_policy[
-                                                          'ph_after']) * \
+                                    act_float_overtime = (float_overtime - overtime_policy['ph_after'])
+                                    float_overtime = (float_overtime - overtime_policy['ph_after']) * \
                                                      overtime_policy['ph_rate']
-                                ac_sign_in = pytz.utc.localize(
-                                    attendance_interval[0]).astimezone(tz)
+                                ac_sign_in = pytz.utc.localize(attendance_interval[0]).astimezone(tz)
                                 float_ac_sign_in = self._get_float_from_time(
                                     ac_sign_in)
                                 ac_sign_out = pytz.utc.localize(
@@ -126,20 +128,15 @@ class AttendanceSheet(models.Model):
                             att_work_intervals = []
                             diff_intervals = []
                             late_in_interval = []
-                            diff_time = timedelta(hours=00, minutes=00,
-                                                  seconds=00)
-                            late_in = timedelta(hours=00, minutes=00,
-                                                seconds=00)
-                            overtime = timedelta(hours=00, minutes=00,
-                                                 seconds=00)
-                            for j, att_interval in enumerate(
-                                    attendance_intervals):
+                            diff_time = timedelta(hours=00, minutes=00, seconds=00)  # What need for ????
+                            late_in = timedelta(hours=00, minutes=00, seconds=00)
+                            overtime = timedelta(hours=00, minutes=00, seconds=00)
+                            for j, att_interval in enumerate(attendance_intervals):
                                 if max(work_interval[0], att_interval[0]) < min(
                                         work_interval[1], att_interval[1]):
                                     current_att_interval = att_interval
                                     if i + 1 < len(work_intervals):
-                                        next_work_interval = work_intervals[
-                                            i + 1]
+                                        next_work_interval = work_intervals[i + 1]
                                         if max(next_work_interval[0],
                                                current_att_interval[0]) < min(
                                             next_work_interval[1],
@@ -154,8 +151,7 @@ class AttendanceSheet(models.Model):
                                                 j] = current_att_interval
                                             attendance_intervals.insert(j + 1,
                                                                         split_att_interval)
-                                    att_work_intervals.append(
-                                        current_att_interval)
+                                    att_work_intervals.append(current_att_interval)
                             reserved_intervals += att_work_intervals
                             pl_sign_in = self._get_float_from_time(
                                 pytz.utc.localize(work_interval[0]).astimezone(
@@ -163,50 +159,31 @@ class AttendanceSheet(models.Model):
                             pl_sign_out = self._get_float_from_time(
                                 pytz.utc.localize(work_interval[1]).astimezone(
                                     tz))
-                            pl_sign_in_time = pytz.utc.localize(
-                                work_interval[0]).astimezone(tz)
-                            pl_sign_out_time = pytz.utc.localize(
-                                work_interval[1]).astimezone(tz)
-                            ac_sign_in = 0
-                            ac_sign_out = 0
+                            # pl_sign_in_time = pytz.utc.localize(work_interval[0]).astimezone(tz)
+                            # pl_sign_out_time = pytz.utc.localize(work_interval[1]).astimezone(tz)
+                            ac_sign_in, ac_sign_out = 0, 0
                             status = ""
-                            note = ""
                             if att_work_intervals:
                                 if len(att_work_intervals) > 1:
-                                    # print("there is more than one interval for that work interval")
                                     late_in_interval = (
                                         work_interval[0],
                                         att_work_intervals[0][0])
                                     overtime_interval = (
                                         work_interval[1],
                                         att_work_intervals[-1][1])
-                                    if overtime_interval[1] < overtime_interval[
-                                        0]:
-                                        overtime = timedelta(hours=0, minutes=0,
-                                                             seconds=0)
+                                    if overtime_interval[1] < overtime_interval[0]:
+                                        overtime = timedelta(hours=0, minutes=0, seconds=0)
                                     else:
-                                        overtime = overtime_interval[1] - \
-                                                   overtime_interval[0]
-                                    remain_interval = (
-                                        att_work_intervals[0][1],
-                                        work_interval[1])
-                                    # print'first remain intervals is',remain_interval
+                                        overtime = overtime_interval[1] - overtime_interval[0]
+                                    remain_interval = (att_work_intervals[0][1], work_interval[1])
                                     for att_work_interval in att_work_intervals:
-                                        float_worked_hours += (
-                                                                      att_work_interval[
-                                                                          1] -
-                                                                      att_work_interval[
-                                                                          0]).total_seconds() / 3600
-                                        # print'float worked hors is', float_worked_hours
-                                        if att_work_interval[1] <= \
-                                                remain_interval[0]:
+                                        float_worked_hours += (att_work_interval[1] - att_work_interval[
+                                            0]).total_seconds() / 3600
+                                        if att_work_interval[1] <= remain_interval[0]:
                                             continue
-                                        if att_work_interval[0] >= \
-                                                remain_interval[1]:
+                                        if att_work_interval[0] >= remain_interval[1]:
                                             break
-                                        if remain_interval[0] < \
-                                                att_work_interval[0] < \
-                                                remain_interval[1]:
+                                        if remain_interval[0] < att_work_interval[0] < remain_interval[1]:
                                             diff_intervals.append((
                                                 remain_interval[
                                                     0],
@@ -237,36 +214,35 @@ class AttendanceSheet(models.Model):
                                                                             0][
                                                                             0]).total_seconds() / 3600)
                                 else:
-                                    late_in_interval = (
-                                        work_interval[0],
-                                        att_work_intervals[0][0])
-                                    overtime_interval = (
-                                        work_interval[1],
-                                        att_work_intervals[-1][1])
-                                    if overtime_interval[1] < overtime_interval[
-                                        0]:
-                                        overtime = timedelta(hours=0, minutes=0,
-                                                             seconds=0)
-                                        diff_intervals.append((
-                                            overtime_interval[
-                                                1],
-                                            overtime_interval[
-                                                0]))
+                                    late_in_interval = (work_interval[0], att_work_intervals[0][0])
+                                    
+                                    if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
+                                    # if ac_sign_in < end_morning_shift:
+                                        overtime_interval = (
+                                            work_interval[1], att_work_intervals[-1][1] - timedelta(hours=1))
                                     else:
-                                        overtime = overtime_interval[1] - \
-                                                   overtime_interval[0]
+                                        overtime_interval = (work_interval[1], att_work_intervals[-1][1])
+                                    if overtime_interval[1] < overtime_interval[0]:
+                                        overtime = timedelta(hours=0, minutes=0, seconds=0)
+                                        # Why use this if overtime does not exist!!!!!!!!!
+                                        diff_intervals.append((overtime_interval[1], overtime_interval[0]))
+                                    else:
+                                        overtime = overtime_interval[1] - overtime_interval[0]
                                     ac_sign_in = self._get_float_from_time(
-                                        pytz.utc.localize(att_work_intervals[0][
-                                                              0]).astimezone(
-                                            tz))
-                                    ac_sign_out = self._get_float_from_time(
-                                        pytz.utc.localize(att_work_intervals[0][
-                                                              1]).astimezone(
-                                            tz))
-                                    worked_hours = att_work_intervals[0][1] - \
-                                                   att_work_intervals[0][0]
-                                    float_worked_hours = worked_hours.total_seconds() / 3600
-                                    ac_sign_out = ac_sign_in + float_worked_hours
+                                        pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
+
+                                    if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
+                                    # if ac_sign_in < end_morning_shift:
+                                        ac_sign_out = end_morning_shift
+                                        worked_hours = end_morning_shift - self._get_float_from_time(
+                                            pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
+                                        float_worked_hours = worked_hours
+                                    else:
+                                        # ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
+                                        #                                                           [1]).astimezone(tz))
+                                        worked_hours = att_work_intervals[0][1] - att_work_intervals[0][0]
+                                        float_worked_hours = worked_hours.total_seconds() / 3600
+                                        ac_sign_out = ac_sign_in + float_worked_hours
                             else:
                                 late_in_interval = []
                                 diff_intervals.append(
@@ -283,7 +259,10 @@ class AttendanceSheet(models.Model):
                                             diff_time += diff_clean[1] - \
                                                          diff_clean[0]
                                     else:
-                                        diff_time += diff_in[1] - diff_in[0]
+
+                                        diff_time_final= (pl_sign_out - ac_sign_out)
+                                        result =timedelta(hours=diff_time_final)
+                                        diff_time += result
                             if late_in_interval:
                                 if late_in_interval[1] < late_in_interval[0]:
                                     late_in = timedelta(hours=0, minutes=0,
@@ -300,20 +279,17 @@ class AttendanceSheet(models.Model):
                                                   late_in_interval[0]
                             float_overtime = overtime.total_seconds() / 3600
                             if float_overtime <= overtime_policy['wd_after']:
-                                act_float_overtime = float_overtime = float_3h_overtime = float_after_3h_overtime =0
+                                act_float_overtime = float_overtime = float_3h_overtime = float_after_3h_overtime = 0
                             else:
                                 act_float_overtime = float_overtime
                                 if float_overtime <= 3:
                                     float_3h_overtime = float_overtime * overtime_policy['wd_3h']
                                     float_after_3h_overtime = 0
-                                else :
+                                else:
                                     float_3h_overtime = 3 * overtime_policy['wd_3h']
-                                    float_after_3h_overtime = (float_overtime -3) * overtime_policy['wd_after_3h']
+                                    float_after_3h_overtime = (float_overtime - 3) * overtime_policy['wd_after_3h']
 
-                                float_overtime = float_overtime * \
-                                                 overtime_policy[
-                                                     'wd_rate']
-
+                                float_overtime = float_overtime * overtime_policy['wd_rate']
 
                             float_late = late_in.total_seconds() / 3600
                             act_float_late = late_in.total_seconds() / 3600
@@ -330,6 +306,7 @@ class AttendanceSheet(models.Model):
                             else:
                                 act_float_diff = float_diff
                                 float_diff = policy_id.get_diff(float_diff)
+
                             values = {
                                 'date': date,
                                 'day': day_str,
@@ -365,9 +342,8 @@ class AttendanceSheet(models.Model):
                                 float_worked_hours = overtime.total_seconds() / 3600
                                 ac_sign_out = ac_sign_in + float_worked_hours
                                 float_overtime = overtime.total_seconds() / 3600
-                                if float_overtime <= overtime_policy[
-                                    'wd_after']:
-                                    float_overtime = act_float_overtime = float_3h_overtime = float_after_3h_overtime =0
+                                if float_overtime <= overtime_policy['wd_after']:
+                                    float_overtime = act_float_overtime = float_3h_overtime = float_after_3h_overtime = 0
                                 else:
                                     act_float_overtime = float_overtime
                                     if float_overtime <= 3:
@@ -388,8 +364,8 @@ class AttendanceSheet(models.Model):
                                     'ac_sign_out': ac_sign_out,
                                     'overtime': float_overtime,
                                     'overtime_up_to_3': float_3h_overtime,
-	                                'overtime_after_3': float_after_3h_overtime,
-	                                'overtime_weekend': 0,
+                                    'overtime_after_3': float_after_3h_overtime,
+                                    'overtime_weekend': 0,
                                     'worked_hours': float_worked_hours,
                                     'act_overtime': act_float_overtime,
                                     'note': _("overtime out of work intervals"),
@@ -397,42 +373,37 @@ class AttendanceSheet(models.Model):
                                 }
                                 att_line.create(values)
                 else:
+                    # Case of weekend.
                     if attendance_intervals:
-                        # print "thats weekend be over time "
                         for attendance_interval in attendance_intervals:
-                            overtime = attendance_interval[1] - \
-                                       attendance_interval[0]
-                            ac_sign_in = pytz.utc.localize(
-                                attendance_interval[0]).astimezone(tz)
-                            ac_sign_out = pytz.utc.localize(
-                                attendance_interval[1]).astimezone(tz)
+                            overtime = attendance_interval[1] - attendance_interval[0]
+                            # ac_sign_in = pytz.utc.localize(
+                            #     attendance_interval[0]).astimezone(tz)
+                            # ac_sign_out = pytz.utc.localize(
+                            #     attendance_interval[1]).astimezone(tz)
                             float_overtime = overtime.total_seconds() / 3600
                             if float_overtime <= overtime_policy['we_after']:
                                 float_overtime = 0
                                 act_float_overtime = 0
                             else:
                                 act_float_overtime = float_overtime
-                                float_overtime = act_float_overtime * \
-                                                 overtime_policy['we_rate']
+                                float_overtime = act_float_overtime * overtime_policy['we_rate']
                             ac_sign_in = pytz.utc.localize(
                                 attendance_interval[0]).astimezone(tz)
                             ac_sign_out = pytz.utc.localize(
                                 attendance_interval[1]).astimezone(tz)
-                            worked_hours = attendance_interval[1] - \
-                                           attendance_interval[0]
+                            worked_hours = attendance_interval[1] - attendance_interval[0]
                             float_worked_hours = worked_hours.total_seconds() / 3600
                             values = {
                                 'date': date,
                                 'day': day_str,
-                                'ac_sign_in': self._get_float_from_time(
-                                    ac_sign_in),
-                                'ac_sign_out': self._get_float_from_time(
-                                    ac_sign_out),
+                                'ac_sign_in': self._get_float_from_time(ac_sign_in),
+                                'ac_sign_out': self._get_float_from_time(ac_sign_out),
                                 'overtime': float_overtime,
                                 'act_overtime': act_float_overtime,
-                                'overtime_weekend' : float_overtime,
+                                'overtime_weekend': float_overtime,
                                 'overtime_up_to_3': 0,
-	                            'overtime_after_3': 0,
+                                'overtime_after_3': 0,
                                 'worked_hours': float_worked_hours,
                                 'att_sheet_id': self.id,
                                 'status': 'weekend',
@@ -462,21 +433,25 @@ class AttendanceSheet(models.Model):
             new_payslip._onchange_employee()
             payslip_dict = new_payslip._convert_to_write({
                 name: new_payslip[name] for name in new_payslip._cache})
+            for name in new_payslip._cache:
+                print(new_payslip[name])
+                print(name)
+            print(payslip_dict, '2222222222')
             payslip_id = payslip_obj.create(payslip_dict)
+            print(payslip_id, '555555555')
             worked_day_lines = self._get_workday_lines()
             payslip_id.worked_days_line_ids = [(0, 0, x) for x in
                                                worked_day_lines]
             input_line = self._get_other_input()
-            payslip_id.input_line_ids = [(0,0,x) for x in input_line]
+            payslip_id.input_line_ids = [(0, 0, x) for x in input_line]
             payslip_id.compute_sheet()
             sheet.payslip_id = payslip_id
-
 
     def _get_other_input(self):
         self.ensure_one()
         contract = self.contract_id
 
-        input_type = self.env['hr.payslip.input.type'].search([('up_to_3h','=',True)])
+        input_type = self.env['hr.payslip.input.type'].search([('up_to_3h', '=', True)])
         if not input_type:
             raise UserError('You must select the three types of overtime in salary structure other input')
         amount = contract.per_hour_coast * self.overtime_up_to_3_total
@@ -488,7 +463,7 @@ class AttendanceSheet(models.Model):
 
         }]
 
-        input_type = self.env['hr.payslip.input.type'].search([('after_to_3h','=',True)])
+        input_type = self.env['hr.payslip.input.type'].search([('after_to_3h', '=', True)])
         if not input_type:
             raise UserError('You must select the three types of overtime in salary structure other input')
         amount = contract.per_hour_coast * self.overtime_after_3_total
@@ -500,7 +475,7 @@ class AttendanceSheet(models.Model):
 
         }]
 
-        input_type = self.env['hr.payslip.input.type'].search([('weekend','=',True)])
+        input_type = self.env['hr.payslip.input.type'].search([('weekend', '=', True)])
         if not input_type:
             raise UserError('You must select the three types of overtime in salary structure other input')
         amount = contract.per_hour_coast * self.overtime_weekend_total
