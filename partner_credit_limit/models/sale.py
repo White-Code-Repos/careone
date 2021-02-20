@@ -72,10 +72,10 @@ class SaleOrder(models.Model):
                     # if self.user_has_groups('first_grain_custom.group_ceo'):
                     #     self.no_credit_has_ceo_access = True
                     # else:
-                    self.no_credit_has_ceo_access = False
-
-                partner.write(
-                    {'credit_limit': credit - debit + self.amount_total})
+                #     self.no_credit_has_ceo_access = False
+                #
+                # partner.write(
+                #     {'credit_limit': credit - debit + self.amount_total})
             return True
 
     def approve_credit_limit(self):

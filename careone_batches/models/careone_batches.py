@@ -1,6 +1,54 @@
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id(self):
+        user = self.env['res.users'].search([('id','=' , self.env.uid)])
+        print(user)
+        if self.journal_id not in user.allowed_journal:
+            raise UserError('You have not access on this journal\n')
+        # return [
+        #         ('type', 'in', ('bank', 'cash')), ('id', 'in', user.allowed_journal.ids)
+        #     ]
+    # allowed_journal = fields.Many2many('account.journal',)
+    # user_id = fields.Many2one('res.users',default=lambda self: self.env.uid)
+    # journal_id = fields.Many2one('account.journal',
+    #                              string='Journal',
+    #                              required=True, readonly=True,
+    #                              states={'draft': [('readonly', False)]},
+    #                              tracking=True,
+    #                              domain=_compute_domain,
+    #
+    #                              )
+    #
+    # def _compute_allowed_journal(self):
+    #     for rec in self:
+    #         user = rec.env['res.users'].search([('id', '=', rec.env.uid)])
+    #         rec.allowed_journal = user.allowed_journal.ids
+    #         print('')
+    #
+    # allowed_journal = fields.Many2many('account.journal',
+    #                                    'user_journal_rel_allow_edit',
+    #                                    'user_id',
+    #                                    'journal_id',
+    #                                    compute='_compute_allowed_journal'
+    #                                    )
+    #
+    #
+    # journal_id = fields.Many2one('account.journal', string='Journal',
+    #                              required=True, readonly=True,
+    #                              states={'draft': [('readonly', False)]},
+    #                              tracking=True,
+    #                              # domain="[('type', 'in', ('bank', 'cash')),('id', 'in', allowed_journal), ('company_id', '=', company_id)]"
+    #                              )
+    #
+
+
 
 
 class AttPayslipRun(models.Model):
