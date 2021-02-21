@@ -43,12 +43,16 @@ class SaleOrder(models.Model):
                  ('account_id.user_type_id.name', 'in',
                   ['Receivable', 'Payable'])]
             )
+            ################ commment BY G0o0LD ################
             confirm_sale_order = self.search([('partner_id', '=', partner.id),
                                               ('state', '=', 'sale')])
             debit, credit = 0.0, 0.0
+  #########################  BY G0o0LD ##############################
+            # amount_total = self.amount_total
             amount_total = 0.0
             for status in confirm_sale_order:
                 amount_total += status.amount_total
+            ##############################################
             for line in movelines:
                 credit += line.credit
                 debit += line.debit
