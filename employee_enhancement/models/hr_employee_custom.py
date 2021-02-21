@@ -112,18 +112,7 @@ class HrContract(models.Model):
 
     @api.depends('wage', 'incentives', 'nature_of_work', 'work_days', 'work_hours')
     def _get_total_salary(self):
-<<<<<<< HEAD
         for i in self :
             i.total_salary = i.wage + i.incentives + i.nature_of_work
 
             i.per_hour_coast = i.total_salary / (i.work_days*i.work_hours) if i.total_salary >0 and (i.work_days*i.work_hours)>0 else 0
-
-
-
-=======
-        for i in self:
-            i.total_salary = i.wage + i.incentives + i.nature_of_work
-            i.per_hour_coast = i.total_salary / (i.work_days * i.work_hours) \
-                if i.total_salary > 0 and (i.work_days * i.work_hours) > 0 else 0
->>>>>>> 1fce74e45e17bfccf3973c7f44d5e0ab147f268e
-    # #######################
