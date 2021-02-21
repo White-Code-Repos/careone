@@ -233,7 +233,9 @@ class AttendanceSheet(models.Model):
 
                                     if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
                                     # if ac_sign_in < end_morning_shift:
-                                        ac_sign_out = end_morning_shift
+                                        ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
+                                                                                                  [1]).astimezone(tz))
+                                    
                                         worked_hours = end_morning_shift - self._get_float_from_time(
                                             pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
                                         float_worked_hours = worked_hours
@@ -243,6 +245,7 @@ class AttendanceSheet(models.Model):
                                         worked_hours = att_work_intervals[0][1] - att_work_intervals[0][0]
                                         float_worked_hours = worked_hours.total_seconds() / 3600
                                         ac_sign_out = ac_sign_in + float_worked_hours
+
                             else:
                                 late_in_interval = []
                                 diff_intervals.append(
