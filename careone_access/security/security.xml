@@ -48,7 +48,7 @@
   <record model="ir.rule" id="journal_for_user_rule">
     <field name="model_id" ref="account.model_account_journal"/>
     <field name="name">Jornals Domain</field>
-    <field name="domain_force">[('id','in',user.allowed_journal.ids)]</field>
+<!--    <field name="domain_force">[('id','in',user.allowed_journal.ids)]</field>-->
     <field name="groups" eval="[(4,ref('careone_access.careone_manager')),(4,ref('careone_access.careone_salesperson'))]"/>
   </record>
 </odoo>
