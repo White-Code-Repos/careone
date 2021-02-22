@@ -235,10 +235,16 @@ class AttendanceSheet(models.Model):
                                     # if ac_sign_in < end_morning_shift:
                                         ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
                                                                                                   [1]).astimezone(tz))
-                                    
-                                        worked_hours = end_morning_shift - self._get_float_from_time(
-                                            pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
+
+                                        worked_hours = ac_sign_out - ac_sign_in
+                                        # worked_hours = end_morning_shift - self._get_float_from_time(
+                                        #     pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
                                         float_worked_hours = worked_hours
+                                        c = ac_sign_out - pl_sign_out
+                                        overtime = timedelta(hours=c)
+                                        print("LLLLLLLLLL")
+                                        print(overtime)
+
                                     else:
                                         # ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
                                         #                                                           [1]).astimezone(tz))
