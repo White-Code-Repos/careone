@@ -44,24 +44,25 @@ class SaleOrder(models.Model):
                   ['Receivable', 'Payable'])]
             )
             ################ commment BY G0o0LD ################
-            confirm_sale_order = self.search([('partner_id', '=', partner.id),
-                                              ('state', '=', 'sale')])
-            debit, credit = 0.0, 0.0
+            # confirm_sale_order = self.search([('partner_id', '=', partner.id),
+            #                                   ('state', '=', 'sale')])
+            # debit, credit = 0.0, 0.0
   #########################  BY G0o0LD ##############################
-            # amount_total = self.amount_total
-            amount_total = 0.0
-            for status in confirm_sale_order:
-                amount_total += status.amount_total
+            amount_total = self.amount_total
+            # amount_total = 0.0
+            # for status in confirm_sale_order:
+            #     amount_total += status.amount_total
             ##############################################
-            for line in movelines:
-                credit += line.credit
-                debit += line.debit
-            partner_credit_limit = (partner.credit_limit - debit) + credit
-            available_credit_limit = \
-                ((partner_credit_limit -
-                  (amount_total - debit)) + self.amount_total)
+            # for line in movelines:
+            #     credit += line.credit
+            #     debit += line.debit
+            # partner_credit_limit = (partner.credit_limit - debit) + credit
+            # available_credit_limit = \
+            #     ((partner_credit_limit -
+            #       (amount_total - debit)) + self.amount_total)
 
-            if (amount_total - debit) > partner_credit_limit:
+            # if (amount_total - debit) > partner_credit_limit:
+            if amount_total > partner.credit_limit:
                 if not partner.over_credit:
                     # STOP THIS STOP __________________________________ STOP
                     # msg = 'Your available credit limit' \
