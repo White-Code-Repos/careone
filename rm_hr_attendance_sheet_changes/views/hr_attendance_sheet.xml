@@ -17,9 +17,29 @@
                 <field name="overtime_after_3_total" widget="float_time"/>
                 <field name="overtime_weekend_total" widget="float_time"/>
             </xpath>
-           
+
+            <xpath expr="//field[@name='att_policy_id']" position="after">
+                <field name="branch_id"/>
+            </xpath>
+
         </field>
     </record>
 
+    <record id="attendance_sheet_pivot_view" model="ir.ui.view">
+        <field name="name">attendance.sheet.pivot.view</field>
+        <field name="model">attendance.sheet</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance Sheet Report">
+                <field name="employee_id" type="row"/>
+                <field name="date_from" type="col"/>
+                <field name="overtime_up_to_3_total" string="Overtime" type="measure"/>
+                <field name="overtime_weekend_total" string="Weekend Overtime" type="measure"/>
+                <field name="tot_overtime" string="Total Overtime" type="measure"/>
+                <field name="no_absence" string="Total Absent Days" type="measure"/>
+                <field name="tot_late" string="Total Late" type="measure"/>
+                <field name="tot_difftime" string="Total Diff time" type="measure"/>
+            </pivot>
+        </field>
+    </record>
 </odoo>
 

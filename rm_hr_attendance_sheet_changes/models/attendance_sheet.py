@@ -27,6 +27,7 @@ class AttendanceSheet(models.Model):
     overtime_weekend_total = fields.Float(compute="_compute_sheet_total",
                                           string="Total Over Weekend", readonly=True,
                                           store=True)
+    branch_id = fields.Many2one(related='employee_id.branch_id', store=True)
 
     def get_attendances(self):
         for att_sheet in self:
@@ -67,9 +68,9 @@ class AttendanceSheet(models.Model):
                             for l in line.hr_shift.attendance_ids:
                                 if l.day_period == 'morning':
                                     end_morning_shift = l.hour_to
-                        else:
-                            raise ValidationError(_(
-                                'Please add Shift Schedule to the %s `s contract ' % emp.name))
+                        # else:
+                        #     raise ValidationError(_(
+                        #         'Please add Shift Schedule to the %s `s contract ' % emp.name))
                 else:
                     raise ValidationError(_(
                         'Please add Shift Schedule to the %s `s contract ' % emp.name))
@@ -215,7 +216,7 @@ class AttendanceSheet(models.Model):
                                                                             0]).total_seconds() / 3600)
                                 else:
                                     late_in_interval = (work_interval[0], att_work_intervals[0][0])
-
+                                    
                                     if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
                                     # if ac_sign_in < end_morning_shift:
                                         overtime_interval = (
@@ -233,25 +234,16 @@ class AttendanceSheet(models.Model):
 
                                     if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
                                     # if ac_sign_in < end_morning_shift:
-                                        ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
-                                                                                                  [1]).astimezone(tz))
-
-                                        worked_hours = ac_sign_out - ac_sign_in
-                                        # worked_hours = end_morning_shift - self._get_float_from_time(
-                                        #     pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
+                                        ac_sign_out = end_morning_shift
+                                        worked_hours = end_morning_shift - self._get_float_from_time(
+                                            pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
                                         float_worked_hours = worked_hours
-                                        c = ac_sign_out - pl_sign_out
-                                        overtime = timedelta(hours=c)
-                                        print("LLLLLLLLLL")
-                                        print(overtime)
-
                                     else:
                                         # ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
                                         #                                                           [1]).astimezone(tz))
                                         worked_hours = att_work_intervals[0][1] - att_work_intervals[0][0]
                                         float_worked_hours = worked_hours.total_seconds() / 3600
                                         ac_sign_out = ac_sign_in + float_worked_hours
-
                             else:
                                 late_in_interval = []
                                 diff_intervals.append(
@@ -268,10 +260,8 @@ class AttendanceSheet(models.Model):
                                             diff_time += diff_clean[1] - \
                                                          diff_clean[0]
                                     else:
-                                        if not ac_sign_out:
-                                            diff_time_final= (pl_sign_out - pl_sign_in)
-                                        else:
-                                            diff_time_final= (pl_sign_out - ac_sign_out)
+
+                                        diff_time_final= (pl_sign_out - ac_sign_out)
                                         result =timedelta(hours=diff_time_final)
                                         diff_time += result
                             if late_in_interval:
