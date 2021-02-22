@@ -63,7 +63,7 @@ class SaleOrder(models.Model):
 
             # if (amount_total - debit) > partner_credit_limit:
             if amount_total > partner.credit_limit:
-                if not partner.over_credit:
+                # if not partner.over_credit:
                     # STOP THIS STOP __________________________________ STOP
                     # msg = 'Your available credit limit' \
                     #       ' Amount = %s \nCheck "%s" Accounts or Credit ' \
@@ -73,7 +73,7 @@ class SaleOrder(models.Model):
                     #                   'Order. \n' + msg))
 
                     ####  NEW CODE __________________________________________ NEW
-                    self.state = 'approve_credit_limit'
+                self.state = 'approve_credit_limit'
                     # if self.user_has_groups('first_grain_custom.group_ceo'):
                     #     self.no_credit_has_ceo_access = True
                     # else:
