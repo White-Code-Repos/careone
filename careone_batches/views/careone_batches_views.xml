@@ -8,9 +8,10 @@
                 <header>
                     <button name="%(action_batch_Attan)d" type="action" states="draft"
                             string="Generate Attendance Sheet" class="oe_highlight"/>
-                    <button name="generatepayslip" type="object" string="Validate" states="attendance_sheet"
+                    <button name="generatepayslip" type="object" string="submit to Manager" states="attendance_sheet"
                             class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
-                    <button string="Set to Done" name="confirmpayslip" type="object" states="payslip"/>
+                    <button string="Set to Done" name="confirmpayslip" type="object" states="confirmed"/>
+                    <button string="Set to Draft" name="action_draft" type="object" states="confirmed"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
