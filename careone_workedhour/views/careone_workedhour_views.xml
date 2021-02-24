@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_workorder_form_worked" model="ir.ui.view">
+        <field name="name">mrp.workorder.form.worked</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="careone_mrp.workorder_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='time_ids']/tree/field[@name='loss_id']" position="after">
+                <field name="cost_per_hour"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="total_cost"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_mrp_kanban_inherit_state_grp" model="ir.ui.view">
+        <field name="name">MRP Kanban Group State Group</field>
+        <field name="model">mrp.production</field>
+        <field name="type">kanban</field>
+        <field name="inherit_id" ref="mrp.mrp_production_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="default_group_by">state_temp</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+<!--    <report-->
+<!--            id="action_cost_struct_mrp_production_editing"-->
+<!--            model="mrp.production"-->
+<!--            string="Cost Analysis"-->
+<!--            report_type="qweb-html"-->
+<!--            name="careone_workedhour.mrp_cost_structure_editing"-->
+<!--            file="careone_workedhour.mrp_cost_structure_editing"-->
+<!--            print_report_name="'Cost Analysis - %s ' % object.name"-->
+<!--        />-->
+
+
+<!--    <record model="ir.ui.view" id="mrp_production_editing_form">-->
+<!--            <field name="name">mrp.production.editing.form.inherit</field>-->
+<!--            <field name="model">mrp.production</field>-->
+<!--            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//div[@name='button_box']/button[@name='%(mrp_account_enterprise.action_cost_struct_mrp_production)d']" position="attributes">-->
+<!--                    <attribute name="name">careone_workedhour.action_cost_struct_mrp_production_editing</attribute>-->
+<!--                    <attribute name="string">Golden Boy</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+</odoo>

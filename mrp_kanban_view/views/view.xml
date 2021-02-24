@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="attributes">
                     <attribute name="default_group_by">state</attribute>
-                    <attribute name="default_order">state</attribute>
+                    <attribute name="default_order">date_deadline</attribute>
                 </xpath>
             </field>
         </record>
