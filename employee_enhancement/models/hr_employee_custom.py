@@ -6,12 +6,13 @@ class HrEmployee(models.AbstractModel):
     _inherit = 'hr.employee.base'
 
     def _check_bank_account_format(self, num, val):
-        val = val.strip()
-        try:
-            return val if any([type(int(i)) is int for i in val]) else False
-        except:
-            raise ValidationError(
-                "'Bank Account %s' Accepts Numbers Only" % str(num))
+        if val:
+            val = val.strip()
+            try:
+                return val if any([type(int(i)) is int for i in val]) else False
+            except:
+                raise ValidationError(
+                    "'Bank Account %s' Accepts Numbers Only" % str(num))
 
     @api.model
     def create(self, vals):
