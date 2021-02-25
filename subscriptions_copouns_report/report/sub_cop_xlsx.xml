@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <report
+                id="sub_cop_report_xlsx" model="subscription.coupon.report"
+                string="Subscription / Coupon Report" report_type="xlsx"
+                name="subscriptions_copouns_report.sub_cop_report_xlsx"
+                file="subscriptions_copouns_report.sub_cop_report_xlsx"
+                attachment_use="True"
+                menu="False"/>
+    </data>
+</odoo>

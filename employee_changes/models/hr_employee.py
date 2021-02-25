@@ -1,7 +1,8 @@
-from odoo import models, fields ,api
+from odoo import models, fields, api
 from dateutil import relativedelta
 from datetime import datetime
 from odoo.exceptions import UserError
+
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -33,44 +34,45 @@ class HrEmployee(models.Model):
                 passport_date_difference = relativedelta.relativedelta(employee.passport_expiry_date, today_date)
                 if passport_date_difference.months == 1:
                     email_values = {
-                        'email_to': '%s, %s, %s' % (employee.work_email,employee.coach_id.work_email or False,employee.parent_id.work_email or False),
+                        'email_to': '%s, %s, %s' % (employee.work_email, employee.coach_id.work_email or False,
+                                                    employee.parent_id.work_email or False),
                     }
                     passport_expiration_template.send_mail(employee.id, force_send=True, email_values=email_values)
             if employee.visa_expire and employee.visa_no:
                 visa_date_difference = relativedelta.relativedelta(employee.visa_expire, today_date)
                 if visa_date_difference.months == 1:
                     email_values = {
-                        'email_to': '%s, %s, %s' % (employee.work_email,employee.coach_id.work_email or False,employee.parent_id.work_email or False),
+                        'email_to': '%s, %s, %s' % (employee.work_email, employee.coach_id.work_email or False,
+                                                    employee.parent_id.work_email or False),
                     }
                     visa_expiration_template.send_mail(employee.id, force_send=True, email_values=email_values)
 
     # end of service section
-
-    employee_type2 = fields.Selection([('worker','Worker'),('employee','Employee')],string='End of Service For')
-    calculate_balance = fields.Boolean('')
+    employee_type2 = fields.Selection([('worker', 'Worker'), ('employee', 'Employee')], string='End of Service For')
+    calculate_balance = fields.Boolean('Calculate?')
     end_service_date = fields.Date('Date')
-    balance = fields.Float('Balance' ,compute="_get_end_service_balance")
-    
-    @api.depends('employee_type2','calculate_balance','end_service_date')
+    balance = fields.Float('Balance', compute="_get_end_service_balance")
+    add_to_payslip = fields.Boolean('Add to Payslip')
+
+    @api.depends('employee_type2', 'calculate_balance', 'end_service_date')
     def _get_end_service_balance(self):
         balance = 0
-        self.calculate_balance = 0
         if self.calculate_balance:
-            if not self.end_service_date :
+            if not self.end_service_date:
                 return True
-                # self.calculate_balance = 0
-                # raise UserError("You need to put End Date First")
-            contract = self.env['hr.contract'].search([('employee_id','=',self._origin.id),('state','=','open')],limit=1)
-            if contract and contract.date_start :
+            contract = self.env['hr.contract'].search([('employee_id', '=', self.id),
+                                                       ('state', '=', 'open')], limit=1)
+            if contract and contract.date_start:
                 start = datetime.strptime(str(contract.date_start), '%Y-%m-%d')
                 end = datetime.strptime(str(self.end_service_date), '%Y-%m-%d')
-                r = relativedelta.relativedelta(end,start)
+                r = relativedelta.relativedelta(end, start)
                 years = int(r.years)
+
                 if self.employee_type2 == 'worker':
-                    if years >= 2:
+                    if years > 2:
                         balance = contract.wage * years
-                    else :
+                    else:
                         balance = contract.wage * 0.5 * years
-                if self.employee_type2 == 'employee':
+                elif self.employee_type2 == 'employee':
                     balance = contract.wage * years
         self.balance = balance

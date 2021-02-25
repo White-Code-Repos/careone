@@ -21,13 +21,12 @@
             <xpath expr="//notebook/page[@name='hr_settings']" position="inside">
                 <group name="end_of_service" string="End Of Service">
                     <group>
-                            <field name="employee_type2"/>
-                            <field name="end_service_date"/>
-                            <field name="calculate_balance" string="Calculate ?"/>
-                            <field name="balance"/>
+                        <field name="employee_type2"/>
+                        <field name="end_service_date"/>
+                        <field name="calculate_balance" force_save="1"/>
+                        <field name="balance"/>
+                        <field name="add_to_payslip"/>
                     </group>
-
-
                 </group>
             </xpath>
         </field>
