@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 class HrEmployeeContract(models.Model):
     _inherit = 'hr.contract'
 
-    shift_schedule = fields.One2many(related='employee_id.shift_schedule', string="Shift Schedule",
+    shift_schedule = fields.One2many('hr.shift.schedule', 'rel_hr_schedule', string="Shift Schedule",
                                      help="Shift schedule", readonly=False)
     working_hours = fields.Many2one('resource.calendar', string='Working Schedule', help="Working hours")
     department_id = fields.Many2one('hr.department', string="Department", help="Department",
@@ -15,8 +15,7 @@ class HrEmployeeContract(models.Model):
     @api.onchange('shift_schedule')
     def onchange_shift_schedule(self):
         for item in self:
-            if item.shift_schedule:
-                item.employee_id.shift_schedule = [(6, 0, item.shift_schedule.ids)]
+            item.employee_id.shift_schedule = [(6, 0, item.shift_schedule.ids)]
 
 
 class HrSchedule(models.Model):
@@ -66,3 +65,10 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     shift_schedule = fields.One2many('hr.shift.schedule', 'rel_hr_schedule1', string="Shift Schedule")
+
+    @api.onchange('shift_schedule')
+    def onchange_shift_schedule(self):
+        for item in self:
+            contracts = self.env['hr.contract'].search([('employee_id', '=', item.id)])
+            for contract in contracts:
+                item.shift_schedule = [(6, 0, contract.shift_schedule.ids)]
