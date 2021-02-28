@@ -55,7 +55,7 @@ class HrSchedule(models.Model):
             shifts = self.env['hr.shift.schedule'].search([('rel_hr_schedule', '=', vals.get('rel_hr_schedule'))])
             for each in shifts:
                 if each != shifts[-1]:
-                    if each.end_date >= vals.get('start_date') or each.start_date >= vals.get('start_date'):
+                    if each.end_date > vals.get('start_date') or each.start_date > vals.get('start_date'):
                         raise Warning(_('The dates may not overlap with one another.'))
             if vals.get('start_date') > vals.get('end_date'):
                 raise Warning(_('Start date should be less than end date.'))
