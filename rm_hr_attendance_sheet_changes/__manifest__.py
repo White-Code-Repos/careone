@@ -22,7 +22,6 @@
                 'hr_holidays',
                 'hr_attendance',
                 'rm_hr_attendance_sheet',
-                'careone_contract_enhancement',
                 'employee_enhancement'],
     'data': [
         'views/over_time_rules.xml',
