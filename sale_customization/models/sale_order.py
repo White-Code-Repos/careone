@@ -79,7 +79,7 @@ class SaleOrder(models.Model):
                 sale_order_line.create({
                     'product_id': product.product_id.id,
                     'order_id': self.id,
-                    'name': product.product_id.name,
+                    'name': product.product_id.display_name,
                     'product_uom_qty': product.product_quantity,
                     'product_uom': product.uom_id.id,
                     'price_unit': product.product_id.standard_price,
