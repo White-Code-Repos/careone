@@ -347,6 +347,7 @@
                                             <strong>Warranty Instruction</strong>
                                         </td>
                                         <td style="width:50%;height: 100%;border: 1px solid black;">
+                                            <span t-field="doc.product_id.warranty_instruction"/>
                                         </td>
                                         <td style="text-right;border: 1px solid black;">
                                             <strong class="pull-right">الوصـــــــف</strong>
