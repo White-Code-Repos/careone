@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_portrait" model="report.paperformat">
+            <field name="name">Purchase Order</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">100</field>
+        </record>
+
+        <report
+                id="report_purchase_order_view_details"
+                string="Purchase Order Report"
+                model="purchase.order"
+                report_type="qweb-pdf"
+                name="careone_reports.print_purchase_order_template"
+                file="careone_reports.print_purchase_order_template"
+                paperformat="paperformat_portrait"
+                menu="True"/>
+
+        <template id="print_purchase_order_template">
+            <t t-call="web.html_container">
+                <t t-call="careone_reports.custom_external_layout_standard">
+                    <div class="page" style="font_size:16pt !important;">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="col-md-6">
+                                <table class="table table-condensed"
+                                       style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                    <tr>
+                                        <td>
+                                            <img t-if="doc.company_id.logo" class=" text-center"
+                                                 t-att-src="image_data_uri(doc.company_id.logo)"
+                                                 style="max-height: 200px;max-width: 350;text-center" alt="Logo"/>
+                                        </td>
+                                        <td>
+                                            <h3 class="text-center" style="font-size: 25px;">
+                                                <strong>Purchase Order &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                                    &#160; &#160; &#160; &#160; &#160; أمــر الشـراء
+                                                </strong>
+                                            </h3>
+                                            <br/>
+                                            <table class="table table-condensed"
+                                                   style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Order Number</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>رقم امر الشراء</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Order Date</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.date_order"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>تاريخ امر الشراء</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border" style="width:100%;border-collapse: collapse;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <table class="table table-border"
+                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                                <tr>
+                                                    <td style="text-center;background-color:#cccccc;border: 1px solid black;font-size: 18px;">
+                                                        <strong class="pull-left">
+                                                            Customer information
+                                                        </strong>
+                                                    </td>
+                                                    <td colspan="2" style="text-center;background-color:#cccccc;border: 1px solid black;font-size: 18px;">
+                                                        <strong class="pull-right">
+                                                            بـيـانـات العـمـيـل
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong>Name</strong>
+                                                    </td>
+                                                    <td style="text-center;border: 1px solid black;">
+                                                        <span t-field="doc.partner_id.name"/>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">
+                                                            الإسم
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong>Mobil</strong>
+                                                    </td>
+                                                    <td style="text-center;border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.mobile">
+                                                            <span t-field="doc.partner_id.mobile"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الجوال</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong>Email</strong>
+                                                    </td>
+                                                    <td style="text-center;border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.email">
+                                                            <span t-field="doc.partner_id.email"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الإيميل</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong>Address</strong>
+                                                    </td>
+                                                    <td style="text-center;border: 1px solid black;">
+                                                        <span t-field="doc.partner_id"
+                                                              t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "phone_icons": True}'/>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">العنوان</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong>Customer VAT #</strong>
+                                                    </td>
+                                                    <td style="text-center;border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.vat">
+                                                            <span t-field="doc.partner_id.vat"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">
+                                                            الرقم الضريبي
+                                                            للعميل
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border" dir="rtl"
+                                       style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                    <thead>
+                                        <th class="text-center"
+                                            style="width: 50%;background:#cccccc;border: 1px solid black;">
+                                            الوصف
+                                            <br/>Description
+                                        </th>
+                                        <th class="text-center"
+                                            style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                            الكمية
+                                            <br/>Qty
+                                        </th>
+                                        <th class="text-center"
+                                            style="width: 25%;background:#cccccc;border: 1px solid black;">
+                                            سعر الوحدة
+                                            <br/>Unit Price
+                                        </th>
+                                        <th class="text-center"
+                                            style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                            الإجمالي
+                                            <br/>Total
+                                        </th>
+                                    </thead>
+                                    <t t-foreach="doc.order_line" t-as="line">
+                                        <tbody style="border: 1px solid black;">
+                                            <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                align="center">
+                                                <span t-esc="line.name"/>
+                                            </td>
+                                            <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                align="center">
+                                                <span t-esc="line.product_qty"/>
+                                            </td>
+                                            <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                align="center">
+                                                <span t-esc="line.price_unit"/>
+                                            </td>
+                                            <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                align="center">
+                                                <span t-esc="line.price_subtotal"/>
+                                            </td>
+                                        </tbody>
+                                    </t>
+                                    <tr>
+                                        <td colspan="2" style="border-top: 1px solid black;">
+                                            <strong style="text-center;">الشروط والأحكام &#160; &#160; &#160; &#160;
+                                                &#160; &#160; &#160; &#160;Terms and Conditions &#160; &#160; &#160;
+                                                &#160; &#160;
+                                            </strong>
+                                        </td>
+                                        <td style="border: 1px solid black;">
+                                            <strong style="text-center;">الإجمالي الخاضع للضريبية
+                                                <br/>
+                                                Taxable Amount
+                                            </strong>
+                                        </td>
+                                        <td style="border: 1px solid black;">
+                                            <span t-field="doc.amount_untaxed"
+                                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" colspan="2">
+                                            <span style="text-center" t-field="doc.notes"/>
+                                        </td>
+                                        <td style="text-center;border: 1px solid black;">
+                                            <strong class="pull-right">الضريبة
+                                                <br/>
+                                                VAT
+                                            </strong>
+                                        </td>
+                                        <td style="border: 1px solid black;">
+                                            <span t-field="doc.amount_tax"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-center;border: 1px solid black;">
+                                            <strong class="pull-right">المبلغ الإجمالي
+                                                <br/>
+                                                Total Amount
+                                            </strong>
+                                        </td>
+                                        <td style="border: 1px solid black;">
+                                            <span t-field="doc.amount_total"
+                                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

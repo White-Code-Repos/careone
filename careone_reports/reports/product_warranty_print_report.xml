@@ -1,0 +1,363 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_portrait" model="report.paperformat">
+            <field name="name">Warranty</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">100</field>
+        </record>
+
+        <report
+                id="report_product_warranty_details"
+                string="Warranty Receipt Report"
+                model="product.warranty"
+                report_type="qweb-pdf"
+                name="careone_reports.print_product_warranty_template"
+                file="careone_reports.print_product_warranty_template"
+                paperformat="paperformat_portrait"
+                menu="True"/>
+
+        <template id="print_product_warranty_template">
+            <t t-call="web.html_container">
+                <t t-call="careone_reports.custom_external_layout_standard">
+                    <div class="page" style="font_size:16pt !important;">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="col-md-6">
+                                <table class="table table-condensed"
+                                       style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                    <tr>
+                                        <td>
+                                            <img t-if="doc.company_id.logo" class=" text-center"
+                                                 t-att-src="image_data_uri(doc.company_id.logo)"
+                                                 style="max-height: 200px;max-width: 350;text-center" alt="Logo"/>
+                                        </td>
+                                        <td>
+                                            <h3 class="text-center" style="font-size: 25px;">
+                                                <strong>E &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                                    &#160; &#160; &#160; &#160; &#160; شـهـادة ضـمـان
+                                                </strong>
+                                            </h3>
+                                            <br/>
+                                            <table class="table table-condensed"
+                                                   style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Warranty Number</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.serial_no"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>رقم الضمان</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Warranty Date</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.warranty_create_date"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>تاريخ الضمان</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Warranty End Date</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.warranty_end_date"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>تاريخ انتهاء الضمان</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Warranty Type</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.warranty_type"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>نوع الضمان</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Sale Order Number</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="doc.so_id">
+                                                            <span t-field="doc.so_id"/>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>رقم امر البيع</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Invoice Number</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <!--                                                        <span t-field=""/>-->
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>رقم الفاتورة</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border" style="width:100%;border-collapse: collapse;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <table class="table table-border"
+                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                                <tr>
+                                                    <td colspan="3"
+                                                        style="text-right;background-color:#cccccc;border: 1px solid black;">
+                                                        <strong>
+                                                            Vehicle information &#160; &#160; &#160; &#160;
+                                                            &#160; &#160;
+                                                            بـيـانـات السـيـارة
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Car Brand</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.vehicle_id">
+                                                            <span t-field="doc.vehicle_id.model_id.brand_id.name"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">نوع السيارة</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Model</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.vehicle_id">
+                                                            <span t-field="doc.vehicle_id.model_id.name"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الموديل</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>License Plate</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.vehicle_id">
+                                                            <span t-field="doc.vehicle_id.license_plate"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">اللوحة</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Size</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.vehicle_id">
+                                                            <span t-field="doc.vehicle_id.size"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الحجم</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Color</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.vehicle_id">
+                                                            <span t-field="doc.vehicle_id.color"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">اللون</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 0%;"></td>
+                                        <td style="width: 50%;">
+                                            <table class="table table-border"
+                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                                <tr>
+                                                    <td colspan="3"
+                                                        style="text-right;background-color:#cccccc;border: 1px solid black;font-size: 18px;">
+                                                        <strong>
+                                                            Customer information &#160; &#160; &#160; &#160; &#160;
+                                                            &#160;
+                                                            &#160;
+                                                            بـيـانـات العـمـيـل
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Name</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <span t-field="doc.partner_id.name"/>
+                                                    </td>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong class="pull-right">
+                                                            الإسم
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Mobil</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.mobile">
+                                                            <span t-field="doc.partner_id.mobile"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الجوال</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Email</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.email">
+                                                            <span t-field="doc.partner_id.email"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الإيميل</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Address</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <span t-field="doc.partner_id"
+                                                              t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "phone_icons": True}'/>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">العنوان</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Customer VAT #</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.vat">
+                                                            <span t-field="doc.partner_id.vat"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">
+                                                            الرقم الضريبي
+                                                            للعميل
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border"
+                                       style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                    <tr>
+                                        <td class="text-right;"
+                                            style="border: 1px solid black;">
+                                            <strong>Product</strong>
+                                        </td>
+                                        <td style="border: 1px solid black;">
+                                            <span t-field="doc.product_id.name"/>
+                                        </td>
+                                        <td style="text-right;border: 1px solid black;">
+                                            <strong class="pull-right">
+                                                المنتج
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right;"
+                                            style="border: 1px solid black;">
+                                            <strong>Warranty Instruction</strong>
+                                        </td>
+                                        <td style="width:50%;height: 100%;border: 1px solid black;">
+                                        </td>
+                                        <td style="text-right;border: 1px solid black;">
+                                            <strong class="pull-right">الوصف مانيوال</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

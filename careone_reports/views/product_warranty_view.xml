@@ -1,0 +1,12 @@
+<odoo>
+    <record id="product_warranty_inherited_form" model="ir.ui.view">
+        <field name="name">product.warranty.inherited.form.view</field>
+        <field name="model">product.warranty</field>
+        <field name="inherit_id" ref="bi_warranty_registration.warranty_details_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="viechle_id"]' position="replace">
+                <field name="vehicle_id" string="Vehicle"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

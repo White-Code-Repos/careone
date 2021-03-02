@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_portrait" model="report.paperformat">
+            <field name="name">Payment</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">100</field>
+        </record>
+
+        <report
+                id="report_payment_view_details"
+                string="Payment Receipt Report"
+                model="account.payment"
+                report_type="qweb-pdf"
+                name="careone_reports.print_payment_template"
+                file="careone_reports.print_payment_template"
+                paperformat="paperformat_portrait"
+                menu="True"/>
+
+        <template id="print_payment_template">
+            <t t-call="web.html_container">
+                <t t-call="careone_reports.custom_external_layout_standard">
+                    <div class="page" style="font_size:16pt !important;">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="col-md-6">
+                                <table class="table table-condensed"
+                                       style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                    <tr>
+                                        <td>
+                                            <img t-if="doc.company_id.logo" class=" text-center"
+                                                 t-att-src="image_data_uri(doc.company_id.logo)"
+                                                 style="max-height: 200px;max-width: 350;text-center" alt="Logo"/>
+                                        </td>
+                                        <td>
+                                            <h3 class="text-center" style="font-size: 25px;">
+                                                <strong>Payment Receipt &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                                    &#160; &#160; &#160; &#160; &#160;إيصال سداد
+                                                </strong>
+                                            </h3>
+                                            <br/>
+                                            <table class="table table-condensed"
+                                                   style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left;font-size: 18px;">
+                                                            <strong>Payment Number</strong>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right;font-size: 18px;">
+                                                            <strong>رقم السداد</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border" style="width:100%;border-collapse: collapse;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <table class="table table-border"
+                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                                <tr>
+                                                    <td colspan="3"
+                                                        style="text-right;background-color:#cccccc;border: 1px solid black;">
+                                                        <strong>
+                                                            Payment information &#160; &#160; &#160; &#160;
+                                                            &#160;
+                                                            بـيـانـات الســداد
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Payment Date</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <span t-field="doc.payment_date"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <strong class="pull-right">تاريخ السداد</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Payment Amount</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.amount">
+                                                            <span t-field="doc.amount"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <strong class="pull-right">قيمة السداد</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Method Payment</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.payment_type">
+                                                            <span t-field="doc.payment_type"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">طريقة السداد</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Memo</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <span t-field="doc.communication"/>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الوصف</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 0%;"></td>
+                                        <td style="width: 50%;">
+                                            <table class="table table-border"
+                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                                <tr>
+                                                    <td colspan="3"
+                                                        style="text-right;background-color:#cccccc;border: 1px solid black;font-size: 18px;">
+                                                        <strong>
+                                                            <t t-if="doc.partner_type == 'customer'">
+                                                                Customer information &#160; &#160; &#160; &#160; &#160;
+                                                                &#160;
+                                                                &#160;
+                                                                بـيـانـات العـمـيـل
+                                                            </t>
+                                                            <t t-else="">
+                                                                Customer information &#160; &#160; &#160; &#160; &#160;
+                                                                &#160;
+                                                                &#160;
+                                                                بـيـانـات المـورد
+                                                            </t>
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Name</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <span t-field="doc.partner_id.name"/>
+                                                    </td>
+                                                    <td style="text-left;border: 1px solid black;">
+                                                        <strong class="pull-right">
+                                                            الإسم
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right;"
+                                                        style="border: 1px solid black;">
+                                                        <strong>Mobil</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black;">
+                                                        <t t-if="doc.partner_id.mobile">
+                                                            <span t-field="doc.partner_id.mobile"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-right;border: 1px solid black;">
+                                                        <strong class="pull-right">الجوال</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-border" dir="rtl"
+                                       style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                    <t t-if="doc.related_invoice">
+                                        <thead>
+                                            <th class="text-center"
+                                                style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                                تاريخ الفاتورة
+                                                <br/>Invoice Date
+                                            </th>
+                                            <th class="text-center"
+                                                style="width: 20%;background:#cccccc;border: 1px solid black;">
+                                                رقم الفاتورة
+                                                <br/>Invoice Number
+                                            </th>
+                                            <th class="text-center"
+                                                style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                                المرجع
+                                                <br/>Reference
+                                            </th>
+                                            <th class="text-center"
+                                                style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                                إجمالي الفاتورة
+                                                <br/>Total Amount
+                                            </th>
+                                            <th class="text-center"
+                                                style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                                إجمالي المدفوع
+                                                <br/>Amount Paid
+                                            </th>
+                                            <th class="text-center"
+                                                style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                                الرصيد
+                                                <br/>Balance
+                                            </th>
+                                        </thead>
+                                        <t t-foreach="doc.related_invoice" t-as="line">
+                                            <tbody style="border: 1px solid black;">
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.invoice_date"/>
+                                                </td>
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.name"/>
+                                                </td>
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.ref"/>
+                                                </td>
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.amount_total"/>
+                                                </td>
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.amount_total - line.amount_residual"/>
+                                                </td>
+                                                <td style="padding: 0;border: 1px solid black;" valign="center"
+                                                    align="center">
+                                                    <span t-esc="line.amount_total - (line.amount_total - line.amount_residual)"/>
+                                                </td>
+                                            </tbody>
+                                        </t>
+                                    </t>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
