@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_gamification_challenge_mrp_form">
+            <field name="name">gamification.challenge.mrp.form</field>
+            <field name="model">gamification.challenge</field>
+            <field name="inherit_id" ref="gamification.challenge_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_ids']" position="before">
+                    MRP Group
+                    <field  name="mrp_group_id"/>
+                    <br/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
