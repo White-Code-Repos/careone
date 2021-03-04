@@ -19,6 +19,16 @@
         'reports/purchase_order_print_report.xml',
         'reports/product_warranty_print_report.xml',
     ],
+
+    'images': [
+        'static/src/img/email.png',
+        'static/src/img/facebook.png',
+        'static/src/img/instagam.png',
+        'careone_reports/static/src/img/location.jpg',
+        'static/src/img/phone.png',
+        'static/src/img/twitter-snapchat.png',
+        'static/src/img/youtube.png',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,

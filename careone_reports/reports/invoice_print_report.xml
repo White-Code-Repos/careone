@@ -33,32 +33,38 @@
                 <t t-raw="0"/>
             </div>
             <div class="footer">
+                <div style="text-center">
+                    <center>
+                        <strong style="color: #333333;">سعدنا بخدمتكم ... ونشكرك لإختيارك كير ون</strong>
+                    </center>
+                </div>
                 <div class="text-center" style="border-top: 1px solid black;">
-                    <div style="text-center">
-                        <strong>سعدنا بخدمتكم ... ونشكرك لإختيارك كير ون</strong>
-                    </div>
                     <ul class="list-inline mb4">
                         <li class="pull-left">
-                            <strong>للتواصل
-                                <br/>
-                                رقم الجوال : 0506068020
-                                <br/>
-                                info@care1cc.com : البريد الإلكتروني
-                                <br/>
-                                www.care1cc.com
+                            <strong style="color: #333333;">
+                                <img src="/careone_reports/static/src/img/location.jpeg"/> : Jeddah, Saudi Arabia.
+<!--                                <img src="/careone_reports/static/src/img/phone.png"/>: 0506068020-->
+<!--                                <br/>-->
+<!--                                info@care1cc.com : <img src="/careone_reports/static/src/img/email.png"/>-->
+<!--                                &#160; &#160; &#160;-->
+<!--                                C.R : 4030243669-->
                             </strong>
                         </li>
                         <li class="list-inline-item d-inline text-center">
+                            <strong>
+                                www.care1cc.com
+                            </strong>
                         </li>
                         <li class="pull-right" t-if="report_type == 'pdf'">
-                            <strong>
-                                العنوان وبيانات الشركة
+                            <strong style="color: #333333;">
+                                  : جدة ، المملكة العربية السعودية<img src="/careone_reports/static/src/img/location.jpg"/>
                                 <br/>
-                                رقم التعريف الضريبي : 301028481400003
-                                <br/>
-                                السجل التجاري : 4030243669
-                                <br/>
-                                العنوان : جدة ، المملكة العربية السعودية
+<!--                                <img src="/careone_reports/static/src/img/phone.png"/> : ۰٥۰٦۰٦۸۰۲۰-->
+<!--                                <br/>-->
+<!--                                info@care1cc.com :-->
+<!--                                <img src="/careone_reports/static/src/img/email.png"/>-->
+<!--                                &#160; &#160; &#160;-->
+<!--                                س.ت : ٤۰۳۰۲٤۳٦٦۹-->
                             </strong>
                         </li>
                     </ul>

@@ -31,11 +31,20 @@
         <template id="print_sale_order_template">
             <t t-call="web.html_container">
                 <t t-call="careone_reports.custom_external_layout_standard">
+                    <style type="text/css">
+                        @font-face {
+                        font-family: 'TheSans-Plain_0';
+                        src: local('TheSans-Plain_0'), local('TheSans-Plain_0'),
+                        url('/careone_reports/static/fonts/TheSans-Plain_0.otf') format('truetype');
+                        }
+                        *{
+                        font-family: TheSans-Plain_0;
+                        }
+                    </style>
                     <div class="page" style="font_size:16pt !important;">
                         <t t-foreach="docs" t-as="doc">
                             <div class="col-md-6">
-                                <table class="table table-condensed"
-                                       style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                <table class="table table-borderless" style="width:100%;">
                                     <tr>
                                         <td>
                                             <img t-if="doc.company_id.logo" class=" text-center"
@@ -45,12 +54,12 @@
                                         <td>
                                             <h3 class="text-center" style="font-size: 25px;">
                                                 <strong>Sale Order &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                                    &#160; &#160; &#160; &#160;
                                                     &#160; &#160; &#160; &#160; &#160; أمــر البـيـع
                                                 </strong>
                                             </h3>
                                             <br/>
-                                            <table class="table table-condensed"
-                                                   style="width:100%;border: 0px solid white;border-collapse: collapse;">
+                                            <table class="table table-borderless" style="width:100%;">
                                                 <tr>
                                                     <td>
                                                         <div class="text-left;font-size: 18px;">
@@ -85,173 +94,181 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table class="table table-border" style="width:100%;border-collapse: collapse;">
+                                <table class="table table-borderless" style="width:100%;">
                                     <tr>
-                                        <td style="width: 50%;">
-                                            <table class="table table-border"
-                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                        <td style="width: 51%;">
+                                            <table class="table table-striped"
+                                                   style="width:100%;">
                                                 <tr>
                                                     <td colspan="3"
-                                                        style="text-right;background-color:#cccccc;border: 1px solid black;">
-                                                        <strong>
-                                                            Vehicle information &#160; &#160; &#160; &#160;
-                                                            &#160;
-                                                            بـيـانـات السـيـارة
+                                                        style="text-right;background-color:#cccccc;">
+                                                        <strong class="pull-left"
+                                                                style="font-size: 16px; color: #333333;">
+                                                            Vehicle information
+                                                        </strong>
+                                                        &#160; &#160; &#160; &#160; &#160;
+                                                        <strong class="pull-right"
+                                                                style="font-size: 18px;color: #333333;">
+                                                            بـيـانـات السيارة
                                                         </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Car Brand</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Car Brand</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
-                                                        <span t-field="doc.vehicle_id.model_id.brand_id.name"/>
+                                                    <td align="center">
+                                                        <span style="color: #333333;"
+                                                              t-field="doc.vehicle_id.model_id.brand_id.name"/>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">نوع السيارة</strong>
+                                                    <td>
+                                                        <strong class="pull-right" style="color: #333333;">نوع السيارة
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Model</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Model</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.vehicle_id.model_id">
-                                                            <span t-field="doc.vehicle_id.model_id.name"/>
+                                                            <span style="color: #333333;"
+                                                                  t-field="doc.vehicle_id.model_id.name"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">الموديل</strong>
+                                                    <td>
+                                                        <strong class="pull-right" style="color: #333333;">الموديل
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>License Plate</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">License Plate</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.vehicle_id.license_plate">
-                                                            <span t-field="doc.vehicle_id.license_plate"/>
+                                                            <span style="color: #333333;"
+                                                                  t-field="doc.vehicle_id.license_plate"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">اللوحة</strong>
+                                                    <td>
+                                                        <strong class="pull-right" style="color: #333333;">اللوحة
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Size</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Size</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
-                                                        <span t-field="doc.vehicle_id.size"/>
+                                                    <td align="center">
+                                                        <span style="color: #333333;"
+                                                              t-field="doc.vehicle_id.size"/>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">الحجم</strong>
+                                                    <td>
+                                                        <strong class="pull-right" style="color: #333333;">الحجم
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Color</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Color</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.vehicle_id.color">
-                                                            <span t-field="doc.vehicle_id.color"/>
+                                                            <span style="color: #333333;"
+                                                                  t-field="doc.vehicle_id.color"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">اللون</strong>
+                                                    <td>
+                                                        <strong class="pull-right" style="color: #333333;">اللون
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td style="width: 0%;"></td>
-                                        <td style="width: 50%;">
-                                            <table class="table table-border"
-                                                   style="width:100%;border-collapse: collapse;border: 1px solid black;">
+                                        <td style="width: 51%;">
+                                            <table class="table table-striped" style="width:100%;">
                                                 <tr>
                                                     <td colspan="3"
-                                                        style="text-right;background-color:#cccccc;border: 1px solid black;font-size: 18px;">
-                                                        <strong>
+                                                        style="text-right;background-color:#cccccc;font-size: 18px;">
+                                                        <strong style="color: #333333;">
                                                             Customer information &#160; &#160; &#160; &#160; &#160;
-                                                            &#160;
-                                                            &#160;
+                                                            &#160;&#160; &#160; &#160;
+                                                            &#160;&#160; &#160; &#160;
                                                             بـيـانـات العـمـيـل
                                                         </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Name</strong>
+                                                    <td class="text-right;" style="width:25%;">
+                                                        <strong style="color: #333333;">Name</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
-                                                        <span t-field="doc.partner_id.name"/>
+                                                    <td style="width: 50%;" align="center">
+                                                        <span style="color: #333333;"
+                                                              t-field="doc.partner_id.name"/>
                                                     </td>
-                                                    <td style="text-left;border: 1px solid black;">
-                                                        <strong class="pull-right">
+                                                    <td style="text-left;width:25%;">
+                                                        <strong class="pull-right" style="color: #333333;">
                                                             الإسم
                                                         </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Mobil</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Mobil</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.partner_id.mobile">
-                                                            <span t-field="doc.partner_id.mobile"/>
+                                                            <span style="color: #333333;"
+                                                                  t-field="doc.partner_id.mobile"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">الجوال</strong>
+                                                    <td style="text-right;">
+                                                        <strong class="pull-right" style="color: #333333;">الجوال
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Email</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Email</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.partner_id.email">
-                                                            <span t-field="doc.partner_id.email"/>
+                                                            <span style="color: #333333;"
+                                                                  t-field="doc.partner_id.email"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">الإيميل</strong>
+                                                    <td style="text-right;">
+                                                        <strong class="pull-right" style="color: #333333;">الإيميل
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Address</strong>
+                                                    <td class="text-right;">
+                                                        <strong style="color: #333333;">Address</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
-                                                        <span t-field="doc.partner_id"
+                                                    <td align="center">
+                                                        <span t-field="doc.partner_id" style="color: #333333;"
+                                                              class="pull-center"
                                                               t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "phone_icons": True}'/>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">العنوان</strong>
+                                                    <td style="text-right;">
+                                                        <strong class="pull-right" style="color: #333333;">العنوان
+                                                        </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-right;"
-                                                        style="border: 1px solid black;">
-                                                        <strong>Customer VAT #</strong>
+                                                    <td>
+                                                        <strong style="color: #333333;">Customer VAT #</strong>
                                                     </td>
-                                                    <td style="border: 1px solid black;">
+                                                    <td align="center">
                                                         <t t-if="doc.partner_id.vat">
-                                                            <span t-field="doc.partner_id.vat"/>
+                                                            <span style="text-center;color: #333333;"
+                                                                  t-field="doc.partner_id.vat"/>
                                                         </t>
                                                     </td>
-                                                    <td style="text-right;border: 1px solid black;">
-                                                        <strong class="pull-right">
-                                                            الرقم الضريبي
-                                                            للعميل
+                                                    <td class="pull-right" align="right">
+                                                        <strong style="text-center; color: #333333;">الرقم الضريبى
                                                         </strong>
                                                     </td>
                                                 </tr>
@@ -259,106 +276,123 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table class="table table-border" dir="rtl"
-                                       style="width:100%;border-collapse: collapse;border: 1px solid black;">
-                                    <thead>
+                                <table class="table table-striped" dir="rtl" style="width:100%;">
+                                    <tr>
                                         <th class="text-center"
-                                            style="width: 50%;background:#cccccc;border: 1px solid black;">
+                                            style="width: 50%;background:#cccccc;color: #333333;">
                                             الوصف
                                             <br/>Description
                                         </th>
                                         <th class="text-center"
-                                            style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                            style="width: 15%;background:#cccccc;color: #333333;">
                                             الكمية
                                             <br/>Qty
                                         </th>
                                         <th class="text-center"
-                                            style="width: 25%;background:#cccccc;border: 1px solid black;">
+                                            style="width: 15%;background:#cccccc;color: #333333;">
                                             سعر الوحدة
                                             <br/>Unit Price
                                         </th>
                                         <th class="text-center"
-                                            style="width: 15%;background:#cccccc;border: 1px solid black;">
+                                            style="width: 25%;background:#cccccc;color: #333333;">
                                             الإجمالي
                                             <br/>Total
                                         </th>
-                                    </thead>
+                                    </tr>
                                     <t t-foreach="doc.order_line" t-as="line">
-                                        <tbody style="border: 1px solid black;">
-                                            <td style="padding: 0;border: 1px solid black;" valign="center"
-                                                align="center">
-                                                <span t-esc="line.name"/>
+                                        <tr>
+                                            <td style="padding: 0;" valign="center" align="center">
+                                                <span style="color: #333333;" t-esc="line.name"/>
                                             </td>
-                                            <td style="padding: 0;border: 1px solid black;" valign="center"
-                                                align="center">
-                                                <span t-esc="line.product_uom_qty"/>
+                                            <td style="padding: 0;" valign="center" align="center">
+                                                <span style="color: #333333;" t-esc="line.product_uom_qty"/>
                                             </td>
-                                            <td style="padding: 0;border: 1px solid black;" valign="center"
-                                                align="center">
-                                                <span t-esc="line.price_unit"/>
+                                            <td style="padding: 0;" valign="center" align="center">
+                                                <span style="color: #333333;" t-esc="line.price_unit"/>
                                             </td>
-                                            <td style="padding: 0;border: 1px solid black;" valign="center"
-                                                align="center">
-                                                <span t-esc="line.price_subtotal"/>
+                                            <td style="padding: 0;" valign="center" align="center">
+                                                <span style="color: #333333;" t-esc="line.price_subtotal"/>
                                             </td>
-                                        </tbody>
+                                        </tr>
                                     </t>
                                     <tr>
-                                        <td colspan="2" style="border-top: 1px solid black;">
-                                            <strong style="text-center;">الشروط والأحكام &#160; &#160; &#160; &#160;
-                                                &#160; &#160; &#160; &#160;Terms and Conditions &#160; &#160; &#160;
-                                                &#160; &#160;
+                                        <td colspan="2" rowspan="4">
+                                            <strong class="pull-right" style="color: #333333;">
+                                                الشروط والأحكام
                                             </strong>
+                                            &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                            &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                            <strong class="pull-left" style="color: #333333;">
+                                                Terms and Conditions
+                                            </strong>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <span class="oe_subtotal_footer_separator"
+                                                  style="color: #333333;text-center;" t-field="doc.note"/>
                                         </td>
-                                        <td style="border: 1px solid black;">
-                                            <strong style="text-center;">الإجمالي الخاضع للضريبية
+                                        <td style="background:#cccccc;" align="right">
+                                            <strong style="text-right;color: #333333;font-size: 16px;">الإجمالي الخاضع
                                                 <br/>
-                                                Taxable Amount
+                                                للضريبة
+                                                <br/>Taxable Amount
                                             </strong>
                                         </td>
-                                        <td style="border: 1px solid black;">
-                                            <span t-field="doc.amount_untaxed"
-                                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                        <td align="center">
+                                            <strong>
+                                                <span t-field="doc.amount_untaxed"
+                                                      style="text-center;color: #333333;font-size: 18px;"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                            </strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td rowspan="3" colspan="2">
-                                            <span style="text-center" t-field="doc.note"/>
-                                        </td>
-                                        <td style="text-center;border: 1px solid black;">
-                                            <strong class="pull-right">الضريبة
+                                        <td style="background:#cccccc;text-center;">
+                                            <strong style="color: #333333;" class="pull-right">الضريبة
                                                 <br/>
                                                 VAT
                                             </strong>
                                         </td>
-                                        <td style="border: 1px solid black;">
-                                            <span t-field="doc.amount_tax"/>
+                                        <td align="center">
+                                            <strong>
+                                                <span style="text-center;color: #333333;font-size: 18px;"
+                                                      class="pull-center"
+                                                      t-field="doc.amount_tax"/>
+                                            </strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="border: 1px solid black;">
-                                            <strong class="pull-right">الخصومات
+                                        <td style="background:#cccccc;">
+                                            <strong style="color: #333333;" class="pull-right">الخصومات
                                                 <br/>
                                                 Discount
                                             </strong>
                                         </td>
-                                        <td style="border: 1px solid black;">
+                                        <td align="center">
                                             <t t-if="doc.total_discount">
-                                                <span t-field="doc.total_discount"
-                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                                <strong>
+                                                    <span t-field="doc.total_discount"
+                                                          style="text-center;color: #333333;font-size: 18px;"
+                                                          t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                                </strong>
                                             </t>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="text-center;border: 1px solid black;">
-                                            <strong class="pull-right">المبلغ الإجمالي
+                                        <td style="background:#cccccc;">
+                                            <strong style="color: #333333;" class="pull-right">المبلغ
+                                                الإجمالي
                                                 <br/>
                                                 Total Amount
                                             </strong>
                                         </td>
-                                        <td style="border: 1px solid black;">
-                                            <span t-field="doc.amount_total"
-                                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                        <td style="background:#cccccc;" align="center">
+                                            <strong>
+                                                <span t-field="doc.amount_total"
+                                                      style="color: #333333;font-size: 18px;"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                            </strong>
                                         </td>
                                     </tr>
                                 </table>
