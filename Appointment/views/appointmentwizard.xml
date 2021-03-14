@@ -148,7 +148,7 @@
    </field>
 </record>
 
-<record id="view_appointments_tree" model="ir.ui.view">
+<record id="view_appointments" model="ir.ui.view">
   <field name="name">view.appointments.tree</field>
   <field name="model">business.appointment</field>
    <field name="arch" type="xml">
