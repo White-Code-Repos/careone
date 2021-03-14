@@ -43,26 +43,25 @@ class SubCopReportXls(models.AbstractModel):
                                                                   ('date', '<=', name['end_date']),
                                                                   ('subs_products_ids', '!=', None)])
 
+            worksheet.write(row + 4, col, 'رقم الإشتراك', cell_text_format)
+            worksheet.write(row + 4, col + 1, 'نوع الإشتراك', cell_text_format)
+            worksheet.write(row + 4, col + 2, 'اسم العميل', cell_text_format)
+            worksheet.write(row + 4, col + 3, 'تاريخ البدايه', cell_text_format)
+            worksheet.write(row + 4, col + 4, 'تاريخ النهاية', cell_text_format)
+            worksheet.merge_range(row + 4, col + 5, row + 4, col + 7, 'نوع السيارة', cell_text_format)
+            worksheet.write(row + 4, col + 8, 'الكمية الإجمالية المستحقه', cell_text_format)
+            worksheet.write(row + 4, col + 9, 'الكمية المستخدمة حتى اليوم', cell_text_format)
+            worksheet.write(row + 4, col + 10, 'الكمية المستحقة حتى اليوم', cell_text_format)
+            worksheet.write(row + 4, col + 11, 'قيمة الإشتراك', cell_text_format)
+            worksheet.write(row + 4, col + 12, 'إجمالي تكلفة الإستخدام', cell_text_format)
+            worksheet.write(row + 4, col + 13, 'هامش الربح', cell_text_format)
+            worksheet.write(row + 4, col + 14, 'نسبة الإستخدام', cell_text_format)
+            worksheet.write(row + 4, col + 15, 'حالة الإشتراك', cell_text_format)
+
             for sub in subscriptions:
                 sale = self.env['sale.order'].search([('order_line.subscription_id', 'in', sub.ids)])
                 invoice = self.env['account.move'].search([('invoice_line_ids.subscription_id', '=', sub.id)])
-                print(invoice)
                 paid_amount = invoice.amount_total - invoice.amount_residual
-                row += 1
-                worksheet.write(row + 4, col, 'رقم الإشتراك', cell_text_format)
-                worksheet.write(row + 4, col + 1, 'نوع الإشتراك', cell_text_format)
-                worksheet.write(row + 4, col + 2, 'اسم العميل', cell_text_format)
-                worksheet.write(row + 4, col + 3, 'تاريخ البدايه', cell_text_format)
-                worksheet.write(row + 4, col + 4, 'تاريخ النهاية', cell_text_format)
-                worksheet.merge_range(row + 4, col + 5, row + 4, col + 7, 'نوع السيارة', cell_text_format)
-                worksheet.write(row + 4, col + 8, 'الكمية الإجمالية المستحقه', cell_text_format)
-                worksheet.write(row + 4, col + 9, 'الكمية المستخدمة حتى اليوم', cell_text_format)
-                worksheet.write(row + 4, col + 10, 'الكمية المستحقة حتى اليوم', cell_text_format)
-                worksheet.write(row + 4, col + 11, 'قيمة الإشتراك', cell_text_format)
-                worksheet.write(row + 4, col + 12, 'إجمالي تكلفة الإستخدام', cell_text_format)
-                worksheet.write(row + 4, col + 13, 'هامش الربح', cell_text_format)
-                worksheet.write(row + 4, col + 14, 'نسبة الإستخدام', cell_text_format)
-                worksheet.write(row + 4, col + 15, 'حالة الإشتراك', cell_text_format)
                 for line in sub.subs_products_ids:
                     # Add values
                     worksheet.write(row + 5, col, sub.code, cell_text_format_values)
@@ -76,11 +75,15 @@ class SubCopReportXls(models.AbstractModel):
                     worksheet.write(row + 5, col + 9, line.consumed_qty, cell_text_format_values)
                     worksheet.write(row + 5, col + 10, (line.qty - line.consumed_qty), cell_text_format_values)
                     worksheet.write(row + 5, col + 11, sale.amount_untaxed, cell_text_format_values)
-                    worksheet.write(row + 5, col + 12, line.product_id.standard_price * line.qty_counter, cell_text_format_values)
-                    worksheet.write(row + 5, col + 13, (line.product_id.standard_price * line.qty_counter) / paid_amount if paid_amount else 0.0, cell_text_format_values)
-                    worksheet.write(row + 5, col + 14, line.consumed_qty / (line.qty - line.consumed_qty), cell_text_format_values)
+                    worksheet.write(row + 5, col + 12, line.product_id.standard_price * line.qty_counter,
+                                    cell_text_format_values)
+                    worksheet.write(row + 5, col + 13, (
+                                                                   line.product_id.standard_price * line.qty_counter) / paid_amount if paid_amount else 0.0,
+                                    cell_text_format_values)
+                    worksheet.write(row + 5, col + 14, line.consumed_qty / (line.qty - line.consumed_qty),
+                                    cell_text_format_values)
                     worksheet.write(row + 5, col + 15, sub.stage_id.name, cell_text_format_values)
-                row += 4
+                    row += 1
         else:
             coupons = self.env['sale.coupon'].search([('start_date_use', '>=', name['start_date']),
                                                       ('start_date_use', '<=', name['end_date'])])
@@ -103,8 +106,11 @@ class SubCopReportXls(models.AbstractModel):
                 program = self.env['sale.coupon.program'].search([('id', '=', cop.program_id.id)])
                 # Add values
                 worksheet.write(row + 5, col, cop.sale_order_id.name, cell_text_format_values)
-                worksheet.write(row + 5, col + 1, cop.sale_order_id.partner_id.name if not cop.partner_id else cop.partner_id.name, cell_text_format_values)
-                worksheet.write(row + 5, col + 2, cop.sale_order_id.vehicle_id.name if cop.vehicle_id else '-', cell_text_format_values)
+                worksheet.write(row + 5, col + 1,
+                                cop.sale_order_id.partner_id.name if not cop.partner_id else cop.partner_id.name,
+                                cell_text_format_values)
+                worksheet.write(row + 5, col + 2, cop.sale_order_id.vehicle_id.name if cop.vehicle_id else '-',
+                                cell_text_format_values)
                 worksheet.write(row + 5, col + 3, str(cop.sale_order_id.date_order), cell_text_format_values)
                 worksheet.merge_range(row + 5, col + 4, row + 5, col + 6, cop.program_id.name, cell_text_format_values)
                 worksheet.write(row + 5, col + 7, str(cop.end_date_use), cell_text_format_values)
