@@ -42,29 +42,54 @@
                     <ul class="list-inline mb4">
                         <li class="pull-left">
                             <strong style="color: #333333;">
-                                <img src="/careone_reports/static/static/src/img/location.jpg"/> : Jeddah, Saudi Arabia.
-<!--                                <img src="/careone_reports/static/src/img/phone.png"/>: 0506068020-->
-<!--                                <br/>-->
-<!--                                info@care1cc.com : <img src="/careone_reports/static/src/img/email.png"/>-->
-<!--                                &#160; &#160; &#160;-->
-<!--                                C.R : 4030243669-->
-                            </strong>
-                        </li>
-                        <li class="list-inline-item d-inline text-center">
-                            <strong>
-                                www.care1cc.com
+                                <span style="margin-right:150px;">
+                                    <i class="fas fa-map-marker"
+                                       style="font-size:20px ; color:#696761;"/>&#160; : Jeddah, Saudi Arabia.
+                                </span>
+                                <br/>
+                                <span style="margin-right:150px;">
+                                    <i class="fa fa-mobile-phone"
+                                       style="font-size:20px ; color:#696761;"/>&#160; : 0506068020
+                                </span>
+                                <br/>
+                                <i class="far fa-envelope"
+                                   style="font-size:20px ; color:#696761;"/>
+                                : info@care1cc.com
+                                &#160; &#160; &#160; &#160;
+                                C.R : 4030243669
                             </strong>
                         </li>
                         <li class="pull-right" t-if="report_type == 'pdf'">
                             <strong style="color: #333333;">
-                                  : جدة ، المملكة العربية السعودية<img src="/careone_reports/static/src/img/location.jpg"/>
+                                <span style="margin-left:300px;">
+                                    جدة ، المملكة العربية السعودية
+                                    :
+                                    <i class="fas fa-map-marker"
+                                       style="font-size:20px ; color:#696761;"/>
+                                </span>
                                 <br/>
-<!--                                <img src="/careone_reports/static/src/img/phone.png"/> : ۰٥۰٦۰٦۸۰۲۰-->
-<!--                                <br/>-->
-<!--                                info@care1cc.com :-->
-<!--                                <img src="/careone_reports/static/src/img/email.png"/>-->
-<!--                                &#160; &#160; &#160;-->
-<!--                                س.ت : ٤۰۳۰۲٤۳٦٦۹-->
+                                <span style="margin-left:380px;">
+                                    ۰٥۰٦۰٦۸۰۲۰ :
+                                    <i class="fa fa-mobile-phone"
+                                       style="font-size:20px ; color:#696761;"/>
+                                </span>
+                                <br/>
+                                <i style="font-size:20px" class="fa">&#xf09a;</i>
+                                &#160;
+                                <i style="font-size:20px" class="fa">&#xf099;</i>
+                                &#160;
+                                <i style="font-size:20px" class="fa">&#xf16d;</i>
+                                &#160;
+                                <i style="font-size:20px" class="fa">&#xf167;</i>
+                                &#160;
+                                <i style="font-size:20px" class="fa">&#xf2ab;</i>
+                                /care1cc
+                                &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                س.ت : ٤۰۳۰۲٤۳٦٦۹
+                                &#160; &#160; &#160;
+                                info@care1cc.com :
+                                <i class="far fa-envelope"
+                                   style="font-size:20px ; color:#696761;"/>
                             </strong>
                         </li>
                     </ul>

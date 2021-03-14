@@ -325,10 +325,8 @@
                                             <strong class="pull-left" style="color: #333333;">
                                                 Terms and Conditions
                                             </strong>
-                                            <br/>
-                                            <br/>
-                                            <br/>
-                                            <br/>
+                                            <br/><br/>
+                                            <separator/>
                                             <span class="oe_subtotal_footer_separator"
                                                   style="color: #333333;text-center;" t-field="doc.note"/>
                                         </td>
@@ -396,6 +394,16 @@
                                         </td>
                                     </tr>
                                 </table>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <strong class="text-left"
+                                            style="color: #333333;font-size:12pt !important;margin-left: 3em;">
+                                        Signature: .................................... التوقيع
+                                    </strong>
+                                </div>
                             </div>
                         </t>
                     </div>
