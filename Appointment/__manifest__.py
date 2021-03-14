@@ -13,8 +13,8 @@
     'data': [
         'security/access.xml',
         'security/ir.model.access.csv',
-        'views/menu_views.xml',
         'views/appointmentwizard.xml',
+        'views/menu_views.xml',
         'views/services.xml',
         'views/pre_reservation.xml',
         'views/config.xml',
