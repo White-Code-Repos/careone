@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+  <record id="res_config_settings_view_form_appointment" model="ir.ui.view">
+      <field name="name">res.config.settings.appointment</field>
+      <field name="model">res.config.settings</field>
+      <field name="priority" eval="30"/>
+      <field name="inherit_id" ref="base.res_config_settings_view_form" />
+      <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block">
+                    <h2>Business Appointments Options</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane" id="business_appointment_round_rule">
+                                <label for="ba_max_preresevation_time"/>
+                                <div class="text-muted">
+                                    When a user selects a time slot it becomes unavailable for other reservation.
+                                    However, if scheduling is not complete, Odoo should unblock this time slot. Define
+                                    when unblocking should take place
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="ba_max_preresevation_time" class="o_light_label" widget="float_time"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div name="ba_multi_scheduling_option" class="col-12 col-lg-6 o_setting_box">
+                            <div name="ba_multi_scheduling_option_1" class="o_setting_left_pane">
+                                <field name="ba_multi_scheduling"/>
+                            </div>
+                            <div name="ba_multi_scheduling_option_2" class="o_setting_right_pane">
+                                <label for="ba_multi_scheduling"/>
+                                <div name="mutlischeduling_option_hint" class="text-muted">
+                                    If checked a few time slots might be chosen during scheduling
+                                </div>
+                                <div class="content-group" attrs="{'invisible': [('ba_multi_scheduling', '=', False)]}">
+                                    <div class="mt16">
+                                        <group>
+                                            <field name="ba_max_multi_scheduling" class="o_light_label"/>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                <label for="appoin_comp_tz"/>
+                                <div class="text-muted">
+                                    Define time zone to show time slots
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="appoin_comp_tz" class="o_light_label" widget="selection"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div name="ba_pricelists_option" class="col-12 col-lg-6 o_setting_box">
+                            <div name="ba_pricelists_option_option_1" class="o_setting_left_pane">
+                                <field name="group_product_pricelist"/>
+                            </div>
+                            <div name="ba_pricelists_option_option_2" class="o_setting_right_pane">
+                                <label for="group_product_pricelist" string="Multiple Services Prices"/>
+                                <div name="ba_sales_price_hint" class="text-muted">
+                                    If checked, it would be possible to create pricelist and assign different prices
+                                    per products
+                                </div>
+                                <div class="content-group" attrs="{'invisible': [('group_product_pricelist', '=', False)]}">
+                                    <div class="mt16">
+                                        <field name="group_sale_pricelist" invisible="1"/>
+                                        <field name="product_pricelist_setting" widget="radio" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_extra_products_backend_option" class="col-12 col-lg-6 o_setting_box">
+                            <div name="ba_extra_products_backend_1" class="o_setting_left_pane">
+                                <field name="ba_extra_products_backend"/>
+                            </div>
+                            <div name="ba_extra_products_backend_option_2" class="o_setting_right_pane">
+                                <label for="ba_extra_products_backend"/>
+                                <div name="ba_extra_products_backend_hint" class="text-muted">
+                                    Turn on to offer managers complementary products while scheduling a time slot.
+                                    Such products would be shown if any are associated with reserved service
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_rating_option" class="col-12 col-lg-6 o_setting_box">
+                            <div name="ba_rating_option_1" class="o_setting_left_pane">
+                                <field name="business_appointment_rating"/>
+                            </div>
+                            <div name="ba_rating_option_2" class="o_setting_right_pane">
+                                <label for="business_appointment_rating"/>
+                                <div name="ba_rating_option_hint" class="text-muted">
+                                    Turn on to send rating requests when appointments are done. This option might be
+                                    turned on or off per each resource type
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Extra Features</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div name="ba_website_option" class="col-xs-12 col-md-6 o_setting_box">
+                            <div name="extra_1_website" class="o_setting_left_pane">
+                                <field name="appointment_website"/>
+                            </div>
+                            <div name="extra_2_website" class="o_setting_right_pane">
+                                <label for="appointment_website"/>
+                                <div name="extra_2_website_hint" class="text-muted">
+                                    Turn on to let portal or/and website visitors to schedule appointments
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_website/">
+                                        Universal Appointments: Portal and Website
+                                    </a> (99 Euro extra) is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('appointment_website', '=', False)]}">
+                            <div class="o_setting_right_pane" id="business_appointment_round_rule">
+                                <label for="ba_approval_type"/>
+                                <div class="text-muted">
+                                    Define whether website / portal visitor should confirm appointment
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="ba_approval_type" class="o_light_label" widget="selection"/>
+                                    </div>
+                                    <div class="content-group" attrs="{'invisible': [('ba_approval_type', 'in', ['no', False])]}">
+                                        <div class="mt16">
+                                            <group>
+                                                <field name="ba_max_approval_time" class="o_light_label" widget="float_time"/>
+                                                <field name="ba_max_approval_trials" class="o_light_label"/>
+                                                <field name="ba_confirmation_retry_period" class="o_light_label"/>
+                                                <field name="ba_confirmation_retry_trials" class="o_light_label"/>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_sale_option" class="col-xs-12 col-md-6 o_setting_box">
+                            <div name="ba_sale_option_1" class="o_setting_left_pane">
+                                <field name="appointment_sale" default ="True"/>
+                            </div>
+                            <div name="ba_sale_option_2" class="o_setting_right_pane">
+                                <label for="appointment_sale"/>
+                                <div name="ba_sale_option_hint" class="text-muted">
+                                    Turn on to create sale orders for appointments. The tool
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/module_business_appointment_sale/">
+                                       Universal Appointments: Sales
+                                    </a> is required (distributed free).
+                                    The app 'Sales' would be automatically installed in your database.
+                                </div>
+                                <field name="group_uom" invisible="1"/>
+
+                                <div class="content-group" attrs="{'invisible': [('appointment_sale', '=', False)]}">
+                                    <div class="mt16">
+                                        <group>
+                                            <field name="ba_auto_sale_order" class="o_light_label"/>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_website_sale_option" class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible': ['|', ('appointment_website', '=', False), ('appointment_sale', '=', False)]}">
+                            <div name="ba_website_sale_option_1" class="o_setting_left_pane">
+                                <field name="appointment_website_sale"/>
+                            </div>
+                            <div name="ba_website_sale_option_2" class="o_setting_right_pane">
+                                <label for="appointment_website_sale"/>
+                                <div name="ba_website_sale_option_hint" class="text-muted">
+                                    Turn on to link portal sale order with appointments and to have a possibility to
+                                    show service prices and pricelists on appointment pages. The tool
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_website_sale/">
+                                        Universal Appointments: Website Sales
+                                    </a> is required (free if Universal Appointments: Portal and
+                                    Website and Universal Appointments are installed).
+                                    The app 'eCommerce' would be automatically installed in your database.
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_custom_fields_option" class="col-xs-12 col-md-6 o_setting_box">
+                            <div name="extra_1_custom" class="o_setting_left_pane">
+                                <field name="appointment_custom_fields"/>
+                            </div>
+                            <div name="extra_2_custom" class="o_setting_right_pane">
+                                <label for="appointment_custom_fields"/>
+                                <div name="extra_2_custom_hint" class="text-muted">
+                                    Turn on to add custom fields for appointments, resource types, resources, and
+                                    services. The tool
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_custom_fields/">
+                                        Universal Appointments: Custom Fields
+                                    </a> (48 Euros extra) is required
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_custom_fields_website_option" class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible': ['|', ('appointment_custom_fields', '=', False), ('appointment_website', '=', False)]}">
+                            <div name="extra_1_custom_website" class="o_setting_left_pane">
+                                <field name="appointment_custom_fields_website"/>
+                            </div>
+                            <div name="extra_2_custom_website" class="o_setting_right_pane">
+                                <label for="appointment_custom_fields_website"/>
+                                <div name="extra_2_custom_website_hint" class="text-muted">
+                                    Turn on to show custom fields for portal and website visitors. The tool
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_custom_fields_website/">
+                                        Universal Appointments: Custom Fields for Website and Portal
+                                    </a> is required (free if Universal Appointments: Portal and
+                                    Universal Appointments: Custom Fields are installed)
+                                </div>
+                            </div>
+                        </div>
+                        <div name="ba_hr_option" class="col-xs-12 col-md-6 o_setting_box">
+                            <div name="extra_1_hr" class="o_setting_left_pane">
+                                <field name="appointment_hr"/>
+                            </div>
+                            <div name="extra_2_hr" class="o_setting_right_pane">
+                                <label for="appointment_hr"/>
+                                <div name="extra_2_hr_hint" class="text-muted">
+                                    Turn on to link HR employees to resources and use their work time and leaves. The
+                                    tool
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_hr/">
+                                       Universal Appointments: HR Bridge
+                                    </a> (distributed free) is required.
+                                    The app 'HR' would be automatically installed in your database.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div name="ba_time_tracking_option" class="col-xs-12 col-md-6 o_setting_box">
+                            <div name="extra_1_time" class="o_setting_left_pane">
+                                <field name="module_business_appointment_time_tracking"/>
+                            </div>
+                            <div name="extra_2_time" class="o_setting_right_pane">
+                                <label for="module_business_appointment_time_tracking"/>
+                                <div name="extra_2_time_hint" class="text-muted">
+                                    Turn on to log actual time spent on appointment
+                                    <a href="https://apps.odoo.com/apps/modules/13.0/business_appointment_time_tracking/">
+                                        Universal Appointments: Time Tracking
+                                    </a> (10 Euro extra) is required
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <h2 attrs="{'invisible': [('appointment_website', '=', False)]}">
+                        Website Specific Options
+                    </h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane" id="business_appointment_round_rule">
+                                <label for="appointment_website_id"/>
+                                <div class="text-muted">
+                                  Select website to configure business appointments
+
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="appointment_website_id" class="o_light_label" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div name="ba_multi_scheduling_option" class="col-12 col-lg-6 o_setting_box">
+                            <div name="ba_multi_scheduling_option_1" class="o_setting_left_pane">
+                                <field name="ba_turn_on_appointments"/>
+                            </div>
+                            <div name="ba_multi_scheduling_option_2" class="o_setting_right_pane">
+                                <label for="ba_turn_on_appointments"/>
+                                <div name="mutlischeduling_option_hint" class="text-muted">
+                                    If checked appointments would be shown for portal users of the current website
+                                </div>
+
+                            </div>
+                            <div name="ba_multi_scheduling_option_11" class="o_setting_left_pane">
+                                <field name="ba_turn_on_appointments_public"/>
+                            </div>
+                            <div name="ba_multi_scheduling_option_22" class="o_setting_right_pane">
+                                <label for="ba_turn_on_appointments_public"/>
+                                <div name="mutlischeduling_option_hint" class="text-muted">
+                                    If checked appointments would be shown for all visitors of the current website
+                                </div>
+
+                            </div>
+                        </div>
+          <div class="col-12 col-lg-6 o_setting_box">
+              <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                  <!-- <label for="appoin_comp_tz"/> -->
+                  <div class="text-muted">
+                    Define which contact details should be mandatory or optionally filled to schedule appointment (name and email are always required)
+
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                          <label for="ba_step_1"/>
+                          <field name="ba_step_1" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                        <label for="ba_step_2"/>
+                          <field name="ba_step_2" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                          <label for="ba_step_3"/>
+                          <field name="ba_step_3" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                        <label for="ba_step_4"/>
+                          <field name="ba_step_4" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                          <label for="ba_step_5"/>
+                          <field name="ba_step_5" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                  <div class="content-group">
+                      <div class="mt16">
+                        <label for="ba_step_6"/>
+                          <field name="ba_step_6" class="o_light_label"/>
+
+                      </div>
+                  </div>
+                                </div>
+                                </div>
+
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                            <!-- <label for="appoin_comp_tz"/> -->
+                            <div class="text-muted">
+                              Define which contact details should be mandatory or optionally filled to schedule appointment (name and email are always required)
+
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <label for="ba_contact_info_mandatory_ids" string="Mandatory Account Details"/>
+                                    <field name="ba_contact_info_mandatory_ids" class="o_light_label" widget="many2many_tags"/>
+
+                                </div>
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                  <label for="ba_contact_info_mandatory_ids" string="Optional Account Details"/>
+                                    <field name="ba_contact_info_mandatory_ids" class="o_light_label" widget="many2many_tags"/>
+
+                                </div>
+                            </div>
+
+                            </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                    <!-- <label for="appoin_comp_tz"/> -->
+                                    <div class="text-muted">
+                                      Define how many time slots might be selected during scheduling on website
+
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <label for="ba_max_portal"/>
+                                            <field name="ba_max_portal" class="o_light_label"/>
+
+                                        </div>
+                                    </div>
+
+                                                  </div>
+                                                  </div>
+
+                                    <div class="col-12 col-lg-6 o_setting_box">
+                                        <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                            <label for="agree_public"/>
+                                            <div class="text-muted">
+                                              Define whether contact details page should include obligatory agreement to terms and conditions
+
+                                            </div>
+                                            <div class="content-group">
+                                                <div class="mt16">
+
+                                                    <field name="agree_public" class="o_light_label"/>
+
+                                                </div>
+                                            </div>
+
+                                                          </div>
+                                                          </div>
+                                                          <div class="col-12 col-lg-6 o_setting_box">
+                                                              <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                                                  <label for="public_only"/>
+                                                                  <div class="text-muted">
+                                                                    Turn on if terms should be agreed only by public visitors (not by portal users)
+
+                                                                  </div>
+                                                                  <div class="content-group">
+                                                                      <div class="mt16">
+
+                                                                          <field name="public_only" class="o_light_label"/>
+
+                                                                      </div>
+                                                                  </div>
+
+                                                                                </div>
+                                                                                </div>
+                                                                                <div class="col-12 col-lg-6 o_setting_box">
+                                                                                    <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                                                                        <label for="agree_text"/>
+
+                                                                                        <div class="content-group">
+                                                                                            <div class="mt16">
+
+                                                                                                <field name="agree_text" class="o_light_label"/>
+
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                                      </div>
+                                                                                                      </div>
+                                                        <div class="col-12 col-lg-6 o_setting_box">
+                                                            <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+
+                                                                <div class="content-group">
+                                                                    <div class="mt16">
+                                                                        <label for="appointment_filter"/>
+                                                                        <field name="appointment_filter" class="o_light_label" widget="many2many_tags"/>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="content-group">
+                                                                    <div class="mt16">
+                                                                      <label for="appointment_search"/>
+                                                                        <field name="appointment_search" class="o_light_label" widget="many2many_tags"/>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                </div>
+                                                                </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                              <div class="content-group">
+                                  <div class="mt16">
+                                    <label for="details_page"/>
+                                    <div class="text-muted">
+                                        If turned on, each found resource type would have a link for full details which you may update on website. Full description might be turned off for a specific type
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+
+                                            <field name="details_page" class="o_light_label"/>
+
+                                        </div>
+                                    </div>
+
+                                  </div>
+
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <label for="appointment_filter"/>
+                                        <field name="appointment_filter" class="o_light_label" widget="many2many_tags"/>
+
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                      <label for="appointment_search"/>
+                                        <field name="appointment_search" class="o_light_label" widget="many2many_tags"/>
+
+                                    </div>
+                                </div>
+
+                                </div>
+                                </div>
+                              </div>
+
+                              <div class="col-12 col-lg-6 o_setting_box">
+                                  <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                          <label for="resource_details"/>
+                                          <div class="text-muted">
+                                              If turned on, each found resource would have a link for full details which you may update on website. Full description might be turned off for a specific resource                                          </div>
+                                          <div class="content-group">
+                                              <div class="mt16">
+
+                                                  <field name="resource_details" class="o_light_label"/>
+
+                                              </div>
+                                          </div>
+
+                                        </div>
+
+                                      <div class="content-group">
+                                          <div class="mt16">
+                                              <label for="appointment_filter"/>
+                                              <field name="appointment_filter" class="o_light_label" widget="many2many_tags"/>
+
+                                          </div>
+                                      </div>
+                                      <div class="content-group">
+                                          <div class="mt16">
+                                            <label for="appointment_search"/>
+                                              <field name="appointment_search" class="o_light_label" widget="many2many_tags"/>
+
+                                          </div>
+                                      </div>
+
+                                      </div>
+                                      </div>
+
+
+
+                                    </div>
+
+                                    <div class="col-12 col-lg-6 o_setting_box">
+                                        <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                          <div class="content-group">
+                                              <div class="mt16">
+                                                <label for="servicee_details"/>
+                                                <div class="text-muted">
+                                                  If turned on, each found service would have a link for full details which you may update on website. Full description might be turned off for a specific service
+                                                </div>
+                                                <div class="content-group">
+                                                    <div class="mt16">
+
+                                                        <field name="servicee_details" class="o_light_label"/>
+
+                                                    </div>
+                                                </div>
+
+                                              </div>
+
+                                            <div class="content-group">
+                                                <div class="mt16">
+                                                    <label for="appointment_filter"/>
+                                                    <field name="appointment_filter" class="o_light_label" widget="many2many_tags"/>
+
+                                                </div>
+                                            </div>
+                                            <div class="content-group">
+                                                <div class="mt16">
+                                                  <label for="appointment_search"/>
+                                                    <field name="appointment_search" class="o_light_label" widget="many2many_tags"/>
+
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                            </div>
+                                          </div>
+
+                                          <div class="col-12 col-lg-6 o_setting_box">
+                                              <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                                <div class="content-group">
+                                                    <div class="mt16">
+                                                      <label for="product_reservation"/>
+                                                      <div class="text-muted">
+                                                          if turned on, suggested products would be shown for customers after selecting a time slot for reservation                                                      </div>
+                                                      <div class="content-group">
+                                                          <div class="mt16">
+
+                                                              <field name="product_reservation" class="o_light_label"/>
+
+                                                          </div>
+                                                      </div>
+
+                                                    </div>
+
+
+
+                                                  </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-12 col-lg-6 o_setting_box">
+                                                    <div class="o_setting_right_pane" id="business_appointment_comp_tz">
+                                                      <div class="content-group">
+                                                          <div class="mt16">
+                                                            <label for="pricesandpricelist"/>
+                                                            <div class="text-muted">
+                                                                    If turned on, service cards would contain price information according to the customer price list                                                            <div class="content-group">
+                                                                <div class="mt16">
+
+                                                                    <field name="pricesandpricelist" class="o_light_label"/>
+
+                                                                </div>
+                                                            </div>
+
+                                                          </div>
+                                                        </div>
+                                                        </div>
+                                                      </div>
+                                                      </div>
+
+
+
+
+
+                            </div>
+                              </div>
+                            </xpath>
+                      </field>
+                  </record>
+
+
+
+
+
+
+  <record id="action_website_configg" model="ir.actions.act_window">
+      <field name="name">Setting</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.config.settings</field>
+      <field name="view_mode">form</field>
+      <field name="target">inline</field>
+
+  </record>
+  <!-- ......................... -->
+
+  <record id="website_page_view_tree1111" model="ir.ui.view">
+      <field name="name">website.view.tree1111</field>
+      <field name="model">resource.calendar</field>
+      <field name="arch" type="xml">
+          <tree string="Working Times">
+            <field name ="name"/>
+
+          </tree>
+      </field>
+  </record>
+
+
+  <record id="action_website_configg1" model="ir.actions.act_window">
+      <field name="name">Working Times</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">resource.calendar</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+
+  <menuitem id="menu_Configuration_1" name="Working calendars" parent="menu_Configuration" sequence="1" groups="base.group_system" action="action_website_configg1"/>
+  <menuitem id="customfields" name="Custom Fields" parent="menu_Configuration" sequence="2" groups="base.group_system"/>
+  <menuitem id="notifications" name="Notifications" parent="menu_Configuration" sequence="3" groups="base.group_system"/>
+  <menuitem id="menu_Configuration_2" name="Configuration" parent="menu_Configuration" sequence="4" groups="base.group_system" action="action_website_configg"/>
+
+
+
+</odoo>

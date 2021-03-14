@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+  <record id="website_page_view_form_preservation" model="ir.ui.view">
+      <field name="name">website.view.form.prereservation</field>
+      <field name="model">business.appointment.core</field>
+      <field name="arch" type="xml">
+          <form string="Reservations">
+
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_cancel_prereserv" type="object" class="oe_stat_button" icon="fa-times" attrs="{'invisible': [('state', 'in', ['processed'])]}">
+                            Cancel
+                        </button>
+
+                    </div>
+                    <group>
+                        <field name="resource_id" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                        <field name="service_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                        <label for="datetime_start"/>
+                        <div>
+                             <field name="datetime_start" class="oe_inline"/> to
+                            <field name="datetime_end" class="oe_inline" />
+                        </div>
+                        <field name="user_id"/>
+                        <field name="pricelist_id" groups="product.group_product_pricelist,product.group_sale_pricelist" options="{'no_open':True, 'no_create': True}"/>
+                        <field name="website_id" options="{'no_create_edit': 1,'no_quick_create': 1,}" groups="website.group_multi_website"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group name="contact_info" string="Contact Info">
+                        <group colspan="6">
+                            <field name="partner_id" context="{'default_name': contact_name, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zipcode, 'default_country_id': country_id, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_email': email, 'default_title': title, 'default_parent_id': parent_company_id}" widget="res_partner_many2one"/>
+                        </group>
+                        <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                            <label for="contact_name"/>
+                            <div class="o_row">
+                                <field name="contact_name"/>
+                                <field name="title" placeholder="Title" options="{&quot;no_open&quot;: True}"/>
+                            </div>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile"/>
+                            <field name="function"/>
+                        </group>
+                        <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
+                                <field name="zipcode" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
+                            </div>
+                            <field name="parent_company_id" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
+                            <field name="partner_name" attrs="{'invisible': [('parent_company_id', '!=', False)]}"/>
+                        </group>
+                    </group>
+                    <label for="extra_product_ids"/>
+                    <field name="extra_product_ids">
+                        <tree editable="top">
+                            <field name="product_id"/>
+                            <field name="product_uom_qty"/>
+                        </tree>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <field name="product_id"/>
+                                    <field name="product_uom_qty"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="description"/>
+                        </page>
+                        <page string="Timeline">
+                            <group>
+                                <field name="create_date" string="Pre-Reservation Datetime" readonly="1"/>
+                                <field name="schedule_datetime" readonly="1"/>
+                            </group>
+                        </page>
+                        <page name="custom_fields" string="Custom Details" invisible="0">
+                             <group name="group_custom_fields" invisible="1"/>
+                       </page>
+
+                    </notebook>
+
+                </sheet>
+
+
+
+          </form>
+      </field>
+  </record>
+
+  <record id="website_page_view_tree_preservation" model="ir.ui.view">
+      <field name="name">website.view.tree.prereservation</field>
+      <field name="model">business.appointment.core</field>
+      <field name="arch" type="xml">
+          <tree string="Reservations">
+               <field name="resource_id"/>
+               <field name="partner_id"/>
+               <field name="contact_name"/>
+               <field name="service_id"/>
+               <field name="datetime_start" string="Start"/>
+               <field name="datetime_end"/>
+               <field name="state"/>
+
+          </tree>
+      </field>
+  </record>
+
+
+
+  <record id="action_website_pre_reservation" model="ir.actions.act_window">
+      <field name="name">Reservations</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">business.appointment.core</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_prereservation" name="Pre-Reservation" parent="menu_root" sequence="2" groups="base.group_system" action="action_website_pre_reservation"/>
+
+
+
+</odoo>

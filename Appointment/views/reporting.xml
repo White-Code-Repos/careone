@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+     <record id="reporting_2_tree" model="ir.ui.view">
+            <field name="name">reporting_2.tree</field>
+            <field name="model">rating.appointment</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+              <tree string="Rating" create="false" edit="false">
+                    <field name="nameofresource"/>
+                    <field name="parent_nameofresource"/>
+                    <field name="rated_partner_id"/>
+                    <field name="partner_id"/>
+                    <field name="rating_text"/>
+                    <field name="feedback"/>
+                    <field name="create_date" string="Submitted on"/>
+                </tree>
+
+
+
+            </field>
+        </record>
+        <record id="reporting_2_graph" model="ir.ui.view">
+               <field name="name">reporting_2.graph</field>
+               <field name="model">rating.appointment</field>
+               <field name="priority" eval="8"/>
+               <field name="arch" type="xml">
+                 <graph string="Rating Average" type="bar">
+                    <field name="create_date" type="row"/>
+                    <field name="rating" type="measure"/>
+                </graph>
+
+
+
+               </field>
+           </record>
+  <record id="reporting_2_pivot" model="ir.ui.view">
+         <field name="name">reporting_2.pivot</field>
+         <field name="model">rating.appointment</field>
+         <field name="priority" eval="8"/>
+         <field name="arch" type="xml">
+           <pivot string="Rating Average" display_quantity="true">
+                    <field name="rated_partner_id" type="row"/>
+                    <field name="create_date" type="col"/>
+                    <field name="rating" type="measure"/>
+                </pivot>
+
+
+         </field>
+     </record>
+
+ <record model="ir.ui.view" id="reporting_2_kanban">
+         <field name="name">reporting_2.kanban</field>
+         <field name="model">rating.appointment</field>
+         <field name="arch" type="xml">
+           <kanban create="false">
+                    <field name="rating"/>
+                    <field name="nameofresource"/>
+                    <field name="feedback"/>
+                    <field name="partner_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <field name="rating_image" widget="image"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <field name="rated_partner_id"/>
+                                    </strong>
+                                    <ul>
+                                        <li t-if="record.partner_id.value">
+                                            <span class="o_text_overflow">
+                                                by
+                                                <span t-att-title="record.partner_id.value">
+                                                    <field name="partner_id"/>
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span class="o_text_overflow">
+                                                for
+                                                <a type="object" name="action_open_rated_object" t-att-title="record.nameofresource.raw_value">
+                                                    <field name="nameofresource"/>
+                                                </a>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            on <field name="create_date"/>
+                                        </li>
+                                    </ul>
+                                    <i t-if="record.feedback.raw_value" class="fa fa-comment float-right mt4" t-att-title="record.feedback.raw_value" t-att-aria-label="record.feedback.raw_value" role="img"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+
+
+         </field>
+     </record>
+     <record id="action_website_reporting2" model="ir.actions.act_window">
+       <field name="name">Customer Ratings</field>
+       <field name="type">ir.actions.act_window</field>
+       <field name="res_model">rating.appointment</field>
+       <field name="view_mode">kanban,pivot,graph,tree,form</field>
+     </record>
+
+     <menuitem id="reporting_2" name="Customer Ratings" parent="menu_Reporting" sequence="2" groups="base.group_system" action="Appointment.action_website_reporting2"/>
+
+<!-- .................................................... -->
+     <record id="contact_info_field_form" model="ir.ui.view">
+            <field name="name">contact.info.field.form</field>
+            <field name="model">appointment.analytic</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+              <graph type="pie">
+               <field name="resource_type_id" type="row"/>
+               <field name="duration" type="measure"/>
+             </graph>
+
+            </field>
+        </record>
+
+    <record model="ir.ui.view" id="contact_info_field_treee">
+            <field name="name">contact.info.field.treee</field>
+            <field name="model">appointment.analytic</field>
+            <field name="arch" type="xml">
+              <pivot disable_linking="True">
+                  <field name="datetime_start" interval="month" type="col"/>
+                  <field name="resource_type_id" type="row"/>
+                  <field name="resource_id" type="row"/>
+                  <field name="duration" type="measure"/>
+            </pivot>
+
+            </field>
+        </record>
+        <record id="action_website_reporting1" model="ir.actions.act_window">
+          <field name="name">Appointments Analysis</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">appointment.analytic</field>
+          <field name="view_mode">pivot,graph</field>
+        </record>
+
+        <menuitem id="reporting_1" name="Appointments Analysis" parent="menu_Reporting" sequence="1" groups="base.group_system" action="Appointment.action_website_reporting1"/>
+
+</odoo>

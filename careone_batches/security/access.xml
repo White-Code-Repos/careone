@@ -22,4 +22,25 @@
          <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
      </record>
 
+		 <record model="ir.module.category" id="module_category_interior_hr_attendance_employees">
+					<field name="name">Attendance</field>
+			 </record>
+			 <record id="group_hr_attendance_employees_add" model="res.groups">
+					 <field name="name">add</field>
+					 <field name="category_id" ref="module_category_interior_hr_attendance_employees"/>
+					 <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+			</record>
+			<record id="group_hr_attendance_employees_edit" model="res.groups">
+					 <field name="name">edit</field>
+					 <field name="category_id" ref="module_category_interior_hr_attendance_employees"/>
+					 <field name="implied_ids" eval="[(4, ref('group_hr_attendance_employees_add'))]"/>
+					 <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			 </record>
+		<record id="group_hr_attendance_employees_delete" model="res.groups">
+					 <field name="name">delete</field>
+					 <field name="category_id" ref="module_category_interior_hr_attendance_employees"/>
+					 <field name="implied_ids" eval="[(4, ref('group_hr_attendance_employees_edit'))]"/>
+					 <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			 </record>
+
 </odoo>

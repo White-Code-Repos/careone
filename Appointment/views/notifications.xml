@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <record id="custom_appointment_forrrmm" model="ir.ui.view">
+         <field name="name">custom.appointment.forrrmm</field>
+         <field name="model">appointment.alarm</field>
+         <field name="priority" eval="8"/>
+         <field name="arch" type="xml">
+             <form string="Alarms">
+               <sheet>
+                    <group>
+                        <field name="ttype"/>
+                        <label for="duration"/>
+                        <div>
+                            <field name="duration" class="oe_inline"/>
+                            <field name="duration_uom" class="oe_inline"/>
+                        </div>
+                        <field name="recipients"/>
+                        <field name="mail_template_id" attrs="{'invisible': [('ttype', '!=', 'email')], 'required': [('ttype', '=', 'email')]}"  options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                        <field name="sms_template_id" attrs="{'invisible': [('ttype', '!=', 'sms')], 'required': [('ttype', '=', 'sms')]}"  options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                    </group>
+                </sheet>
+             </form>
+         </field>
+     </record>
+
+ <record model="ir.ui.view" id="custom_appointment_notifications1">
+         <field name="name">custom.appointment.notifications1</field>
+         <field name="model">appointment.alarm</field>
+         <field name="arch" type="xml">
+             <tree string="Alarms">
+               <field name="ttype"/>
+               <field name="duration"/>
+               <field name="duration_uom"/>
+               <field name="recipients"/>
+
+             </tree>
+         </field>
+     </record>
+
+     <record id="action_website_notifications1" model="ir.actions.act_window">
+       <field name="name">Alarms</field>
+       <field name="type">ir.actions.act_window</field>
+       <field name="res_model">appointment.alarm</field>
+       <field name="view_mode">tree,form</field>
+     </record>
+
+     <menuitem id="menu_notificaion1" name="Reminders" parent="notifications" sequence="1" groups="base.group_system" action="Appointment.action_website_notifications1"/>
+
+<!-- ................................ -->
+<record id="website_page_view_maill" model="ir.ui.view">
+    <field name="name">website.view.maill</field>
+    <field name="model">mail.template</field>
+    <field name="arch" type="xml">
+        <tree string="Templates">
+          <field name ="name"/>
+
+        </tree>
+    </field>
+</record>
+
+
+<record id="action_website_mailll" model="ir.actions.act_window">
+    <field name="name">Templates</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">mail.template</field>
+    <field name="view_mode">tree,form</field>
+</record>
+<menuitem id="menu_notificaion2" name="Email Templates" parent="notifications" sequence="2" groups="base.group_system" action="action_website_mailll"/>
+<!-- ....................... -->
+<record id="website_page_view_sms" model="ir.ui.view">
+    <field name="name">website.view.sms</field>
+    <field name="model">sms.template</field>
+    <field name="arch" type="xml">
+        <tree string="SMS Templates">
+          <field name ="name"/>
+
+        </tree>
+    </field>
+</record>
+
+
+<record id="action_website_sms" model="ir.actions.act_window">
+    <field name="name">SMS Templates</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">sms.template</field>
+    <field name="view_mode">tree,form</field>
+</record>
+<menuitem id="menu_notificaion3" name="SMS Templates" parent="notifications" sequence="3" groups="base.group_system" action="action_website_sms"/>
+
+<!-- ............................. -->
+<record id="custom_appointment_forrrmmm" model="ir.ui.view">
+       <field name="name">custom.appointment.forrrmmm</field>
+       <field name="model">alarm.task</field>
+       <field name="priority" eval="8"/>
+       <field name="arch" type="xml">
+           <form string="Reminders Queue">
+             <sheet>
+                    <group>
+                        <field name="alarm_time"/>
+                        <field name="alarm_id"/>
+                        <field name="appointment_id"/>
+                    </group>
+                </sheet>
+           </form>
+       </field>
+   </record>
+
+<record model="ir.ui.view" id="custom_appointment_notifications11">
+       <field name="name">custom.appointment.notifications11</field>
+       <field name="model">alarm.task</field>
+       <field name="arch" type="xml">
+           <tree string="Reminders Queue">
+
+                <field name="alarm_time"/>
+                <field name="alarm_id"/>
+                <field name="appointment_id"/>
+
+           </tree>
+       </field>
+   </record>
+
+   <record id="action_website_reminder" model="ir.actions.act_window">
+     <field name="name">Reminders Queue</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="res_model">alarm.task</field>
+     <field name="view_mode">tree,form</field>
+   </record>
+
+   <menuitem id="menu_notificaion4" name="Reminder Queue" parent="notifications" sequence="4" groups="base.group_system" action="Appointment.action_website_reminder"/>
+
+</odoo>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="website_page_view_form11" model="ir.ui.view">
+      <field name="name">website.view.form11</field>
+      <field name="model">business.resource.type</field>
+      <field name="arch" type="xml">
+          <form string="Resources Types">
+            <sheet>
+              <div class="oe_button_box" name="button_box">
+
+                        <!-- <button name="733" type="action" class="oe_stat_button" icon="fa-calendar-check-o" context="{'default_resource_type_id': active_id}">
+                            <field string="Appointments" name="planned_appointment_len" widget="statinfo"/>
+                        </button>
+                        <button name="741" type="action" class="oe_stat_button" icon="fa-user-o" context="{'default_resource_type_id': active_id, 'search_default_resource_type_id': active_id}">
+                            <field string="Resources" name="resource_len" widget="statinfo"/>
+                        </button>
+                        <button name="728" type="action" attrs="{'invisible': ['|', ('rating_option', '=', False), ('rating_satisfaction', '=', -1)]}" class="oe_stat_button oe_percent" icon="fa-smile-o" groups="business_appointment.group_business_appointment_rating">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="rating_satisfaction" nolabel="1"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    %
+                                </span>
+                            </div>
+                        </button> -->
+                    </div>
+                    <field name ="image" widget="image" class="oe_avatar oe_left" options="{'preview_image': 'image'}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="resource type reference" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group name="brt_main_details">
+                        <group name="resource_and_services" string="Services and Resources">
+                            <field name="service_method"/>
+                            <field name="service_ids" widget="many2many_tags" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                            <field name="always_service_id" options="{'no_create_edit': 1, 'no_quick_create': 1}" attrs="{'required': [('service_method', '=', 'single')], 'invisible': [('service_method', '!=', 'single')]}"/>
+                            <field name="allocation_type"/>
+                            <field name="allocation_method"/>
+                            <field name="pricing_method"/>
+
+                        </group>
+                        <group name="rtype_time_requirements" string="Time Requirements">
+                            <label for="allowed_from"/>
+                            <div>
+                                 <field name="allowed_from" class="oe_inline"/>
+                                 <field name="allowed_from_uom" class="oe_inline"/>
+                            </div>
+                            <label for="allowed_to"/>
+                            <div>
+                                 <field name="allowed_to" class="oe_inline"/>
+                                 <field name="allowed_to_uom" class="oe_inline"/>
+                            </div>
+                            <label for="allowed_cancellation"/>
+                            <div>
+                                 <field name="allowed_cancellation" class="oe_inline"/>
+                                 <field name="allowed_cancellation_uom" class="oe_inline" attrs="{'required': [('allowed_cancellation', '&gt;', 0)], 'invisible': [('allowed_cancellation', '&lt;=', 0)]}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Settings" name="brt_settings">
+                            <group name="brt_settings_group">
+                                <field name="calendar_event_workload"/>
+                                <field name="rating_option" />
+                            </group>
+                        </page>
+                        <page string="Notifications">
+                            <group>
+                                <field name="success_mail_template_id"/>
+                                <field name="rating_mail_template_id" />
+                                <field name="default_alarm_ids" options="{'no_create_edit': 1, 'no_quick_create': 1, 'color_field': 'color'}" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description" placeholder="short description"/>
+                        </page>
+                        <page name="custom_fields" string="Custom Details" invisible="0">
+                          <group name="group_custom_fields" invisible="1"/>
+                        </page>
+                        <page string="Website">
+                        <group>
+                            <field name="website_id" options="{'no_create_edit': 1,'no_quick_create': 1,}" groups="website.group_multi_website"/>
+                            <field name="donotshow_full_description"/>
+                        </group>
+                    <!-- <button name="edit_website" type="object" string="edit full website description" class="oe_link" icon="fa-arrow-right"/> -->
+                </page>
+                    </notebook>
+
+            </sheet>
+          </form>
+      </field>
+  </record>
+  <record id="website_page_view_tree11" model="ir.ui.view">
+      <field name="name">website.view.tree11</field>
+      <field name="model">business.resource.type</field>
+      <field name="arch" type="xml">
+          <tree string="Resources Types">
+            <field name ="name"/>
+
+          </tree>
+      </field>
+  </record>
+  <!-- <record id="website_page_view_kanban" model="ir.ui.view">
+      <field name="name">website.view.kanban</field>
+      <field name="model">business.resource.type</field>
+      <field name="arch" type="xml">
+           <kanban string= "Resource Types" class="oe_background_grey o_kanban_dashboard" group_create="0" group_delete="0" group_edit="0" archivable="0" quick_create="0">
+              <field name="id"/>
+              <field name="name"/>
+              <field name="color"/>
+              <field name="image"/>
+              <field name="activity_ids"/>
+              <field name="activity_state"/>
+              <field name="final_service_ids"/>
+              <field name="resource_len"/>
+              <field name="planned_appointment_len"/>
+              <field name="rating_satisfaction"/>
+              <field name="rating_option"/>
+              <templates>
+                  <t t-name="kanban-box">
+                      <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click ba_kanban_box">
+                          <div>
+                              <div class="o_kanban_card_content ba_kanban_content">
+                                  <div class="o_kanban_image">
+                                      <a type="open">
+                                          <img t-att-src="kanban_image('business.resource.type', 'image', record.id.value)" class="o_image_64_contain" alt="Resource Type Image"/>
+                                      </a>
+                                  </div>
+                                  <div class="o_kanban_primary_left ba_kanban_primary_left">
+                                      <div class="o_primary ba_primary">
+                                          <span><t t-esc="record.name.value"/></span>
+                                      </div>
+                                  </div>
+                                  <div class="oe_kanban_details ba_kanban_details">
+                                      <ul>
+                                          <li>
+                                              <span><field name="final_service_ids" widget="many2many_tags"/></span>
+                                          </li>
+                                          <li>
+                                              <a type="object" name="action_open_appointments">
+                                                  <span>
+                                                      <field name="planned_appointment_len"/>
+                                                      Appointments
+                                                  </span>
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a type="object" name="action_open_resources">
+                                                  <span>
+                                                      <field name="resource_len"/>
+                                                      Resources
+                                                  </span>
+                                              </a>
+                                          </li>
+                                          <li attrs="{'invisible': ['|', ('rating_option', '=', False), ('rating_satisfaction', '=', -1)]}" groups="business_appointment.group_business_appointment_rating">
+                                              <a name="728" type="action">
+                                                  <i class="fa fa-smile-o" role="img" aria-label="Percentage of satisfaction" title="Percentage of satisfaction"/>
+                                                  <t t-esc="record.rating_satisfaction.value"/> %
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                              <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                  <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                      <div role="menuitem">
+                                          <a type="edit">Edit</a>
+                                      </div>
+                                      <div role="menuitem">
+                                          <a type="delete">Delete</a>
+                                      </div>
+                                      <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                                          <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                      </div>
+                                  </div>
+                              </div>
+                              <a class="o_kanban_manage_toggle_button o_left" href="#">
+                                  <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                             </a>
+                             <div class="o_kanban_record_bottom">
+                                  <div class="oe_kanban_bottom_left">
+                                      <div class="o_kanban_inline_block">
+                                          <field name="activity_ids" widget="kanban_activity"/>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+
+      </field>
+  </record> -->
+
+  <record id="action_website_resources_types" model="ir.actions.act_window">
+      <field name="name">Resources Types</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">business.resource.type</field>
+      <field name="view_mode">kanban,tree,form</field>
+
+
+  </record>
+
+
+  <!-- ....... -->
+  <record id="website_page_view_form111" model="ir.ui.view">
+      <field name="name">website.view.form111</field>
+      <field name="model">business.resource</field>
+      <field name="arch" type="xml">
+          <form>
+              <sheet>
+                  <!-- <div class="oe_button_box" name="button_box">
+                      <button name="733" type="action" class="oe_stat_button" icon="fa-calendar-check-o" context="{'default_resource_id': active_id, 'default_resource_type_id': resource_type_id}">
+                          <field string="Appointments" name="planned_appointment_len" widget="statinfo"/>
+                      </button>
+                      <button name="action_open_leaves" type="object" class="oe_stat_button" icon="fa-calendar">
+                          Own Leaves
+                      </button>
+                      <button name="730" type="action" attrs="{'invisible': [('rating_satisfaction', '=', -1)]}" class="oe_stat_button oe_percent" icon="fa-smile-o" groups="business_appointment.group_business_appointment_rating">
+                          <div class="o_field_widget o_stat_info">
+                              <span class="o_stat_value">
+                                  <field name="rating_satisfaction" nolabel="1"/>
+                              </span>
+                              <span class="o_stat_text">
+                                  %
+                              </span>
+                          </div>
+                      </button>
+                  </div> -->
+                  <field name="image" widget="image" class="oe_avatar oe_left" options="{'preview_image': 'image'}"/>
+                  <div class="oe_title">
+                      <h1>
+                          <field name="name" placeholder="resource reference" class="oe_inline" required="1"/>
+                      </h1>
+                  </div>
+                  <group name="ba_resource_details_group">
+                      <group>
+                          <field name="resource_type"/>
+                          <field name="resource_id"/>
+                          <field name="resource_type_id"/>
+                          <field name="service_ids" widget="many2many_tags" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                      </group>
+                      <group>
+                          <field name="resource_calendar_id" required="1"/>
+                          <field name="user_id" domain="[('share', '=', False)]" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                          <field name="location"/>
+                      </group>
+                  </group>
+                  <notebook>
+                      <page string="Description">
+                          <field name="description" placeholder="short description"/>
+                      </page>
+                      <page name="custom_fields" string="Custom Details" invisible="0">
+                        <group name="group_custom_fields" invisible="1"/>
+                      </page>
+                      <page string="Website">
+                      <group>
+                          <field name="website_id" options="{'no_create_edit': 1,'no_quick_create': 1,}" groups="website.group_multi_website"/>
+                          <field name="donotshow_full_description"/>
+                      </group>
+                    </page>
+                  </notebook>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record id="website_page_view_tree111" model="ir.ui.view">
+      <field name="name">website.view.tree111</field>
+      <field name="model">business.resource</field>
+      <field name="arch" type="xml">
+          <tree string="Resources">
+
+                <field name="name"/>
+                <field name="resource_type_id"/>
+                <field name="service_ids" widget="many2many_tags" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                <field name="resource_calendar_id"/>
+
+          </tree>
+      </field>
+  </record>
+
+  <record id="action_website_resources" model="ir.actions.act_window">
+      <field name="name">Resources</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">business.resource</field>
+      <field name="view_mode">tree,form,kanban</field>
+
+  </record>
+
+  <!-- .... -->
+
+  <record id="website_page_view_form1111" model="ir.ui.view">
+      <field name="name">website.view.form1111</field>
+      <field name="model">appointment.product</field>
+      <field name="arch" type="xml">
+          <form>
+              <sheet>
+                  <!-- <div class="oe_button_box" name="button_box">
+                      <button name="731" type="action" attrs="{'invisible': [('rating_satisfaction', '=', -1)]}" class="oe_stat_button oe_percent" icon="fa-smile-o" groups="business_appointment.group_business_appointment_rating">
+                          <div class="o_field_widget o_stat_info">
+                              <span class="o_stat_value">
+                                  <field name="rating_satisfaction" nolabel="1"/>
+                              </span>
+                              <span class="o_stat_text">
+                                  %
+                              </span>
+                          </div>
+                      </button>
+                  </div> -->
+                  <header>
+                      <button name ="%(action_wizard_appointment)d" type="action" string ="Add"/>
+                  </header>
+
+                  <field name="image" widget="image" class="oe_avatar oe_left" options="{'preview_image': 'image'}"/>
+                  <div class="oe_title">
+                      <h1>
+                          <field name="name" placeholder="resource reference" class="oe_inline" required="1"/>
+                      </h1>
+                  </div>
+                  <group name="ba_ap_main_details">
+                      <group>
+                          <label for="appointment_duration"/>
+                          <div>
+                              <field name="appointment_duration" widget="float_time" attrs="{'invisible': [('duration_uom', '!=', 'hours')]}" class="oe_inline"/>
+                              <field name="appointment_duration_days" attrs="{'invisible': [('duration_uom', '!=', 'days')]}" class="oe_inline"/>
+                              <field name="duration_uom" class="oe_inline"/>
+                          </div>
+                          <field name="location"/>
+                      </group>
+                    </group>
+                      <group>
+                          <field name="product_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                          <field name="suggested_product_ids" widget="many2many_tags"/>
+                          <field name="service_ids"/>
+                      </group>
+
+                  <notebook>
+                      <page string="Settings" name="settings">
+                          <group name="overall_appointments_configs">
+                              <group name="general_appointments_configs">
+                                  <field name="start_round_rule" attrs="{'invisible': [('duration_uom', '!=', 'hours')]}" widget="float_time"/>
+                                  <field name="start_round_rule_days" attrs="{'invisible': [('duration_uom', '!=', 'days')]}" widget="float_time"/>
+                              </group>
+                              <group name="manual_duration">
+                                  <field name="manual_duration"/>
+                                  <field name="min_manual_duration" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'hours')]}" widget="float_time"/>
+                                  <field name="max_manual_duration" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'hours')]}" widget="float_time"/>
+                                  <field name="multiple_manual_duration" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'hours')]}" widget="float_time"/>
+                                  <field name="min_manual_duration_days" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'days')]}"/>
+                                  <field name="max_manual_duration_days" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'days')]}"/>
+                                  <field name="multiple_manual_duration_days" attrs="{'invisible': ['|', ('manual_duration', '=', False), ('duration_uom', '!=', 'days')]}"/>
+                              </group>
+                          </group>
+                      </page>
+                      <page string="Description">
+                          <field name="description" placeholder="short description"/>
+                      </page>
+                      <page name="custom_fields" string="Custom Details" invisible="0">
+                        <group name="group_custom_fields" invisible="1"/>
+                      </page>
+                      <page string="Website">
+                      <group>
+                          <field name="website_id" options="{'no_create_edit': 1,'no_quick_create': 1,}" groups="website.group_multi_website"/>
+                          <field name="donotshow_full_description"/>
+                      </group>
+                    </page>
+                  </notebook>
+              </sheet>
+          </form>
+
+      </field>
+  </record>
+
+  <record id="website_page_view_tree1111" model="ir.ui.view">
+      <field name="name">website.view.tree1111</field>
+      <field name="model">appointment.product</field>
+      <field name="arch" type="xml">
+          <tree string="Services">
+            <field name ="name"/>
+
+          </tree>
+      </field>
+  </record>
+
+  <record id="action_website_servicess_ooooooooo" model="ir.actions.act_window">
+      <field name="name">Services</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">appointment.product</field>
+      <field name="view_mode">tree,form,kanban</field>
+  </record>
+  <menuitem id="menu_Resources_types" name="Resources Types" parent="menu_Resources" sequence="1" groups="base.group_system" action="action_website_resources_types"/>
+
+  <menuitem id="menu_Resources2" name="Resources" parent="menu_Resources" sequence="2" groups="base.group_system" action="action_website_resources"/>
+  <menuitem id="menu_servicess_ooooo" name="Services" parent="menu_Resources" sequence="9" groups="base.group_system" action="action_website_servicess_ooooooooo"/>
+
+
+</odoo>

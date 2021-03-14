@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	 <record model="ir.module.category" id="module_category_interior_business_appointment">
+	        <field name="name">Appointment</field>
+     </record>
+     <record id="group_business_appointment_add" model="res.groups">
+         <field name="name">add</field>
+         <field name="category_id" ref="module_category_interior_business_appointment"/>
+         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="group_business_appointment_edit" model="res.groups">
+         <field name="name">edit</field>
+         <field name="category_id" ref="module_category_interior_business_appointment"/>
+         <field name="implied_ids" eval="[(4, ref('group_business_appointment_add'))]"/>
+         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+     </record>
+	 <record id="group_business_appointment_delete" model="res.groups">
+         <field name="name">delete</field>
+         <field name="category_id" ref="module_category_interior_business_appointment"/>
+         <field name="implied_ids" eval="[(4, ref('group_business_appointment_edit'))]"/>
+         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+     </record>
+<!-- ........................ -->
+		 <record model="ir.module.category" id="module_category_interior_business_resource_type">
+		        <field name="name">Resources Types</field>
+	     </record>
+	     <record id="group_business_resource_type_add" model="res.groups">
+	         <field name="name">add</field>
+	         <field name="category_id" ref="module_category_interior_business_resource_type"/>
+	         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	    </record>
+	    <record id="group_business_resource_type_edit" model="res.groups">
+	         <field name="name">edit</field>
+	         <field name="category_id" ref="module_category_interior_business_resource_type"/>
+	         <field name="implied_ids" eval="[(4, ref('group_business_resource_type_add'))]"/>
+	         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	     </record>
+		 <record id="group_business_resource_type_delete" model="res.groups">
+	         <field name="name">delete</field>
+	         <field name="category_id" ref="module_category_interior_business_resource_type"/>
+	         <field name="implied_ids" eval="[(4, ref('group_business_resource_type_edit'))]"/>
+	         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	     </record>
+			 <!-- ............................ -->
+
+				 <record model="ir.module.category" id="module_category_interior_business_resource">
+				        <field name="name">Resources</field>
+			     </record>
+			     <record id="group_business_resource_add" model="res.groups">
+			         <field name="name">add</field>
+			         <field name="category_id" ref="module_category_interior_business_resource"/>
+			         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+			    </record>
+			    <record id="group_business_resource_edit" model="res.groups">
+			         <field name="name">edit</field>
+			         <field name="category_id" ref="module_category_interior_business_resource"/>
+			         <field name="implied_ids" eval="[(4, ref('group_business_resource_add'))]"/>
+			         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			     </record>
+				 <record id="group_business_resource_delete" model="res.groups">
+			         <field name="name">delete</field>
+			         <field name="category_id" ref="module_category_interior_business_resource"/>
+			         <field name="implied_ids" eval="[(4, ref('group_business_resource_edit'))]"/>
+			         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			     </record>
+					 <!-- .................................... -->
+					 <record model="ir.module.category" id="module_category_interior_appointment_product">
+					        <field name="name">Services</field>
+				     </record>
+				     <record id="group_appointment_product_add" model="res.groups">
+				         <field name="name">add</field>
+				         <field name="category_id" ref="module_category_interior_appointment_product"/>
+				         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+				    </record>
+				    <record id="group_appointment_product_edit" model="res.groups">
+				         <field name="name">edit</field>
+				         <field name="category_id" ref="module_category_interior_appointment_product"/>
+				         <field name="implied_ids" eval="[(4, ref('group_appointment_product_add'))]"/>
+				         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				     </record>
+					 <record id="group_appointment_product_delete" model="res.groups">
+				         <field name="name">delete</field>
+				         <field name="category_id" ref="module_category_interior_appointment_product"/>
+				         <field name="implied_ids" eval="[(4, ref('group_appointment_product_edit'))]"/>
+				         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				     </record>
+<!-- .................................. -->
+<record model="ir.module.category" id="module_category_interior_business_resource">
+			 <field name="name">Resources</field>
+	</record>
+	<record id="group_business_resource_add" model="res.groups">
+			<field name="name">add</field>
+			<field name="category_id" ref="module_category_interior_business_resource"/>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+ </record>
+ <record id="group_business_resource_edit" model="res.groups">
+			<field name="name">edit</field>
+			<field name="category_id" ref="module_category_interior_business_resource"/>
+			<field name="implied_ids" eval="[(4, ref('group_business_resource_add'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+<record id="group_business_resource_delete" model="res.groups">
+			<field name="name">delete</field>
+			<field name="category_id" ref="module_category_interior_business_resource"/>
+			<field name="implied_ids" eval="[(4, ref('group_business_resource_edit'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+	<!-- .................................... -->
+	<record model="ir.module.category" id="module_category_interior_business_appointment_core">
+				 <field name="name">Pre-Reservation</field>
+		</record>
+		<record id="group_business_appointment_core_add" model="res.groups">
+				<field name="name">add</field>
+				<field name="category_id" ref="module_category_interior_business_appointment_core"/>
+				<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	 </record>
+	 <record id="group_business_appointment_core_edit" model="res.groups">
+				<field name="name">edit</field>
+				<field name="category_id" ref="module_category_interior_business_appointment_core"/>
+				<field name="implied_ids" eval="[(4, ref('group_business_appointment_core_add'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+	<record id="group_business_appointment_core_delete" model="res.groups">
+				<field name="name">delete</field>
+				<field name="category_id" ref="module_category_interior_business_appointment_core"/>
+				<field name="implied_ids" eval="[(4, ref('group_business_appointment_core_edit'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+		<!-- ......................... -->
+		<record model="ir.module.category" id="module_category_interior_res_config_settings">
+					 <field name="name">Configuration</field>
+			</record>
+			<record id="group_res_config_settings_add" model="res.groups">
+					<field name="name">add</field>
+					<field name="category_id" ref="module_category_interior_res_config_settings"/>
+					<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		 </record>
+		 <record id="group_res_config_settings_edit" model="res.groups">
+					<field name="name">edit</field>
+					<field name="category_id" ref="module_category_interior_res_config_settings"/>
+					<field name="implied_ids" eval="[(4, ref('group_res_config_settings_add'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+		<record id="group_res_config_settings_delete" model="res.groups">
+					<field name="name">delete</field>
+					<field name="category_id" ref="module_category_interior_res_config_settings"/>
+					<field name="implied_ids" eval="[(4, ref('group_res_config_settings_edit'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+
+<!-- ............................................. -->
+<record model="ir.module.category" id="module_category_interior_resource_calendar">
+			 <field name="name">Working calendars</field>
+	</record>
+	<record id="group_resource_calendar_add" model="res.groups">
+			<field name="name">add</field>
+			<field name="category_id" ref="module_category_interior_resource_calendar"/>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+ </record>
+ <record id="group_resource_calendar_edit" model="res.groups">
+			<field name="name">edit</field>
+			<field name="category_id" ref="module_category_interior_resource_calendar"/>
+			<field name="implied_ids" eval="[(4, ref('group_resource_calendar_add'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+<record id="group_resource_calendar_delete" model="res.groups">
+			<field name="name">delete</field>
+			<field name="category_id" ref="module_category_interior_resource_calendar"/>
+			<field name="implied_ids" eval="[(4, ref('group_resource_calendar_edit'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+	<!-- ................................... -->
+
+<!-- ....................... -->
+<record model="ir.module.category" id="module_category_interior_custom_appointment_contact_info_field">
+			 <field name="name">Appointments Fields</field>
+	</record>
+	<record id="group_custom_appointment_contact_info_field_add" model="res.groups">
+			<field name="name">add</field>
+			<field name="category_id" ref="module_category_interior_custom_appointment_contact_info_field"/>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+ </record>
+ <record id="group_custom_appointment_contact_info_field_edit" model="res.groups">
+			<field name="name">edit</field>
+			<field name="category_id" ref="module_category_interior_custom_appointment_contact_info_field"/>
+			<field name="implied_ids" eval="[(4, ref('group_custom_appointment_contact_info_field_add'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+<record id="group_custom_appointment_contact_info_field_delete" model="res.groups">
+			<field name="name">delete</field>
+			<field name="category_id" ref="module_category_interior_custom_appointment_contact_info_field"/>
+			<field name="implied_ids" eval="[(4, ref('group_custom_appointment_contact_info_field_edit'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+	<!-- ....................... -->
+	<record model="ir.module.category" id="module_category_interior_custom_extra_field_selection">
+				 <field name="name">selection</field>
+		</record>
+		<record id="group_custom_extra_field_selection_add" model="res.groups">
+				<field name="name">add</field>
+				<field name="category_id" ref="module_category_interior_custom_extra_field_selection"/>
+				<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	 </record>
+	 <record id="group_custom_extra_field_selection_edit" model="res.groups">
+				<field name="name">edit</field>
+				<field name="category_id" ref="module_category_interior_custom_extra_field_selection"/>
+				<field name="implied_ids" eval="[(4, ref('group_custom_extra_field_selection_add'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+	<record id="group_custom_extra_field_selection_delete" model="res.groups">
+				<field name="name">delete</field>
+				<field name="category_id" ref="module_category_interior_custom_extra_field_selection"/>
+				<field name="implied_ids" eval="[(4, ref('group_custom_extra_field_selection_edit'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+		<!-- ................................................... -->
+		<record model="ir.module.category" id="module_category_interior_custom_business_resource_type_field">
+					 <field name="name">Resource Type fields</field>
+			</record>
+			<record id="group_custom_business_resource_type_field_add" model="res.groups">
+					<field name="name">add</field>
+					<field name="category_id" ref="module_category_interior_custom_business_resource_type_field"/>
+					<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		 </record>
+		 <record id="group_custom_business_resource_type_field_edit" model="res.groups">
+					<field name="name">edit</field>
+					<field name="category_id" ref="module_category_interior_custom_business_resource_type_field"/>
+					<field name="implied_ids" eval="[(4, ref('group_custom_business_resource_type_field_add'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+		<record id="group_custom_business_resource_type_field_delete" model="res.groups">
+					<field name="name">delete</field>
+					<field name="category_id" ref="module_category_interior_custom_business_resource_type_field"/>
+					<field name="implied_ids" eval="[(4, ref('group_custom_business_resource_type_field_edit'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+			<!-- ........................ -->
+			<record model="ir.module.category" id="module_category_interior_custom_business_resource_field">
+						 <field name="name">Resource Fields</field>
+				</record>
+				<record id="group_custom_business_resource_field_add" model="res.groups">
+						<field name="name">add</field>
+						<field name="category_id" ref="module_category_interior_custom_business_resource_field"/>
+						<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+			 </record>
+			 <record id="group_custom_business_resource_field_edit" model="res.groups">
+						<field name="name">edit</field>
+						<field name="category_id" ref="module_category_interior_custom_business_resource_field"/>
+						<field name="implied_ids" eval="[(4, ref('group_custom_business_resource_field_add'))]"/>
+						<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				</record>
+			<record id="group_custom_business_resource_field_delete" model="res.groups">
+						<field name="name">delete</field>
+						<field name="category_id" ref="module_category_interior_custom_business_resource_field"/>
+						<field name="implied_ids" eval="[(4, ref('group_custom_business_resource_field_edit'))]"/>
+						<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				</record>
+				<!-- ................................... -->
+				<record model="ir.module.category" id="module_category_interior_custom_appointment_product_field">
+							 <field name="name">Service Fields</field>
+					</record>
+					<record id="group_custom_appointment_product_field_add" model="res.groups">
+							<field name="name">add</field>
+							<field name="category_id" ref="module_category_interior_custom_appointment_product_field"/>
+							<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+				 </record>
+				 <record id="group_custom_appointment_product_field_edit" model="res.groups">
+							<field name="name">edit</field>
+							<field name="category_id" ref="module_category_interior_custom_appointment_product_field"/>
+							<field name="implied_ids" eval="[(4, ref('group_custom_appointment_product_field_add'))]"/>
+							<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+					</record>
+				<record id="group_custom_appointment_product_field_delete" model="res.groups">
+							<field name="name">delete</field>
+							<field name="category_id" ref="module_category_interior_custom_appointment_product_field"/>
+							<field name="implied_ids" eval="[(4, ref('group_custom_appointment_product_field_edit'))]"/>
+							<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+					</record>
+<!-- ............................. -->
+<record model="ir.module.category" id="module_category_interior_appointment_alarm">
+			 <field name="name">Reminders</field>
+	</record>
+	<record id="group_appointment_alarm_add" model="res.groups">
+			<field name="name">add</field>
+			<field name="category_id" ref="module_category_interior_appointment_alarm"/>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+ </record>
+ <record id="group_appointment_alarm_edit" model="res.groups">
+			<field name="name">edit</field>
+			<field name="category_id" ref="module_category_interior_appointment_alarm"/>
+			<field name="implied_ids" eval="[(4, ref('group_appointment_alarm_add'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+<record id="group_appointment_alarm_delete" model="res.groups">
+			<field name="name">delete</field>
+			<field name="category_id" ref="module_category_interior_appointment_alarm"/>
+			<field name="implied_ids" eval="[(4, ref('group_appointment_alarm_edit'))]"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+	</record>
+	<!-- ...................................... -->
+	<record model="ir.module.category" id="module_category_interior_mail_template">
+				 <field name="name">Email Templates</field>
+		</record>
+		<record id="group_mail_template_add" model="res.groups">
+				<field name="name">add</field>
+				<field name="category_id" ref="module_category_interior_mail_template"/>
+				<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	 </record>
+	 <record id="group_mail_template_edit" model="res.groups">
+				<field name="name">edit</field>
+				<field name="category_id" ref="module_category_interior_mail_template"/>
+				<field name="implied_ids" eval="[(4, ref('group_mail_template_add'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+	<record id="group_mail_template_delete" model="res.groups">
+				<field name="name">delete</field>
+				<field name="category_id" ref="module_category_interior_mail_template"/>
+				<field name="implied_ids" eval="[(4, ref('group_mail_template_edit'))]"/>
+				<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+		</record>
+		<!-- ..................................... -->
+		<record model="ir.module.category" id="module_category_interior_sms_template">
+					 <field name="name">SMS Templates</field>
+			</record>
+			<record id="group_sms_template_add" model="res.groups">
+					<field name="name">add</field>
+					<field name="category_id" ref="module_category_interior_sms_template"/>
+					<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		 </record>
+		 <record id="group_sms_template_edit" model="res.groups">
+					<field name="name">edit</field>
+					<field name="category_id" ref="module_category_interior_sms_template"/>
+					<field name="implied_ids" eval="[(4, ref('group_sms_template_add'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+		<record id="group_sms_template_delete" model="res.groups">
+					<field name="name">delete</field>
+					<field name="category_id" ref="module_category_interior_sms_template"/>
+					<field name="implied_ids" eval="[(4, ref('group_sms_template_edit'))]"/>
+					<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			</record>
+			<!-- ............................. -->
+			<record model="ir.module.category" id="module_category_interior_alarm_task">
+						 <field name="name">Reminder Queue</field>
+				</record>
+				<record id="group_alarm_task_add" model="res.groups">
+						<field name="name">add</field>
+						<field name="category_id" ref="module_category_interior_alarm_task"/>
+						<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+			 </record>
+			 <record id="group_alarm_task_edit" model="res.groups">
+						<field name="name">edit</field>
+						<field name="category_id" ref="module_category_interior_alarm_task"/>
+						<field name="implied_ids" eval="[(4, ref('group_alarm_task_add'))]"/>
+						<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				</record>
+			<record id="group_alarm_task_delete" model="res.groups">
+						<field name="name">delete</field>
+						<field name="category_id" ref="module_category_interior_alarm_task"/>
+						<field name="implied_ids" eval="[(4, ref('group_alarm_task_edit'))]"/>
+						<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+				</record>
+				<!-- ........................................... -->
+				<record model="ir.module.category" id="module_category_interior_associated_product_line">
+							 <field name="name">Quantity</field>
+					</record>
+					<record id="group_associated_product_line_add" model="res.groups">
+							<field name="name">add</field>
+							<field name="category_id" ref="module_category_interior_associated_product_line"/>
+							<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+				 </record>
+				 <record id="group_associated_product_line_edit" model="res.groups">
+							<field name="name">edit</field>
+							<field name="category_id" ref="module_category_interior_associated_product_line"/>
+							<field name="implied_ids" eval="[(4, ref('group_associated_product_line_add'))]"/>
+							<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+					</record>
+				<record id="group_associated_product_line_delete" model="res.groups">
+							<field name="name">delete</field>
+							<field name="category_id" ref="module_category_interior_associated_product_line"/>
+							<field name="implied_ids" eval="[(4, ref('group_associated_product_line_edit'))]"/>
+							<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+					</record>
+					<!-- ................... -->
+					<record model="ir.module.category" id="module_category_interior_appointment_analytic">
+								 <field name="name">Appointments Analysis</field>
+						</record>
+						<record id="group_appointment_analytic_add" model="res.groups">
+								<field name="name">add</field>
+								<field name="category_id" ref="module_category_interior_appointment_analytic"/>
+								<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+					 </record>
+					 <record id="group_appointment_analytic_edit" model="res.groups">
+								<field name="name">edit</field>
+								<field name="category_id" ref="module_category_interior_appointment_analytic"/>
+								<field name="implied_ids" eval="[(4, ref('group_appointment_analytic_add'))]"/>
+								<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+						</record>
+					<record id="group_appointment_analytic_delete" model="res.groups">
+								<field name="name">delete</field>
+								<field name="category_id" ref="module_category_interior_appointment_analytic"/>
+								<field name="implied_ids" eval="[(4, ref('group_appointment_analytic_edit'))]"/>
+								<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+						</record>
+						<!-- ....................... -->
+						<record model="ir.module.category" id="module_category_interior_rating_appointment">
+									 <field name="name">Customer Ratings</field>
+							</record>
+							<record id="group_rating_appointment_add" model="res.groups">
+									<field name="name">add</field>
+									<field name="category_id" ref="module_category_interior_rating_appointment"/>
+									<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+						 </record>
+						 <record id="group_rating_appointment_edit" model="res.groups">
+									<field name="name">edit</field>
+									<field name="category_id" ref="module_category_interior_rating_appointment"/>
+									<field name="implied_ids" eval="[(4, ref('group_rating_appointment_add'))]"/>
+									<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+							</record>
+						<record id="group_rating_appointment_delete" model="res.groups">
+									<field name="name">delete</field>
+									<field name="category_id" ref="module_category_interior_rating_appointment"/>
+									<field name="implied_ids" eval="[(4, ref('group_rating_appointment_edit'))]"/>
+									<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+							</record>
+							<!-- .................... -->
+							<record model="ir.module.category" id="module_category_interior_business_appointment_custom_search">
+										 <field name="name">Search111</field>
+								</record>
+								<record id="group_business_appointment_custom_search_add" model="res.groups">
+										<field name="name">add</field>
+										<field name="category_id" ref="module_category_interior_business_appointment_custom_search"/>
+										<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+							 </record>
+							 <record id="group_business_appointment_custom_search_edit" model="res.groups">
+										<field name="name">edit</field>
+										<field name="category_id" ref="module_category_interior_business_appointment_custom_search"/>
+										<field name="implied_ids" eval="[(4, ref('group_business_appointment_custom_search_add'))]"/>
+										<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+								</record>
+							<record id="group_business_appointment_custom_search_delete" model="res.groups">
+										<field name="name">delete</field>
+										<field name="category_id" ref="module_category_interior_business_appointment_custom_search"/>
+										<field name="implied_ids" eval="[(4, ref('group_business_appointment_custom_search_edit'))]"/>
+										<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+								</record>
+								<!-- ........................ -->
+								<record model="ir.module.category" id="module_category_interior_make_appointment_business">
+											 <field name="name">Make Appointment</field>
+									</record>
+									<record id="group_make_appointment_business_add" model="res.groups">
+											<field name="name">add</field>
+											<field name="category_id" ref="module_category_interior_make_appointment_business"/>
+											<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+								 </record>
+								 <record id="group_make_appointment_business_edit" model="res.groups">
+											<field name="name">edit</field>
+											<field name="category_id" ref="module_category_interior_make_appointment_business"/>
+											<field name="implied_ids" eval="[(4, ref('group_make_appointment_business_add'))]"/>
+											<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+									</record>
+								<record id="group_make_appointment_business_delete" model="res.groups">
+											<field name="name">delete</field>
+											<field name="category_id" ref="module_category_interior_make_appointment_business"/>
+											<field name="implied_ids" eval="[(4, ref('group_make_appointment_business_edit'))]"/>
+											<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+									</record>
+
+                 <!-- <record model="ir.module.category" id="module_category_interior_booked_time">
+                           <field name="name">booked</field>
+                  </record>
+                  <record id="group_booked_time_add" model="res.groups">
+                          <field name="name">add</field>
+                          <field name="category_id" ref="module_category_interior_booked_time"/>
+                          <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+               </record>
+               <record id="group_booked_time_edit" model="res.groups">
+                          <field name="name">edit</field>
+                          <field name="category_id" ref="module_category_interior_booked_time"/>
+                          <field name="implied_ids" eval="[(4, ref('group_booked_time_add'))]"/>
+                          <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+                  </record>
+              <record id="group_booked_time_delete" model="res.groups">
+                          <field name="name">delete</field>
+                          <field name="category_id" ref="module_category_interior_booked_time"/>
+                          <field name="implied_ids" eval="[(4, ref('group_booked_time_edit'))]"/>
+                          <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+                  </record> -->
+
+									<!-- <record model="ir.module.category" id="module_category_interior_person_data">
+														<field name="name">Person</field>
+									 </record>
+									 <record id="group_person_data_add" model="res.groups">
+													 <field name="name">add</field>
+													 <field name="category_id" ref="module_category_interior_person_data"/>
+													 <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+								</record>
+								<record id="group_person_data_edit" model="res.groups">
+													 <field name="name">edit</field>
+													 <field name="category_id" ref="module_category_interior_person_data"/>
+													 <field name="implied_ids" eval="[(4, ref('group_person_data_add'))]"/>
+													 <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+									 </record>
+							 <record id="group_person_data_delete" model="res.groups">
+													 <field name="name">delete</field>
+													 <field name="category_id" ref="module_category_interior_person_data"/>
+													 <field name="implied_ids" eval="[(4, ref('group_person_data_edit'))]"/>
+													 <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+									 </record>
+ -->
+
+
+</odoo>
