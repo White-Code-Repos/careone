@@ -183,7 +183,7 @@
         <!-- <field name="view_id" ref="view_appointments"/> -->
 
     </record>
-    <menuitem id="menu_appointment" name="Appointments" parent="menu_root" sequence="1" groups="base.group_system" action="action_website_appointment_calandar"/>
+    <menuitem id="menu_appointment" name="Appointments" parent="Appointment.menu_root" sequence="1" groups="base.group_system" action="action_website_appointment_calandar"/>
 
 
 
