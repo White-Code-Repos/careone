@@ -42,11 +42,12 @@ class SubCopReportXls(models.AbstractModel):
             subscriptions = self.env['sale.subscription'].search([('date_start', '>=', name['start_date']),
                                                                   ('date', '<=', name['end_date']),
                                                                   ('subs_products_ids', '!=', None)])
-            sale = self.env['sale.order'].search([('order_line.subscription_id', 'in', subscriptions.ids)], limit=1)
-            invoice = self.env['account.move'].search([('invoice_line_ids.subscription_id', '=', subscriptions.id)], limit=1)
-            paid_amount = invoice.amount_total - invoice.amount_residual
 
             for sub in subscriptions:
+                sale = self.env['sale.order'].search([('order_line.subscription_id', 'in', sub.ids)])
+                invoice = self.env['account.move'].search([('invoice_line_ids.subscription_id', '=', sub.id)])
+                print(invoice)
+                paid_amount = invoice.amount_total - invoice.amount_residual
                 row += 1
                 worksheet.write(row + 4, col, 'رقم الإشتراك', cell_text_format)
                 worksheet.write(row + 4, col + 1, 'نوع الإشتراك', cell_text_format)
@@ -76,7 +77,7 @@ class SubCopReportXls(models.AbstractModel):
                     worksheet.write(row + 5, col + 10, (line.qty - line.consumed_qty), cell_text_format_values)
                     worksheet.write(row + 5, col + 11, sale.amount_untaxed, cell_text_format_values)
                     worksheet.write(row + 5, col + 12, line.product_id.standard_price * line.qty_counter, cell_text_format_values)
-                    worksheet.write(row + 5, col + 13, (line.product_id.standard_price * line.qty_counter) / paid_amount, cell_text_format_values)
+                    worksheet.write(row + 5, col + 13, (line.product_id.standard_price * line.qty_counter) / paid_amount if paid_amount else 0.0, cell_text_format_values)
                     worksheet.write(row + 5, col + 14, line.consumed_qty / (line.qty - line.consumed_qty), cell_text_format_values)
                     worksheet.write(row + 5, col + 15, sub.stage_id.name, cell_text_format_values)
                 row += 4
