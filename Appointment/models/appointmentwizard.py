@@ -21,7 +21,7 @@ class ExtraCl(models.TransientModel):
     resource_type_id=fields.Many2one('business.resource.type')
     Quantity = fields.Integer()
     make_appointment_id = fields.Many2one('make.appointment.business')
-    product_id = fields.Many2one('product.template')
+    product_id = fields.Many2one('product.product')
 
 class Complementary(models.TransientModel):
     _name = 'complementary.product'
@@ -62,7 +62,7 @@ class Appointmentwizard(models.TransientModel):
         lines = [(5, 0, 0)]
         if self.service_id:
             for line in self.service_id.suggested_product_ids:
-                ob=self.env['product.template'].search([('id','=',line.id)])
+                ob=self.env['product.product'].search([('id','=',line.id)])
                 lines.append((0, 0, {
 
                                'comp_done': False,
@@ -92,7 +92,7 @@ class Appointmentwizard(models.TransientModel):
     Quantity = fields.Integer()
     done = fields.Boolean()
     appointment_duration=fields.Many2one("appointment.product")
-    product_id = fields.Many2one('product.template')
+    product_id = fields.Many2one('product.product')
     priceofservice=fields.Float(related="service_id.product_id.lst_price" ,readonly="1")
     time=fields.Float(related="service_id.appointment_duration")
     calendar=fields.Many2one(related="resource_id.resource_calendar_id")
