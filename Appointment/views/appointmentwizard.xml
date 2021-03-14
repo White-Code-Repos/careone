@@ -112,6 +112,7 @@
             </header>
 
            <group>
+            <field name="comp_done" string="Complementary Done" />
             <field name="resource_type_id" string="Resource type"/>
             <field name="resource_id" string="Resource"/>
             <field name="service_id" string="Service"/>
@@ -154,7 +155,7 @@
    <field name="arch" type="xml">
         <tree>
 
-
+            <field name="comp_done" string="Complementary Done" />
             <field name="resource_type_id" string="Resource type"/>
             <field name="resource_id" string="Resource"/>
             <field name="service_id" string="Service"/>

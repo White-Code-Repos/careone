@@ -213,94 +213,45 @@ class Appointmentwizard(models.TransientModel):
             if line.done==True:
                 self.w="True"
 
-
-    # def return_action_data(self):
-    #     for line in self.calen_new:
-    #         if line.done==True:
-    #             return {
-    #           'type': 'ir.actions.act_window',
-    #           'name': 'Choose Contact and Confirm ',
-    #           'view_mode': 'form',
-    #           'target': 'new',
-    #           'res_model': 'person.data',
-    #           'context': { 'resource_type_id':self.resource_type_id.id,
-    #                         'resource_id':self.resource_id.id,
-    #                         'service_id':self.service_id.id,
-    #                         'priceofservice':self.priceofservice,
-    #                         'time':self.time,
-    #                          'done': line.done,
-    #                          'day_date':line.day_date,
-    #                         'day_name':line.day_name,
-    #                         'tim_from':line.tim_from,
-    #                         'tim_to':line.tim_to,
-    #
-    #         }
-    #         }
-    #
-    #     return {
-    #           'type': 'ir.actions.act_window',
-    #           'name': 'Choose Contact and Confirm ',
-    #           'view_mode': 'form',
-    #           'target': 'new',
-    #           'res_model': 'person.data',
-    #           'context': { 'resource_type_id':self.resource_type_id.id,
-    #                         'resource_id':self.resource_id.id,
-    #                         'service_id':self.service_id.id,
-    #                         'priceofservice':self.priceofservice,
-    #                         'time':self.time,
-    #                          'done': line.done,
-    #                          'day_date':line.day_date,
-    #                         'day_name':line.day_name,
-    #                         'tim_from':line.tim_from,
-    #                         'tim_to':line.tim_to,
-    #
-    #         }
-    # }
-
-
     def add_booked(self):
         for line in self.calen_new:
-            print("#########################3333")
             if line.done==True:
-                print("#########################3333")
                 for record in self.complementary_product:
-                    if record.comp_done==True:
-                        self.env['business.appointment'].create(
-                            {
+                    self.env['business.appointment'].create(
+                        {
+                        'resource_type_id':self.resource_type_id.id,
+                        'resource_id':self.resource_id.id,
+                        'service_id':self.service_id.id,
+                        'time':self.time,
+                        'priceofservice':self.priceofservice,
+                        'comp_done':record.comp_done,
+                        'comp_quantity':record.comp_quantity,
+                        'comp_total_price':record.comp_total_price,
+                        'comp_price':record.comp_price,
+                        'comp_name':record.comp_name,
+                        'day_date':line.day_date,
+                        'day_name':line.day_name,
+                        'tim_from':line.tim_from,
+                        'tim_to':line.tim_to,
+                        'email':self.email,
+                        'phone':self.phone,
+                         'mobile':self.mobile,
+                         'function':self.function,
+                         'partner_name':self.partner_name ,
+                         'description':self.description,
+                         'street':self.street,
+                        'street2':self.street2,
+                        'city':self.city,
+                         'state_id':self.state_id,
+                        'zipcode':self.zipcode,
+                         'country_id':self.country_id,
+                        'parent_company_id':self.parent_company_id,
+                        'partner_id':self.partner_id,
+                         'contact_name': self.contact_name,
+                         'title':self.title,
 
-                            'resource_type_id':self.resource_type_id.id,
-                            'resource_id':self.resource_id.id,
-                            'service_id':self.service_id.id,
-                            'time':self.time,
-                            'priceofservice':self.priceofservice,
-                            'comp_quantity':record.comp_quantity,
-                            'comp_total_price':record.comp_total_price,
-                            'comp_price':record.comp_price,
-                            'comp_name':record.comp_name,
-                            'day_date':line.day_date,
-                            'day_name':line.day_name,
-                            'tim_from':line.tim_from,
-                            'tim_to':line.tim_to,
-                            'email':self.email,
-                            'phone':self.phone,
-                             'mobile':self.mobile,
-                             'function':self.function,
-                             'partner_name':self.partner_name ,
-                             'description':self.description,
-                             'street':self.street,
-                            'street2':self.street2,
-                            'city':self.city,
-                             'state_id':self.state_id,
-                            'zipcode':self.zipcode,
-                             'country_id':self.country_id,
-                            'parent_company_id':self.parent_company_id,
-                            'partner_id':self.partner_id,
-                             'contact_name': self.contact_name,
-                             'title':self.title,
-
-                            }
-                        )
-
+                        }
+                    )
 
 
 

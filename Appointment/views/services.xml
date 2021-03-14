@@ -312,9 +312,9 @@
                           </div>
                       </button>
                   </div> -->
-                  <!-- <header>
+                  <header>
                       <button name ="%(action_wizard_appointment)d" type="action" string ="Add"/>
-                  </header> -->
+                  </header>
 
                   <field name="image" widget="image" class="oe_avatar oe_left" options="{'preview_image': 'image'}"/>
                   <div class="oe_title">
