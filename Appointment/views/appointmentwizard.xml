@@ -2,104 +2,7 @@
 <odoo>
 
 <!-- ..................................... -->
-  <record id="view_appointments_wizard" model="ir.ui.view">
-      <field name="name">view.appointments.wizard</field>
-      <field name="model">make.appointment.business</field>
-      <field name="arch" type="xml">
-          <form string="Schedule Appointment">
-              <group>
-                <field name="resource_type_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
-                <field name="resource_id" widget="resource_many2many" options="{'no_create_edit': 1, 'no_quick_create': 1}" domain="[('resource_type_id', '=', resource_type_id)]"  />
-                <field name="x" invisible="1" />
-                <field name="y"  invisible="1" />
-                <field name="z"  invisible="1" />
-                <field name="c"  invisible="1" />
-                <field name="w"  invisible="1" />
-                <field name="service_ids" invisible="1" />
-                <field name="service_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"  attrs="{'invisible': [('x', '=', False)]}" />
-                <field name ="related_product" attrs="{'invisible': [('y', '=', False)]}"/>
-                <field name="priceofservice" class="oe_inline text-muted" attrs="{'invisible': ['|', ('x', '=', False), ('priceofservice', '=', ' ')]}" readonly="1"/>
-                <field name="time" attrs="{'invisible': [('y', '=', False)]}" widget="float_time" />
-                <field name="complementary_product"  attrs="{'invisible': [('x', '=', False)]}"  readonly="0" widget="one2many">
-                    <tree editable="bottom">
-                      <field name="comp_done" string="Done" />
-                      <field name="comp_name" string="Name" />
-                      <field name="comp_price" string="Price" />
-                      <field name="comp_quantity" string="Quantity" />
-                      <field name="comp_total_price" string="Total Price" />
 
-                    </tree>
-                </field>
-
-                <field name="date_start" /><field name="date_end"/>
-                <field name="calendar" invisible="1" />
-                <field name="calendar1" invisible="1" />
-                <field name="calen_new" nolabel="1" force_save="1">
-                    <tree editable="bottom">
-                        <field name="done" />
-                        <field name="resource_id" invisible="1"/>
-                        <field name="service_id" invisible="1"/>
-                        <field name="resource_type_id" invisible="1"/>
-                        <field name="day_date" string = "Date"/>
-                        <field name="day_name" string = "Day Name"/>
-                        <field name="tim_from" widget="float_time" string = "From"/>
-                        <field name="tim_to" widget="float_time" string = "To"/>
-                    </tree>
-                </field>
-                <field name="day" invisible="1" />
-
-
-              </group>
-
-              <group name="contact_info" string="Contact Info" attrs="{'invisible': [('w', '=', False)]}">
-                  <group colspan="6">
-                      <field name="partner_id" context="{'default_name': contact_name, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zipcode, 'default_country_id': country_id, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_email': email, 'default_title': title, 'default_parent_id': parent_company_id}" widget="res_partner_many2one"/>
-                  </group>
-                  <group attrs="{'invisible': [('partner_id', '!=', False)]}">
-                      <label for="contact_name"/>
-                      <div class="o_row">
-                          <field name="contact_name"/>
-                          <field name="title" placeholder="Title" options="{&quot;no_open&quot;: True}"/>
-                      </div>
-                      <field name="email" widget="email"/>
-                      <field name="phone" widget="phone"/>
-                      <field name="mobile"/>
-                      <field name="function"/>
-                  </group>
-                  <group attrs="{'invisible': [('partner_id', '!=', False)]}">
-                      <label for="street" string="Address"/>
-                      <div class="o_address_format">
-                          <field name="street" placeholder="Street..." class="o_address_street"/>
-                          <field name="street2" placeholder="Street 2..." class="o_address_street"/>
-                          <field name="city" placeholder="City" class="o_address_city"/>
-                          <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
-                          <field name="zipcode" placeholder="ZIP" class="o_address_zip"/>
-                          <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
-                      </div>
-                      <field name="parent_company_id" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
-                    <field name="partner_name" attrs="{'invisible': [('parent_company_id', '!=', False)]}"/>
-                </group>
-                <group>
-                  <field name="description"/>
-                 </group>
-             </group>
-
-
-              <footer>
-                  <button string="Cancel" class="btn btn-secondary" special="cancel"/>
-                    <button name="add_booked" type="object" string="Add" class="btn btn-secondary"/>
-
-              </footer>
-         </form>
-      </field>
-  </record>
-  <record id="action_wizard_appointment" model="ir.actions.act_window">
-      <field name="name">Schedule Appointment</field>
-      <field name="res_model">make.appointment.business</field>
-      <field name="view_mode">form</field>
-      <field name="view_id" ref="view_appointments_wizard"/>
-      <field name="target">new</field>
-  </record>
 <!-- ............................ -->
 <record id="view_appointments_form" model="ir.ui.view">
   <field name="name">view.appointments.form</field>
@@ -108,9 +11,7 @@
         <form>
 
           <sheet>
-            <header>
-                <button name ="%(action_wizard_appointment)d" type="action" string ="Add"/>
-            </header>
+
 
            <group>
             <field name="resource_type_id" string="Resource type"/>
@@ -138,7 +39,6 @@
             <field name="tim_to" string="time to"/>
             <field name="contact_name" string="Contact" />
             <field name="partner_id" string="partner_id" />
-            <field name="title" string="Title" />
             <field name="email" string= "Email"/>
             <field name="phone" string= "Phone"/>
             <field name="mobile" string= "Mobile" />
@@ -151,7 +51,6 @@
             <field name="city" string= "city"/>
             <field name="state_id" string= "state_id"/>
             <field name="zipcode" string= "zipcode" />
-            <field name="country_id" string= "country_id" />
           </group>
 
           </sheet>
@@ -190,12 +89,107 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">business.appointment</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_appointments"/>
+        <!-- <field name="view_id" ref="view_appointments"/> -->
 
     </record>
     <menuitem id="menu_appointment" name="Appointments" parent="menu_root" sequence="1" groups="base.group_system" action="action_website_appointment_calandar"/>
 
+    <record id="view_appointments_wizard" model="ir.ui.view">
+        <field name="name">view.appointments.wizard</field>
+        <field name="model">make.appointment.business</field>
+        <field name="arch" type="xml">
+            <form string="Schedule Appointment">
+                <group>
+                  <field name="resource_type_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"/>
+                  <field name="resource_id" widget="resource_many2many" options="{'no_create_edit': 1, 'no_quick_create': 1}" domain="[('resource_type_id', '=', resource_type_id)]"  />
+                  <field name="x" invisible="1" />
+                  <field name="y"  invisible="1" />
+                  <field name="z"  invisible="1" />
+                  <field name="c"  invisible="1" />
+                  <field name="w"  invisible="1" />
+                  <field name="service_ids" invisible="1" />
+                  <field name="service_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"  attrs="{'invisible': [('x', '=', False)]}" />
+                  <field name ="related_product" attrs="{'invisible': [('y', '=', False)]}"/>
+                  <field name="priceofservice" class="oe_inline text-muted" attrs="{'invisible': ['|', ('x', '=', False), ('priceofservice', '=', ' ')]}" readonly="1"/>
+                  <field name="time" attrs="{'invisible': [('y', '=', False)]}" widget="float_time" />
+                  <field name="complementary_product"  attrs="{'invisible': [('x', '=', False)]}"  readonly="0" widget="one2many">
+                      <tree editable="bottom">
+                        <field name="comp_done" string="Done" />
+                        <field name="comp_name" string="Name" />
+                        <field name="comp_price" string="Price" />
+                        <field name="comp_quantity" string="Quantity" />
+                        <field name="comp_total_price" string="Total Price" />
 
+                      </tree>
+                  </field>
+
+                  <field name="date_start" /><field name="date_end"/>
+                  <field name="calendar" invisible="1" />
+                  <field name="calendar1" invisible="1" />
+                  <field name="calen_new" nolabel="1" force_save="1">
+                      <tree editable="bottom">
+                          <field name="done" />
+                          <field name="resource_id" invisible="1"/>
+                          <field name="service_id" invisible="1"/>
+                          <field name="resource_type_id" invisible="1"/>
+                          <field name="day_date" string = "Date"/>
+                          <field name="day_name" string = "Day Name"/>
+                          <field name="tim_from" widget="float_time" string = "From"/>
+                          <field name="tim_to" widget="float_time" string = "To"/>
+                      </tree>
+                  </field>
+                  <field name="day" invisible="1" />
+
+
+                </group>
+
+                <group name="contact_info" string="Contact Info" attrs="{'invisible': [('w', '=', False)]}">
+                    <group colspan="6">
+                        <field name="partner_id" context="{'default_name': contact_name, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zipcode, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_email': email, 'default_parent_id': parent_company_id}" widget="res_partner_many2one"/>
+                    </group>
+                    <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                        <label for="contact_name"/>
+                        <div class="o_row">
+                            <field name="contact_name"/>
+                        </div>
+                        <field name="email" widget="email"/>
+                        <field name="phone" widget="phone"/>
+                        <field name="mobile"/>
+                        <field name="function"/>
+                    </group>
+                    <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                        <label for="street" string="Address"/>
+                        <div class="o_address_format">
+                            <field name="street" placeholder="Street..." class="o_address_street"/>
+                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                            <field name="city" placeholder="City" class="o_address_city"/>
+                            <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
+                            <field name="zipcode" placeholder="ZIP" class="o_address_zip"/>
+                        </div>
+                        <field name="parent_company_id" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
+                      <field name="partner_name" attrs="{'invisible': [('parent_company_id', '!=', False)]}"/>
+                  </group>
+                  <group>
+                    <field name="description"/>
+                   </group>
+               </group>
+
+
+                <footer>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                      <button name="Confirm_booked" type="object" string="Confirm" class="btn btn-secondary"/>
+
+                </footer>
+           </form>
+        </field>
+    </record>
+    <record id="action_wizard_appointment" model="ir.actions.act_window">
+        <field name="name">Schedule Appointment</field>
+        <field name="res_model">make.appointment.business</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_appointments_wizard"/>
+    </record>
+    <menuitem id="menu_add" name="Book Appointment" parent="menu_root" sequence="2"  groups="base.group_system" action="action_wizard_appointment"/>
 
 
 

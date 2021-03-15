@@ -57,25 +57,56 @@ class Appointmentwizard(models.TransientModel):
     service_id=fields.Many2one('appointment.product',string="Service")
     related_product=fields.Many2one(related='service_id.product_id',string="Main product")
     count=fields.Integer()
+    def Confirm_booked(self):
+        print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+        li=[]
+        for record in self.complementary_product:
+                        dic = {
+                        'comp_done':record.comp_done,
+                        'comp_name':record.comp_name,
+                        'comp_price':record.comp_price,
+                        'comp_quantity':record.comp_quantity,
+                        'comp_total_price':record.comp_total_price,
+                        }
+                        li.append((0,0,dic))
+        for line in self.calen_new:
+            print("qqqqqqqqqqqqqqqqqqqqqqqqqqq")
+            if line.done==True :
+                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                values=self.env['business.appointment'].create(
+                    {
+                    'complementary_tree':li,
+                    'resource_type_id':self.resource_type_id.id,
+                    'resource_id':self.resource_id.id,
+                    'service_id':self.service_id.id,
+                    'related_product':self.related_product.name,
+                    'time':self.time,
+                    'priceofservice':self.priceofservice,
+                    'day_date':line.day_date,
+                    'day_name':line.day_name,
+                    'tim_from':line.tim_from,
+                    'tim_to':line.tim_to,
+                    'email':self.email,
+                    'phone':self.phone,
+                     'mobile':self.mobile,
+                     'function':self.function,
+                     'partner_name':self.partner_name ,
+                     'description':self.description,
+                     'street':self.street,
+                    'street2':self.street2,
+                    'city':self.city,
+                     'state_id':self.state_id,
+                    'zipcode':self.zipcode,
+                    'parent_company_id':self.parent_company_id,
+                    'partner_id':self.partner_id,
+                     'contact_name': self.contact_name,
+
+                    }
+                )
 
 
-    @api.onchange('service_id')
-    def com_product(self):
-        lines = [(5, 0, 0)]
-        if self.service_id:
-            for line in self.service_id.suggested_product_ids:
-                ob=self.env['product.product'].search([('id','=',line.id)])
-                lines.append((0, 0, {
-
-                               'comp_done': False,
-                               'comp_quantity' :0.0,
-                               'comp_total_price':0.0,
-                               'comp_price':ob.lst_price,
-
-                               'comp_name':ob.name,
-                               }))
-
-        self.complementary_product = lines
 
     complementary_product= fields.One2many('complementary.product' , 'make_appointment_id' ,string="Complementary Products",readonly="False")
     @api.onchange('service_id')
@@ -133,11 +164,9 @@ class Appointmentwizard(models.TransientModel):
     city = fields.Char("City")
     state_id = fields.Many2one('res.country.state', "State")
     zipcode = fields.Char("Zip")
-    country_id = fields.Many2one('res.country', "Country")
     parent_company_id = fields.Many2one('res.partner', "Parent Country")
     partner_id = fields.Many2one('res.partner', "Contact")
     contact_name = fields.Char("Contact Name")
-    title = fields.Many2one('res.partner.title', "Title")
     w=fields.Boolean()
 
 
@@ -235,60 +264,6 @@ class Appointmentwizard(models.TransientModel):
             if line.done==True:
                 self.w="True"
 
-    def add_booked(self):
-        self.count=0
-        for line in self.calen_new:
-            if line.done==True or self.count<1:
-                values=self.env['business.appointment'].create(
-                    {
-                    'resource_type_id':self.resource_type_id.id,
-                    'resource_id':self.resource_id.id,
-                    'service_id':self.service_id.id,
-                    'related_product':self.related_product.name,
-                    'time':self.time,
-                    'priceofservice':self.priceofservice,
-                    'day_date':line.day_date,
-                    'day_name':line.day_name,
-                    'tim_from':line.tim_from,
-                    'tim_to':line.tim_to,
-                    'email':self.email,
-                    'phone':self.phone,
-                     'mobile':self.mobile,
-                     'function':self.function,
-                     'partner_name':self.partner_name ,
-                     'description':self.description,
-                     'street':self.street,
-                    'street2':self.street2,
-                    'city':self.city,
-                     'state_id':self.state_id,
-                    'zipcode':self.zipcode,
-                     'country_id':self.country_id,
-                    'parent_company_id':self.parent_company_id,
-                    'partner_id':self.partner_id,
-                     'contact_name': self.contact_name,
-                     'title':self.title,
-
-                    }
-                )
-
-                for record in self.complementary_product:
-                    values.write({
-                    'complementary_tree':[(0,0,{
-                    'comp_done':record.comp_done,
-                    'comp_name':record.comp_name,
-                    'comp_price':record.comp_price,
-                    'comp_quantity':record.comp_quantity,
-                    'comp_total_price':record.comp_total_price,
-                    })],
-                    })
-                self.count=1
-
-
-
-
-
-
-
 #test returned data
 class BookedTime(models.Model):
     _name = 'business.appointment'
@@ -315,11 +290,9 @@ class BookedTime(models.Model):
     city = fields.Char("City")
     state_id = fields.Many2one('res.country.state', "State")
     zipcode = fields.Char("Zip")
-    country_id = fields.Many2one('res.country', "Country")
     parent_company_id = fields.Many2one('res.partner', "Parent Country")
     partner_id = fields.Many2one('res.partner', "Contact")
     contact_name = fields.Char("Contact Name")
-    title = fields.Many2one('res.partner.title', "Title")
     x_done = fields.Boolean()
     x_quantity = fields.Integer()
     x_price=fields.Float()

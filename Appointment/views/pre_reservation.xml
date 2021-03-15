@@ -125,7 +125,7 @@
       <field name="view_mode">tree,form</field>
   </record>
 
-  <menuitem id="menu_prereservation" name="Pre-Reservation" parent="menu_root" sequence="2" groups="base.group_system" action="action_website_pre_reservation"/>
+  <menuitem id="menu_prereservation" name="Pre-Reservation" parent="menu_root" sequence="3" groups="base.group_system" action="action_website_pre_reservation"/>
 
 
 

@@ -3,14 +3,21 @@
 
     <menuitem name="Appointments" id="menu_root" sequence="31"
         groups="base.group_system"/>
+        <!-- <record id="action_website_pre_reservation" model="ir.actions.act_window">
+            <field name="name">Reservations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">business.appointment.core</field>
+            <field name="view_mode">tree,form</field>
+        </record> -->
 
 
 
-   <menuitem id="menu_Configuration" name="Configuration" parent="menu_root" sequence="5" groups="base.group_system"/>
 
-   <menuitem id="menu_Resources" name="Resources" parent="menu_root" sequence="3" groups="base.group_system"/>
+   <menuitem id="menu_Configuration" name="Configuration" parent="menu_root" sequence="6" groups="base.group_system"/>
+
+   <menuitem id="menu_Resources" name="Resources" parent="menu_root" sequence="4" groups="base.group_system"/>
 
 
-    <menuitem id="menu_Reporting" name="Reporting" sequence="4" parent="menu_root" groups="base.group_system"/>
+    <menuitem id="menu_Reporting" name="Reporting" sequence="5" parent="menu_root" groups="base.group_system"/>
 
 </odoo>
