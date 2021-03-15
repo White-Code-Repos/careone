@@ -255,7 +255,7 @@ class KsSaleOrderLine(models.Model):
             if line.product_id.is_combo:
                 qty = line.ks_previous_product_qty
             else:
-                qty = line._get_qty_procurement()
+                qty = line._get_qty_procurement(previous_product_uom_qty)
             if float_compare(qty, line.product_uom_qty, precision_digits=precision) >= 0:
                 continue
 

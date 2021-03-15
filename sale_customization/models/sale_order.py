@@ -49,7 +49,9 @@ class SaleOrder(models.Model):
         if self.check_combo:
             self.check_combo = False
         else:
-            raise UserError(_("please check combo first to confirm the order."))
+            for line in self.order_line:
+                if line.product_id.is_combo:
+                    raise UserError(_("please check combo first to confirm the order."))
 
         if self._get_forbidden_state_confirm() & set(self.mapped('state')):
             raise UserError(_(
