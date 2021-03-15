@@ -56,6 +56,7 @@ class Appointmentwizard(models.TransientModel):
     resource_id=fields.Many2one("business.resource")
     service_id=fields.Many2one('appointment.product',string="Service")
     related_product=fields.Many2one(related='service_id.product_id',string="Main product")
+    count=fields.Integer()
 
 
     @api.onchange('service_id')
@@ -235,8 +236,9 @@ class Appointmentwizard(models.TransientModel):
                 self.w="True"
 
     def add_booked(self):
+        self.count=0
         for line in self.calen_new:
-            if line.done==True:
+            if line.done==True or self.count<1:
                 values=self.env['business.appointment'].create(
                     {
                     'resource_type_id':self.resource_type_id.id,
@@ -279,6 +281,7 @@ class Appointmentwizard(models.TransientModel):
                     'comp_total_price':record.comp_total_price,
                     })],
                     })
+                self.count=1
 
 
 
