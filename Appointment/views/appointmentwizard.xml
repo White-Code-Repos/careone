@@ -17,6 +17,7 @@
                 <field name="w"  invisible="1" />
                 <field name="service_ids" invisible="1" />
                 <field name="service_id" options="{'no_create_edit': 1, 'no_quick_create': 1}"  attrs="{'invisible': [('x', '=', False)]}" />
+                <field name ="related_product" attrs="{'invisible': [('y', '=', False)]}"/>
                 <field name="priceofservice" class="oe_inline text-muted" attrs="{'invisible': ['|', ('x', '=', False), ('priceofservice', '=', ' ')]}" readonly="1"/>
                 <field name="time" attrs="{'invisible': [('y', '=', False)]}" widget="float_time" />
                 <field name="complementary_product"  attrs="{'invisible': [('x', '=', False)]}"  readonly="0" widget="one2many">
@@ -112,15 +113,25 @@
             </header>
 
            <group>
-            <field name="comp_done" string="Complementary Done" />
             <field name="resource_type_id" string="Resource type"/>
             <field name="resource_id" string="Resource"/>
             <field name="service_id" string="Service"/>
+            <field name="related_product" string="Main Product"/>
             <field name ="time" string="Duration of service"/>
             <field name ="priceofservice" string="price of service"/>
-            <field name ="comp_name"/>
-            <field name ="comp_quantity"/>
-            <field name ="comp_total_price"/>
+            <field name="complementary_tree">
+                <tree editable="bottom">
+                  <field name="comp_done" string="Done" />
+                  <field name="comp_name" string="Name" />
+                  <field name="comp_price" string="Price" />
+                  <field name="comp_quantity" string="Quantity" />
+                  <field name="comp_total_price" string="Total Price" />
+
+                </tree>
+            </field>
+            <field name="totalprice1" string="Total Price1" invisible="1"/>
+            <field name="totalprice2" string="Total Price"/>
+
             <field name="day_date" string="DAY DATE"/>
             <field name="day_name" string="DAY NAME"/>
             <field name="tim_from" string="Time from"/>
@@ -155,20 +166,18 @@
    <field name="arch" type="xml">
         <tree>
 
-            <field name="comp_done" string="Complementary Done" />
+            <field name="contact_name" string="Contact" />
             <field name="resource_type_id" string="Resource type"/>
             <field name="resource_id" string="Resource"/>
             <field name="service_id" string="Service"/>
+            <field name="related_product" string="Main Product"/>
             <field name ="time" string="Duration of service"/>
-            <field name ="priceofservice" string="price of service"/>
-            <field name ="comp_name" string="Product Name"/>
-            <field name ="comp_quantity" string="Quantity"/>
-            <field name ="comp_total_price" string="Product Price"/>
+            <field name ="priceofservice" string="product price"/>
             <field name="day_date" string="DAY DATE"/>
             <field name="day_name" string="DAY NAME"/>
             <field name="tim_from" string="Time from"/>
             <field name="tim_to" string="time to"/>
-            <field name="contact_name" string="Contact" />
+
 
 
         </tree>

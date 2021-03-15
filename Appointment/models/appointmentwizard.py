@@ -33,6 +33,7 @@ class Complementary(models.TransientModel):
     comp_price=fields.Float()
     comp_name=fields.Char()
     make_appointment_id = fields.Many2one('make.appointment.business')
+    make_appointment_tree = fields.Many2one('business.appointment')
 
     @api.onchange("comp_quantity")
     def calculate_price(self):
@@ -54,7 +55,7 @@ class Appointmentwizard(models.TransientModel):
     resource_type_id=fields.Many2one('business.resource.type', string="Resource Type", required="True")
     resource_id=fields.Many2one("business.resource")
     service_id=fields.Many2one('appointment.product',string="Service")
-
+    related_product=fields.Many2one(related='service_id.product_id',string="Main product")
 
 
     @api.onchange('service_id')
@@ -76,6 +77,26 @@ class Appointmentwizard(models.TransientModel):
         self.complementary_product = lines
 
     complementary_product= fields.One2many('complementary.product' , 'make_appointment_id' ,string="Complementary Products",readonly="False")
+    @api.onchange('service_id')
+    def com_product(self):
+        lines = [(5, 0, 0)]
+        if self.service_id:
+            for line in self.service_id.suggested_product_ids:
+                ob=self.env['product.product'].search([('id','=',line.id)])
+                lines.append((0, 0, {
+
+                               'comp_done': False,
+                               'comp_quantity' :0.0,
+                               'comp_total_price':0.0,
+                               'comp_price':ob.lst_price,
+
+                               'comp_name':ob.name,
+                               }))
+
+        self.complementary_product = lines
+
+
+
 
 
 
@@ -216,42 +237,51 @@ class Appointmentwizard(models.TransientModel):
     def add_booked(self):
         for line in self.calen_new:
             if line.done==True:
-                for record in self.complementary_product:
-                    self.env['business.appointment'].create(
-                        {
-                        'resource_type_id':self.resource_type_id.id,
-                        'resource_id':self.resource_id.id,
-                        'service_id':self.service_id.id,
-                        'time':self.time,
-                        'priceofservice':self.priceofservice,
-                        'comp_done':record.comp_done,
-                        'comp_quantity':record.comp_quantity,
-                        'comp_total_price':record.comp_total_price,
-                        'comp_price':record.comp_price,
-                        'comp_name':record.comp_name,
-                        'day_date':line.day_date,
-                        'day_name':line.day_name,
-                        'tim_from':line.tim_from,
-                        'tim_to':line.tim_to,
-                        'email':self.email,
-                        'phone':self.phone,
-                         'mobile':self.mobile,
-                         'function':self.function,
-                         'partner_name':self.partner_name ,
-                         'description':self.description,
-                         'street':self.street,
-                        'street2':self.street2,
-                        'city':self.city,
-                         'state_id':self.state_id,
-                        'zipcode':self.zipcode,
-                         'country_id':self.country_id,
-                        'parent_company_id':self.parent_company_id,
-                        'partner_id':self.partner_id,
-                         'contact_name': self.contact_name,
-                         'title':self.title,
+                values=self.env['business.appointment'].create(
+                    {
+                    'resource_type_id':self.resource_type_id.id,
+                    'resource_id':self.resource_id.id,
+                    'service_id':self.service_id.id,
+                    'related_product':self.related_product.name,
+                    'time':self.time,
+                    'priceofservice':self.priceofservice,
+                    'day_date':line.day_date,
+                    'day_name':line.day_name,
+                    'tim_from':line.tim_from,
+                    'tim_to':line.tim_to,
+                    'email':self.email,
+                    'phone':self.phone,
+                     'mobile':self.mobile,
+                     'function':self.function,
+                     'partner_name':self.partner_name ,
+                     'description':self.description,
+                     'street':self.street,
+                    'street2':self.street2,
+                    'city':self.city,
+                     'state_id':self.state_id,
+                    'zipcode':self.zipcode,
+                     'country_id':self.country_id,
+                    'parent_company_id':self.parent_company_id,
+                    'partner_id':self.partner_id,
+                     'contact_name': self.contact_name,
+                     'title':self.title,
 
-                        }
-                    )
+                    }
+                )
+
+                for record in self.complementary_product:
+                    values.write({
+                    'complementary_tree':[(0,0,{
+                    'comp_done':record.comp_done,
+                    'comp_name':record.comp_name,
+                    'comp_price':record.comp_price,
+                    'comp_quantity':record.comp_quantity,
+                    'comp_total_price':record.comp_total_price,
+                    })],
+                    })
+
+
+
 
 
 
@@ -297,3 +327,14 @@ class BookedTime(models.Model):
     comp_total_price=fields.Float()
     comp_price=fields.Float()
     comp_name=fields.Char()
+    complementary_tree= fields.One2many('complementary.product' , 'make_appointment_tree' ,string="Complementary Products",readonly="False")
+    related_product=fields.Char()
+    totalprice1=fields.Float(string="Total Price1",compute='_compute_price1')
+    totalprice2=fields.Float(string="Total Price",compute='_compute_price')
+    def _compute_price1(self):
+        self.totalprice1=0.0
+        for eachline in self.complementary_tree:
+            if eachline.comp_done==True:
+                self.totalprice1=self.totalprice1+eachline.comp_total_price
+    def _compute_price(self):
+        self.totalprice2=self.priceofservice+self.totalprice1
