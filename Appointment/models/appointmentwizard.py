@@ -58,7 +58,6 @@ class Appointmentwizard(models.TransientModel):
     related_product=fields.Many2one(related='service_id.product_id',string="Main product")
     count=fields.Integer()
     def Confirm_booked(self):
-        print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
         li=[]
         for record in self.complementary_product:
                         dic = {
@@ -70,11 +69,7 @@ class Appointmentwizard(models.TransientModel):
                         }
                         li.append((0,0,dic))
         for line in self.calen_new:
-            print("qqqqqqqqqqqqqqqqqqqqqqqqqqq")
             if line.done==True :
-                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
                 values=self.env['business.appointment'].create(
                     {
                     'complementary_tree':li,
@@ -97,10 +92,7 @@ class Appointmentwizard(models.TransientModel):
                      'street':self.street,
                     'street2':self.street2,
                     'city':self.city,
-                     'state_id':self.state_id,
                     'zipcode':self.zipcode,
-                    'parent_company_id':self.parent_company_id,
-                    'partner_id':self.partner_id,
                      'contact_name': self.contact_name,
 
                     }
@@ -162,10 +154,7 @@ class Appointmentwizard(models.TransientModel):
     street = fields.Char("Street")
     street2 = fields.Char("Street2")
     city = fields.Char("City")
-    state_id = fields.Many2one('res.country.state', "State")
     zipcode = fields.Char("Zip")
-    parent_company_id = fields.Many2one('res.partner', "Parent Country")
-    partner_id = fields.Many2one('res.partner', "Contact")
     contact_name = fields.Char("Contact Name")
     w=fields.Boolean()
 
@@ -288,10 +277,7 @@ class BookedTime(models.Model):
     street = fields.Char("Street")
     street2 = fields.Char("Street2")
     city = fields.Char("City")
-    state_id = fields.Many2one('res.country.state', "State")
     zipcode = fields.Char("Zip")
-    parent_company_id = fields.Many2one('res.partner', "Parent Country")
-    partner_id = fields.Many2one('res.partner', "Contact")
     contact_name = fields.Char("Contact Name")
     x_done = fields.Boolean()
     x_quantity = fields.Integer()

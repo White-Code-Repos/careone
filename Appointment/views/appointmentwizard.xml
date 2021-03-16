@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!-- ..................................... -->
-
-<!-- ............................ -->
 <record id="view_appointments_form" model="ir.ui.view">
   <field name="name">view.appointments.form</field>
   <field name="model">business.appointment</field>
@@ -38,18 +35,15 @@
             <field name="tim_from" string="Time from"/>
             <field name="tim_to" string="time to"/>
             <field name="contact_name" string="Contact" />
-            <field name="partner_id" string="partner_id" />
             <field name="email" string= "Email"/>
             <field name="phone" string= "Phone"/>
             <field name="mobile" string= "Mobile" />
             <field name="function" string="Function" />
             <field name="partner_name" string= "partner_name"/>
             <field name="phone" string= "Phone"/>
-            <field name="parent_company_id" string= "parent_company_id" />
             <field name="street" string= "street" />
             <field name="street2" string="street2" />
             <field name="city" string= "city"/>
-            <field name="state_id" string= "state_id"/>
             <field name="zipcode" string= "zipcode" />
           </group>
 
@@ -145,9 +139,8 @@
 
                 <group name="contact_info" string="Contact Info" attrs="{'invisible': [('w', '=', False)]}">
                     <group colspan="6">
-                        <field name="partner_id" context="{'default_name': contact_name, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zipcode, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_email': email, 'default_parent_id': parent_company_id}" widget="res_partner_many2one"/>
                     </group>
-                    <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                    <group >
                         <label for="contact_name"/>
                         <div class="o_row">
                             <field name="contact_name"/>
@@ -157,17 +150,15 @@
                         <field name="mobile"/>
                         <field name="function"/>
                     </group>
-                    <group attrs="{'invisible': [('partner_id', '!=', False)]}">
+                    <group >
                         <label for="street" string="Address"/>
                         <div class="o_address_format">
                             <field name="street" placeholder="Street..." class="o_address_street"/>
                             <field name="street2" placeholder="Street 2..." class="o_address_street"/>
                             <field name="city" placeholder="City" class="o_address_city"/>
-                            <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}"/>
                             <field name="zipcode" placeholder="ZIP" class="o_address_zip"/>
                         </div>
-                        <field name="parent_company_id" options="{&quot;no_open&quot;: True, &quot;no_create_edit&quot;: True, &quot;no_quick_create&quot;: 1}" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
-                      <field name="partner_name" attrs="{'invisible': [('parent_company_id', '!=', False)]}"/>
+                      <field name="partner_name" />
                   </group>
                   <group>
                     <field name="description"/>
