@@ -29,6 +29,11 @@
                     </group>
                 </group>
             </xpath>
+
+            <xpath expr='//group[@id="header_right_group"]' position="inside">
+              <field name="so_ref" attrs="{'invisible':[('type', '!=', 'in_invoice')]}"/>
+            </xpath>
+
         </field>
     </record>
     <record id="account_invoice_tree" model="ir.ui.view">

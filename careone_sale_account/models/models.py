@@ -21,7 +21,7 @@ class AccountInvoice(models.Model):
         selection=[('Good', 'Good'), ('Medium', 'Medium'), ('Bad', 'Bad')],
         readonly=True
     )
-
+    so_ref = fields.Char('SO Reference ')
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data>
+		<record id="purchase_order_form_bi_inherit" model="ir.ui.view">
+			<field name="name">purchase.order.form.bi.inherit</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form" />
+			<field name="arch" type="xml">
+<!-- 					<xpath expr="//notebook/page/field[@name='order_line']/form/group/group/label[@for='qty_delivered']" position="before"> -->
+<!--                       <field name="discount" /> -->
+                      
+<!--                 </xpath> -->
+
+	<xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_qty']" position="after">
+                       <field name="discount" />
+                </xpath>
+
+
+
+
+			</field>
+		</record>
+	</data>
+</odoo>
