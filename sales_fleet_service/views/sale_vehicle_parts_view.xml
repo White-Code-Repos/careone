@@ -29,16 +29,22 @@
         <field name="model">sale.vehicle.parts</field>
         <field name="arch" type="xml">
             <form string="Vehicle Parts">
-							<group>
-								<group>
-									<field name="image1" widget="image" />
-									<div><field name="image2" widget="image" /></div>
-								</group>
-								<group>
-									<div><field name="image3" widget="image" /></div>
-									<div><field name="image4" widget="image" /></div>
-								</group>
-							</group>
+						<center>
+							<h3> Vehicle Parts </h3>
+							<table>
+								<tbody>
+									<tr>
+										<td><field name="image1" widget="image" width="250px"/></td>
+										<td><field name="image2" widget="image" width="250px"/></td>
+									</tr>
+									<tr>
+										<td><field name="image3" widget="image" width="250px"/></td>
+										<td><field name="image4" widget="image" width="250px"/></td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
+
 								<group>
                 	<group>
 										<field name="note"/>
