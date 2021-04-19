@@ -8,7 +8,8 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="id"/>
-                <field name="image"/>
+								<field name="image1"/>
+                <field name="note"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click" style="width: 100px;">
@@ -54,7 +55,10 @@
         <field name="model">sale.vehicle.parts</field>
         <field name="arch" type="xml">
             <tree string="Vehicle Parts">
-                <field name="image"/>
+								<field name="image1"/>
+								<field name="image2"/>
+								<field name="image3"/>
+                <field name="image4"/>
             </tree>
         </field>
     </record>
