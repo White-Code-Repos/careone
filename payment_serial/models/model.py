@@ -22,7 +22,7 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('amount')
+    @api.onchange('amount','partner_type','payment_date')
     def on_change_amount(self):
         allowed = self.env['res.users'].search([('id', '=', self.env.uid)]).allowed_journal.ids
 
