@@ -24,7 +24,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount')
     def on_change_amount(self):
-        allowed = self.env['res.user'].search([('id', '=', self.env.user_id)]).allowed_journals.ids
+        allowed = self.env['res.users'].search([('id', '=', self.env.user_id)]).allowed_journals.ids
 
         journal_id_domain = [
             ('id', 'in', allowed)
