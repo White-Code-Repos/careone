@@ -1,0 +1,4 @@
+version 13.0.0.1(date :- 19th feb 2020)
+issue solve :- 
+	- given default user getting error.
+	- menu given in configuration , and sales manager show configuration , so evenry user show all claim details. change menu in view.
