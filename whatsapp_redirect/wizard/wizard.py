@@ -40,7 +40,7 @@ class WhatsappSendMessage(models.TransientModel):
             message_string = message_string[:(len(message_string) - 3)]
             return {
                 'type': 'ir.actions.act_url',
-                'url': "https://api.whatsapp.com/send?phone="+self.user_id.mobile+"&text=" + message_string,
-                'target': 'self',
+                'url': "https://web.whatsapp.com/send?phone="+self.user_id.mobile+"&text=" + message_string,
+                'target': 'new',
                 'res_id': self.id,
             }
