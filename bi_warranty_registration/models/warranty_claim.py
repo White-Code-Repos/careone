@@ -123,7 +123,8 @@ class crm_claim(models.Model):
 				if warranty_obj.warranty_end_date :
 					if fields.datetime.today().date() > warranty_obj.warranty_end_date :
 						raise ValidationError(_('Warranty is expired for this product'))
-
+		else:
+			raise ValidationError(_('Empty Serial Number'))
 
 	def completed_claim(self):
 		stage_nxt1 = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim2')
