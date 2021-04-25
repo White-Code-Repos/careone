@@ -26,18 +26,18 @@ class crm_claim_stage(models.Model):
 
 	_defaults = {
 		'sequence': lambda *args: 1
-	}                        
-	
+	}
+
 
 class crm_claim(models.Model):
 	_name = "warranty.claim"
 	_description = "Claim"
 	_order = "priority,date desc"
-	
-	@api.model 
-	def default_get(self, flds): 
+
+	@api.model
+	def default_get(self, flds):
 		result = super(crm_claim, self).default_get(flds)
-		stage_nxt1 = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim1') 
+		stage_nxt1 = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim1')
 		result['stage_id'] = stage_nxt1.id
 		return result
 
@@ -76,7 +76,7 @@ class crm_claim(models.Model):
 	viechle_id = fields.Many2one('fleet.veichle')
 	size = fields.Char(string="Car Size")
 	model_id = fields.Many2one('fleet.model')
-	
+
 	@api.onchange('partner_id')
 	def customer_details(self):
 		self.partner_phone = self.partner_id.phone
@@ -89,7 +89,7 @@ class crm_claim(models.Model):
 		return {'domain': {'product_id': [('id', 'in', prod)]}}
 
 	@api.onchange('product_id')
-	def warranty_updt_prod(self): 
+	def warranty_updt_prod(self):
 		warranty_claim_obj = self.env['product.warranty'].search([('partner_id','=',self.partner_id.id),('product_id','=',self.product_id.id),('state','not in',['expired','new'])])
 		prod = []
 		if warranty_claim_obj:
@@ -97,37 +97,38 @@ class crm_claim(models.Model):
 				prod.append(i.product_serial_id.id)
 		return {'domain': {'serial_no': [('id', 'in',prod)]}}
 
-	
+
 	@api.onchange('serial_no')
-	def warranty_updt_serial(self): 
+	def warranty_updt_serial(self):
 		warranty_claim_obj = self.env['product.warranty'].search([])
 		for res in warranty_claim_obj:
 			if res.product_serial_id == self.serial_no:
 				self.update({'warranty': res.id})
 
 	def submit_claim(self):
-		warranty_obj = self.env['product.warranty'].search([('product_serial_id','=', self.serial_no.id)])
-		if not warranty_obj: 
-				raise ValidationError(_('Warranty is not created for this product'))
-		else:
-			stage_nxt = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim5')
-			self.update({'stage_id': stage_nxt.id, 'stage_match': 'second'})
+		if self.serial_no:
+			warranty_obj = self.env['product.warranty'].search([('product_serial_id','=', self.serial_no.id)])
+			if not warranty_obj:
+					raise ValidationError(_('Warranty is not created for this product'))
+			else:
+				stage_nxt = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim5')
+				self.update({'stage_id': stage_nxt.id, 'stage_match': 'second'})
 
 
-		if warranty_obj:
-			if warranty_obj.state == 'new':
-				raise ValidationError(_('Warranty is not confirmed for this product'))
+			if warranty_obj:
+				if warranty_obj.state == 'new':
+					raise ValidationError(_('Warranty is not confirmed for this product'))
 
-		if warranty_obj:
-			if warranty_obj.warranty_end_date :
-				if fields.datetime.today().date() > warranty_obj.warranty_end_date :
-					raise ValidationError(_('Warranty is expired for this product'))
-				
-				
+			if warranty_obj:
+				if warranty_obj.warranty_end_date :
+					if fields.datetime.today().date() > warranty_obj.warranty_end_date :
+						raise ValidationError(_('Warranty is expired for this product'))
+
+
 	def completed_claim(self):
 		stage_nxt1 = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim2')
 		self.update({'stage_id': stage_nxt1.id, 'stage_match': 'third'})
-	
+
 	def claim_done(self):
 		stage_nxt2 = self.env['ir.model.data'].xmlid_to_object('bi_warranty_registration.stage_claim3')
 		self.update({'stage_id': stage_nxt2.id, 'stage_match': 'fourth'})
