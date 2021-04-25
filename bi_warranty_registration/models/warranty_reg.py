@@ -95,10 +95,10 @@ class WarrantyDetails(models.Model):
 			'warranty_invoice': True,
 			'warranty_reg_id': self.id,
 			'invoice_line_ids': [(0, 0, {
-			'name': 'Warranty of '+ str(self.product_id.display_name),
-			'price_unit': self.warranty_cost,
-
-			})],
+										'name': 'Warranty of '+ str(self.product_id.display_name),
+										'product_id': self.product_id.id,
+										'price_unit': self.warranty_cost,
+										})],
 
 			'narration': self.comment,
 		})
@@ -207,7 +207,7 @@ class WarrantyDetails(models.Model):
 		# 	if ser.id != result.id:
 		# 		if ser.product_serial_id == result.product_serial_id:
 		# 			raise ValidationError(_('You Cannot Create more than one Warranty with same serial No. Please Renew existing Warranty'))
-		# 
+		#
 
 		return result
 
