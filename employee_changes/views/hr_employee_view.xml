@@ -29,6 +29,24 @@
                     </group>
                 </group>
             </xpath>
+            <xpath expr="//notebook" position="inside">
+              <page name="bank_accounts" string="Bank Account Details">
+                <group>
+                  <group>
+                    <field name="iban"/>
+                  </group>
+                </group>
+                <group>
+
+                    <field name="bank_accounts" nolabel="1" force_save='1'>
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="bank_account_number"/>
+                        </tree>
+                    </field>
+                </group>
+              </page>
+            </xpath>
         </field>
     </record>
 </odoo>

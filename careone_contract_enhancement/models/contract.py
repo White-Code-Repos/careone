@@ -36,6 +36,14 @@ class Contract(models.Model):
     pen_apply_on = fields.Selection(selection=[('saudi', 'Saudi'), ('other', 'Others')], string='Apply On')
     blank = fields.Char()  # JUst to make view more adjusted
 
+    def _compute_detailed(self):
+        for this in self:
+            if this.work_period:
+                this.detailed_work_duration = str(int(this.work_period/12))+" years, "+str(int(this.work_period%12))+" month"
+            else:
+                this.detailed_work_duration = "0 years, 0 month"
+    detailed_work_duration = fields.Char(compute='_compute_detailed')
+
     def compute_sub_contract_count(self):
         for record in self:
             record.sub_contract_count = self.env['hr.contract'].search_count([('contract_id', '=', self.id),

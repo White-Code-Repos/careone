@@ -32,11 +32,12 @@
                 </xpath>
 
                 <xpath expr="//field[@name='trial_date_end']" position="after">
-                    <label for="work_period"/>
+                    <field name="detailed_work_duration"/>
+                    <!-- <label for="work_period"/>
                     <div class="o_row" name="work_period">
                         <field name="work_period" nolabel="1"/>
                         <span>month</span>
-                    </div>
+                    </div> -->
                 </xpath>
 
                 <xpath expr="//notebook/page[@name='information']" position="after">
