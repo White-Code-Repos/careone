@@ -22,6 +22,8 @@ class Contract(models.Model):
     bank_accounts = fields.One2many(comodel_name='bank.account',
                                     inverse_name='contract_id', string="Bank Account Details")
 
+    iban = fields.Char('IBAN')
+
     # Sub Contract
     sub_contract_count = fields.Integer(compute='compute_sub_contract_count')
 
@@ -39,9 +41,12 @@ class Contract(models.Model):
     def _compute_detailed(self):
         for this in self:
             if this.work_period:
-                this.detailed_work_duration = str(int(this.work_period/12))+" years, "+str(int(this.work_period%12))+" month"
+                date1 = datetime.strptime(str(this.date_start), '%Y-%m-%d')
+                date2 = datetime.strptime(str(datetime.now()), '%Y-%m-%d %H:%M:%S.%f')
+                r = relativedelta.relativedelta(date2, date1)
+                this.detailed_work_duration = str(int(r.years))+" years, "+str(int(r.months))+" month, "+str(int(r.days))+" days"
             else:
-                this.detailed_work_duration = "0 years, 0 month"
+                this.detailed_work_duration = "0 years, 0 month, 0 days"
     detailed_work_duration = fields.Char(compute='_compute_detailed')
 
     def compute_sub_contract_count(self):

@@ -70,7 +70,7 @@ class HrEmployee(models.Model):
             #     this.bank_accounts =[(5,0,0)]
 
     bank_accounts = fields.One2many('bank.account','emp_id',compute = _compute_bank_accounts)
-    iban = fields.Char('IBAN')
+    iban = fields.Char('IBAN',related="contract_id.iban")
 
     @api.depends('employee_type2', 'calculate_balance', 'end_service_date')
     def _get_end_service_balance(self):

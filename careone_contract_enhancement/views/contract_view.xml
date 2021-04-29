@@ -42,14 +42,20 @@
 
                 <xpath expr="//notebook/page[@name='information']" position="after">
                     <page string="Bank Account Details">
+                      <group>
                         <group>
-                            <field name="bank_accounts" nolabel="1">
-                                <tree editable="bottom">
-                                    <field name="name"/>
-                                    <field name="bank_account_number"/>
-                                </tree>
-                            </field>
+                          <field name="iban"/>
                         </group>
+                      </group>
+
+                      <group>
+                          <field name="bank_accounts" nolabel="1">
+                              <tree editable="bottom">
+                                  <field name="name"/>
+                                  <field name="bank_account_number"/>
+                              </tree>
+                          </field>
+                      </group>
                     </page>
                     <page string="Medical Insurance">
                         <group string="Medical Insurance Details" col="4">
