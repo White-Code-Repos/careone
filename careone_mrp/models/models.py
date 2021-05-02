@@ -204,16 +204,18 @@ class MrpProduction(models.Model):
              'user_id': user_id
              })
         # send mail to client
-        client = self.sale_order_id.partner_id
-        mail_content = "  مرحـبـا,  " + client.name + "\nلقد تم الإنتهاء من امر التصنيع رقم" + \
-                       str(self.name) + "\nنشكرك لإختيارك كير وان و إعطائنا فرصة لخدمتك, و نعدك بأن نكون عند حسن ظنك , و فى حال وجود أى سؤال أو استفسار لا تتردد ابداً ف التواصل معانا عبر:" + "\n0506068020 :الجوال" + "\ninfo@care1cc.com أو الإيميل" + "\n@care1cc أو عبر موقع التواصل الاجتماعى "
-        main_content = {
-            'subject': _("MO Done"),
-            'author_id': self.env.user.partner_id.id,
-            'body_html': mail_content,
-            'email_to': client.email,
-        }
-        self.env['mail.mail'].sudo().create(main_content).send()
+        sale_order = self.env['sale.order'].search([('name', '=', self.origin)])
+        if sale_order:
+            client = sale_order.partner_id
+            mail_content = "  مرحـبـا,  " + client.name + "\nلقد تم الإنتهاء من امر التصنيع رقم" + \
+                           str(self.name) + "\nنشكرك لإختيارك كير وان و إعطائنا فرصة لخدمتك, و نعدك بأن نكون عند حسن ظنك , و فى حال وجود أى سؤال أو استفسار لا تتردد ابداً ف التواصل معانا عبر:" + "\n0506068020 :الجوال" + "\ninfo@care1cc.com أو الإيميل" + "\n@care1cc أو عبر موقع التواصل الاجتماعى "
+            main_content = {
+                'subject': _("MO Done"),
+                'author_id': self.env.user.partner_id.id,
+                'body_html': mail_content,
+                'email_to': client.email,
+            }
+            self.env['mail.mail'].sudo().create(main_content).send()
         return self.write({'date_finished': fields.Datetime.now()})
 
 
