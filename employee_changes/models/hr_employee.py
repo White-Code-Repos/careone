@@ -54,12 +54,12 @@ class HrEmployee(models.Model):
     balance = fields.Float('Balance', compute="_get_end_service_balance")
     add_to_payslip = fields.Boolean('Add to Payslip')
 
-    @api.onchange('contract_id.bank_accounts')
-    def _compute_bank_accounts(self):
-        for this in self:
-            this.bank_accounts = this.contract_id.bank_accounts
-            for line in this.bank_accounts:
-                line.emp_id = this.id
+    # @api.onchange('contract_id.bank_accounts')
+    # def _compute_bank_accounts(self):
+    #     for this in self:
+    #         this.bank_accounts = this.contract_id.bank_accounts
+    #         for line in this.bank_accounts:
+    #             line.emp_id = this.id
             # if this.contract_id.bank_accounts:
             #     this.bank_accounts =[(5,0,0)]
             #     for line in this.contract_id.bank_accounts:
@@ -69,8 +69,10 @@ class HrEmployee(models.Model):
             # else:
             #     this.bank_accounts =[(5,0,0)]
 
-    bank_accounts = fields.One2many('bank.account','emp_id',compute = _compute_bank_accounts)
-    iban = fields.Char('IBAN',related="contract_id.iban")
+    bank_accounts = fields.One2many('bank.account','emp_id')
+    # bank_accounts = fields.One2many('bank.account','emp_id',compute = _compute_bank_accounts)
+    iban = fields.Char('IBAN')
+    # iban = fields.Char('IBAN',related="contract_id.iban")
 
     @api.depends('employee_type2', 'calculate_balance', 'end_service_date')
     def _get_end_service_balance(self):
