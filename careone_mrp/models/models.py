@@ -213,7 +213,6 @@ class MrpProduction(models.Model):
             'body_html': mail_content,
             'email_to': client.email,
         }
-        print(mail_content)
         self.env['mail.mail'].sudo().create(main_content).send()
         return self.write({'date_finished': fields.Datetime.now()})
 
