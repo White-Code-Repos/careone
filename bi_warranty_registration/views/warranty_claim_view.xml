@@ -134,8 +134,9 @@
                         <field name="team_id"/>
                         <field name="date_deadline"/>
 
-                        <field name="so_referance"/>
-                        
+                        <!-- <field name="so_referance"/> -->
+                        <field name="sale_order_referance"/>
+
                     </group>
                     <group colspan="4" col="4">
                         <notebook>

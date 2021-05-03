@@ -78,6 +78,7 @@ class crm_claim(models.Model):
 	model_id = fields.Many2one('fleet.model')
 
 	so_referance = fields.Many2one('sale.order')
+	sale_order_referance = fields.Many2one('sale.order')
 
 	@api.onchange('partner_id')
 	def customer_details(self):
