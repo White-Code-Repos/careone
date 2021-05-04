@@ -8,7 +8,7 @@ class HrContract(models.Model):
     settelment_allowance = fields.Float()
     transportation_allowance = fields.Float()
     other_allowance = fields.Float()
-    
+
     gosi_record_number = fields.Char()
     gosi_record_date = fields.Date()
     gosi_record_type = fields.Selection([('saudi','Saudi'),('not_saudi','Not Saudi')])

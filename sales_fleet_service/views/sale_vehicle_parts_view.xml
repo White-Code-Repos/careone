@@ -8,7 +8,8 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="id"/>
-                <field name="image"/>
+								<field name="image1"/>
+                <field name="note"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click" style="width: 100px;">
@@ -28,9 +29,25 @@
         <field name="model">sale.vehicle.parts</field>
         <field name="arch" type="xml">
             <form string="Vehicle Parts">
-                <group>
+						<center>
+							<h3> Vehicle Parts </h3>
+							<table>
+								<tbody>
+									<tr>
+										<td><field name="image1" widget="image" width="250px"/></td>
+										<td><field name="image2" widget="image" width="250px"/></td>
+									</tr>
+									<tr>
+										<td><field name="image3" widget="image" width="250px"/></td>
+										<td><field name="image4" widget="image" width="250px"/></td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
+
+								<group>
                 	<group>
-                		<field name="image" widget="image" class="oe_avatar"/>
+										<field name="note"/>
                 	</group>
                 	<group/>
                 </group>
@@ -44,7 +61,10 @@
         <field name="model">sale.vehicle.parts</field>
         <field name="arch" type="xml">
             <tree string="Vehicle Parts">
-                <field name="image"/>
+								<field name="image1"/>
+								<field name="image2"/>
+								<field name="image3"/>
+                <field name="image4"/>
             </tree>
         </field>
     </record>

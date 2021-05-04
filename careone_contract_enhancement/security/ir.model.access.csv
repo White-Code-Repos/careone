@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+careone_access_bank_account_user,bank.account,careone_contract_enhancement.model_bank_account,base.group_user,1,1,1,1
+careone_access_bank_account_manager,bank.account,careone_contract_enhancement.model_bank_account,base.group_system,1,1,1,1
+

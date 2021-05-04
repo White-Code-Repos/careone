@@ -21,14 +21,31 @@
             <xpath expr="//notebook/page[@name='hr_settings']" position="inside">
                 <group name="end_of_service" string="End Of Service">
                     <group>
-                            <field name="employee_type2"/>
-                            <field name="end_service_date"/>
-                            <field name="calculate_balance" string="Calculate ?"/>
-                            <field name="balance"/>
+                        <field name="employee_type2"/>
+                        <field name="end_service_date"/>
+                        <field name="calculate_balance" force_save="1"/>
+                        <field name="balance"/>
+                        <field name="add_to_payslip"/>
                     </group>
-
-
                 </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+              <page name="bank_accounts" string="Bank Account Details">
+                <group>
+                  <group>
+                    <field name="iban"/>
+                  </group>
+                </group>
+                <group>
+
+                    <field name="bank_accounts" nolabel="1" force_save='1'>
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="bank_account_number"/>
+                        </tree>
+                    </field>
+                </group>
+              </page>
             </xpath>
         </field>
     </record>

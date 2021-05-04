@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <record id="hr_contract_inherited_form_view" model="ir.ui.view">
+            <field name="name">hr.contract.inherited.form.view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="get_sub_contracts"
+                            icon="fa-book">
+                        <field string="Sub Contracts" name="sub_contract_count" widget="statinfo"/>
+                    </button>
+                </div>
+
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="sub_contract"/>
+                    <field name="contract_id"
+                           attrs="{'invisible': [('sub_contract', '=', False)], 'required': [('sub_contract', '=', True)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='advantages']" position="before">
+                    <label for="housing_allowance"/>
+                    <div class="o_row" name="housing_allowance">
+                        <field name="housing_allowance" nolabel="1"/>
+                        <span>/ month</span>
+                    </div>
+                    <label for="mobile_allowance"/>
+                    <div class="o_row" name="mobile_allowance">
+                        <field name="mobile_allowance" nolabel="1"/>
+                        <span>/ month</span>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='trial_date_end']" position="after">
+                    <field name="detailed_work_duration"/>
+                    <!-- <label for="work_period"/>
+                    <div class="o_row" name="work_period">
+                        <field name="work_period" nolabel="1"/>
+                        <span>month</span>
+                    </div> -->
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='information']" position="after">
+                    <page string="Bank Account Details">
+                      <group>
+                        <group>
+                          <field name="iban"/>
+                        </group>
+                      </group>
+
+                      <group>
+                          <field name="bank_accounts" nolabel="1">
+                              <tree editable="bottom">
+                                  <field name="name"/>
+                                  <field name="bank_account_number"/>
+                              </tree>
+                          </field>
+                      </group>
+                    </page>
+                    <page string="Medical Insurance">
+                        <group string="Medical Insurance Details" col="4">
+                            <field name="is_announcement_ins"/>
+                            <field name="blank" invisible="1"/>
+                            <field name="com_announcement_ins"
+                                   attrs="{'invisible': [('is_announcement_ins', '=',False)]}"/>
+                            <field name="emp_announcement_ins"
+                                   attrs="{'invisible': [('is_announcement_ins', '=',False)]}"/>
+                            <field name="ann_apply_on" attrs="{'invisible': [('is_announcement_ins', '=',False)]}"/>
+                            <field name="blank" invisible="1"/>
+                            <field name="is_pensions_ins"/>
+                            <field name="blank" invisible="1"/>
+                            <field name="com_pensions_ins" attrs="{'invisible': [('is_pensions_ins', '=',False)]}"/>
+                            <field name="emp_pensions_ins" attrs="{'invisible': [('is_pensions_ins', '=',False)]}"/>
+                            <field name="pen_apply_on" attrs="{'invisible': [('is_pensions_ins', '=',False)]}"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Cron to send emails to hr manager users to create another new contracts. -->
+        <record id="contract_end_date_reminder" model="ir.cron">
+            <field name="name">Contract Date Expiration</field>
+            <field name="model_id" ref="model_hr_contract"/>
+            <field name="state">code</field>
+            <field name="code">model.mail_reminder()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">1</field>
+        </record>
+    </data>
+</odoo>

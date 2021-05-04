@@ -30,7 +30,7 @@
     'company': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
     'depends': [
-        'base',
+        'base','sale','account'
         ],
     'data': [
         'views/view.xml',

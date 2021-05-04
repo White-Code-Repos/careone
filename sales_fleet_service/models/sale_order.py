@@ -54,4 +54,9 @@ class SaleVehicleParts(models.Model):
     _rec_name = 'order_id'
 
     order_id = fields.Many2one('sale.order', 'Sale Order')
-    image = fields.Binary('Vehicle Part')
+    image1 = fields.Binary('Vehicle Part')
+    image2 = fields.Binary()
+    image3 = fields.Binary()
+    image4 = fields.Binary()
+
+    note = fields.Text()
