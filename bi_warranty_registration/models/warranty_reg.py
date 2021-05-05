@@ -21,6 +21,8 @@ class WarrantyDetails(models.Model):
 	_order = 'id desc'
 	_description = "Product Warranty"
 
+	def reset_to_new(self):
+		self.write({'state':'new'})
 	def calc_warranty_end_date(self):
 		if self.product_id.warranty_period:
 			months_w = int(self.product_id.warranty_period)
