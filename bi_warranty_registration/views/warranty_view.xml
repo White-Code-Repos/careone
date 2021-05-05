@@ -27,7 +27,7 @@
 			<field name="arch" type="xml">
 				<form string="Product Warranty Details" >
 					<header>
-						<button name="reset_to_new" type="object" string="Reset To New" groups="bi_warranty_registration.group_warranty_user_manager" states="in_progress"/>
+						<button name="reset_to_new" type="object" string="Reset To New" groups="bi_warranty_registration.group_warranty_user_manager" states="in_progress,to_be_invoice"/>
 						<button name='state_update' type='object' string='Confirm' class="btn-primary" attrs="{'invisible':[('state', '!=', 'new')]}"/>
 						<field name="state" widget="statusbar" statusbar_visible="in_progress,to_be_invoice,invoiced,expired,to_renew"/>
 						<button name="create_invoice" string="Create Invoice" type="object" class="btn-primary" context="{'open_invoices': True}" attrs="{'invisible':[('state', '!=', 'to_be_invoice')]}"/>
