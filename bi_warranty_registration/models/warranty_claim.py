@@ -79,6 +79,12 @@ class crm_claim(models.Model):
 
 	so_referance = fields.Many2one('sale.order')
 	sale_order_referance = fields.Many2one('sale.order')
+	@api.onchange('sale_order_referance')
+	def get_partner_customer(self):
+		if self.sale_order_referance:
+			self.partner_id = self.sale_order_referance.partner_id.id
+			self.customer_details()
+			self.warranty_updt_prod()
 
 	@api.onchange('partner_id')
 	def customer_details(self):
@@ -89,6 +95,7 @@ class crm_claim(models.Model):
 		if warranty_claim_obj:
 			for i in warranty_claim_obj:
 				prod.append(i.product_id.id)
+		self.warranty_updt_prod()
 		return {'domain': {'product_id': [('id', 'in', prod)]}}
 
 	@api.onchange('product_id')
@@ -98,6 +105,7 @@ class crm_claim(models.Model):
 		if warranty_claim_obj:
 			for i in warranty_claim_obj:
 				prod.append(i.product_serial_id.id)
+		self.customer_details()
 		return {'domain': {'serial_no': [('id', 'in',prod)]}}
 
 
