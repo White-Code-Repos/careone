@@ -105,7 +105,6 @@ class crm_claim(models.Model):
 		if warranty_claim_obj:
 			for i in warranty_claim_obj:
 				prod.append(i.product_serial_id.id)
-		self.customer_details()
 		return {'domain': {'serial_no': [('id', 'in',prod)]}}
 
 
