@@ -505,17 +505,12 @@ class AttendanceSheet(models.Model):
             for loan_line in loan.loan_lines:
                 if self.date_from <= loan_line.date <= self.date_to and not loan_line.paid:
                     payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code', '=', 'LO')], limit=1)
-                    if self.changed_get_loan:
-                        pass
-                    else:
-                        loans = [{
-                            'input_type_id': payslip_other_input_type.id,
-                            'amount': loan_line.amount,
-                            'contract_id': contract.id,
-                            'sequence': 36,
-
-                        }]
-                        self.changed_get_loan = True
+                    loans = [{
+                        'input_type_id': payslip_other_input_type.id,
+                        'amount': loan_line.amount,
+                        'contract_id': contract.id,
+                        'sequence': 36,
+                    }]
 
         other_input = over_3h + after_3h + weekend + loans
         return other_input
