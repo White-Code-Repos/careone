@@ -12,10 +12,20 @@ class HrEmployeeContract(models.Model):
     department_id = fields.Many2one('hr.department', string="Department", help="Department",
                                     required=True)
 
-    @api.onchange('shift_schedule')
-    def onchange_shift_schedule(self):
-        for item in self:
-            item.employee_id.shift_schedule = [(6, 0, item.shift_schedule.ids)]
+    @api.model
+    def create(self, vals):
+        res = super(HrEmployeeContract, self).create(vals)
+        for line in self.shift_schedule:
+            if line.id not in self.employee_id.shift_schedule.ids:
+                self.employee_id.shift_schedule = [(6, 0, self.shift_schedule.ids)]
+        return res
+
+    def write(self, vals):
+        res = super(HrEmployeeContract, self).write(vals)
+        for line in self.shift_schedule:
+            if line.id not in self.employee_id.shift_schedule.ids:
+                self.employee_id.shift_schedule = [(6, 0, self.shift_schedule.ids)]
+        return res
 
 
 class HrSchedule(models.Model):
@@ -66,9 +76,18 @@ class HrEmployee(models.Model):
 
     shift_schedule = fields.One2many('hr.shift.schedule', 'rel_hr_schedule1', string="Shift Schedule")
 
-    @api.onchange('shift_schedule')
-    def onchange_shift_schedule(self):
-        for item in self:
-            contracts = self.env['hr.contract'].search([('employee_id', '=', item.id)])
-            for contract in contracts:
-                item.shift_schedule = [(6, 0, contract.shift_schedule.ids)]
+    @api.model
+    def create(self, vals):
+        res = super(HrEmployee, self).create(vals)
+        contract = self.env['hr.contract'].search([('employee_id.name', '=', res.name)], limit=1)
+        if contract:
+            contract.shift_schedule = [(6, 0, res.shift_schedule.ids)]
+        return res
+
+    def write(self, vals):
+        res = super(HrEmployee, self).write(vals)
+        for rec in self:
+            contract = self.env['hr.contract'].search([('employee_id.name', '=', rec.name)], limit=1)
+            if contract:
+                contract.shift_schedule = [(6, 0, self.shift_schedule.ids)]
+        return res
