@@ -217,7 +217,7 @@ class AttendanceSheet(models.Model):
                                     late_in_interval = (work_interval[0], att_work_intervals[0][0])
 
                                     if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
-                                    # if ac_sign_in < end_morning_shift:
+                                        # if ac_sign_in < end_morning_shift:
                                         overtime_interval = (
                                             work_interval[1], att_work_intervals[-1][1] - timedelta(hours=1))
                                     else:
@@ -232,7 +232,7 @@ class AttendanceSheet(models.Model):
                                         pytz.utc.localize(att_work_intervals[0][0]).astimezone(tz))
 
                                     if ac_sign_in < end_morning_shift and pl_sign_in == 8.0:
-                                    # if ac_sign_in < end_morning_shift:
+                                        # if ac_sign_in < end_morning_shift:
                                         ac_sign_out = self._get_float_from_time(pytz.utc.localize(att_work_intervals[0]
                                                                                                   [1]).astimezone(tz))
 
@@ -269,10 +269,10 @@ class AttendanceSheet(models.Model):
                                                          diff_clean[0]
                                     else:
                                         if not ac_sign_out:
-                                            diff_time_final= (pl_sign_out - pl_sign_in)
+                                            diff_time_final = (pl_sign_out - pl_sign_in)
                                         else:
-                                            diff_time_final= (pl_sign_out - ac_sign_out)
-                                        result =timedelta(hours=diff_time_final)
+                                            diff_time_final = (pl_sign_out - ac_sign_out)
+                                        result = timedelta(hours=diff_time_final)
                                         diff_time += result
                             if late_in_interval:
                                 if late_in_interval[1] < late_in_interval[0]:
@@ -498,7 +498,26 @@ class AttendanceSheet(models.Model):
 
         }]
 
-        other_input = over_3h + after_3h + weekend
+        loans = []
+        lon_obj = self.env['hr.loan'].search([('employee_id', '=', self.employee_id.id), ('state', '=', 'approve')])
+
+        for loan in lon_obj:
+            for loan_line in loan.loan_lines:
+                if self.date_from <= loan_line.date <= self.date_to and not loan_line.paid:
+                    payslip_other_input_type = self.env['hr.payslip.input.type'].search([('code', '=', 'LO')], limit=1)
+                    if self.changed_get_loan:
+                        pass
+                    else:
+                        loans = [{
+                            'input_type_id': payslip_other_input_type.id,
+                            'amount': loan_line.amount,
+                            'contract_id': contract.id,
+                            'sequence': 36,
+
+                        }]
+                        self.changed_get_loan = True
+
+        other_input = over_3h + after_3h + weekend + loans
         return other_input
 
     def _get_workday_lines(self):
