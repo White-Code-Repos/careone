@@ -28,17 +28,17 @@ class HrSchedule(models.Model):
     hr_shift = fields.Many2one('resource.calendar', string="Shift", required=True, help="Shift")
     company_id = fields.Many2one('res.company', string='Company', help="Company")
 
-    @api.onchange('start_date', 'end_date')
-    def get_department(self):
-        """Adding domain to  the hr_shift field"""
-        hr_department = None
-        if self.start_date:
-            hr_department = self.rel_hr_schedule.department_id.id
-        return {
-            'domain': {
-                'hr_shift': [('hr_department', '=', hr_department)]
-            }
-        }
+    # @api.onchange('start_date', 'end_date')
+    # def get_department(self):
+    #     """Adding domain to  the hr_shift field"""
+    #     hr_department = None
+    #     if self.start_date:
+    #         hr_department = self.rel_hr_schedule.department_id.id
+    #     return {
+    #         'domain': {
+    #             'hr_shift': [('hr_department', '=', hr_department)]
+    #         }
+    #     }
 
     def write(self, vals):
         self._check_overlap(vals)

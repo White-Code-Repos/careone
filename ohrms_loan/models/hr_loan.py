@@ -13,12 +13,14 @@ class HrLoan(models.Model):
 
     def write(self, values):
         total = 0.0
-        for line in self.loan_lines:
-            total += line.amount
-        if total != self.loan_amount:
-            raise ValidationError(_('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
+        print(self.loan_lines)
+        if self.loan_lines:
+            for line in self.loan_lines:
+                total += line.amount
+            if total != self.loan_amount:
+                raise ValidationError(
+                    _('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
         return super(HrLoan, self).write(values)
-
 
     @api.model
     def default_get(self, field_list):
@@ -61,7 +63,8 @@ class HrLoan(models.Model):
     loan_amount = fields.Float(string="Loan Amount", required=True, help="Loan amount")
     total_amount = fields.Float(string="Total Amount", store=True, readonly=True, compute='_compute_loan_amount',
                                 help="Total loan amount")
-    balance_amount = fields.Float(string="Balance Amount", store=True, compute='_compute_loan_amount', help="Balance amount")
+    balance_amount = fields.Float(string="Balance Amount", store=True, compute='_compute_loan_amount',
+                                  help="Balance amount")
     total_paid_amount = fields.Float(string="Total Paid Amount", store=True, compute='_compute_loan_amount',
                                      help="Total paid amount")
 
@@ -75,20 +78,22 @@ class HrLoan(models.Model):
 
     @api.model
     def create(self, values):
-        loan_count = self.env['hr.loan'].search_count(
-            [('employee_id', '=', values['employee_id']), ('state', '=', 'approve'),
-             ('balance_amount', '!=', 0)])
-        if loan_count:
-            raise ValidationError(_("The employee has already a pending installment"))
-        else:
-            values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
-            res = super(HrLoan, self).create(values)
-            total = 0.0
+        # loan_count = self.env['hr.loan'].search_count(
+        #     [('employee_id', '=', values['employee_id']), ('state', '=', 'approve'),
+        #      ('balance_amount', '!=', 0)])
+        # if loan_count:
+        #     raise ValidationError(_("The employee has already a pending installment"))
+        # else:
+        values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
+        res = super(HrLoan, self).create(values)
+        total = 0.0
+        if res.loan_lines:
             for line in res.loan_lines:
                 total += line.amount
             if total != res.loan_amount:
-                raise ValidationError(_('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
-            return res
+                raise ValidationError(
+                    _('The total of installments is not equal to the loan amount\nاجمالي تفاصيل الدفع لا تساوي اجمالي قيمه السلفه'))
+        return res
 
     def compute_installment(self):
         """This automatically create the installment the employee need to pay to

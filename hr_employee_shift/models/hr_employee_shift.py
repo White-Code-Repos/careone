@@ -22,7 +22,7 @@ class HrEmployeeShift(models.Model):
         ]
 
     color = fields.Integer(string='Color Index', help="Color")
-    hr_department = fields.Many2one('hr.department', string="Department", required=True, help="Department")
+    hr_department = fields.Many2one('hr.department', string="Department", help="Department")
     sequence = fields.Integer(string="Sequence", required=True, default=1, help="Sequence")
     attendance_ids = fields.One2many(
         'resource.calendar.attendance', 'calendar_id', 'Workingssss Time',
@@ -38,5 +38,3 @@ class HrEmployeeShift(models.Model):
             if len(record) > 1:
                 raise ValidationError("One record with same sequence is already active."
                                       "You can't activate more than one record  at a time")
-
-
